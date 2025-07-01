@@ -1,0 +1,61 @@
+name: Render Quarto PDFs and Release
+
+on:
+  push:
+    branches:
+      - main # Or your default branch
+    paths:
+      - 'translated_korean_files/**.qmd'
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  render_and_release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Needed to create a release
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-cli-action@v2
+
+      - name: Render QMD files to PDF
+        run: |
+          mkdir -p release_pdfs
+          for file in translated_korean_files/*_ko.qmd; do
+            if [ -f "$file" ]; then
+              quarto render "$file" --to pdf -o "release_pdfs/$(basename "${file%.qmd}").pdf"
+            fi
+          done
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ github.run_number }}
+          release_name: Release ${{ github.run_number }}
+          draft: false
+          prerelease: false
+
+      - name: Upload PDF assets to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release_pdfs # Directory containing the PDFs
+          asset_name: korean_rendered_pdfs_${{ github.run_number }}.zip # Optional: zips all PDFs
+          asset_content_type: application/zip
+
+      - name: Upload individual PDF assets (alternative to zip)
+        if: ${{ false }} # Disable this by default, enable if you prefer individual files
+        run: |
+          for pdf_file in release_pdfs/*.pdf; do
+            gh release upload v${{ github.run_number }} "$pdf_file" --clobber
+          done
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
