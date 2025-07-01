@@ -1,0 +1,17 @@
+대부분의 사람들은 지난 주에 의사를 방문하지 않았습니다.
+
+```{r}
+#| echo: false
+#| warning: false
+
+library(tidyverse)
+library(AER)
+
+data("DoctorVisits", package = "AER")
+
+DoctorVisits |>
+  ggplot(aes(x = visits)) +
+  geom_histogram(stat = "count")
+```
+
+한 번 의사를 방문한 사람들이 있었고, 그 다음에는...
