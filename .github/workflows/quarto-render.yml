@@ -26,36 +26,41 @@ jobs:
           mkdir -p release_pdfs
           for file in translated_korean_files/*_ko.qmd; do
             if [ -f "$file" ]; then
-              quarto render "$file" --to pdf -o "release_pdfs/$(basename "${file%.qmd}").pdf"
+              # Ensure output filename is valid and doesn't contain problematic characters
+              filename=$(basename "${file%.qmd}")
+              sanitized_filename=$(echo "$filename" | sed 's/[^a-zA-Z0-9_-]/_/g')
+              quarto render "$file" --to pdf -o "release_pdfs/${sanitized_filename}.pdf"
+              echo "Rendered $file to release_pdfs/${sanitized_filename}.pdf"
+            else
+              echo "File $file not found."
             fi
           done
-
+          echo "Listing contents of release_pdfs:"
+          ls -l release_pdfs/
+          
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ github.run_number }}
-          release_name: Release ${{ github.run_number }}
+          tag_name: v${{ github.run_number }}-${{ github.sha }} # More unique tag name
+          release_name: Release ${{ github.run_number }} (Korean PDFs)
           draft: false
           prerelease: false
 
       - name: Upload PDF assets to Release
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./release_pdfs # Directory containing the PDFs
-          asset_name: korean_rendered_pdfs_${{ github.run_number }}.zip # Optional: zips all PDFs
-          asset_content_type: application/zip
-
-      - name: Upload individual PDF assets (alternative to zip)
-        if: ${{ false }} # Disable this by default, enable if you prefer individual files
+        if: ${{ success() && steps.create_release.outputs.upload_url != '' }}
         run: |
+          echo "Uploading PDFs from release_pdfs directory..."
+          ls -l release_pdfs/
           for pdf_file in release_pdfs/*.pdf; do
-            gh release upload v${{ github.run_number }} "$pdf_file" --clobber
+            if [ -f "$pdf_file" ]; then
+              echo "Uploading $pdf_file"
+              gh release upload v${{ github.run_number }}-${{ github.sha }} "$pdf_file" --clobber
+            else
+              echo "PDF file $pdf_file not found for upload."
+            fi
           done
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
