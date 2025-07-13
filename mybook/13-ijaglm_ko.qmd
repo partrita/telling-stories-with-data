@@ -4,7 +4,7 @@ engine: knitr
 
 # 일반화 선형 모델 {#sec-its-just-a-generalized-linear-model}
 
-::: {.callout-note}
+:::{.callout-note}
 Chapman and Hall/CRC에서 2023년 7월에 이 책을 출판했습니다. [여기](https://www.routledge.com/Telling-Stories-with-Data-With-Applications-in-R/Alexander/p/book/9781032134772)에서 구매할 수 있습니다.
 
 이 온라인 버전은 인쇄된 내용에서 일부 업데이트되었습니다. 인쇄 버전과 일치하는 온라인 버전은 [여기](https://rohanalexander.github.io/telling_stories-published/)에서 사용할 수 있습니다.
@@ -41,7 +41,7 @@ Chapman and Hall/CRC에서 2023년 7월에 이 책을 출판했습니다. [여�
 - `tidybayes` [@citetidybayes]
 - `tidyverse` [@tidyverse]
 - `tinytable` [@tinytable]
-	
+
 ```{
 r}
 #| message: false
@@ -231,9 +231,9 @@ r}
 
 slopes(week_or_weekday_model, newdata = "median") |>
   select(term, estimate, std.error) |>
-  tt() |> 
-  style_tt(j = 1:3, align = "lrr") |> 
-  format_tt(digits = 3, num_mark_big = ",", num_fmt = "decimal") |> 
+  tt() |>
+  style_tt(j = 1:3, align = "lrr") |>
+  format_tt(digits = 3, num_mark_big = ",", num_fmt = "decimal") |>
   setNames(c("항목", "추정치", "표준 오차"))
 ```
 
@@ -322,11 +322,11 @@ modelsummary(
 
 이 책에서 옹호하는 워크플로는 다음과 같습니다.\index{workflow}
 
-$$\mbox{계획} \rightarrow \mbox{시뮬레이션} \rightarrow \mbox{획득} \rightarrow \mbox{탐색} \rightarrow \mbox{공유}$$
+$\mbox{계획} \rightarrow \mbox{시뮬레이션} \rightarrow \mbox{획득} \rightarrow \mbox{탐색} \rightarrow \mbox{공유}$
 
-여기서는 모델을 사용한 데이터 탐색에 초점을 맞추지만, 다른 측면도 수행해야 합니다. 계획부터 시작합니다. 이 경우, 우리는 미국 정치적 지지에 관심이 있습니다. 특히 응답자의 최고 교육 수준과 성별만으로 응답자가 누구에게 투표할 가능성이 있는지 예측할 수 있는지에 관심이 있습니다. 이는 개인이 누구에게 투표했는지, 그리고 성별 및 교육과 같은 특성에 대한 변수가 있는 데이터셋에 관심이 있다는 것을 의미합니다. 그러한 데이터셋의 빠른 스케치는 @fig-uspoliticalsupportsketch입니다. 우리는 모델이 이러한 점들을 평균화하기를 원합니다. 빠른 스케치는 @fig-uspoliticalsupportmodel입니다.
+여기서는 모델을 사용한 데이터 탐색에 초점을 맞추지만, 다른 측면도 수행해야 합니다. 계획부터 시작합니다. 이 경우, 우리는 미국 정치적 지지에 관심이 있습니다. 특히 응답자의 최고 교육 수준과 성별만으로 응답자가 누구에게 투표할 가능성이 있는지 예측할 수 있는지에 관심이 있습니다. 이는 개인이 누구에게 투표했는지, 그리고 성별 및 교육과 같은 특성에 대한 변수가 있는 데이터셋에 관심이 있다는 것을 의미합니다. 그러한 데이터셋의 빠른 스케치는 [@fig-uspoliticalsupportsketch]입니다. 우리는 모델이 이러한 점들을 평균화하기를 원합니다. 빠른 스케치는 [@fig-uspoliticalsupportmodel]입니다.
 
-::: {#fig-uspoliticalsuppor layout-ncol=2 layout-valign="bottom"}
+:::{#fig-uspoliticalsuppor layout-ncol=2 layout-valign="bottom"}
 
 ![미국 정치적 지지를 조사하는 데 사용할 수 있는 데이터셋의 빠른 스케치](figures/IMG_2054.png){#fig-uspoliticalsupportsketch}
 
@@ -529,7 +529,7 @@ r}
 set.seed(853)
 
 ces2020_reduced <-
-  ces2020 |> 
+  ces2020 |>
   slice_sample(n = 1000)
 
 political_preferences <-
@@ -538,7 +538,7 @@ political_preferences <-
     data = ces2020_reduced,
     family = binomial(link = "logit"),
     prior = normal(location = 0, scale = 2.5, autoscale = TRUE),
-    prior_intercept = 
+    prior_intercept =
       normal(location = 0, scale = 2.5, autoscale = TRUE),
     seed = 853
   )
@@ -646,7 +646,7 @@ lambdas <- c(0, 1, 2, 4, 7, 10, 15, 25, 50)
 
 poisson_takes_shape <-
   map(lambdas, ~ tibble(lambda = rep(.x, number_of_each),
-                        draw = rpois(n = number_of_each, lambda = .x))) |> 
+                        draw = rpois(n = number_of_each, lambda = .x))) |>
   list_rbind()
 
 poisson_takes_shape <- poisson_takes_shape |>
@@ -673,7 +673,7 @@ class_size <- 26
 count_of_A <-
   tibble(
     # Chris DuBois에서: https://stackoverflow.com/a/1439843
-    department = 
+    department =
       c(rep.int("1", 26), rep.int("2", 26), rep.int("3", 26)),
     course = c(
       paste0("DEP_1_", letters),
@@ -830,10 +830,10 @@ r}
 
 slopes(grades_rstanarm) |>
   select(contrast, estimate, conf.low, conf.high) |>
-  unique() |> 
-  tt() |> 
-  style_tt(j = 1:4, align = "lrrr") |> 
-  format_tt(digits = 2, num_mark_big = ",", num_fmt = "decimal") |> 
+  unique() |>
+  tt() |>
+  style_tt(j = 1:4, align = "lrrr") |>
+  format_tt(digits = 2, num_mark_big = ",", num_fmt = "decimal") |>
   setNames(c("학과 비교", "추정치", "2.5%", "97.5%"))
 ```
 
@@ -844,7 +844,7 @@ slopes(grades_rstanarm) |>
 
 이 책에서 옹호하는 워크플로를 따라, 먼저 데이터셋과 모델을 스케치합니다.\index{workflow} 데이터셋이 어떻게 생겼을지에 대한 빠른 스케치는 @fig-letterssketch이고, 모델에 대한 빠른 스케치는 @fig-lettersmodel입니다.
 
-::: {#fig-letterss layout-ncol=2 layout-valign="bottom" layout="[[50,10,50]]"}
+:::{#fig-letterss layout-ncol=2 layout-valign="bottom" layout="[[50,10,50]]"}
 
 ![*제인 에어*의 줄 및 장별 계획된 개수](figures/IMG_2056.png){#fig-letterssketch}
 
@@ -959,10 +959,10 @@ jane_eyre_reduced <-
   mutate(chapter = if_else(str_detect(text, "CHAPTER") == TRUE,
                            text,
                            NA_character_)) |> # 장 시작 찾기
-  fill(chapter, .direction = "down") |> 
-  mutate(chapter_line = row_number(), 
+  fill(chapter, .direction = "down") |>
+  mutate(chapter_line = row_number(),
          .by = chapter) |> # 각 장에 줄 번호 추가
-  filter(!is.na(chapter), 
+  filter(!is.na(chapter),
          chapter_line %in% c(2:11)) |> # "CHAPTER I" 등 제거
   select(text, chapter) |>
   mutate(
@@ -974,7 +974,7 @@ jane_eyre_reduced <-
     count_e = str_count(text, "e|E"),
     word_count = str_count(text, "\\w+")
          # 출처: https://stackoverflow.com/a/38058033
-         ) 
+         )
 ```
 
 
@@ -1004,11 +1004,11 @@ variance_e <- var(jane_eyre_reduced$count_e)
 jane_eyre_reduced |>
   ggplot(aes(x = count_e)) +
   geom_histogram() +
-  geom_vline(xintercept = mean_e, 
-             linetype = "dashed", 
+  geom_vline(xintercept = mean_e,
+             linetype = "dashed",
              color = "#C64191") +
-  geom_vline(xintercept = variance_e, 
-             linetype = "dashed", 
+  geom_vline(xintercept = variance_e,
+             linetype = "dashed",
              color = "#0ABAB5") +
   theme_minimal() +
   labs(
@@ -1165,7 +1165,7 @@ plot_predictions(jane_e_counts, condition = "word_count") +
 
 항상 그렇듯이 먼저 데이터셋과 모델을 스케치합니다. 데이터셋이 어떻게 생겼을지에 대한 빠른 스케치는 @fig-albertadatasketch이고, 모델에 대한 빠른 스케치는 @fig-albertamodelsketch입니다.
 
-::: {#fig-letterss layout-ncol=2 layout-valign="bottom"}
+:::{#fig-letterss layout-ncol=2 layout-valign="bottom"}
 
 ![앨버타주의 사망 원인을 조사하는 데 사용할 수 있는 데이터셋의 빠른 스케치](figures/IMG_2076.png){#fig-albertadatasketch}
 
@@ -1190,7 +1190,7 @@ alberta_death_simulation
 
 연도별 및 원인별 사망 분포를 살펴볼 수 있습니다(@fig-albertacod). 일부 원인은 상당히 길기 때문에 전체 사망 원인을 잘라냈습니다. 일부 원인은 매년 상위 30위 안에 들지 않으므로 모든 원인이 동일한 발생 횟수를 가지지는 않습니다.
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 ```{
 r}
 #| eval: false
@@ -1215,7 +1215,7 @@ alberta_cod <-
 ```
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 ```{
 r}
 #| eval: false
@@ -1275,9 +1275,9 @@ alberta_cod |>
     ranking <= 10
   ) |>
   mutate(total_deaths = format(total_deaths, big.mark = ",")) |>
-  tt() |> 
-  style_tt(j = 1:5, align = "lrrrr") |> 
-  format_tt(digits = 0, num_mark_big = ",", num_fmt = "decimal") |> 
+  tt() |>
+  style_tt(j = 1:5, align = "lrrrr") |>
+  format_tt(digits = 0, num_mark_big = ",", num_fmt = "decimal") |>
   setNames(c("연도", "원인", "순위", "사망자 수", "연수"))
 ```
 
@@ -1441,11 +1441,11 @@ pp_check(cause_of_death_alberta_neg_binomial) +
 
 마지막으로, 리샘플링 방법인 leave-one-out\index{leave-one-out} (LOO) 교차 검증(CV)\index{cross-validation}을 사용하여 모델을 비교할 수 있습니다. 이는 교차 검증의 변형으로, 각 폴드의 크기가 1입니다. 즉, 100개의 관측치가 있는 데이터셋이 있다면, 이 LOO는 100겹 교차 검증과 동일합니다. 각 모델에 대해 `loo()`를 사용하여 `rstanarm`에서 이를 구현한 다음, `loo_compare()`를 사용하여 모델을 비교할 수 있습니다. 여기서 값이 높을수록 좋습니다.^[배경 지식으로, LOO-CV는 `loo()`에 의해 수행되지 않습니다. 왜냐하면 계산적으로 너무 집약적이기 때문입니다. 대신 근사치가 수행되어 예상 로그 포인트별 예측 밀도(ELPD)를 제공합니다. `rstanarm` 비네트는 더 자세한 정보를 제공합니다.]
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 교차 검증에 대한 자세한 정보는 ["예측" 온라인 부록](https://tellingstorieswithdata.com/27-prediction.html)에서 제공합니다.
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 교차 검증에 대한 자세한 정보는 [온라인 부록 -@sec-predictingpythons]에서 제공합니다.
 :::
 
@@ -1590,23 +1590,23 @@ voter_preferences
 r}
 #| eval: false
 #| echo: true
-authors <- c("오스틴, 제인", "디킨스, 찰스", 
+authors <- c("오스틴, 제인", "디킨스, 찰스",
              "셰익스피어, 윌리엄", "브론테, 샬럿")
 
 # 중복 및 원치 않는 문자에 대한 문서 값
 dont_get_shakespeare <-
-  c(2270, 4774, 5137, 9077, 10606, 12578, 22791, 23041, 23042, 23043, 
-    23044, 23045, 23046, 28334, 45128, 47518, 47715, 47960, 49007, 
+  c(2270, 4774, 5137, 9077, 10606, 12578, 22791, 23041, 23042, 23043,
+    23044, 23045, 23046, 28334, 45128, 47518, 47715, 47960, 49007,
     49008, 49297, 50095, 50559)
 dont_get_bronte <- c(31100, 42078)
 dont_get_dickens <-
-  c(25852, 25853, 25854, 30368, 32241, 35536, 37121, 40723, 42232, 43111, 
+  c(25852, 25853, 25854, 30368, 32241, 35536, 37121, 40723, 42232, 43111,
     43207, 46675, 47529, 47530, 47531, 47534, 47535, 49927, 50334)
 
 books <-
   gutenberg_works(
     author %in% authors,
-    !gutenberg_id %in% 
+    !gutenberg_id %in%
       c(dont_get_shakespeare, dont_get_bronte, dont_get_dickens)
     ) |>
   gutenberg_download(
@@ -1926,10 +1926,10 @@ Quarto를 사용하고, 적절한 제목, 저자, 날짜, GitHub 리포지토리
 
 ### 논문 {.unnumbered}
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 이 시점에서 ["논문" 온라인 부록](https://tellingstorieswithdata.com/23-assessment.html)의 *Spadina* 논문이 적절할 것입니다.
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 이 시점에서 [온라인 부록 -@sec-papers]의 *Spadina* 논문이 적절할 것입니다.
 :::

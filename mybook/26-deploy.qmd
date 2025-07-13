@@ -77,7 +77,7 @@ In a sense, we started with a cloud option, through our initial recommendation i
 
 Amazon Web Services is a cloud service from Amazon. To get started we need to create an AWS Developer account [here](https://aws.amazon.com/developer/) (@fig-awsone).
 
-::: {#fig-ipudddddms layout-nrow=2}
+:::{#fig-ipudddddms layout-nrow=2}
 
 ![AWS Developer website](figures/aws_one.png){#fig-awsone}
 
@@ -135,7 +135,7 @@ print_toronto <- function() {
 }
 ```
 
-After that is saved, in the top right of the editor you should get a button to "Run API". Click that, and your API should load. It will be a "Swagger" application, which provides a GUI around our API. Expand the GET method, and then click "Try it out" and "Execute". In the response body, you should get "Hello Toronto". 
+After that is saved, in the top right of the editor you should get a button to "Run API". Click that, and your API should load. It will be a "Swagger" application, which provides a GUI around our API. Expand the GET method, and then click "Try it out" and "Execute". In the response body, you should get "Hello Toronto".
 
 To more closely reflect the fact that this is an API designed for computers, you can copy/paste the "Request URL" into a browser and it should return "Hello Toronto".
 
@@ -146,7 +146,7 @@ Now, we are going to update the API so that it serves a model output, given some
 
 At this point, we should start a new R Project. To get started, let us simulate some data and then train a model on it. In this case we are interested in forecasting how long a baby may sleep overnight, given we know how long they slept during their afternoon nap.
 
-```{r} 
+```{r}
 #| warning: false
 #| message: false
 #| eval: true
@@ -174,7 +174,7 @@ baby_sleep |>
 
 Let us now use `tidymodels` to quickly make a model.
 
-```{r} 
+```{r}
 #| warning: false
 #| message: false
 #| eval: false
@@ -256,7 +256,7 @@ To this point, we have got an API working on our own machine, but what we really
 
 This set-up process will take some time, but we only need to do it once. Two additional packages that will assist here are `plumberDeploy` [@plumberdeploy] and `analogsea` [@citeanalogsea] (which will need to be installed from GitHub: `install_github("sckott/analogsea")`).
 
-Now we need to connect the local computer with the DigitalOcean account. 
+Now we need to connect the local computer with the DigitalOcean account.
 
 ```{r}
 #| eval: false
@@ -281,7 +281,7 @@ ssh_key_info()
 ```
 
 Again, this will all take a while to validate. DigitalOcean calls every computer that we start a "droplet". If we start three computers, then we will have started three droplets. We can check the droplets that are running.
- 
+
 ```{r}
 #| eval: false
 
@@ -361,7 +361,7 @@ do_deploy_api(
 2. *(Simulate)*
 3. *(Acquire)*
 4. *(Explore)*
-5. *(Communicate)* 
+5. *(Communicate)*
 
 ### Questions {.unnumbered}
 

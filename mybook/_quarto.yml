@@ -26,23 +26,23 @@ book:
       chapters:
         - 04-writing_research_ko.qmd
         - 05-graphs_tables_maps_ko.qmd
-    - part: "획득"  
-      chapters: 
+    - part: "획득"
+      chapters:
         - 06-farm_ko.qmd
         - 07-gather_ko.qmd
         - 08-hunt_ko.qmd
-    - part: "준비"  
-      chapters: 
+    - part: "준비"
+      chapters:
         - 09-clean_and_prepare_ko.qmd
         - 10-store_and_share_ko.qmd
         - 11-eda_ko.qmd
     - part: "모델링"
-      chapters: 
+      chapters:
         - 12-ijalm_ko.qmd
         - 13-ijaglm_ko.qmd
         - 13-prediction_ko.qmd
     - part: "적용"
-      chapters: 
+      chapters:
         - 14-causality_from_obs_ko.qmd
         - 15-mrp_ko.qmd
         - 16-text_ko.qmd
@@ -65,20 +65,34 @@ bibliography: references.bib
 
 format:
   html:
-    theme: 
+    theme:
       - cosmo
       - custom.scss
     callout-appearance: simple
-  pdf:
-    documentclass: krantz
-    include-in-header: latex/preamble.tex
-    include-before-body: latex/before_body.tex
-    include-after-body: latex/after_body.tex
-    keep-tex: true
-    callout-appearance: simple
+  # pdf:
+  #   documentclass: krantz
+  #   include-in-header: latex/preamble.tex
+  #   include-before-body: latex/before_body.tex
+  #   include-after-body: latex/after_body.tex
+  #   keep-tex: true
+  #   callout-appearance: simple
+  #   papersize: a4
+  #   geometry: # 여백 설정
+  #     - top=3cm
+  #     - bottom=3cm
+  #     - left=2.5cm
+  #     - right=2.5cm
+  #   prefer-html: true # HTML 위젯 스크린샷 필요 시
+  typst:
+    toc: true
+    section-numbering: 1.1.a
+    # columns: 2
 
 # Add language setting for Korean
 lang: ko
 
-mainfont: "Noto Serif CJK KR"
-sansfont: "Noto Sans CJK KR"
+# mainfont: "Noto Serif CJK KR"
+# sansfont: "Noto Sans CJK KR"
+mainfont: "Noto Serif KR"
+sansfont: "Noto Sans KR"
+monofont: "Noto Sans KR"

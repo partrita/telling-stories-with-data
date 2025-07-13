@@ -1,10 +1,13 @@
 ---
 engine: knitr
+format:
+  pdf:
+    prefer-html: true
 ---
 
 # 그래프, 표, 지도 {#sec-static-communication}
 
-::: {.callout-note}
+:::{.callout-note}
 Chapman and Hall/CRC는 이 책을 2023년 7월에 출판했습니다. [여기](https://www.routledge.com/Telling-Stories-with-Data-With-Applications-in-R/Alexander/p/book/9781032134772)에서 구매할 수 있습니다. 이 온라인 버전은 인쇄된 내용에 일부 업데이트가 있습니다.
 :::
 
@@ -153,12 +156,12 @@ datasaurus_dozen |>
 head(anscombe)
 ```
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 앤스콤의 콰르텟은 4개의 다른 데이터 세트에 대한 11개의 관측치로 구성되며, 각 관측치에 대한 x 및 y 값이 있습니다. ["R 필수 사항" 온라인 부록](https://tellingstorieswithdata.com/20-r_essentials.html)에서 논의된 "정돈된" 형식으로 만들기 위해 `pivot_longer()`를 사용하여 이 데이터 세트를 조작해야 합니다.
 :::
 
-::: {.content-visible unless-format="pdf"}
-앤스콤의 콰르텟은 4개의 다른 데이터 세트에 대한 11개의 관측치로 구성되며, 각 관측치에 대한 x 및 y 값이 있습니다. [온라인 부록 -@sec-r-essentials]에서 논의된 "정돈된" 형식으로 만들기 위해 `pivot_longer()`를 사용하여 이 데이터 세트를 조작해야 합니다.
+:::{.content-visible unless-format="pdf"}
+앤스콤의 콰르텟은 4개의 다른 데이터 세트에 대한 11개의 관측치로 구성되며, 각 관측치에 대한 x 및 y 값이 있습니다. [온라인 부록 -[@sec-r-essentials]]에서 논의된 "정돈된" 형식으로 만들기 위해 `pivot_longer()`를 사용하여 이 데이터 세트를 조작해야 합니다.
 :::
 
 
@@ -424,7 +427,7 @@ beps |>
 
 이제 그래프에 사용된 색상\index{그래프!색상}으로 넘어갑니다. 색상을 변경하는 다양한 방법이 있습니다. `RColorBrewer` [@RColorBrewer]에서 사용할 수 있는 많은 팔레트는 `scale_fill_brewer()`를 사용하여 지정할 수 있습니다. `viridis` [@viridis]의 경우 `scale_fill_viridis_d()`를 사용하여 팔레트를 지정할 수 있습니다. 또한 `viridis`는 색맹 팔레트에 특히 중점을 둡니다 (@fig-usecolor). `RColorBrewer`와 `viridis`는 `tidyverse`의 일부인 `ggplot2`가 우리를 위해 처리하기 때문에 명시적으로 설치하거나 로드할 필요가 없습니다.
 
-::: callout-note
+:::callout-note
 ## 거인의 어깨
 
 "brewer" 팔레트의 이름은 신디 브루어\index{브루어, 신디} [@brewerisarealperson]를 의미합니다. 1991년 미시간 주립 대학교에서 지리학 박사 학위를 취득한 후 샌디에이고 주립 대학교에서 조교수로 근무했으며, 1994년 펜실베이니아 주립 대학교로 옮겨 2007년 정교수로 승진했습니다. 그녀의 가장 잘 알려진 책 중 하나는 *Designing Better Maps: A Guide for GIS Users* [@brewerbook]입니다. 2019년 그녀는 1968년 설립된 O. M. 밀러 지도학 메달\index{O. M. 밀러 지도학 메달}을 수상한 아홉 번째 인물이 되었습니다.
@@ -657,8 +660,8 @@ world_bank_data |>
   labs(x = "GDP 성장률", y = "인플레이션", color = "국가")
 ```
 
-우리는 종종 산점도를 사용하여 두 연속 변수 간의 관계를 설명합니다.\index{그래프!연속 변수} `geom_smooth()`를 사용하여 "요약" 선을 추가하는 것이 유용할 수 있습니다 (@fig-scattorplottwo).\index{그래프!최적 적합} "method"를 사용하여 관계를 지정하고, "color"로 색상을 변경하고, "se"로 표준 오차를 추가하거나 제거할 수 있습니다. 
-일반적으로 사용되는 "method"는 `lm`이며, 이는 `lm()` 함수를 사용하는 것과 유사하게 단순 선형 회귀선을 계산하고 플로팅합니다. `geom_smooth()`를 사용하면 그래프에 레이어가 추가되므로 `ggplot()`에서 미학을 상속합니다. 예를 들어, @fig-scattorplottwo-1 및 @fig-scattorplottwo-2에서 각 국가에 대해 하나의 선이 있는 이유입니다. 특정 색상을 지정하여 이를 덮어쓸 수 있습니다 (@fig-scattorplottwo-3). 스플라인과 같은 다른 유형의 적합선이 선호되는 상황도 있습니다.
+우리는 종종 산점도를 사용하여 두 연속 변수 간의 관계를 설명합니다.\index{그래프!연속 변수} `geom_smooth()`를 사용하여 "요약" 선을 추가하는 것이 유용할 수 있습니다 ([@fig-scattorplottwo]).\index{그래프!최적 적합} "method"를 사용하여 관계를 지정하고, "color"로 색상을 변경하고, "se"로 표준 오차를 추가하거나 제거할 수 있습니다.
+일반적으로 사용되는 "method"는 `lm`이며, 이는 `lm()` 함수를 사용하는 것과 유사하게 단순 선형 회귀선을 계산하고 플로팅합니다. `geom_smooth()`를 사용하면 그래프에 레이어가 추가되므로 `ggplot()`에서 미학을 상속합니다. 예를 들어, [@fig-scattorplottwo-1] 및 [@fig-scattorplottwo-2]에서 각 국가에 대해 하나의 선이 있는 이유입니다. 특정 색상을 지정하여 이를 덮어쓸 수 있습니다 ([@fig-scattorplottwo-3]). 스플라인과 같은 다른 유형의 적합선이 선호되는 상황도 있습니다.
 
 ```{r}
 #| message: false
@@ -726,12 +729,12 @@ world_bank_data |>
 
 필립스 곡선\index{필립스 곡선}은 시간 경과에 따른 실업률과 인플레이션 간의 관계를 나타내는 플롯의 이름입니다. 때때로 데이터에서 역관계가 발견되기도 합니다. 예를 들어, 1861년에서 1957년 사이의 영국에서 그러했습니다 [@phillips1958relation]. 우리는 데이터에서 이 관계를 조사하는 다양한 방법을 가지고 있습니다.
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 1) 그래프에 두 번째 선을 추가합니다. 예를 들어, 인플레이션을 추가할 수 있습니다 (@fig-notphillips-1). 이를 위해서는 데이터가 정돈된 형식인지 확인하기 위해 ["R 필수 사항" 온라인 부록](https://tellingstorieswithdata.com/20-r_essentials.html)에서 논의된 `pivot_longer()`를 사용해야 합니다.
 2) `geom_path()`를 사용하여 데이터 세트에 나타나는 순서대로 값을 연결합니다. @fig-notphillips-2에서는 1960년에서 2020년 사이의 미국에 대한 필립스 곡선을 보여줍니다. @fig-notphillips-2는 실업률과 인플레이션 사이에 명확한 관계를 보여주지 않는 것 같습니다.
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 1) 그래프에 두 번째 선을 추가합니다. 예를 들어, 인플레이션을 추가할 수 있습니다 (@fig-notphillips-1). 이를 위해서는 데이터가 정돈된 형식인지 확인하기 위해 [온라인 부록 -@sec-r-essentials]에서 논의된 `pivot_longer()`를 사용해야 합니다.
 2) `geom_path()`를 사용하여 데이터 세트에 나타나는 순서대로 값을 연결합니다. @fig-notphillips-2에서는 1960년에서 2020년 사이의 미국에 대한 필립스 곡선을 보여줍니다. @fig-notphillips-2는 실업률과 인플레이션 사이에 명확한 관계를 보여주지 않는 것 같습니다.
 :::
@@ -926,7 +929,7 @@ world_bank_data |>
 
 ### 상자 그림
 
-상자 그림\index{그래프!상자 그림}은 일반적으로 다섯 가지 측면을 보여줍니다. 1) 중앙값, 2) 25번째 백분위수, 3) 75번째 백분위수. 네 번째와 다섯 번째 요소는 세부 사항에 따라 다릅니다. 한 가지 옵션은 최소값과 최대값입니다. 다른 옵션은 75번째 백분위수와 25번째 백분위수 사이의 차이인 사분위수 범위(IQR)를 결정하는 것입니다. 네 번째와 다섯 번째 요소는 25번째 및 75번째 백분위수에서 $1.5\times\mbox{IQR}$ 이내의 극단적인 관측치입니다. 후자의 접근 방식은 `ggplot2`의 `geom_boxplot`에서 기본적으로 사용됩니다. @chartingstatistics [p. 166]는 범위와 중앙값 및 범위와 같은 다양한 요약 통계에 초점을 맞춘 차트 개념을 도입했으며, @tukeyeda는 어떤 요약 통계에 초점을 맞추고 이를 대중화했습니다 [@anotherhadleyreferencelol].
+상자 그림\index{그래프!상자 그림}은 일반적으로 다섯 가지 측면을 보여줍니다. 1) 중앙값, 2) 25번째 백분위수, 3) 75번째 백분위수. 네 번째와 다섯 번째 요소는 세부 사항에 따라 다릅니다. 한 가지 옵션은 최소값과 최대값입니다. 다른 옵션은 75번째 백분위수와 25번째 백분위수 사이의 차이인 사분위수 범위(IQR)를 결정하는 것입니다. 네 번째와 다섯 번째 요소는 25번째 및 75번째 백분위수에서 $1.5\times\mbox{IQR}$ 이내의 극단적인 관측치입니다. 후자의 접근 방식은 `ggplot2`의 `geom_boxplot`에서 기본적으로 사용됩니다. @chartingstatistics [p. 166]는 범위와 중앙값 및 범위와 같은 다양한 요약 통계에 초점을 맞춘 차트 개념을 도입했으며, @tukeyeda 는 어떤 요약 통계에 초점을 맞추고 이를 대중화했습니다 [@anotherhadleyreferencelol].
 
 그래프를 사용하는 한 가지 이유는 데이터가 얼마나 복잡한지 이해하고 받아들이는 데 도움이 되기 때문입니다. 데이터를 숨기거나 평활화하려고 노력하는 대신 말입니다 [@armstrongembracecomplexity]. 상자 그림의 적절한 사용 사례는 @Bethlehem2022에서와 같이 많은 변수의 요약 통계를 한 번에 비교하는 것입니다. 그러나 상자 그림만으로는 데이터 분포를 보여주기보다는 숨기기 때문에 최선의 선택인 경우는 거의 없습니다. 동일한 상자 그림이 매우 다른 분포에 적용될 수 있습니다. 이를 이해하기 위해 두 가지 유형의 베타 분포에서 시뮬레이션된 데이터를 고려해 보십시오.\index{시뮬레이션!베타 분포} 첫 번째는 두 개의 베타 분포에서 추출한 것입니다.\index{분포!베타} 하나는 오른쪽으로 치우쳐 있고 다른 하나는 왼쪽으로 치우쳐 있습니다. 두 번째는 왜곡이 없는 베타 분포에서 추출한 것입니다. $\mbox{Beta}(1, 1)$은 $\mbox{Uniform}(0, 1)$과 동일합니다.
 
@@ -976,7 +979,7 @@ beta_distributions |>
   theme(legend.position = "bottom")
 ```
 
-상자 그림을 사용해야 한다면, 한 가지 방법은 상자 그림 위에 실제 데이터를 레이어로 포함하는 것입니다.\index{그래프!상자 그림} 예를 들어, @fig-bloxplotandoverlay에서는 네 개 국가의 인플레이션 분포를 보여줍니다. 이것이 잘 작동하는 이유는 실제 관측치와 요약 통계를 모두 보여주기 때문입니다.
+상자 그림을 사용해야 한다면, 한 가지 방법은 상자 그림 위에 실제 데이터를 레이어로 포함하는 것입니다.\index{그래프!상자 그림} 예를 들어, @fig-bloxplotandoverlay 에서는 네 개 국가의 인플레이션 분포를 보여줍니다. 이것이 잘 작동하는 이유는 실제 관측치와 요약 통계를 모두 보여주기 때문입니다.
 
 ```{r}
 #| fig-cap: "네 개 국가의 인플레이션 데이터 분포 (1960-2020)"
@@ -1085,10 +1088,6 @@ shinyApp(ui = ui, server = server)
 
 ![사용자가 빈의 수를 제어하는 Shiny 앱 예시](figures/22-shiny_one.png){#fig-shinyone width=90% fig-align="center"}
 
-
-
-
-
 ## 표
 
 표\index{표}는 설득력 있는 이야기를 전달하는 데 중요한 부분입니다. 표는 그래프보다 적은 정보를 전달할 수 있지만, 높은 충실도로 전달합니다. 특히 몇 가지 특정 값을 강조하는 데 유용합니다 [@andersen2021presenting]. 이 책에서는 주로 세 가지 방식으로 표를 사용합니다.
@@ -1133,7 +1132,7 @@ world_bank_data |>
 
 ### 서식 개선
 
-`style_tt()`와 "l" (왼쪽), "c" (가운데), "r" (오른쪽) 문자 벡터를 사용하여 열의 정렬을 지정할 수 있습니다 (@tbl-gdpalign).\index{표!정렬} `j`를 사용하여 적용할 열을 지정하고 열 번호를 지정합니다. 또한 서식을 변경할 수 있습니다. 예를 들어, `num_mark_big = ","`를 사용하여 1,000 이상의 숫자에 대한 그룹화를 지정할 수 있습니다.
+`style_tt()`와 "l" (왼쪽), "c" (가운데), "r" (오른쪽) 문자 벡터를 사용하여 열의 정렬을 지정할 수 있습니다 ([@tbl-gdpalign]).\index{표!정렬} `j`를 사용하여 적용할 열을 지정하고 열 번호를 지정합니다. 또한 서식을 변경할 수 있습니다. 예를 들어, `num_mark_big = ","`를 사용하여 1,000 이상의 숫자에 대한 그룹화를 지정할 수 있습니다.
 
 ```{r}
 #| label: tbl-gdpalign
@@ -1333,7 +1332,7 @@ ggmap(canberra_stamen_map)
 
 지도를 얻으면 `ggmap()`를 사용하여 플로팅할 수 있습니다. 이제 타일 위에 플로팅할 데이터를 얻고 싶습니다. "division"을 기반으로 투표소 위치를 플로팅할 것입니다. 이는 [호주 선거 관리 위원회(AEC)](https://results.aec.gov.au/20499/Website/Downloads/HouseTppByPollingPlaceDownload-20499.csv)에서 사용할 수 있습니다.\index{호주!호주 선거 관리 위원회}
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 ```{r}
 #| warning: false
 #| message: false
@@ -1352,7 +1351,7 @@ booths <-
 ```
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 ```{r}
 #| warning: false
 #| message: false
@@ -1598,6 +1597,7 @@ ggplot() +
 `ggplot2`의 그래프가 `ggplot()`으로 시작하는 것과 마찬가지로 `leaflet`의 지도는 `leaflet()`으로 시작합니다. 여기에서 데이터와 너비 및 높이와 같은 다른 옵션을 지정할 수 있습니다. 그런 다음 `ggplot2`에서 추가했던 것과 동일한 방식으로 "레이어"를 추가합니다. 우리가 추가하는 첫 번째 레이어는 `addTiles()`를 사용하는 타일입니다. 이 경우 기본값은 OpenStreetMap에서 가져옵니다. 그 다음 `addMarkers()`를 사용하여 각 기지의 위치를 보여주는 마커를 추가합니다 (@fig-canhasbase).
 
 ```{r}
+#| eval: false
 #| fig-cap: "미국 기지 대화형 지도"
 #| label: fig-canhasbase
 #| message: false
@@ -1627,7 +1627,7 @@ leaflet(data = bases) |>
 #| label: fig-canhasbaseandmoney
 #| message: false
 #| warning: false
-
+#| eval: false
 build <-
   get_builddata(startyear = 2008, endyear = 2019) |>
   filter(!is.na(lon)) |>
@@ -1682,7 +1682,7 @@ leaflet() |>
 MAPBOX_TOKEN <- "여기에 Mapbox 비밀 키를 입력하세요"
 ```
 
-그런 다음 이 ".Renviron" 파일을 저장하고 R을 다시 시작합니다 ("세션" -> "R 다시 시작").
+그런 다음 이 `.Renviron` 파일을 저장하고 R을 다시 시작합니다 ("세션" -> "R 다시 시작").
 
 토큰을 얻었으므로 이전의 기지 지출 데이터에 대한 플롯을 만들 수 있습니다 (@fig-canhasbaseandmoneymapdeck).
 
@@ -1691,7 +1691,7 @@ MAPBOX_TOKEN <- "여기에 Mapbox 비밀 키를 입력하세요"
 #| label: fig-canhasbaseandmoneymapdeck
 #| message: false
 #| warning: false
-
+#| eval: false
 mapdeck(style = mapdeck_style("light")) |>
   add_scatterplot(
     data = build,
@@ -1728,27 +1728,27 @@ mapdeck(style = mapdeck_style("light")) |>
     a.  데이터를 더 잘 이해하기 위해.
     b. 데이터가 정규 분포를 따르는지 확인하기 위해.
     c. 결측값을 확인하기 위해.
-2. @r4ds에 따르면, 정돈된 데이터(tidy data)를 가장 잘 설명하는 것은 무엇입니까 (하나 선택)?
+2. @r4ds 에 따르면, 정돈된 데이터(tidy data)를 가장 잘 설명하는 것은 무엇입니까 (하나 선택)?
     a.  각 변수는 자체 열에 있고, 각 관측치는 자체 행에 있습니다.
     b. 모든 데이터가 단일 행에 있습니다.
     c. 셀당 여러 값.
     d. 데이터가 하나의 셀에 저장됩니다.
-3. @healyviz에 따르면, `ggplot()`은 첫 번째 인수로 무엇을 요구합니까 (하나 선택)?
+3. @healyviz 에 따르면, `ggplot()`은 첫 번째 인수로 무엇을 요구합니까 (하나 선택)?
     a.  데이터프레임.
     b. geom 함수.
     c. 범례.
     d. 미학적 매핑.
-4. @healyviz에 따르면, `ggplot2`에서 `+` 연산자는 무엇을 합니까 (하나 선택)?
+4. @healyviz 에 따르면, `ggplot2`에서 `+` 연산자는 무엇을 합니까 (하나 선택)?
     a. 플롯을 저장합니다.
     b. 플롯에 데이터를 추가합니다.
     c.  플롯의 레이어를 결합합니다.
     d. 플롯에서 요소를 제거합니다.
-5. @r4ds에 따르면, `ggplot2`의 맥락에서 "미학"은 무엇입니까 (하나 선택)?
+5. @r4ds 에 따르면, `ggplot2`의 맥락에서 "미학"은 무엇입니까 (하나 선택)?
     a. 사용된 차트 유형.
     b. 축 레이블.
     c. 플롯의 색상.
     d.  데이터 세트의 변수가 시각적 속성에 매핑되는 방식.
-6. @r4ds에 따르면, `ggplot2`에서 "geom"은 무엇입니까 (하나 선택)?
+6. @r4ds 에 따르면, `ggplot2`에서 "geom"은 무엇입니까 (하나 선택)?
     a. 데이터 변환 함수.
     b.  플롯이 데이터를 나타내는 데 사용하는 기하학적 객체.
     c. 플롯 제목.
@@ -1784,11 +1784,11 @@ datasaurus_dozen |>
   geom_point()
 ```
 
-11. @r4ds에 따르면, `ggplot2`에서 변수를 `color` 미학에 매핑하면 어떤 일이 발생합니까 (모두 선택)?
+11. @r4ds 에 따르면, `ggplot2`에서 변수를 `color` 미학에 매핑하면 어떤 일이 발생합니까 (모두 선택)?
     a.  변수에 따라 점의 색상이 달라집니다.
     b.  범례가 자동으로 생성됩니다.
     c. 변수에 따라 점의 크기가 변경됩니다.
-12. @healyviz에 따르면, `ggplot2`에서 `color`와 `fill` 미학의 주요 차이점은 무엇입니까 (하나 선택)?
+12. @healyviz 에 따르면, `ggplot2`에서 `color`와 `fill` 미학의 주요 차이점은 무엇입니까 (하나 선택)?
     a. 두 용어는 서로 바꿔 사용할 수 있습니다.
     b.  `color`는 점과 선에 적용되고, `fill`은 영역 요소에 적용됩니다.
     c. `color`는 글꼴 색상을 제어하고, `fill`은 플롯 제목을 제어합니다.
@@ -1843,12 +1843,12 @@ beps |>
   geom_bar()
 ```
 
-19. @vanderplas2020testing에 따르면, 그래프를 만들 때 고려해야 할 인지 원칙은 무엇입니까 (하나 선택)?
+19. @vanderplas2020testing 에 따르면, 그래프를 만들 때 고려해야 할 인지 원칙은 무엇입니까 (하나 선택)?
     a.  근접성.
     b. 부피 추정.
     c. 상대 운동.
     d. 축 위치.
-20. @vanderplas2020testing에 따르면, 색상은 무엇에 사용될 수 있습니까 (하나 선택)?
+20. @vanderplas2020testing 에 따르면, 색상은 무엇에 사용될 수 있습니까 (하나 선택)?
     a. 차트 디자인 미학 개선.
     b.  범주형 및 연속형 변수를 인코딩하고 플롯 요소를 그룹화합니다.
     c. 크기 식별.
@@ -1919,7 +1919,7 @@ beps |>
     b. 지도 경계 그리기.
     c. 지도 투영 선택.
     d.  장소 이름을 위도와 경도로 변환하는 것.
-36. @lovelace2019geocomputation에 따르면, 지리 데이터의 맥락에서 벡터 데이터와 래스터 데이터의 차이점은 무엇인지 한두 단락으로 설명하십시오.
+36. @lovelace2019geocomputation 에 따르면, 지리 데이터의 맥락에서 벡터 데이터와 래스터 데이터의 차이점은 무엇인지 한두 단락으로 설명하십시오.
 37. 마커를 클릭한 후 발생하는 동작을 지정하는 데 `addMarkers()`의 어떤 인수가 사용됩니까 (하나 선택)?
     a. `layerId`
     b. `icon`

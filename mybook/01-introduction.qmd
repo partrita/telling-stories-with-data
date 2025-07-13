@@ -4,7 +4,7 @@ engine: knitr
 
 # Telling stories with data {#sec-introduction}
 
-::: {.callout-note}
+:::{.callout-note}
 Chapman and Hall/CRC published this book in July 2023. You can purchase that [here](https://www.routledge.com/Telling-Stories-with-Data-With-Applications-in-R/Alexander/p/book/9781032134772). This online version has some updates to what was printed.
 :::
 
@@ -235,7 +235,7 @@ Ultimately, we are all just telling stories with data, but these stories are inc
     e.  Social.
 10. From @nottomford, what is a compiler (pick one)?
     a.  Software that takes the symbols you typed into a file and transforms them into lower-level instructions.
-    b. A sequence of symbols (using typical keyboard characters, saved to a file of some kind) that someone typed in, or copied, or pasted from elsewhere. 
+    b. A sequence of symbols (using typical keyboard characters, saved to a file of some kind) that someone typed in, or copied, or pasted from elsewhere.
     c. A clock with benefits.
     d. Putting holes in punch cards, then into a box, then loading them, then the computer flips through the cards, identify where the holes were, and update parts of its memory.
 11. Consider the results of a survey that asked about gender. It finds the following counts: "man: 879", "woman: 912", "non-binary: 10" "prefer not to say: 3", and "other: 1". What is the appropriate way to consider "prefer not to say" (pick one)?

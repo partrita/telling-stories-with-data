@@ -4,7 +4,7 @@ engine: knitr
 
 # Errors and updates {.unnumbered}
 
-::: {.callout-note}
+:::{.callout-note}
 Chapman and Hall/CRC published this book in July 2023. You can purchase that [here](https://www.routledge.com/Telling-Stories-with-Data-With-Applications-in-R/Alexander/p/book/9781032134772).
 
 This online version has some updates to what was printed. An online version that matches the print version is available [here](https://rohanalexander.github.io/telling_stories-published/).
@@ -16,20 +16,20 @@ The book was reviewed by Piotr Fryzlewicz in *The American Statistician* [@Fryzl
 
 Since the publication of this book in July 2023, there have been a variety of changes in the world. The rise of generative AI has changed the way that people code, Python has become easier to integrate alongside R because of Quarto, and packages continue to update (not to mention a new cohort of students has started going through the book). One advantage of having an online version is that I can make improvements.
 
-I am grateful for the corrections and suggestions of: 
-Andrew Black, 
-Clay Ford, 
-Crystal Lewis, 
-David Jankoski, 
-Donna Mulkern, 
-Emi Tanaka, 
-Emily Su, 
-Inessa De Angelis, 
-James Wade, 
-Julia Kim, 
-Krishiv Jain, 
-Seamus Ross, 
-Tino Kanngiesser, and 
+I am grateful for the corrections and suggestions of:
+Andrew Black,
+Clay Ford,
+Crystal Lewis,
+David Jankoski,
+Donna Mulkern,
+Emi Tanaka,
+Emily Su,
+Inessa De Angelis,
+James Wade,
+Julia Kim,
+Krishiv Jain,
+Seamus Ross,
+Tino Kanngiesser, and
 Zak Varty.
 
 ## Errors
@@ -59,7 +59,7 @@ head(toronto_shelters_clean)
 
 toronto_shelters_clean <-
   clean_names(toronto_shelters) |>
-  mutate(occupancy_date = ymd(occupancy_date)) |> 
+  mutate(occupancy_date = ymd(occupancy_date)) |>
   select(occupancy_date, occupied_beds)
 
 head(toronto_shelters_clean)
@@ -77,7 +77,7 @@ head(toronto_shelters_clean)
 - p. 347: The "Exploratory data analysis" chapter of *R for Data Science* is 11, not 12.
 - p. 353: Fix a "the the".
 - p. 355: "...results in an estimate of 5,814, both of which are too low." should be "...results in an estimate of 11,197, the former is too low and the latter is too high."
-- p. 371: The sentence that references Figure 11.11a was confusing and needs to more clearly reference the figure. 
+- p. 371: The sentence that references Figure 11.11a was confusing and needs to more clearly reference the figure.
 - p. 587: The link should be: https://fivethirtyeight.com/features/police-misconduct-costs-cities-millions-every-year-but-thats-where-the-accountability-ends/
 
 

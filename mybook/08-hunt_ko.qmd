@@ -4,7 +4,7 @@ engine: knitr
 
 # 실험 및 설문 조사 {#sec-hunt-data}
 
-::: {.callout-note}
+:::{.callout-note}
 Chapman and Hall/CRC에서 2023년 7월에 이 책을 출판했습니다. [여기](https://www.routledge.com/Telling-Stories-with-Data-With-Applications-in-R/Alexander/p/book/9781032134772)에서 구매할 수 있습니다. 이 온라인 버전은 인쇄된 내용에서 일부 업데이트되었습니다.
 :::
 
@@ -71,7 +71,7 @@ library(tinytable)
 2. 변수를 합산한 다음 변수의 길이로 나눕니다.
 3. 두 그룹 간의 이 값을 비교합니다.
 
-이것은 @sec-on-writing에서 소개된 추정량\index{estimator}으로, 관심 있는 것을 추측하는 방법입니다. 추정 대상\index{estimand}은 관심 있는 것이며, 이 경우 평균 효과이고, 추정치\index{estimate}는 우리의 추측이 무엇이든 간에 나타나는 것입니다. 상황을 설명하기 위해 데이터를 시뮬레이션할 수 있습니다.\index{simulation!binary outcomes}
+이것은 [@sec-on-writing]에서 소개된 추정량\index{estimator}으로, 관심 있는 것을 추측하는 방법입니다. 추정 대상\index{estimand}은 관심 있는 것이며, 이 경우 평균 효과이고, 추정치\index{estimate}는 우리의 추측이 무엇이든 간에 나타나는 것입니다. 상황을 설명하기 위해 데이터를 시뮬레이션할 수 있습니다.\index{simulation!binary outcomes}
 
 ```{r}
 #| eval: true
@@ -136,8 +136,8 @@ num_people <- 5000
 population <- tibble(
   person = 1:num_people,
   favorite_color = sample(c("Blue", "White"), size = num_people, replace = TRUE),
-  prefers_dogs = if_else(favorite_color == "Blue", 
-                         rbinom(num_people, 1, 0.9), 
+  prefers_dogs = if_else(favorite_color == "Blue",
+                         rbinom(num_people, 1, 0.9),
                          rbinom(num_people, 1, 0.1))
   )
 
@@ -152,7 +152,7 @@ set.seed(853)
 
 frame <-
   population |>
-  mutate(in_frame = rbinom(n = num_people, 1, prob = 0.8)) |> 
+  mutate(in_frame = rbinom(n = num_people, 1, prob = 0.8)) |>
   filter(in_frame == 1)
 
 frame |>
@@ -168,7 +168,7 @@ sample <-
   frame |>
   select(-prefers_dogs) |>
   mutate(
-    group = 
+    group =
       sample(x = c("Treatment", "Control"), size = nrow(frame), replace = TRUE
   ))
 ```
@@ -183,9 +183,9 @@ sample |>
   count(group, favorite_color) |>
   mutate(prop = n / sum(n),
          .by = group) |>
-  tt() |> 
-  style_tt(j = 1:4, align = "llrr") |> 
-  format_tt(digits = 2, num_mark_big = ",", num_fmt = "decimal") |> 
+  tt() |>
+  style_tt(j = 1:4, align = "llrr") |>
+  format_tt(digits = 2, num_mark_big = ",", num_fmt = "decimal") |>
   setNames(c("그룹", "선호", "수", "비율"))
 ```
 
@@ -203,9 +203,9 @@ sample |>
   count(group, prefers_dogs) |>
   mutate(prop = n / sum(n),
          .by = group) |>
-  tt() |> 
-  style_tt(j = 1:4, align = "llrr") |> 
-  format_tt(digits = 2, num_mark_big = ",", num_fmt = "decimal") |> 
+  tt() |>
+  style_tt(j = 1:4, align = "llrr") |>
+  format_tt(digits = 2, num_mark_big = ",", num_fmt = "decimal") |>
   setNames(c(
       "그룹",
       "개를 고양이보다 선호",
@@ -216,7 +216,7 @@ sample |>
 
 "관찰 불가능한" 것에 대한 대표적인\index{representative sample} 비율을 갖는 것은 흥미로운 일입니다. (이 경우, 우리는 그것들을 "관찰"하지만, 요점을 설명하기 위해 그것들을 선택하지는 않았습니다.) 우리는 변수들이 상관 관계를 가졌기 때문에 이것을 얻습니다. 그러나 우리가 논의할 여러 가지 방식으로 무너질 것입니다. 또한 충분히 큰 그룹을 가정합니다. 예를 들어, 개를 하나의 개체로 간주하는 대신 특정 개 품종을 고려한다면, 우리는 이러한 상황에 처하지 않을 수도 있습니다. 두 그룹이 동일한지 확인하려면 관찰 가능한 것, 이론, 경험 및 전문가 의견을 기반으로 두 그룹 간의 차이를 식별할 수 있는지 확인해야 합니다. 이 경우 우리는 평균을 살펴보았지만, 다른 측면도 살펴볼 수 있습니다.
 
-이것은 전통적으로 분산 분석(ANOVA)으로 이어질 것입니다. ANOVA\index{ANOVA}는 약 100년 전 피셔\index{Fisher, Ronald}가 농업 통계 문제에 대해 작업하면서 도입했습니다.\index{statistics!history of} (@Stolley1991은 피셔에 대한 추가 배경을 제공합니다.) 이는 역사적으로 농업 연구\index{statistics!agriculture}가 통계 혁신과 밀접하게 관련되어 있었기 때문에 예상보다 덜 놀라운 일입니다. 종종 통계 방법은 "비료가 효과가 있는가?"와 같은 농업 질문에 답하기 위해 설계되었으며, 나중에 임상 시험에 적용되었습니다[@yoshioka1998use]. 밭을 "처리된" 것과 "처리되지 않은" 것으로 나누는 것은 비교적 쉬웠고, 어떤 효과의 크기도 클 가능성이 있었습니다. 해당 맥락에 적합하지만, 종종 이러한 동일한 통계 접근 방식은 오늘날에도 입문 자료에서 여전히 가르쳐지고 있으며, 심지어 설계된 것과 다른 상황에 적용될 때도 마찬가지입니다. 무엇이 수행되고 있는지, 그리고 상황에 적절한지 여부를 한 발짝 물러서서 생각하는 것이 거의 항상 이득입니다. 우리는 ANOVA가 역사적으로 중요하기 때문에 여기에서 언급합니다. 올바른 설정에서는 아무런 문제가 없습니다. 그러나 그것이 최선의 옵션인 현대적인 사용 사례의 수는 적은 경향이 있습니다. ANOVA의 기반이 되는 모델을 직접 구축하는 것이 더 나을 수 있으며, 이는 @sec-its-just-a-linear-model에서 다룹니다.
+이것은 전통적으로 분산 분석(ANOVA)으로 이어질 것입니다. ANOVA\index{ANOVA}는 약 100년 전 피셔\index{Fisher, Ronald}가 농업 통계 문제에 대해 작업하면서 도입했습니다.\index{statistics!history of} (@Stolley1991은 피셔에 대한 추가 배경을 제공합니다.) 이는 역사적으로 농업 연구\index{statistics!agriculture}가 통계 혁신과 밀접하게 관련되어 있었기 때문에 예상보다 덜 놀라운 일입니다. 종종 통계 방법은 "비료가 효과가 있는가?"와 같은 농업 질문에 답하기 위해 설계되었으며, 나중에 임상 시험에 적용되었습니다[@yoshioka1998use]. 밭을 "처리된" 것과 "처리되지 않은" 것으로 나누는 것은 비교적 쉬웠고, 어떤 효과의 크기도 클 가능성이 있었습니다. 해당 맥락에 적합하지만, 종종 이러한 동일한 통계 접근 방식은 오늘날에도 입문 자료에서 여전히 가르쳐지고 있으며, 심지어 설계된 것과 다른 상황에 적용될 때도 마찬가지입니다. 무엇이 수행되고 있는지, 그리고 상황에 적절한지 여부를 한 발짝 물러서서 생각하는 것이 거의 항상 이득입니다. 우리는 ANOVA가 역사적으로 중요하기 때문에 여기에서 언급합니다. 올바른 설정에서는 아무런 문제가 없습니다. 그러나 그것이 최선의 옵션인 현대적인 사용 사례의 수는 적은 경향이 있습니다. ANOVA의 기반이 되는 모델을 직접 구축하는 것이 더 나을 수 있으며, 이는 [@sec-its-just-a-linear-model]에서 다룹니다.
 
 ### 처리 및 통제
 
@@ -252,7 +252,7 @@ $$\mbox{ATE} = \mathbb{E}[Y|t=1] - \mathbb{E}[Y|t=0].$$
 
 @eq-oregon은 가구 $h$의 개인 $i$에 대한 다양한 $j$ 결과(예: 건강)를 추첨에 의해 가구 $h$가 선택되었는지 여부를 나타내는 지표 변수의 함수로 설명합니다. 특히 관심 있는 것은 $\beta_1$ 계수입니다. 이는 처리군과 대조군 간의 평균 차이 추정치입니다. $X_{ih}$는 처리될 확률과 상관 관계가 있는 변수 집합입니다. 이들은 그 영향을 어느 정도 조정합니다. 그 예로는 가구의 개인 수가 있습니다. 마지막으로, $V_{ih}$는 추첨과 상관 관계가 없는 변수 집합입니다. 예를 들어, 인구 통계 및 이전 병원 퇴원 기록이 있습니다.
 
-@randhealth와 같은 이전 연구와 마찬가지로, @finkelstein2012oregon은 처리군이 1차 및 예방 치료뿐만 아니라 입원을 포함한 더 많은 의료 서비스를 사용했지만, 본인 부담 의료비는 더 낮다는 것을 발견했습니다. 더 일반적으로, 처리군은 더 나은 신체적 및 정신적 건강을 보고했습니다.
+@randhealth 와 같은 이전 연구와 마찬가지로, @finkelstein2012oregon 은 처리군이 1차 및 예방 치료뿐만 아니라 입원을 포함한 더 많은 의료 서비스를 사용했지만, 본인 부담 의료비는 더 낮다는 것을 발견했습니다. 더 일반적으로, 처리군은 더 나은 신체적 및 정신적 건강을 보고했습니다.
 
 ### 전 세계 시민 정직성
 
@@ -336,17 +336,17 @@ A/B 테스트에서는 전통적인 실험과 마찬가지로 처리군과 대�
 
 이를 설명하기 위해, 음식 배달 앱에서 일하고 있으며 운전자 유지에 관심이 있다고 가정해 봅시다.\index{A/B test!alignment} A/B 테스트를 수행하여 운전자가 고객에게 음식을 더 빨리 배달할 수 있을 때 항상 더 잘 유지된다는 것을 발견했다고 가정해 봅시다. 우리의 가설적 발견은 운전자 유지에 있어 항상 더 빠른 것이 더 좋다는 것입니다. 그러나 더 빠른 배달을 달성하는 한 가지 방법은 운전자가 음식을 뜨거운 상자에 넣지 않아 음식 온도를 유지하지 않는 것입니다. 그런 것은 30초를 절약할 수 있으며, 이는 10분 배달에서 상당한 시간입니다. 불행히도, 운전자 유지를 최적화하도록 설계된 A/B 테스트를 기반으로 이를 장려하기로 결정하더라도, 그러한 결정은 고객 경험을 악화시킬 가능성이 높습니다. 고객이 뜨거워야 할 차가운 음식을 받으면 앱 사용을 중단할 수 있으며, 이는 비즈니스에 좋지 않을 것입니다. @fbdiscoverslongterm은 페이스북에서 알림과 관련하여 유사한 상황을 발견했다고 설명합니다. 즉, 알림 수를 줄이면 단기적으로 사용자 참여가 감소했지만, 장기적으로는 사용자 만족도와 앱 사용량이 모두 증가했습니다.
 
-이러한 절충안은 고객 불만을 살펴보면 가설적 운전자 실험 중에 알려질 수 있습니다. 소규모 팀에서는 A/B 테스트 분석가가 해당 티켓에 노출될 수 있지만, 대규모 팀에서는 그렇지 않을 수 있습니다. A/B 테스트가 잘못된 최적화를 초래하지 않도록 보장하는 것이 특히 중요합니다. 이것은 일반적으로 일반적인 실험에서는 걱정할 필요가 없는 것입니다. 이와 관련된 또 다른 예로, @duolingo는 일반 Duolingo 사용자가 오프라인일 때 Duolingo Plus 광고를 제공하는 Duolingo(언어 학습 애플리케이션)의 기능을 테스트했다고 설명합니다. 이 기능은 Duolingo의 수익에는 긍정적이었지만, 고객 학습 습관에는 부정적이었습니다. 아마도 충분한 고객 부정성은 결국 이 기능이 수익에 부정적인 영향을 미치게 했을 것입니다. 이와 관련하여, 우리는 예상하는 결과의 본질에 대해 신중하게 생각해야 합니다. 예를 들어, 파란색 음영 예시에서는 상당한 놀라움을 발견할 가능성이 낮으므로 작은 범위의 파란색을 시도하는 것으로 충분할 수 있습니다. 그러나 더 넓은 범위의 색상을 고려한다면 어떨까요?
+이러한 절충안은 고객 불만을 살펴보면 가설적 운전자 실험 중에 알려질 수 있습니다. 소규모 팀에서는 A/B 테스트 분석가가 해당 티켓에 노출될 수 있지만, 대규모 팀에서는 그렇지 않을 수 있습니다. A/B 테스트가 잘못된 최적화를 초래하지 않도록 보장하는 것이 특히 중요합니다. 이것은 일반적으로 일반적인 실험에서는 걱정할 필요가 없는 것입니다. 이와 관련된 또 다른 예로, @duolingo 는 일반 Duolingo 사용자가 오프라인일 때 Duolingo Plus 광고를 제공하는 Duolingo(언어 학습 애플리케이션)의 기능을 테스트했다고 설명합니다. 이 기능은 Duolingo의 수익에는 긍정적이었지만, 고객 학습 습관에는 부정적이었습니다. 아마도 충분한 고객 부정성은 결국 이 기능이 수익에 부정적인 영향을 미치게 했을 것입니다. 이와 관련하여, 우리는 예상하는 결과의 본질에 대해 신중하게 생각해야 합니다. 예를 들어, 파란색 음영 예시에서는 상당한 놀라움을 발견할 가능성이 낮으므로 작은 범위의 파란색을 시도하는 것으로 충분할 수 있습니다. 그러나 더 넓은 범위의 색상을 고려한다면 어떨까요?
 
 :::{.callout-note}
 ## 거인의 어깨 위에 서서
 
-수잔 애시 박사\index{Athey, Susan}는 스탠포드 대학교 기술 경제학 교수입니다.\index{economics} 1995년 스탠포드에서 경제학 박사 학위를 받은 후, MIT에서 조교수로 재직하다가 2001년 스탠포드로 돌아와 2004년 정교수로 승진했습니다. 그녀의 연구 분야 중 하나는 응용 경제학이며, 특히 중요한 논문 중 하나는 @Abadie2017로, 표준 오차를 군집화해야 하는 경우를 고려합니다. 또 다른 논문은 @Athey2017로, 무작위 실험을 분석하는 방법을 고려합니다. 그녀는 학술 직책 외에도 Microsoft 및 기타 기술 기업에서 근무했으며, 이 맥락에서 실험을 실행하는 데 광범위하게 참여했습니다. 그녀는 2007년에 존 베이츠 클라크 메달\index{John Bates Clark Medal}을 수상했습니다.
+수잔 애시 박사\index{Athey, Susan}는 스탠포드 대학교 기술 경제학 교수입니다.\index{economics} 1995년 스탠포드에서 경제학 박사 학위를 받은 후, MIT에서 조교수로 재직하다가 2001년 스탠포드로 돌아와 2004년 정교수로 승진했습니다. 그녀의 연구 분야 중 하나는 응용 경제학이며, 특히 중요한 논문 중 하나는 @Abadie2017 로, 표준 오차를 군집화해야 하는 경우를 고려합니다. 또 다른 논문은 @Athey2017로, 무작위 실험을 분석하는 방법을 고려합니다. 그녀는 학술 직책 외에도 Microsoft 및 기타 기술 기업에서 근무했으며, 이 맥락에서 실험을 실행하는 데 광범위하게 참여했습니다. 그녀는 2007년에 존 베이츠 클라크 메달\index{John Bates Clark Medal}을 수상했습니다.
 :::
 
 ### Upworthy
 
-A/B 테스트\index{A/B test}의 많은 문제점은 민간 기업에서 수행되므로 일반적으로 데이터셋에 접근할 수 없다는 것입니다. 그러나 @upworthy는 콘텐츠를 최적화하기 위해 A/B 테스트를 사용한 미디어 웹사이트인 Upworthy\index{Upworthy}의 A/B 테스트 데이터셋에 대한 접근을 제공합니다. @aboutupworthy는 Upworthy에 대한 더 많은 배경 정보를 제공합니다.\index{Upworthy} 그리고 A/B 테스트 데이터셋은 [여기](https://osf.io/jd64p/)에서 사용할 수 있습니다.
+A/B 테스트\index{A/B test}의 많은 문제점은 민간 기업에서 수행되므로 일반적으로 데이터셋에 접근할 수 없다는 것입니다. 그러나 @upworthy 는 콘텐츠를 최적화하기 위해 A/B 테스트를 사용한 미디어 웹사이트인 Upworthy\index{Upworthy}의 A/B 테스트 데이터셋에 대한 접근을 제공합니다. @aboutupworthy 는 Upworthy에 대한 더 많은 배경 정보를 제공합니다.\index{Upworthy} 그리고 A/B 테스트 데이터셋은 [여기](https://osf.io/jd64p/)에서 사용할 수 있습니다.
 
 데이터셋이 어떻게 생겼는지 살펴보고 이름과 발췌문을 통해 감을 잡을 수 있습니다.
 
@@ -383,7 +383,7 @@ upworthy <- arrow::read_parquet(file = "inputs/data/upworthy.parquet")
 ```
 
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 ```{r}
 #| message: false
 #| warning: false
@@ -395,7 +395,7 @@ upworthy |>
 ```
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 ```{r}
 #| message: false
 #| warning: false
@@ -428,7 +428,7 @@ upworthy_restricted <-
     )
 ```
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 ```{r}
 #| message: false
 #| warning: false
@@ -461,14 +461,14 @@ question_or_not <-
   summarise(
     ave_clicks = mean(clicks),
     .by = c(clickability_test_id, asks_question)
-  ) 
+  )
 
 question_or_not |>
   pivot_wider(names_from = asks_question,
               values_from = ave_clicks,
               names_prefix = "ave_clicks_") |>
   drop_na(ave_clicks_FALSE, ave_clicks_TRUE) |>
-  mutate(difference_in_clicks = ave_clicks_TRUE - ave_clicks_FALSE) |> 
+  mutate(difference_in_clicks = ave_clicks_TRUE - ave_clicks_FALSE) |>
   summarise(average_differce = mean(difference_in_clicks))
 ```
 
@@ -478,12 +478,12 @@ question_or_not |>
 #| label: tbl-datasummaryupworthy
 #| tbl-cap: "평균 클릭 수의 차이"
 
-question_or_not |> 
+question_or_not |>
   summarise(mean = mean(ave_clicks),
-            .by = asks_question) |> 
-  tt() |> 
-  style_tt(j = 1:2, align = "lr") |> 
-  format_tt(digits = 0, num_fmt = "decimal") |> 
+            .by = asks_question) |>
+  tt() |>
+  style_tt(j = 1:2, align = "lr") |>
+  format_tt(digits = 0, num_fmt = "decimal") |>
   setNames(c("질문합니까?", "평균 클릭 수"))
 ```
 
@@ -534,7 +534,7 @@ question_or_not |>
     b. 내부 타당성보다 외부 타당성에 초점을 맞추는 것.
     c. 더 큰 통계적 검정력을 위해 표본 크기를 최대화하는 것.
     d. 모든 참가자가 어떤 시점에서 처리를 받도록 보장하는 것.
-3. @gertler2016impact에 따르면, 기본 영향 평가 공식 $\Delta = (Y_i|t=1) - (Y_i|t=0)$은 무엇을 나타냅니까 (하나 선택)?
+3. @gertler2016impact 에 따르면, 기본 영향 평가 공식 $\Delta = (Y_i|t=1) - (Y_i|t=0)$은 무엇을 나타냅니까 (하나 선택)?
     a.  처리 및 비교 그룹 간의 결과 차이.
     b. 참가자의 급여 평균 변화.
     c. 외부 시장 요인이 결과에 미치는 영향.
@@ -544,12 +544,12 @@ question_or_not |>
     b. 대조군의 필요성을 제거합니다.
     c. 외부 타당성을 보장합니다.
     d.  처리를 제외하고는 유사한 처리 및 대조군을 만드는 데 도움이 됩니다.
-5. @gertler2016impact에 따르면, 반사실을 측정하려고 할 때 흔히 발생하는 문제는 무엇입니까 (하나 선택)?
+5. @gertler2016impact 에 따르면, 반사실을 측정하려고 할 때 흔히 발생하는 문제는 무엇입니까 (하나 선택)?
     a. 무작위 시험만이 반사실을 제공할 수 있습니다.
     b. 대조군에 대한 데이터는 항상 부정확합니다.
     c.  동일한 개인에 대해 처리 및 비처리 결과를 모두 관찰하는 것은 불가능합니다.
     d. 프로그램에는 일반적으로 충분한 참가자가 없습니다.
-6. @gertler2016impact에 따르면, 선택 편향은 언제 발생합니까 (하나 선택)?
+6. @gertler2016impact 에 따르면, 선택 편향은 언제 발생합니까 (하나 선택)?
     a. 프로그램 평가에 재정적 지원이 부족합니다.
     b. 프로그램이 전국적으로 구현됩니다.
     c.  참가자가 무작위로 할당되지 않습니다.
@@ -564,12 +564,12 @@ question_or_not |>
     b. 여러 번 반복된 실험에서 얻은 결과.
     c.  실험에서 얻은 결과가 해당 설정에서 유효합니다.
     d. 실험에서 얻은 결과가 해당 설정 외부에서 유효합니다.
-9. @gertler2016impact에 따르면, 영향 평가에서 내부 타당성은 무엇을 의미합니까 (하나 선택)?
+9. @gertler2016impact 에 따르면, 영향 평가에서 내부 타당성은 무엇을 의미합니까 (하나 선택)?
     a.  프로그램의 인과 효과를 측정하는 정확성.
     b. 결과를 다른 모집단으로 일반화하는 능력.
     c. 프로그램 관리의 효율성.
     d. 프로그램의 장기적인 지속 가능성.
-10. @gertler2016impact에 따르면, 영향 평가에서 외부 타당성은 무엇을 의미합니까 (하나 선택)?
+10. @gertler2016impact 에 따르면, 영향 평가에서 외부 타당성은 무엇을 의미합니까 (하나 선택)?
     a. 프로그램의 관리 비용.
     b.  결과를 자격 있는 모집단으로 일반화하는 능력.
     c. 무작위 대조 시험의 효과.
@@ -590,17 +590,17 @@ netflix_data <-
   )
 ```
 
-12. @gertler2016impact에 따르면, 유효한 비교 그룹은 다음 특성 중 모든 것을 가져야 합니다 (하나 제외)?
+12. @gertler2016impact 에 따르면, 유효한 비교 그룹은 다음 특성 중 모든 것을 가져야 합니다 (하나 제외)?
     a. 처리 그룹과 동일한 평균 특성.
     b. 처리 그룹과 동일한 방식으로 변경될 결과.
     c.  프로그램에 직간접적으로 영향을 받습니다.
     d. 프로그램이 주어지면 유사한 방식으로 반응합니다.
-13. @gertler2016impact에 따르면, 전후 비교가 위조 추정치로 간주되는 이유는 무엇입니까 (하나 선택)?
+13. @gertler2016impact 에 따르면, 전후 비교가 위조 추정치로 간주되는 이유는 무엇입니까 (하나 선택)?
     a. 무작위 할당을 포함합니다.
     b. 중요하지 않은 지표에 초점을 맞춥니다.
     c. 대규모 데이터 표본이 필요합니다.
     d.  결과가 시간이 지남에 따라 변하지 않는다고 가정합니다.
-14. @gertler2016impact에 따르면, 어떤 시나리오에서 프로그램 할당 도구로 무작위 할당을 윤리적으로 허용할 수 있습니까 (하나 선택)?
+14. @gertler2016impact 에 따르면, 어떤 시나리오에서 프로그램 할당 도구로 무작위 할당을 윤리적으로 허용할 수 있습니까 (하나 선택)?
     a. 모든 참가자가 소득 수준에 따라 등록됩니다.
     b. 모든 자격 있는 참가자가 프로그램에 수용될 수 있습니다.
     c. 프로그램은 하나의 특정 그룹에만 서비스를 제공합니다.
@@ -671,7 +671,7 @@ netflix_data <-
     a. -8.3
     b. -7.2
     c.  -5.6
-    d. -4.5    
+    d. -4.5
 30. @pewletterman에 따르면, 편향을 도입하지 않고 소규모 종교 그룹의 응답자를 포함할 가능성을 높이기 위해 어떤 표집 방법론이 사용되었습니까 (하나 선택)?
     a. 눈덩이 표집.
     b. 할당 표집.
@@ -734,10 +734,10 @@ netflix_data <-
 
 ### 논문 {.unnumbered}
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 이 시점에서 ["논문" 온라인 부록](https://tellingstorieswithdata.com/23-assessment.html)의 *Howrah* 논문이 적절할 것입니다.
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 이 시점에서 [온라인 부록 -@sec-papers]의 *Howrah* 논문이 적절할 것입니다.
 :::

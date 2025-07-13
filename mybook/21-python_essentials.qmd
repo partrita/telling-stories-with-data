@@ -19,7 +19,7 @@ engine: knitr
 
 ## Introduction
 
-`Python` is a general-purpose programming language created by Guido van Rossum. `Python` version 0.9.0 was released in February 1991, and the current version, 3.13, was released in October 2024. It was named `Python` after *Monty Python's Flying Circus*. 
+`Python` is a general-purpose programming language created by Guido van Rossum. `Python` version 0.9.0 was released in February 1991, and the current version, 3.13, was released in October 2024. It was named `Python` after *Monty Python's Flying Circus*.
 
 `Python` is a popular language in machine learning, but it was designed, and is more commonly used, for more general software applications. This means that we will especially rely on packages when we use Python for data science. This use of `Python` in this book is focused on data science, rather than the other, more general, uses for which it was developed.
 
@@ -31,7 +31,7 @@ We could use `Python` within RStudio, but another option is to use what is used 
 
 Open VS Code (@fig-vscodesetup-a), and open a new Terminal: Terminal -> New Terminal (@fig-vscodesetup-b). We can then install `uv`, which is a Python package manager, by putting `curl -LsSf https://astral.sh/uv/install.sh | sh`  into the Terminal and pressing "return/enter" afterwards (@fig-vscodesetup-c). Finally, to install Python we can use `uv` by putting `uv python install` into that Terminal and pressing "return/enter" afterwards (@fig-vscodesetup-d).
 
-::: {#fig-vscodesetup layout-ncol="2"}
+:::{#fig-vscodesetup layout-ncol="2"}
 ![Opening VS Code](figures/B-VS_Code-1.png){#fig-vscodesetup-a width="50%"}
 
 ![Opening a Terminal in VS Code](figures/B-VS_Code-2.png){#fig-vscodesetup-b width="50%"}
@@ -47,9 +47,9 @@ Opening VS Code and a new terminal and then installing uv and Python
 
 ### Project set-up
 
-We are going to get started with an example that downloads some data from Open Data Toronto. To start, we need to create a project, which will allow all our code to be self-contained. 
+We are going to get started with an example that downloads some data from Open Data Toronto. To start, we need to create a project, which will allow all our code to be self-contained.
 
-Open VS Code and open a new Terminal: "Terminal" -> "New Terminal". Then use Unix shell commands to navigate to where you want to create your folder. For instance, use `ls` to list all the folders in the current directory, then move to one using `cd` and then the name of the folder. If you need to go back one level then use `..`. 
+Open VS Code and open a new Terminal: "Terminal" -> "New Terminal". Then use Unix shell commands to navigate to where you want to create your folder. For instance, use `ls` to list all the folders in the current directory, then move to one using `cd` and then the name of the folder. If you need to go back one level then use `..`.
 
 Once you are happy with where you are going to create this new folder, we can use `uv init` in the Terminal to do this, pressing "return/enter" afterwards (`cd` then moves to the new folder "shelter_usage").
 
@@ -103,7 +103,7 @@ def main():
         differences.append(diff)
         print(f"Sample size: {size}")
         print(f"  Difference between sample and population mean: {round(diff, 3)}")
-        
+
 if __name__ == "__main__":
     main()
 ```
@@ -116,7 +116,7 @@ At this point we should close VS Code. We want to re-open it to make sure that o
 
 We first used this dataset in @sec-fire-hose, but as a reminder, for each day, for each shelter, there is a number of people that used the shelter. So the dataset that we want to simulate is something like @fig-python_torontohomeless-data and we are wanting to create a table of average daily number of occupied beds each month, along the lines of @fig-python_torontohomeless-table.
 
-::: {#fig-python_torontohomeless layout-ncol="2"}
+:::{#fig-python_torontohomeless layout-ncol="2"}
 ![Quick sketch of a dataset](figures/B-raw_data.jpeg){#fig-python_torontohomeless-data width="50%"}
 
 ![Quick sketch of a table of the average number of beds occupied each month](figures/B-by_month.jpeg){#fig-python_torontohomeless-table width="50%"}
@@ -135,7 +135,7 @@ We would like to more thoroughly simulate the dataset that we are interested in.
 uv add polars
 ```
 
-Create a new Python file called `00-simulate_data.py`. 
+Create a new Python file called `00-simulate_data.py`.
 
 ```{python}
 #| eval: false
@@ -202,7 +202,7 @@ We would like to write tests based on this simulated data that we will then appl
 uv add pydantic
 ```
 
-Create a new Python file called `00-test_simulated_data.py`. The first step is to define a subclass ``ShelterData` of `BaseModel` which comes from `pydantic`. 
+Create a new Python file called `00-test_simulated_data.py`. The first step is to define a subclass ``ShelterData` of `BaseModel` which comes from `pydantic`.
 
 ```{python}
 #| eval: false

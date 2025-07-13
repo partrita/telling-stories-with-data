@@ -52,9 +52,9 @@ library(tinytable)
 
 Text is all around us.\index{text!data} In many cases, text is the earliest type of data that we are exposed to. Increases in computational power, the development of new methods, and the enormous availability of text, mean that there has been a great deal of interest in using text as data. Using text as data provides opportunities for unique analyses. For instance:
 
-- text analysis of state-run newspapers in African countries can identify manipulation by governments [@Hassan2022]; 
-- the text from UK daily newspapers can be used to generate better forecasts of GDP and inflation [@Kalamara2022], and similarly, *The New York Times*\index{text!newspapers} can be used to create an uncertainty index which correlates with US economic activity [@Alexopoulos2015]; 
-- the analysis of notes in Electronic Health Records (EHR)\index{Electronic Health Records (EHR)} can improve the efficiency of disease prediction [@jessgronsbell]; and 
+- text analysis of state-run newspapers in African countries can identify manipulation by governments [@Hassan2022];
+- the text from UK daily newspapers can be used to generate better forecasts of GDP and inflation [@Kalamara2022], and similarly, *The New York Times*\index{text!newspapers} can be used to create an uncertainty index which correlates with US economic activity [@Alexopoulos2015];
+- the analysis of notes in Electronic Health Records (EHR)\index{Electronic Health Records (EHR)} can improve the efficiency of disease prediction [@jessgronsbell]; and
 - analysis of US congressional records indicates just how often women legislators are interrupted by men [@millersutherland2022].
 
 Earlier approaches to the analysis of text tend to convert words into numbers, divorced of context.\index{text!context} They could then be analyzed using traditional approaches, such as variants of logistic regression. More recent methods try to take advantage of the structure inherent in text, which can bring additional meaning.\index{text!structure} The difference is perhaps like a child who can group similar colors, compared with a child who knows what objects are; although both crocodiles and trees are green, and you can do something with that knowledge, it is useful to know that a crocodile could eat you while a tree probably would not.
@@ -79,7 +79,7 @@ Text modeling is an exciting area of research.\index{text!cleaning} But, and thi
 
 The first step is to get some data. We discussed data gathering in @sec-gather-data and mentioned in passing many sources including:
 
-- Using *Inside Airbnb*, which provides text from reviews. 
+- Using *Inside Airbnb*, which provides text from reviews.
 - Project Gutenberg which provides the text from out-of-copyright books.
 - Scraping Wikipedia or other websites.
 
@@ -110,8 +110,8 @@ We typically want to construct a document-feature matrix, which has documents in
 
 ```{r}
 books_corpus <-
-  corpus(bookshelf, 
-         docid_field = "book", 
+  corpus(bookshelf,
+         docid_field = "book",
          text_field = "first_sentence")
 
 books_corpus
@@ -137,7 +137,7 @@ We now consider some of the many decisions that need to be made as part of this 
 
 Stop words are words such as "the", "and", and "a".\index{text!stop words} For a long time stop words were not thought to convey much meaning, and there were concerns around memory-constrained computation. A common step of preparing a text dataset was to remove stop words. We now know that stop words can have a great deal of meaning [@schofield2017]. The decision to remove them is a nuanced one that depends on circumstances.
 
-We can get a list of stop words using `stopwords()` from `quanteda`. 
+We can get a list of stop words using `stopwords()` from `quanteda`.
 
 ```{r}
 stopwords(source = "snowball")[1:10]
@@ -214,7 +214,7 @@ bookshelf |>
 
 As an aside, we can remove letters, numbers, and punctuation with "[:graph:]" in `str_replace_all()`. While this is rarely needed in textbook examples, it is especially useful with real datasets, because they will typically have a small number of unexpected symbols that we need to identify and then remove. We use it to remove everything that we are used to, leaving only that which we are not.
 
-More generally, we can use arguments in `tokens()` from `quanteda()` to do this. 
+More generally, we can use arguments in `tokens()` from `quanteda()` to do this.
 
 ```{r}
 books_corpus |>
@@ -244,9 +244,9 @@ A tuple is an ordered list of elements. In the context of text it is a series of
 This is a clear issue when it comes to place names. For instance, consider "British Columbia", "New Hampshire", "United Kingdom", and "Port Hedland". One way forward is to create a list of such places and then use `str_replace_all()` to add an underscore, for instance, "British_Columbia", "New_Hampshire", "United_Kingdom", and "Port_Hedland". Another option is to use `tokens_compound()` from `quanteda`.
 
 ```{r}
-some_places <- c("British Columbia", 
-                 "New Hampshire", 
-                 "United Kingdom", 
+some_places <- c("British Columbia",
+                 "New Hampshire",
+                 "United Kingdom",
                  "Port Hedland")
 a_sentence <-
 c("Vancouver is in British Columbia and New Hampshire is not")
@@ -292,8 +292,8 @@ jane_eyre
 As there are many blank lines we will remove them.
 
 ```{r}
-jane_eyre <- 
-  jane_eyre |> 
+jane_eyre <-
+  jane_eyre |>
   filter(!is.na(text))
 ```
 
@@ -345,7 +345,7 @@ Duplication is a major concern with text datasets because of their size.\index{t
 
 ### Distinguishing horoscopes
 
-Install and load `astrologer`, which is a dataset of horoscopes to explore a real dataset.\index{zodiac}\index{astrology} 
+Install and load `astrologer`, which is a dataset of horoscopes to explore a real dataset.\index{zodiac}\index{astrology}
 
 We can then access the "horoscopes" dataset.
 
@@ -377,7 +377,7 @@ horoscopes_counts_by_word <-
 horoscopes_counts_by_word
 ```
 
-We can see that the most popular words appear to be similar for the different zodiacs. At this point, we could use the data in a variety of ways. 
+We can see that the most popular words appear to be similar for the different zodiacs. At this point, we could use the data in a variety of ways.
 
 We might be interested to know which words characterize each group---that is to say, which words are commonly used only in each group.\index{term frequency–inverse document frequency} We can do that by first looking at a word's term frequency (TF), which is how many times a word is used in the horoscopes for each zodiac sign. The issue is that there are a lot of words that are commonly used regardless of context. As such, we may also like to look at the inverse document frequency (IDF) in which we "penalize" words that occur in the horoscopes for many zodiac signs. A word that occurs in the horoscopes of many zodiac signs would have a lower IDF than a word that only occurs in the horoscopes of one. The term frequency–inverse document frequency (tf-idf) is then the product of these.
 
@@ -408,8 +408,8 @@ horoscopes_counts_by_word_tf_idf |>
   select(zodiacsign, word) |>
   summarise(all = paste0(word, collapse = "; "),
             .by = zodiacsign) |>
-  tt() |> 
-  style_tt(j = 1:2, align = "lr") |> 
+  tt() |>
+  style_tt(j = 1:2, align = "lr") |>
   setNames(c("Zodiac sign", "Most common words unique to that sign"))
 ```
 
@@ -461,7 +461,7 @@ Similarly, each topic could be considered a probability distribution over terms.
 #| fig-subcap: ["Distribution for Topic 1", "Distribution for Topic 2"]
 
 some_terms <- c(
-  "immigration", "race", "influx", "loans", "wealth", 
+  "immigration", "race", "influx", "loans", "wealth",
   "saving", "chinese", "france", "british", "english")
 
 topic_1 <- tibble(
@@ -491,7 +491,7 @@ ggplot(topic_2, aes(Terms, Probability)) +
 <!-- 3. If there are $1, 2, \dots, n, \dots, N$ terms in the $d$th document, then to choose the $n$th term, $w_{d, n}$: -->
 <!--     a. Randomly choose a topic for that term $n$, in that document $d$, $z_{d,n}$, from the multinomial distribution over topics in that document, $z_{d,n} \sim \mbox{Multinomial}(\theta_d)$.  -->
 <!--     b. Randomly choose a term from the relevant multinomial distribution over the terms for that topic, $w_{d,n} \sim \mbox{Multinomial}(\beta_{z_{d,n}})$. -->
-    
+
 By way of background, the Dirichlet distribution\index{distribution!Dirichlet} is a variation of the beta distribution that is commonly used as a prior for categorical and multinomial variables.\index{distribution!beta} If there are just two categories, then the Dirichlet and the beta distributions are the same. In the special case of a symmetric Dirichlet distribution, $\eta=1$, it is equivalent to a uniform distribution. If $\eta<1$, then the distribution is sparse and concentrated on a smaller number of the values, and this number decreases as $\eta$ decreases. A hyperparameter, in this usage, is a parameter of a prior distribution.
 
 <!-- Given this set-up, the joint distribution for the variables is [@blei2012, p.6]: -->
@@ -501,14 +501,14 @@ By way of background, the Dirichlet distribution\index{distribution!Dirichlet} i
 
 After the documents are created, they are all that we can analyze. The term usage in each document is observed, but the topics are hidden, or "latent". We do not know the topics of each document, nor how terms defined the topics. That is, we do not know the probability distributions of @fig-topicsoverdocuments or @fig-topicsoverterms. In a sense we are trying to reverse the document generation process---we have the terms, and we would like to discover the topics.
 
-If we observe the terms in each document, then we can obtain estimates of the topics [@SteyversGriffiths2006]. The outcomes of the LDA process are probability distributions. It is these distributions that define the topics. Each term will be given a probability of being a member of a particular topic, and each document will be given a probability of being about a particular topic. 
+If we observe the terms in each document, then we can obtain estimates of the topics [@SteyversGriffiths2006]. The outcomes of the LDA process are probability distributions. It is these distributions that define the topics. Each term will be given a probability of being a member of a particular topic, and each document will be given a probability of being about a particular topic.
 
 <!-- That is, we are trying to calculate the posterior distribution of the topics given the terms observed in each document (@blei2012, p.7):  -->
 <!-- $$p(\beta_{1:K}, \theta_{1:D}, z_{1:D, 1:N} | w_{1:D, 1:N}) = \frac{p\left(\beta_{1:K}, \theta_{1:D}, z_{1:D, 1:N}, w_{1:D, 1:N}\right)}{p(w_{1:D, 1:N})}.$$ -->
 
 The initial practical step when implementing LDA given a corpus of documents is usually to remove stop words. Although, as mentioned earlier, this is not necessary, and may be better done after the groups are created. We often also remove punctuation and capitalization. We then construct our document-feature matrix using `dfm()` from `quanteda`.
 
-After the dataset is ready, `stm` can be used to implement LDA and approximate the posterior. 
+After the dataset is ready, `stm` can be used to implement LDA and approximate the posterior.
 <!-- It does this using Gibbs sampling or the variational expectation-maximization algorithm. Following @SteyversGriffiths2006 and @Darling2011, the Gibbs sampling  -->
 The process attempts to find a topic for a particular term in a particular document, given the topics of all other terms for all other documents. Broadly, it does this by first assigning every term in every document to a random topic, specified by Dirichlet priors.
 <!-- with $\alpha = \frac{50}{K}$ and $\eta = 0.1$  (@SteyversGriffiths2006 recommends $\eta = 0.01$), where $\alpha$ refers to the distribution over topics and $\eta$ refers to the distribution over terms (@Grun2011, p.7).  -->
@@ -517,11 +517,11 @@ It then selects a particular term in a particular document and assigns it to a n
 <!-- where $z'_{d, n}$ refers to all other topic assignments; $\lambda'_{n\rightarrow k}$ is a count of how many other times that term has been assigned to topic $k$; $\lambda'_{.\rightarrow k}$ is a count of how many other times that any term has been assigned to topic $k$; $\lambda'^{(d)}_{n\rightarrow k}$ is a count of how many other times that term has been assigned to topic $k$ in that particular document; and $\lambda'^{(d)}_{-i}$ is a count of how many other times that term has been assigned in that document.  -->
 Once this has been estimated, then estimates for the distribution of words into topics and topics into documents can be backed out.
 
-The conditional distribution assigns topics depending on how often a term has been assigned to that topic previously, and how common the topic is in that document [@SteyversGriffiths2006]. The initial random allocation of topics means that the results of early passes through the corpus of document are poor, but given enough time the algorithm converges to an appropriate estimate. 
+The conditional distribution assigns topics depending on how often a term has been assigned to that topic previously, and how common the topic is in that document [@SteyversGriffiths2006]. The initial random allocation of topics means that the results of early passes through the corpus of document are poor, but given enough time the algorithm converges to an appropriate estimate.
 
 The choice of the number of topics, $k$, affects the results, and must be specified *a priori*. If there is a strong reason for a particular number, then this can be used. Otherwise, one way to choose an appropriate number is to use a test and training set process. Essentially, this means running the process on a variety of possible values for *k* and then picking an appropriate value that performs well.
 
-One weakness of the LDA method is that it considers a "bag of words" where the order of those words does not matter [@blei2012]. It is possible to extend the model to reduce the impact of the bag-of-words assumption and add conditionality to word order. Additionally, alternatives to the Dirichlet distribution can be used to extend the model to allow for correlation. 
+One weakness of the LDA method is that it considers a "bag of words" where the order of those words does not matter [@blei2012]. It is possible to extend the model to reduce the impact of the bag-of-words assumption and add conditionality to word order. Additionally, alternatives to the Dirichlet distribution can be used to extend the model to allow for correlation.
 
 ### What is talked about in the Canadian parliament?
 
@@ -547,8 +547,8 @@ hansard_canada_2018 <-
       speakerriding = col_character(),
       speakername = col_character()
     ),
-    col_select = 
-      c(basepk, speechdate, speechtext, speakername, speakerparty, 
+    col_select =
+      c(basepk, speechdate, speechtext, speakername, speakerparty,
         speakerriding)) |>
   filter(!is.na(speakername))
 
@@ -595,8 +595,8 @@ The use of `filter()` at the end is needed because sometimes aspects such as "di
 
 ```{r}
 hansard_canada_2018_corpus <-
-  corpus(hansard_canada_2018, 
-         docid_field = "basepk", 
+  corpus(hansard_canada_2018,
+         docid_field = "basepk",
          text_field = "speechtext")
 
 hansard_canada_2018_corpus
@@ -675,7 +675,7 @@ hansard_topics <- read_rds(
 
 We can look at the words in each topic with `labelTopics()`.
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 ```{r}
 #| message: false
 #| eval: false
@@ -684,7 +684,7 @@ labelTopics(hansard_topics)
 ```
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 ```{r}
 labelTopics(hansard_topics)
 ```
@@ -713,7 +713,7 @@ labelTopics(hansard_topics)
     a. "her"
     b. "my"
     c.  "you"
-    d. "i" 
+    d. "i"
 3. Which function from quanteda() will tokenize a corpus?
     a. `tokenizer()`
     b. `token()`

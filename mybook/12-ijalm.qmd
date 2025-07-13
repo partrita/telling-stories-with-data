@@ -15,9 +15,9 @@ engine: knitr
 
 **Key concepts and skills**
 
-- Linear models are a key component of statistical inference and enable us to quickly explore a wide range of data. 
-- Simple and multiple linear regression model a continuous outcome variable as a function of one, and multiple, predictor variables, respectively. 
-- Linear models tend to focus on either inference or prediction. 
+- Linear models are a key component of statistical inference and enable us to quickly explore a wide range of data.
+- Simple and multiple linear regression model a continuous outcome variable as a function of one, and multiple, predictor variables, respectively.
+- Linear models tend to focus on either inference or prediction.
 
 **Software and packages**
 
@@ -52,12 +52,12 @@ library(tinytable)
 
 ## Introduction
 
-Linear models\index{linear models} have been used in various forms for a long time. @stigler [p.16] describes how least squares,\index{least squares} which is a method to fit simple linear regression, was associated with foundational problems in astronomy\index{astronomy} in the 1700s, such as determining the motion of the moon and reconciling the non-periodic motion of Jupiter and Saturn.\index{statistics!history of} The fundamental issue at the time with least squares was that of hesitancy by those coming from a statistical background to combine different observations. Astronomers were early to develop a comfort with doing this, possibly because they had typically gathered their observations themselves and knew that the conditions of the data gathering were similar, even though the value of the observation was different. For instance, @stigler [p.28] characterizes Leonhard Euler, the eighteenth century mathematician mentioned in @sec-farm-data, as considering that errors increase as they are aggregated, in comparison to Tobias Mayer, the eighteenth century astronomer, who was comfortable that errors would cancel each other. It took longer, again, for social scientists to become comfortable with linear models, possibly because they were hesitant to group together data they worried were not alike. In one sense astronomers had an advantage because they could compare their predictions with what happened whereas this was more difficult for social scientists [@stigler, p. 163].\index{linear models!errors}  
+Linear models\index{linear models} have been used in various forms for a long time. @stigler [p.16] describes how least squares,\index{least squares} which is a method to fit simple linear regression, was associated with foundational problems in astronomy\index{astronomy} in the 1700s, such as determining the motion of the moon and reconciling the non-periodic motion of Jupiter and Saturn.\index{statistics!history of} The fundamental issue at the time with least squares was that of hesitancy by those coming from a statistical background to combine different observations. Astronomers were early to develop a comfort with doing this, possibly because they had typically gathered their observations themselves and knew that the conditions of the data gathering were similar, even though the value of the observation was different. For instance, @stigler [p.28] characterizes Leonhard Euler, the eighteenth century mathematician mentioned in @sec-farm-data, as considering that errors increase as they are aggregated, in comparison to Tobias Mayer, the eighteenth century astronomer, who was comfortable that errors would cancel each other. It took longer, again, for social scientists to become comfortable with linear models, possibly because they were hesitant to group together data they worried were not alike. In one sense astronomers had an advantage because they could compare their predictions with what happened whereas this was more difficult for social scientists [@stigler, p. 163].\index{linear models!errors}
 
-When we build models, we are not discovering "the truth".\index{linear models!not the truth} A model is not, and cannot be, a true representation of reality. We are using the model to help us explore and understand our data. There is no one best model, there are just useful models that help us learn something about the data that we have and hence, hopefully, something about the world from which the data were generated. When we use models, we are trying to understand the world, but there are constraints on the perspective we bring to this. We should not just throw data into a model and hope that it will sort it out. It will not. 
+When we build models, we are not discovering "the truth".\index{linear models!not the truth} A model is not, and cannot be, a true representation of reality. We are using the model to help us explore and understand our data. There is no one best model, there are just useful models that help us learn something about the data that we have and hence, hopefully, something about the world from which the data were generated. When we use models, we are trying to understand the world, but there are constraints on the perspective we bring to this. We should not just throw data into a model and hope that it will sort it out. It will not.
 
 > Regression is indeed an oracle, but a cruel one. It speaks in riddles and delights in punishing us for asking bad questions.
-> 
+>
 > @citemcelreath [p. 162]
 
 We use models to understand the world.\index{linear models!appropriate use}  We poke, push, and test them. We build them and rejoice in their beauty, and then seek to understand their limits and ultimately destroy them. It is this process that is important, it is this process that allows us to better understand the world; not the outcome, although they may be coincident. When we build models, we need to keep in mind both the world of the model and the broader world that we want to be able to speak about. The datasets that we have are often unrepresentative of real-world populations in certain ways. Models trained on such data are not worthless, but they are also not unimpeachable. To what extent does the model teach us about the data that we have? To what extent do the data that we have reflect the world about which we would like to draw conclusions? We need to keep such questions front of mind.
@@ -66,11 +66,11 @@ A lot of statistical methods commonly used today were developed for situations s
 
 Statistical checks are widely used in modeling. And an extensive suite of them is available. But automated testing of code and data is also important. For instance, @wakefieldestimates built a model of excess deaths in a variety of countries, to estimate the overall death toll from the pandemic. After initially releasing the model, which had been extensively manually checked for statistical issues and reasonableness, some of the results were reexamined and it was found that the estimates for Germany and Sweden were oversensitive. The authors quickly addressed the issue, but the integration of automated testing of expected values for the coefficients, in addition to the usual manual statistical checks, would go some way to enabling us to have more faith in the models of others.
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 In this chapter we begin with simple linear regression, and then move to multiple linear regression, the difference being the number of explanatory variables that we allow. We go through two approaches for each of these: base R, in particular the `lm()` and `glm()` functions, which are useful when we want to quickly use the models in EDA; and `rstanarm` for when we are interested in inference. In general, a model is either optimized for inference or prediction. A focus on prediction is one of the hallmarks of machine learning. For historical reasons that has tended to be dominated by Python, although `tidymodels` [@citeTidymodels] has been developed in R. Due to the need to also introduce Python, we devote the ["Prediction" Online Appendix](https://tellingstorieswithdata.com/27-prediction.html) to various approaches focused on prediction. Regardless of the approach we use, the important thing to remember that we are just doing something akin to fancy averaging, and our results always reflect the biases and idiosyncrasies of the dataset.
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 In this chapter we begin with simple linear regression, and then move to multiple linear regression, the difference being the number of explanatory variables that we allow. We go through two approaches for each of these: base R, in particular the `lm()` and `glm()` functions, which are useful when we want to quickly use the models in EDA; and `rstanarm` for when we are interested in inference. In general, a model is either optimized for inference or prediction. A focus on prediction is one of the hallmarks of machine learning. For historical reasons that has tended to be dominated by Python, although `tidymodels` [@citeTidymodels] has been developed in R. Due to the need to also introduce Python, we devote the @sec-predictingpythons to various approaches focused on prediction. Regardless of the approach we use, the important thing to remember that we are just doing something akin to fancy averaging, and our results always reflect the biases and idiosyncrasies of the dataset.
 :::
 
@@ -78,17 +78,17 @@ Finally a note on terminology and notation. For historical and context-specific 
 
 ## Simple linear regression
 
-When we are interested in the relationship of some continuous outcome variable, say $y$, and some predictor variable, say $x$, we can use simple linear regression.\index{simple linear regression} This is based on the Normal, also called "Gaussian", distribution, but it is not these variables themselves that are normally distributed.\index{distribution!Normal} The Normal distribution is determined by two parameters, the mean, $\mu$, and the standard deviation, $\sigma$ [@pitman, p. 94]: 
+When we are interested in the relationship of some continuous outcome variable, say $y$, and some predictor variable, say $x$, we can use simple linear regression.\index{simple linear regression} This is based on the Normal, also called "Gaussian", distribution, but it is not these variables themselves that are normally distributed.\index{distribution!Normal} The Normal distribution is determined by two parameters, the mean, $\mu$, and the standard deviation, $\sigma$ [@pitman, p. 94]:
 
 $$y = \frac{1}{\sqrt{2\pi\sigma}}e^{-\frac{1}{2}z^2},$$
-where $z = (x - \mu)/\sigma$ is the difference between $x$ and the mean, scaled by the standard deviation. @Altman1995 provide an overview of the Normal distribution.\index{distribution!Normal} 
+where $z = (x - \mu)/\sigma$ is the difference between $x$ and the mean, scaled by the standard deviation. @Altman1995 provide an overview of the Normal distribution.\index{distribution!Normal}
 
-::: {.content-visible when-format="pdf"}
-As introduced in the ["R essentials" Online Appendix](https://tellingstorieswithdata.com/20-r_essentials.html), we use `rnorm()` to simulate data from the Normal distribution. 
+:::{.content-visible when-format="pdf"}
+As introduced in the ["R essentials" Online Appendix](https://tellingstorieswithdata.com/20-r_essentials.html), we use `rnorm()` to simulate data from the Normal distribution.
 :::
 
-::: {.content-visible unless-format="pdf"}
-As introduced in [Appendix -@sec-r-essentials], we use `rnorm()` to simulate data from the Normal distribution. 
+:::{.content-visible unless-format="pdf"}
+As introduced in [Appendix -@sec-r-essentials], we use `rnorm()` to simulate data from the Normal distribution.
 :::
 
 ```{r}
@@ -141,10 +141,10 @@ estimated_standard_error <-
 
 tibble(mean = estimated_mean,
          sd = estimated_standard_deviation,
-         se = estimated_standard_error) |> 
-  tt() |> 
-  style_tt(j = 1:3, align = "lrr") |> 
-  format_tt(digits = 2, num_mark_big = ",", num_fmt = "decimal") |> 
+         se = estimated_standard_error) |>
+  tt() |>
+  style_tt(j = 1:3, align = "lrr") |>
+  format_tt(digits = 2, num_mark_big = ",", num_fmt = "decimal") |>
   setNames(c(
     "Estimated mean",
     "Estimated standard deviation",
@@ -233,7 +233,7 @@ sim_run_data <-
 #| fig-subcap: ["Distribution of simulated data", "With one linear best-fit line illustrating the implied relationship", "Including standard errors"]
 #| layout-ncol: 2
 
-base_plot <- 
+base_plot <-
   sim_run_data |>
   ggplot(aes(x = five_km_time, y = marathon_time)) +
   geom_point(alpha = 0.5) +
@@ -284,11 +284,11 @@ $$\mbox{RSS} = e^2_1+ e^2_2 +\dots + e^2_n.$$
 
 This results in one linear best-fit line (@fig-fivekmvsmarathon-2), but it is worth reflecting on all the assumptions and decisions that it took to get us to this point.\index{linear regression!best fit}
 
-Underpinning our use of simple linear regression is a belief that there is some "true" relationship between $X$ and $Y$. And that this is a linear function of $X$. We do not, and cannot, know the "true" relationship between $X$ and $Y$. All we can do is use our sample to estimate it. But because our understanding depends on that sample, for every possible sample, we would get a slightly different relationship, as measured by the coefficients. 
+Underpinning our use of simple linear regression is a belief that there is some "true" relationship between $X$ and $Y$. And that this is a linear function of $X$. We do not, and cannot, know the "true" relationship between $X$ and $Y$. All we can do is use our sample to estimate it. But because our understanding depends on that sample, for every possible sample, we would get a slightly different relationship, as measured by the coefficients.
 
 That $\epsilon$ is a measure of our error---what does the model not know in the small, contained world of the dataset? But it does not tell us whether the model is appropriate outside of the dataset (think, by way of analogy, to the concepts of internal and external validity for experiments introduced in @sec-hunt-data). That requires our judgement and experience.
 
-We can conduct simple linear regression with `lm()` from base R.\index{simple linear regression!base R} We specify the outcome variable first, then `~`, followed by the predictor. The outcome variable is the variable of interest, while the predictor is the basis on which we consider that variable. Finally, we specify the dataset. 
+We can conduct simple linear regression with `lm()` from base R.\index{simple linear regression!base R} We specify the outcome variable first, then `~`, followed by the predictor. The outcome variable is the variable of interest, while the predictor is the basis on which we consider that variable. Finally, we specify the dataset.
 
 Before we run a regression, we may want to include a quick check of the class of the variables, and the number of observations, just to ensure that it corresponds with what we were expecting, although we may have done that earlier in the workflow.\index{simple linear regression!sanity checks} And after we run it, we may check that our estimate seems reasonable. For instance, (pretending that we had not ourselves imposed this in the simulation) based on our knowledge of the respective distances of a five-kilometer run and a marathon, we would expect $\beta_1$ to be somewhere between six and ten.
 
@@ -423,17 +423,17 @@ ggplot(sim_run_data, aes(x = marathon_time, y = .fitted)) +
 
 We want to try to speak to the "true" relationship, so we need to try to capture how much we think our understanding depends on the sample that we have to analyze. And this is where the standard error comes in.\index{standard error} It guides us, based on many assumptions, about how to think about the estimates of parameters based on the data that we have (@fig-fivekmvsmarathon-3). Part of this is captured by the fact that standard errors are a function of sample size $n$, and as the sample size increases, the standard errors decrease.
 
-The most common way to summarize the range of uncertainty for a coefficient is to transform its standard error into a confidence interval.\index{confidence!interval} These intervals are often misunderstood to represent a statement of probability about a given realization of the coefficients (i.e. $\hat\beta$). In reality, confidence intervals are a statistic whose properties can only be understood "in expectation" (which is equivalent to repeating an experiment many times). A 95 per cent confidence interval is a range, such that there is "approximately a 95 per cent chance that the" range contains the population parameter, which is typically unknown [@islr, p. 66].\index{confidence!interval} 
+The most common way to summarize the range of uncertainty for a coefficient is to transform its standard error into a confidence interval.\index{confidence!interval} These intervals are often misunderstood to represent a statement of probability about a given realization of the coefficients (i.e. $\hat\beta$). In reality, confidence intervals are a statistic whose properties can only be understood "in expectation" (which is equivalent to repeating an experiment many times). A 95 per cent confidence interval is a range, such that there is "approximately a 95 per cent chance that the" range contains the population parameter, which is typically unknown [@islr, p. 66].\index{confidence!interval}
 <!-- This does not mean that when you generate a 95 per cent confidence interval, there is a 95 per cent chance the "true" coefficient lies within this range.  -->
 <!-- Unlike Bayesian statistics, the frequentist paradigm is not able to make probabilistic claims about coefficients during inference. -->
 
 When the coefficient follows a Normal distribution, the lower and upper end of a 95 per cent confidence interval range will be about $\hat{\beta_1} \pm 2 \times \mbox{SE}\left(\hat{\beta_1}\right)$. For instance, in the case of the marathon time example, the lower end is $8.2 - 2 \times 0.3 = 7.6$ and the upper end is $8.2 + 2 \times 0.3 = 8.8$, and the true value (which we only know in this case because we simulated it) is 8.4.
 
-We can use this machinery to test claims.\index{simple linear regression!hypothesis testing} For instance, we could claim that there is no relationship between $X$ and $Y$, i.e. $\beta_1 = 0$, as an alternative to a claim that there is some relationship between $X$ and $Y$, i.e. $\beta_1 \neq 0$. This is the null hypothesis testing approach mentioned earlier. In @sec-hunt-data we needed to decide how much evidence it would take to convince us that our tea taster could distinguish whether milk or tea had been added first. In the same way, here we need to decide if the estimate of $\beta_1$, which we denote as $\hat{\beta}_1$, is far enough away from zero for us to be comfortable claiming that $\beta_1 \neq 0$. If we were very confident in our estimate of $\beta_1$ then it would not have to be far, but if we were not, then it would have to be substantial. For instance, if the confidence interval contains zero, then we lack evidence to suggest $\beta_1 \neq 0$.\index{confidence!interval} The standard error of $\hat{\beta}_1$ does an awful lot of work here in accounting for a variety of factors, only some of which it can actually account for, as does our choice as to what it would take to convince us. 
+We can use this machinery to test claims.\index{simple linear regression!hypothesis testing} For instance, we could claim that there is no relationship between $X$ and $Y$, i.e. $\beta_1 = 0$, as an alternative to a claim that there is some relationship between $X$ and $Y$, i.e. $\beta_1 \neq 0$. This is the null hypothesis testing approach mentioned earlier. In @sec-hunt-data we needed to decide how much evidence it would take to convince us that our tea taster could distinguish whether milk or tea had been added first. In the same way, here we need to decide if the estimate of $\beta_1$, which we denote as $\hat{\beta}_1$, is far enough away from zero for us to be comfortable claiming that $\beta_1 \neq 0$. If we were very confident in our estimate of $\beta_1$ then it would not have to be far, but if we were not, then it would have to be substantial. For instance, if the confidence interval contains zero, then we lack evidence to suggest $\beta_1 \neq 0$.\index{confidence!interval} The standard error of $\hat{\beta}_1$ does an awful lot of work here in accounting for a variety of factors, only some of which it can actually account for, as does our choice as to what it would take to convince us.
 
 We use this standard error and $\hat{\beta}_1$ to get the "test statistic" or t-statistic:
 
-$$t = \frac{\hat{\beta}_1}{\mbox{SE}(\hat{\beta}_1)}.$$ 
+$$t = \frac{\hat{\beta}_1}{\mbox{SE}(\hat{\beta}_1)}.$$
 
 And we then compare our t-statistic to the t-distribution of @student1908probable to compute the probability of getting this absolute t-statistic or a larger one, if it was the case that $\beta_1 = 0$. This probability is the p-value. A smaller p-value means there is a smaller "probability of observing something at least as extreme as the observed test statistic" [@gelmanhillvehtari2020, p. 57]. Here we use the t-distribution of @student1908probable rather than the Normal distribution, because the t-distribution has slightly larger tails than a standard Normal distribution.
 
@@ -441,7 +441,7 @@ And we then compare our t-statistic to the t-distribution of @student1908probabl
 >
 > *The Picture of Dorian Gray* [@wilde].
 
-We will not make much use of p-values\index{simple linear regression!p-values}\index{p-values} in this book because they are a specific and subtle concept. They are difficult to understand and easy to abuse. Even though they are "little help" for "scientific inference" many disciplines are incorrectly fixated on them [@nelderdoesntmiss, p. 257].\index{p-values!incorrect fixation} One issue is that they embody every assumption of the workflow, including everything that went into gathering and cleaning the data. While p-values have implications if all the assumptions were correct, when we consider the full data science workflow there are usually an awful lot of assumptions.\index{p-values!difficulty of verifying} And we do not get guidance from p-values about whether the assumptions are satisfied [@greenland2016statistical p. 339]. 
+We will not make much use of p-values\index{simple linear regression!p-values}\index{p-values} in this book because they are a specific and subtle concept. They are difficult to understand and easy to abuse. Even though they are "little help" for "scientific inference" many disciplines are incorrectly fixated on them [@nelderdoesntmiss, p. 257].\index{p-values!incorrect fixation} One issue is that they embody every assumption of the workflow, including everything that went into gathering and cleaning the data. While p-values have implications if all the assumptions were correct, when we consider the full data science workflow there are usually an awful lot of assumptions.\index{p-values!difficulty of verifying} And we do not get guidance from p-values about whether the assumptions are satisfied [@greenland2016statistical p. 339].
 
 A p-value may reject a null hypothesis because the null hypothesis is false, but it may also be that some data were incorrectly gathered or prepared. We can only be sure that the p-value speaks to the hypothesis we are interested in testing if all the other assumptions are correct.\index{p-values!data quality} There is nothing wrong about using p-values, but it is important to use them in sophisticated and thoughtful ways. @coxtalks discusses what this requires.
 
@@ -524,7 +524,7 @@ test_that("Check class", {
 })
 ```
 
-We could save the following as "test_observations.R" 
+We could save the following as "test_observations.R"
 
 ```{r}
 #| eval: false
@@ -576,9 +576,9 @@ slow_in_humidity <- 15
 
 sim_run_data <- sim_run_data |>
   mutate(
-    humidity = sample(c("High", "Low"), size = num_observations, 
+    humidity = sample(c("High", "Low"), size = num_observations,
                       replace = TRUE, prob = c(0.2, 0.8)),
-    marathon_time = 
+    marathon_time =
       marathon_time + if_else(humidity == "High", slow_in_humidity, 0),
     weather_conditions = case_when(
       was_raining == "No" & humidity == "Low" ~ "No rain, not humid",
@@ -681,13 +681,13 @@ Dr Daniela Witten is the Dorothy Gilford Endowed Chair of Mathematical Statistic
 
 ## Building models {#sec-inferencewithbayesianmethods}
 
-@breiman2001statistical describes two cultures of statistical modeling: one focused on inference and the other on prediction.\index{model!building} In general, around the time @breiman2001statistical was published, various disciplines tended to focus on either inference or prediction. For instance, @Jordan2004 describes how statistics\index{statistics} and computer science\index{computer science} had been separate for some time, but how the goals of each field were becoming more closely aligned. The rise of data science, and in particular machine learning has meant there is now a need to be comfortable with both [@Neufeld2021].\index{data science!culture} The two cultures are being brought closer together, and there is an overlap and interaction between prediction and inference.\index{model!building} But their separate evolution means there are still considerable cultural differences. As a small example of this, the term "machine learning" tends to be used in computer science, while the term "statistical learning" tends to be used in statistics, even though they usually refer to the same machinery. 
+@breiman2001statistical describes two cultures of statistical modeling: one focused on inference and the other on prediction.\index{model!building} In general, around the time @breiman2001statistical was published, various disciplines tended to focus on either inference or prediction. For instance, @Jordan2004 describes how statistics\index{statistics} and computer science\index{computer science} had been separate for some time, but how the goals of each field were becoming more closely aligned. The rise of data science, and in particular machine learning has meant there is now a need to be comfortable with both [@Neufeld2021].\index{data science!culture} The two cultures are being brought closer together, and there is an overlap and interaction between prediction and inference.\index{model!building} But their separate evolution means there are still considerable cultural differences. As a small example of this, the term "machine learning" tends to be used in computer science, while the term "statistical learning" tends to be used in statistics, even though they usually refer to the same machinery.
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 In this book we will focus on inference using the probabilistic programming language Stan\index{Stan} to fit models in a Bayesian\index{Bayesian!modeling} framework, and interface with it using `rstanarm`. Inference and forecasting have different cultures, ecosystems, and priorities. You should try to develop a comfort in both. One way these different cultures manifest is in language choice. The primary language in this book is R, and for the sake of consistency we focus on that here. But there is an extensive culture, especially but not exclusively focused on prediction, that uses Python. We recommend focusing on only one language and approach initially, but after developing that initial familiarity it is important to become multilingual. We introduce prediction based on Python in the ["Prediction" Online Appendix](https://tellingstorieswithdata.com/27-prediction.html).
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 In this book we will focus on inference using the probabilistic programming language Stan to fit models in a Bayesian\index{Bayesian!modeling} framework, and interface with it using `rstanarm`. Inference and forecasting have different cultures, ecosystems, and priorities. You should try to develop a comfort in both. One way these different cultures manifest is in language choice. The primary language in this book is R, and for the sake of consistency we focus on that here. But there is an extensive culture, especially but not exclusively focused on prediction, that uses Python. We recommend focusing on only one language and approach initially, but after developing that initial familiarity it is important to become multilingual. We introduce prediction based on Python in [Online Appendix -@sec-predictingpythons].
 :::
 
@@ -773,7 +773,7 @@ The estimation results, which are in the first column of @tbl-modelsummarybayesb
 
 ### Picking priors
 
-The issue of picking priors is a challenging one and the subject of extensive research. For the purposes of this book, using the `rstanarm` defaults is fine.\index{Bayesian!priors} But even if they are just the default, priors should be explicitly specified in the model and included in the function.\index{model!specification} This is to make it clear to others what has been done. We could use `default_prior_intercept()` and `default_prior_coef()` to find the default priors in `rstanarm` and then explicitly include them in the model. 
+The issue of picking priors is a challenging one and the subject of extensive research. For the purposes of this book, using the `rstanarm` defaults is fine.\index{Bayesian!priors} But even if they are just the default, priors should be explicitly specified in the model and included in the function.\index{model!specification} This is to make it clear to others what has been done. We could use `default_prior_intercept()` and `default_prior_coef()` to find the default priors in `rstanarm` and then explicitly include them in the model.
 
 It is normal to find it difficult to know what prior to specify. Getting started by adapting someone else's `rstanarm` code is perfectly fine. If they have not specified their priors, then we can use the helper function `prior_summary()`, to find out which priors were used.\index{Bayesian!priors}
 
@@ -942,13 +942,13 @@ prior_summary(sim_run_data_second_model_rstanarm)
 
 ### Posterior distribution
 
-Having built a Bayesian model, we may want to look at what it implies (@fig-ppcheckandposteriorvsprior). One way to do this is to consider the posterior distribution.\index{Bayesian!posterior} 
+Having built a Bayesian model, we may want to look at what it implies (@fig-ppcheckandposteriorvsprior). One way to do this is to consider the posterior distribution.\index{Bayesian!posterior}
 
 One way to use the posterior distribution is to consider whether the model is doing a good job of fitting the data. The idea is that if the model is doing a good job of fitting the data, then the posterior should be able to be used to simulate data that are like the actual data [@bayesianworkflow]. We can implement a posterior predictive check\index{Bayesian!posterior predictive check} with `pp_check()` from `rstanarm` (@fig-ppcheckandposteriorvsprior-1). This compares the actual outcome variable with simulations from the posterior distribution. And we can compare the posterior with the prior with `posterior_vs_prior()` to see how much the estimates change once data are taken into account  (@fig-ppcheckandposteriorvsprior-2). Helpfully, `pp_check()` and `posterior_vs_prior()` return `ggplot2` objects so we can modify the look of them in the normal way we manipulate graphs. These checks and discussion would typically just be briefly mentioned in the main content of a paper, with the detail and graphs added to a dedicated appendix.
 
 ```{r}
 #| eval: true
-#| echo: true 
+#| echo: true
 #| message: false
 #| warning: false
 #| label: fig-ppcheckandposteriorvsprior
@@ -969,9 +969,9 @@ posterior_vs_prior(sim_run_data_second_model_rstanarm) +
 
 With a simple model like this, the differences between the prediction and inference approaches are minimal. But as model or data complexity increases these differences can become important.
 
-We have already discussed confidence intervals\index{confidence!interval} and the Bayesian equivalent to a confidence interval is called a "credibility interval", and reflects two points where there is a certain probability mass between them, in this case 95 per cent.\index{Bayesian!credibility interval} 
+We have already discussed confidence intervals\index{confidence!interval} and the Bayesian equivalent to a confidence interval is called a "credibility interval", and reflects two points where there is a certain probability mass between them, in this case 95 per cent.\index{Bayesian!credibility interval}
 <!-- @tbl-modelsummarybayesbetter shows confidence intervals for `tidymodels` and credible intervals for `rstanarm`, beneath the estimates.  -->
-Bayesian estimation provides a distribution for each coefficient. This means there is an infinite number of points that we could use to generate this interval. 
+Bayesian estimation provides a distribution for each coefficient. This means there is an infinite number of points that we could use to generate this interval.
 <!-- We will include standard errors credible interval points in tables, because this is commonly needed.  -->
 The entire distribution should be shown graphically (@fig-credibleintervals). This might be using a cross-referenced appendix.
 
@@ -1104,7 +1104,7 @@ In this chapter we have considered linear models. We established a foundation fo
 8. According to @greenland2016statistical, a p-value may be small because (select all that apply):
     a. The targeted hypothesis is false.
     b. The study protocols were violated.
-    c. It was selected for presentation based on its small size. 
+    c. It was selected for presentation based on its small size.
 9. Please explain what a p-value is, using only the term itself (i.e. "p-value") and words that are amongst the 1,000 most common in the English language according to the [XKCD Simple Writer](https://xkcd.com/simplewriter/). (Please write one or two paragraphs.)
 10. What is power (in a statistical context)?
 11. Look at the list of people awarded the [COPSS Presidents' Award](https://en.wikipedia.org/wiki/COPSS_Presidents%27_Award) or the [Guy Medal in Gold](https://en.wikipedia.org/wiki/Guy_Medal) and write a short biography of them in the style of the "Shoulders of giants" entries in this book.
@@ -1115,25 +1115,25 @@ In this chapter we have considered linear models. We established a foundation fo
 
 
 - Use the [starter folder](https://github.com/RohanAlexander/starter_folder) and create a new repo.
-    - We are interested in understanding the relationship between bill length and depth for Adelie penguins using `palmerpenguins`. Begin by sketching and simulating. 
-    - Then add three graphs to the data section: one of each variable separately and a third of the relationship between the two. 
-    - Then in the model section, write out the model. Use `rstanarm` to estimate a linear model between the two variables in an R script. 
+    - We are interested in understanding the relationship between bill length and depth for Adelie penguins using `palmerpenguins`. Begin by sketching and simulating.
+    - Then add three graphs to the data section: one of each variable separately and a third of the relationship between the two.
+    - Then in the model section, write out the model. Use `rstanarm` to estimate a linear model between the two variables in an R script.
     - Read that model into the results section and use `modelsummary` to create a summary table.
 
 ```{r}
 #| warning: false
 
-palmerpenguins::penguins |> 
-  filter(species == "Adelie") |> 
+palmerpenguins::penguins |>
+  filter(species == "Adelie") |>
   ggplot(aes(x = bill_length_mm, y = bill_depth_mm)) +
   geom_point()
 ```
 
-- (This question is based on @gelmanonteaching [p. 32].) Please follow the instructions [here](https://youtu.be/_Dof_Ks-f9U) to make a paper plane. Measure: 
-    1) the width of the wings; 
-    2) the length of the wings; 
-    3) the height of the winglets; 
-    4) in a safe space, fly your plane and measure for how long it stays in the air. 
+- (This question is based on @gelmanonteaching [p. 32].) Please follow the instructions [here](https://youtu.be/_Dof_Ks-f9U) to make a paper plane. Measure:
+    1) the width of the wings;
+    2) the length of the wings;
+    3) the height of the winglets;
+    4) in a safe space, fly your plane and measure for how long it stays in the air.
 
 Combine your data with those of the rest of the class in a table that looks like @tbl-planes. Then use linear regression to explore the relationship between the dependent and independent variables. Based on the results, how would you change your plane design if you were to do this exercise again?
 
@@ -1146,16 +1146,16 @@ tibble(
   wing_width = "...",
   wing_length = "...",
   winglet_height = "...",
-  flying_time = "...") |> 
-  tt() |> 
-  style_tt(j = 1:4, align = "lllr") |> 
-  format_tt(digits = 0, num_mark_big = ",", num_fmt = "decimal") |> 
+  flying_time = "...") |>
+  tt() |>
+  style_tt(j = 1:4, align = "lllr") |>
+  format_tt(digits = 0, num_mark_big = ",", num_fmt = "decimal") |>
   setNames(c("Wing width (mm)", "Wing length (mm)", "Winglet height (mm)", "Flying time (sec)"))
 ```
 
 - Imagine that we add FIPS code as an explanatory variable in a linear regression model explaining inflation, by US county. Please discuss the likely effect of this and whether it is a good idea. You may want to simulate the situation to help you think it through more clearly.
 - Imagine that we add latitude and longitude as explanatory variables in a regression trying to explain flu prevalence in each UK city and town. Please discuss the likely effect of this and whether it is a good idea. You may want to simulate the situation to help you think it through more clearly.
-- In Shakespeare's *Julius Caesar*, the character Cassius famously says: 
+- In Shakespeare's *Julius Caesar*, the character Cassius famously says:
 
 > The fault, dear Brutus, is not in our stars,<br>
 > But in ourselves, that we are underlings.
@@ -1167,8 +1167,8 @@ Please discuss p-values, the common, but potentially misleading, use of signific
 
 Allow that the true data generating process is a Normal distribution with mean of one, and standard deviation of 1. We obtain a sample of 1,000 observations using some instrument. Simulate the following situation:
 
-1) Unknown to us, the instrument has a mistake in it, which means that it has a maximum memory of 900 observations, and begins over-writing at that point, so the final 100 observations are actually a repeat of the first 100. 
-2) We employ a research assistant to clean and prepare the dataset. During the process of doing this, unknown to us, they accidentally change half of the negative draws to be positive. 
+1) Unknown to us, the instrument has a mistake in it, which means that it has a maximum memory of 900 observations, and begins over-writing at that point, so the final 100 observations are actually a repeat of the first 100.
+2) We employ a research assistant to clean and prepare the dataset. During the process of doing this, unknown to us, they accidentally change half of the negative draws to be positive.
 3) They additionally, accidentally, change the decimal place on any value between 1 and 1.1, so that, for instance 1 becomes 0.1, and 1.1 would become 0.11.
 4) You finally get the cleaned dataset and are interested in understanding whether the mean of the true data generating process is greater than 0.
 

@@ -14,14 +14,14 @@ engine: knitr
   - Another worked example of MRP with available code and data.
 - Watch *Statistical Models of Election Outcomes*, [@gelmantalks]
   - Discussion of building models for elections.
-- Listen to *Episode 248: Are Democrats being irrational? (David Shor)*, [@galefandshor] 
+- Listen to *Episode 248: Are Democrats being irrational? (David Shor)*, [@galefandshor]
   - Focus on the first half which discusses the use of data in politics, with lessons that are broadly applicable.
 
 **Key concepts and skills**
 
 - Multilevel regression with post-stratification (MRP) takes a sample, usually a large poll, and uses that to train a model. Then that trained model is applied to a post-stratification dataset, typically a census or other larger sample.
 - We use models because we are interested in answering questions that our data alone cannot answer. For instance, we may want to know what is going on in every political district, but it would be too expensive to appropriately poll every district. If we had perfect data, we would not need a model.
-- Models allow us to answer some questions, but the trade-off is that we answer them with uncertainty. In the MRP set-up, our model borrows information from areas where we know a lot and uses that in areas where we know little. The degree to which this is appropriate is one aspect we would always like to know more about. One of the main difficulties with MRP is obtaining access to the required datasets. 
+- Models allow us to answer some questions, but the trade-off is that we answer them with uncertainty. In the MRP set-up, our model borrows information from areas where we know a lot and uses that in areas where we know little. The degree to which this is appropriate is one aspect we would always like to know more about. One of the main difficulties with MRP is obtaining access to the required datasets.
 - The fundamental assumption of MRP is that the relationship between predictors, like gender, age-group, district, etc, and the outcome, for instance, "who are you going to vote for?", are steady between the sample and the post-stratification dataset. One key question when considering MRP estimates is: "To what extent does that assumption hold?"
 - As always, transparency is critical and there should be little reason that data preparation and modeling code cannot be made public alongside the model results even if the survey data cannot. This enables scrutiny from independent experts and enhances the credibility of MRP estimates.
 
@@ -58,7 +58,7 @@ library(tinytable)
 ## Introduction
 
 > [The Presidential election of] 2016 was the largest analytics failure in US political history.
-> 
+>
 > David Shor, 13 August 2020
 
 Multilevel regression with post-stratification (MRP)\index{multilevel regression with post-stratification} is a popular way to adjust non-representative surveys to analyze opinion and other responses. It uses a regression model to relate individual-level survey responses to various characteristics and then rebuilds the sample to better match the population. In this way MRP can not only allow a better understanding of responses, but also allow us to analyze data that may otherwise be unusable. However, it can be a challenge to get started with MRP as the terminology may be unfamiliar, and the data requirements can be onerous.
@@ -70,21 +70,21 @@ MRP is a handy approach when dealing with survey data. @hanretty2020 describes h
 1) It can allow us to "re-weight" in a way that brings uncertainty front-of-mind and is not as hamstrung by small samples. The alternative way to deal with having a small sample is to either gather more data or throw it away.
 2) It can allow us to use broad surveys to speak to subsets in a way that remains representative in certain aspects. For instance, say we gathered a sample that was representative of age, gender, and education across the country. If we were interested in state/provincial-specific estimates there is no guarantee that representativeness would hold at that disaggregated level.
 
-From a practical perspective, it tends to be less expensive to collect non-probability samples and so there are benefits of being able to use these types of data. That said, MRP is not a magic bullet and the laws of statistics still apply.\index{statistics}\index{multilevel regression with post-stratification!not magic bullet} We will have larger uncertainty around our estimates than when using probability samples and they will still be subject to all the usual biases. It is an exciting area of research in both academia and industry. 
+From a practical perspective, it tends to be less expensive to collect non-probability samples and so there are benefits of being able to use these types of data. That said, MRP is not a magic bullet and the laws of statistics still apply.\index{statistics}\index{multilevel regression with post-stratification!not magic bullet} We will have larger uncertainty around our estimates than when using probability samples and they will still be subject to all the usual biases. It is an exciting area of research in both academia and industry.
 
 The workflow that we need for MRP is straight forward, but the details and decisions that have to be made at each step can become overwhelming. The point to keep in mind is that we are trying to create a relationship between two datasets using a statistical model, and so we need to establish similarity between the two datasets in terms of their variables and levels. The steps are:\index{multilevel regression with post-stratification!steps}
 
 1) gather and prepare the survey dataset, thinking about what is needed for coherence with the post-stratification dataset;
 2) gather and prepare the post-stratification dataset thinking about what is needed for coherence with the survey dataset;
-3) model the variable of interest from the survey using predictors and levels that are available in both the survey and the post-stratification datasets; 
+3) model the variable of interest from the survey using predictors and levels that are available in both the survey and the post-stratification datasets;
 4) apply the model to the post-stratification data.
 
-One famous MRP example is @wang2015forecasting. They used data from the Xbox gaming platform to forecast the 2012 US Presidential Election.\index{elections!US 2012 Presidential Election}\index{United States!US 2012 Presidential Election} @wang2015forecasting were able to implement an opt-in poll through the Xbox gaming platform during the 45 days leading up to the 2012 US presidential election, which was between Barack Obama and Mitt Romney. Each day there were three to five questions, including voter intention: "If the election were held today, who would you vote for?". Respondents were allowed to answer at most once per day. And first-time respondents were asked to provide information about themselves, including their sex, race, age, education, state, party ID, political ideology, and who they voted for in the 2008 presidential election. 
+One famous MRP example is @wang2015forecasting. They used data from the Xbox gaming platform to forecast the 2012 US Presidential Election.\index{elections!US 2012 Presidential Election}\index{United States!US 2012 Presidential Election} @wang2015forecasting were able to implement an opt-in poll through the Xbox gaming platform during the 45 days leading up to the 2012 US presidential election, which was between Barack Obama and Mitt Romney. Each day there were three to five questions, including voter intention: "If the election were held today, who would you vote for?". Respondents were allowed to answer at most once per day. And first-time respondents were asked to provide information about themselves, including their sex, race, age, education, state, party ID, political ideology, and who they voted for in the 2008 presidential election.
 
 :::{.callout-note}
 ## Shoulders of giants
 
-Dr Andrew Gelman\index{Gelman, Andrew} is Higgins Professor of Statistics and Political Science at Columbia University.\index{statistics}\index{political science} After earning a PhD in Statistics from Harvard University in 1990, he was appointed as an assistant professor at the University of California, Berkeley,\index{Berkeley} and then moved to Columbia in 1996, where he was promoted to full professor in 2000. 
+Dr Andrew Gelman\index{Gelman, Andrew} is Higgins Professor of Statistics and Political Science at Columbia University.\index{statistics}\index{political science} After earning a PhD in Statistics from Harvard University in 1990, he was appointed as an assistant professor at the University of California, Berkeley,\index{Berkeley} and then moved to Columbia in 1996, where he was promoted to full professor in 2000.
 His research focuses on statistics, social sciences, and their intersection. For instance, @wang2015forecasting showed that biased surveys can still have value. He was the principal investigator for Stan,\index{Stan} a probabilistic programming language, that is widely used for Bayesian modeling.\index{Bayesian!modeling}
 And he has written many books, with *Data Analysis Using Regression and Multilevel/Hierarchical Models* [@gelmanandhill] and *Bayesian Data Analysis* [@bda] having been especially influential on a generation of researchers.
 He was appointed a Fellow of the American Statistical Association in 1998 and awarded the COPSS Presidents' Award in 2003.\index{COPSS Presidents' Award}
@@ -123,12 +123,12 @@ sim_population <-
     nationality = rbinom(n = pop_size, size = 1, prob = 0.5),
     probability = (age + nationality + 0.1) / 2.2, # prevent certainty
     prefers_tea = rbinom(n = pop_size, 1, prob = probability)
-  ) 
+  )
 
 sim_population
 ```
 
-We can see that the counts, by group, are fairly similar (@tbl-teapreferencecounts). 
+We can see that the counts, by group, are fairly similar (@tbl-teapreferencecounts).
 
 ```{r}
 #| message: false
@@ -137,24 +137,24 @@ We can see that the counts, by group, are fairly similar (@tbl-teapreferencecoun
 #| tbl-cap: "Preference for tea, by age and nationality"
 
 sim_population |>
-  count(age, nationality, prefers_tea) |> 
-  tt() |> 
-  style_tt(j = 1:4, align = "lllr") |> 
-  format_tt(digits = 0, num_mark_big = ",", num_fmt = "decimal") |> 
+  count(age, nationality, prefers_tea) |>
+  tt() |>
+  style_tt(j = 1:4, align = "lllr") |>
+  format_tt(digits = 0, num_mark_big = ",", num_fmt = "decimal") |>
   setNames( c("Age", "Nationality", "Prefers tea", "Number"))
 ```
 
 On average, 50 per cent of the population prefers tea, but this preference depends on the population sub-groups.
 
-Now we want to pretend that we have some survey that has a biased sample. We will allow that it over-samples 
-older respondents and English respondents. 
+Now we want to pretend that we have some survey that has a biased sample. We will allow that it over-samples
+older respondents and English respondents.
 We are interested in looking at what proportion of our biased sample prefers tea to coffee, and expect, by construction, that it will lean toward tea.
 
 ```{r}
 set.seed(853)
 
-tea_sample <- 
-  sim_population |> 
+tea_sample <-
+  sim_population |>
   slice_sample(n = 1000, weight_by = probability)
 ```
 
@@ -166,14 +166,14 @@ tea_sample <-
 #| tbl-cap: "Biased sample of preferences for tea, by age and nationality, oversampling those who like tea"
 
 tea_sample |>
-  count(age, nationality, prefers_tea) |> 
-  tt() |> 
-  style_tt(j = 1:4, align = "lllr") |> 
-  format_tt(digits = 0, num_mark_big = ",", num_fmt = "decimal") |> 
+  count(age, nationality, prefers_tea) |>
+  tt() |>
+  style_tt(j = 1:4, align = "lllr") |>
+  format_tt(digits = 0, num_mark_big = ",", num_fmt = "decimal") |>
   setNames(c("Age", "Nationality", "Prefers tea", "Number"))
 ```
 
-It is clear that our sample has a different average tea preference than the overall population (@tbl-teapreferencesamplecounts). 
+It is clear that our sample has a different average tea preference than the overall population (@tbl-teapreferencesamplecounts).
 
 
 
@@ -193,7 +193,7 @@ y_i|\pi_i & \sim \mbox{Bern}(\pi_i) \\
 \end{aligned}
 $$
 
-where $y_i$ is the tea preference of the respondent, $\pi_i = \mbox{Pr}(y_i=1)$, and $\alpha^{\mbox{age}}$ and $\alpha^{\mbox{nat}}$ are the effect of age and national origin, respectively. The $a[i]$ and $n[i]$ refer to which age-group and nationality, respectively, the respondent belongs to. $A$ and $N$ are the total number of age-groups and nationalities, respectively. We will estimate the model with `stan_glm()`. 
+where $y_i$ is the tea preference of the respondent, $\pi_i = \mbox{Pr}(y_i=1)$, and $\alpha^{\mbox{age}}$ and $\alpha^{\mbox{nat}}$ are the effect of age and national origin, respectively. The $a[i]$ and $n[i]$ refer to which age-group and nationality, respectively, the respondent belongs to. $A$ and $N$ are the total number of age-groups and nationalities, respectively. We will estimate the model with `stan_glm()`.
 
 ```{r}
 #| eval: false
@@ -292,15 +292,15 @@ In this simulated example, we could use the population as our post-stratificatio
 ```{r}
 set.seed(853)
 
-tea_poststrat_dataset <- 
-  sim_population |> 
-  slice_sample(n = 10000) |> 
+tea_poststrat_dataset <-
+  sim_population |>
+  slice_sample(n = 10000) |>
   select(-prefers_tea)
 
 tea_poststrat_dataset
 ```
 
-This is an idealized example where we assume individual-level data in our post-stratification dataset. In that world we can apply our model to each individual. 
+This is an idealized example where we assume individual-level data in our post-stratification dataset. In that world we can apply our model to each individual.
 
 ```{r}
 predicted_tea_preference <-
@@ -334,9 +334,9 @@ comparison <- tibble(
   )
 )
 
-comparison |> 
-  tt() |> 
-  style_tt(j = 1:2, align = "lr") |> 
+comparison |>
+  tt() |>
+  style_tt(j = 1:2, align = "lr") |>
   format_tt(digits = 2, num_mark_big = ",", num_fmt = "decimal")
 ```
 
@@ -706,7 +706,7 @@ We will use the Democracy Fund Voter Study Group Nationscape survey dataset. One
 #| eval: false
 #| include: true
 
-nationscape_data <- 
+nationscape_data <-
   read_csv(file = "nationscape_data.csv")
 ```
 
@@ -715,7 +715,7 @@ nationscape_data <-
 #| eval: true
 #| include: false
 
-nationscape_data <- 
+nationscape_data <-
   read_parquet(file = "outputs/data/15-nationscape_data.parquet")
 ```
 
@@ -746,7 +746,7 @@ nationscape_data$stateicp <-
 # Tidy the class
 nationscape_data <-
   nationscape_data |>
-  mutate(across(c(gender, stateicp, education_level, age_group), 
+  mutate(across(c(gender, stateicp, education_level, age_group),
                 as_factor))
 ```
 
@@ -781,7 +781,7 @@ We will use the 2019 American Community Survey (ACS) dataset that we gathered in
 #| eval: true
 #| echo: false
 
-poststrat_data <- 
+poststrat_data <-
   read_parquet(file = "outputs/data/cleaned_ipums.parquet")
 ```
 
@@ -797,7 +797,7 @@ poststrat_data_cells <-
   count(stateicp, gender, age_group, education_level)
 ```
 
-And finally we add proportions for each of these cells. 
+And finally we add proportions for each of these cells.
 
 ```{r}
 poststrat_data_cells <-
@@ -811,7 +811,7 @@ poststrat_data_cells
 
 ### Model the sample
 
-We are going to use logistic regression to estimate a model where the binary of support for Biden versus Trump is explained by gender, age-group, education, and state. 
+We are going to use logistic regression to estimate a model where the binary of support for Biden versus Trump is explained by gender, age-group, education, and state.
 
 $$
 \begin{aligned}
@@ -828,7 +828,7 @@ y_i|\pi_i & \sim \mbox{Bern}(\pi_i) \\
 \end{aligned}
 $$
 
-where $y_i$ is whether a respondent supports Biden and $\pi_i = \mbox{Pr}(y = 1)$. Then $\alpha^{\mbox{gender}}$, $\alpha^{\mbox{age}}$, $\alpha^{\mbox{state}}$, and $\alpha^{\mbox{edu}}$ are the effect of gender, age, state, and education, respectively. The $g[i]$, $a[i]$, $s[i]$, and $e[i]$ refer to which gender, age-group, state, and education level, respectively, the respondent belongs to. $A$, $S$, and $E$ are the total number of age-groups, states, and education levels, respectively. 
+where $y_i$ is whether a respondent supports Biden and $\pi_i = \mbox{Pr}(y = 1)$. Then $\alpha^{\mbox{gender}}$, $\alpha^{\mbox{age}}$, $\alpha^{\mbox{state}}$, and $\alpha^{\mbox{edu}}$ are the effect of gender, age, state, and education, respectively. The $g[i]$, $a[i]$, $s[i]$, and $e[i]$ refer to which gender, age-group, state, and education level, respectively, the respondent belongs to. $A$, $S$, and $E$ are the total number of age-groups, states, and education levels, respectively.
 
 After reading in the data that we cleaned earlier, following @kennedygabry2020 we use `stan_glmer()` from `rstanarm` to estimate the model.
 
@@ -836,7 +836,7 @@ After reading in the data that we cleaned earlier, following @kennedygabry2020 w
 #| eval: true
 #| echo: false
 
-nationscape_data <- 
+nationscape_data <-
   read_parquet(file = "outputs/data/15-nationscape_data_cleaned.parquet")
 ```
 
@@ -844,7 +844,7 @@ nationscape_data <-
 #| eval: false
 #| echo: true
 
-nationscape_data <- 
+nationscape_data <-
   read_parquet(file = "nationscape_data_cleaned.parquet")
 ```
 
@@ -932,10 +932,10 @@ modelsummary(
 us_election_model |>
   spread_draws(`(Intercept)`, b[, group]) |>
   mutate(condition_mean = `(Intercept)` + b) |>
-  separate(col = group, 
-           into = c("type", "instance"), 
-           sep = ":", remove = FALSE) |> 
-  filter(type != "stateicp") |> 
+  separate(col = group,
+           into = c("type", "instance"),
+           sep = ":", remove = FALSE) |>
+  filter(type != "stateicp") |>
   ggplot(aes(y = group, x = condition_mean)) +
   stat_halfeye() +
   theme_minimal()
@@ -952,12 +952,12 @@ us_election_model |>
 us_election_model |>
   spread_draws(`(Intercept)`, b[, group]) |>
   mutate(condition_mean = `(Intercept)` + b) |>
-  separate(col = group, into = c("type", "instance"), sep = ":", remove = FALSE) |> 
-  filter(type == "stateicp") |> 
-  filter(instance %in% 
-           c("california", "florida", "michigan", "new_york", "pennsylvania", 
+  separate(col = group, into = c("type", "instance"), sep = ":", remove = FALSE) |>
+  filter(type == "stateicp") |>
+  filter(instance %in%
+           c("california", "florida", "michigan", "new_york", "pennsylvania",
              "vermont", "west_virginia", "wisconsin")
-         ) |> 
+         ) |>
   ggplot(aes(y = group, x = condition_mean)) +
   stat_halfeye() +
   theme_minimal()
@@ -975,7 +975,7 @@ biden_support_by_state <-
   add_epred_draws(newdata = poststrat_data_cells) |>
   rename(support_biden_predict = .epred) |>
   mutate(support_biden_predict_prop = support_biden_predict * prop) |>
-  ungroup() |> 
+  ungroup() |>
   summarise(support_biden_predict = sum(support_biden_predict_prop),
             .by = c(stateicp, .draw)) |>
   summarise(
@@ -997,7 +997,7 @@ And we can have a look at our estimates graphically (@fig-estimatyusamrp).
 #| fig-height: 8
 
 biden_support_by_state |>
-  ggplot(aes(y = mean, x = fct_reorder(stateicp, mean), 
+  ggplot(aes(y = mean, x = fct_reorder(stateicp, mean),
              color = "MRP estimate")) +
   geom_point() +
   geom_errorbar(aes(ymin = lower, ymax = upper), width = 0) +
@@ -1022,7 +1022,7 @@ biden_support_by_state |>
   theme(legend.position = "bottom")
 ```
 
-The Nationscape dataset is a high-quality survey. But it was weighted to major census region---the West, the Midwest, the Northeast, and the South---rather than state, which could be one reason we see a difference between the MRP estimates and the raw data. 
+The Nationscape dataset is a high-quality survey. But it was weighted to major census region---the West, the Midwest, the Northeast, and the South---rather than state, which could be one reason we see a difference between the MRP estimates and the raw data.
 
 
 ## Exercises
@@ -1040,17 +1040,17 @@ The Nationscape dataset is a high-quality survey. But it was weighted to major c
 1. Please explain what MRP is, and the strengths and weaknesses, being sure to explain any technical terms that you use (write at least three paragraphs).
 2. What are three aspects that you like about @wang2015forecasting? What are three aspects that do you not? To what extent is it possible to reproduce the paper?
 3. With respect to @wang2015forecasting, what is a weakness of MRP (pick one)?
-    a.  Detailed data requirement. 
-    b. Allows use of biased data. 
+    a.  Detailed data requirement.
+    b. Allows use of biased data.
     c. Expensive to conduct.
-4. With respect to @wang2015forecasting, what is concerning about the Xbox sample (pick one)? 
-    a. Non-representative. 
-    b. Small sample size. 
+4. With respect to @wang2015forecasting, what is concerning about the Xbox sample (pick one)?
+    a. Non-representative.
+    b. Small sample size.
     c. Multiple responses from the same respondent.
 5. We are interested in studying how voting intentions in the upcoming US presidential election vary by an individual's income. We set up a logistic regression model to study this relationship. In this study, what are some possible predictors (select all that apply)?
-    a.  Whether the respondent is registered to vote (yes/no). 
-    b.  Whether the respondent is going to vote for the Democratic candidate (yes/no). 
-    c.  The race of the respondent (white/not white). 
+    a.  Whether the respondent is registered to vote (yes/no).
+    b.  Whether the respondent is going to vote for the Democratic candidate (yes/no).
+    c.  The race of the respondent (white/not white).
     d.  The respondent's marital status (married/not).
 6. Please think about @cohn2016. Why is this type of exercise not carried out more? Why do you think that different groups, even with the same background and level of quantitative sophistication, could have such different estimates even when they use the same data?
 7. We train a model based on a survey, and then post-stratify it using the ACS dataset. What are some of the practical considerations that we may have to contend with when doing this?
@@ -1063,7 +1063,7 @@ The Nationscape dataset is a high-quality survey. But it was weighted to major c
 
 ### Task {.unnumbered}
 
-In a similar manner to @ghitza2020voter pretend you have access to a US voter file record from a private company. You train a model on the 2020 US Cooperative Election Study, and post-stratify it, on an individual basis, based on that voter file. 
+In a similar manner to @ghitza2020voter pretend you have access to a US voter file record from a private company. You train a model on the 2020 US Cooperative Election Study, and post-stratify it, on an individual basis, based on that voter file.
 
 a. Put together a datasheet for the voter file dataset following @gebru2021datasheets? As a reminder, datasheets accompany datasets and document "motivation, composition, collection process, recommended uses," among other aspects.
 b. Create a model card for your model, following @Mitchell_2019? As a reminder, model cards are deliberately straight forward one- or two-page documents that report aspects such as: model details; intended use; metrics; training data; ethical considerations; as well as caveats and recommendations [@Mitchell_2019].
@@ -1072,10 +1072,10 @@ d. Detail the tests that you would put in place in terms of the dataset, the mod
 
 ### Paper {.unnumbered}
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 At about this point the *Spofforth* Paper in the ["Papers" Online Appendix](https://tellingstorieswithdata.com/23-assessment.html) would be appropriate.
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 At about this point the *Spofforth* Paper from [Online Appendix -@sec-papers] would be appropriate.
 :::

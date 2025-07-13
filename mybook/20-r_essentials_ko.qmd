@@ -981,7 +981,7 @@ apply(X = simulated_data, MARGIN = 2, FUN = unique)
 
 ## `ggplot2`로 그래프 만들기
 
-데이터 조작 측면에서 `tidyverse`의 핵심 패키지가 `dplyr`[@citedplyr]이라면, 그래프 생성 측면에서 `tidyverse`의 핵심 패키지는 `ggplot2`[@citeggplot]입니다. @sec-static-communication 에서 그래프에 대해 더 자세히 다룰 것이지만, 여기서는 몇 가지 필수 사항을 간략하게 소개합니다. `ggplot2`는 "그래픽 문법"(따라서 "gg")을 기반으로 그래프를 형성하는 레이어를 정의하여 작동합니다. 파이프 연산자(`|>`) 대신 `ggplot2`는 더하기 연산자 `+`를 사용합니다. `tidyverse` 패키지 모음의 일부이므로 `tidyverse`가 로드되면 `ggplot2`는 명시적으로 설치하거나 로드할 필요가 없습니다.
+데이터 조작 측면에서 `tidyverse`의 핵심 패키지가 `dplyr`[@citedplyr]이라면, 그래프 생성 측면에서 `tidyverse`의 핵심 패키지는 `ggplot2`[@citeggplot]입니다. [@sec-static-communication]에서 그래프에 대해 더 자세히 다룰 것이지만, 여기서는 몇 가지 필수 사항을 간략하게 소개합니다. `ggplot2`는 "그래픽 문법"(따라서 "gg")을 기반으로 그래프를 형성하는 레이어를 정의하여 작동합니다. 파이프 연산자(`|>`) 대신 `ggplot2`는 더하기 연산자 `+`를 사용합니다. `tidyverse` 패키지 모음의 일부이므로 `tidyverse`가 로드되면 `ggplot2`는 명시적으로 설치하거나 로드할 필요가 없습니다.
 
 `ggplot2`로 그래프를 만들려면 세 가지 핵심 측면을 지정해야 합니다.
 

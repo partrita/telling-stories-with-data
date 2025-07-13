@@ -4,7 +4,7 @@ engine: knitr
 
 # R 마크다운 {#sec-rmarkdown}
 
-Quarto는 R 마크다운의 후속작이지만, 비교적 새로 나왔고 많은 사람들이 여전히 R 마크다운을 사용합니다. 대부분의 경우, @sec-reproducible-workflows 에서 다루는 측면은 Quarto와 R 마크다운 모두에 적용됩니다. 그러나 이 부록에서는 Quarto에 제공된 지침과 다른 측면이 있는 경우 R 마크다운에 대한 동등한 내용을 제공합니다.
+Quarto는 R 마크다운의 후속작이지만, 비교적 새로 나왔고 많은 사람들이 여전히 R 마크다운을 사용합니다. 대부분의 경우, [@sec-reproducible-workflows] 에서 다루는 측면은 Quarto와 R 마크다운 모두에 적용됩니다. 그러나 이 부록에서는 Quarto에 제공된 지침과 다른 측면이 있는 경우 R 마크다운에 대한 동등한 내용을 제공합니다.
 
 ## R 청크
 
@@ -14,7 +14,7 @@ R 마크다운 문서 내의 코드 청크에 R 및 기타 여러 언어에 대�
 cat(readr::read_file("inputs/rmarkdown_example.Rmd"))
 ```
 
-해당 코드의 출력은 @fig-doctervisits 입니다.
+해당 코드의 출력은 [@fig-doctervisits] 입니다.
 
 ```{r doctervisits, echo = FALSE, eval = TRUE, warning = FALSE, message = FALSE, fig.cap = "1977-1978년 호주 건강 조사를 기반으로 한 지난 2주간의 질병 수"}
 library(tidyverse)

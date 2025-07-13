@@ -67,7 +67,7 @@ library(tinytable)
 ## 서론
 
 > "음, 린든, 당신이 옳을 수도 있고 그들이 당신이 말하는 것처럼 똑똑할 수도 있습니다." 레이번이 말했다. "하지만 그들 중 단 한 명이라도 보안관에 출마했다면 훨씬 더 좋았을 것입니다."
-> 
+>
 > 존 F. 케네디의 새 내각에 대한 린든 존슨의 열정에 대한 샘 레이번의 반응, *The Best and the Brightest*[@halberstam, p. 41]에서 인용.
 
 이 장에서는 데이터 정리 및 준비\index{data!cleaning}를 위한 보다 공식적인 접근 방식을 제시합니다. 이는 다음을 중심으로 합니다.
@@ -115,9 +115,9 @@ library(tinytable)
 
 ### 계획
 
-최종 목표를 계획하는 것은 끝을 염두에 두고 시작하도록 강요하며 다양한 이유로 중요합니다. @sec-gather-data에서 소개된 데이터 스크래핑과 마찬가지로, 범위 확장을 사전에 방지하는 데 도움이 됩니다. 그러나 데이터 정리에서는 최종 데이터셋이 어떻게 생겼으면 하는지에 대해 정말로 생각하도록 강요합니다.
+최종 목표를 계획하는 것은 끝을 염두에 두고 시작하도록 강요하며 다양한 이유로 중요합니다. [@sec-gather-data]에서 소개된 데이터 스크래핑과 마찬가지로, 범위 확장을 사전에 방지하는 데 도움이 됩니다. 그러나 데이터 정리에서는 최종 데이터셋이 어떻게 생겼으면 하는지에 대해 정말로 생각하도록 강요합니다.
 
-첫 번째 단계는 관심 있는 데이터셋을 스케치하는 것입니다. 스케치의 주요 특징은 열의 이름, 클래스 및 가능한 값 범위와 같은 측면입니다. 예를 들어, 미국 주의 인구에 관심이 있을 수 있습니다. 우리의 스케치는 @fig-sketchdataplan과 같을 수 있습니다.
+첫 번째 단계는 관심 있는 데이터셋을 스케치하는 것입니다. 스케치의 주요 특징은 열의 이름, 클래스 및 가능한 값 범위와 같은 측면입니다. 예를 들어, 미국 주의 인구에 관심이 있을 수 있습니다. 우리의 스케치는 [@fig-sketchdataplan]과 같을 수 있습니다.
 
 ![미국 주 및 인구의 계획된 데이터셋](figures/state_population_sketch.png){#fig-sketchdataplan width=40% fig-align="center"}
 
@@ -142,7 +142,7 @@ simulated_population
 ```
 
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 데이터 정리 및 준비\index{data!cleaning} 동안 우리의 목적은 원본, 편집되지 않은 데이터를 해당 계획에 가깝게 가져오는 것입니다. 이상적으로는 데이터셋의 원하는 최종 목표가 "정돈된 데이터"\index{tidy data}가 되도록 계획할 것입니다. 이것은 ["R 필수 사항" 온라인 부록](https://tellingstorieswithdata.com/20-r_essentials.html)에서 소개되었지만, 간략하게 말하면 [@r4ds; @wickham2014tidy, p. 4] 다음을 의미합니다.
 
 1. 각 변수는 자체 열에 있습니다.
@@ -152,7 +152,7 @@ simulated_population
 이 단계에서 타당성 및 내부 일관성\index{consistency!internal}에 대해 생각하기 시작하십시오. 이 데이터가 가져야 할 기능은 무엇입니까? 데이터셋을 시뮬레이션하는 과정에서 이것들을 기록하십시오. 왜냐하면 이것들을 사용하여 테스트를 작성할 것이기 때문입니다.
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 데이터 정리 및 준비\index{data!cleaning} 동안 우리의 목적은 원본, 편집되지 않은 데이터를 해당 계획에 가깝게 가져오는 것입니다. 이상적으로는 데이터셋의 원하는 최종 목표가 "정돈된 데이터"\index{tidy data}가 되도록 계획할 것입니다. 이것은 [온라인 부록 -@sec-r-essentials]에서 소개되었지만, 간략하게 말하면 [@r4ds; @wickham2014tidy, p. 4] 다음을 의미합니다.
 
 1. 각 변수는 자체 열에 있습니다.
@@ -225,11 +225,11 @@ tidy_data
 
 ### 테스트 및 문서 작성
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 직사각형 데이터셋을 설정했지만, 지저분한 데이터셋이므로, 우리가 가지고 있는 클래스를 살펴보기 시작해야 합니다. 이 시점에서 클래스를 수정할 필요는 없습니다. 왜냐하면 데이터 손실이 발생할 수 있기 때문입니다. 그러나 클래스가 무엇인지 확인하고, 시뮬레이션된 데이터셋과 비교하고, 변경해야 할 사항을 확인하기 위해 다른 열을 기록합니다. `class()`에 대한 배경 정보는 ["R 필수 사항" 온라인 부록](https://tellingstorieswithdata.com/20-r_essentials.html)에서 확인할 수 있습니다.
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 직사각형 데이터셋을 설정했지만, 지저분한 데이터셋이므로, 우리가 가지고 있는 클래스를 살펴보기 시작해야 합니다. 이 시점에서 클래스를 수정할 필요는 없습니다. 왜냐하면 데이터 손실이 발생할 수 있기 때문입니다. 그러나 클래스가 무엇인지 확인하고, 시뮬레이션된 데이터셋과 비교하고, 변경해야 할 사항을 확인하기 위해 다른 열을 기록합니다. `class()`에 대한 배경 정보는 [온라인 부록 -@sec-r-essentials]에서 확인할 수 있습니다.
 :::
 
@@ -278,11 +278,11 @@ messy_dataset |>
 
 가장 흔한 고유 관측치는 올바른 것입니다. 다음 관측치인 "PatricIa"는 "i"가 잘못 대문자로 표시된 것 같습니다. "PatrIcia"도 마찬가지입니다. `str_to_title()`을 사용하여 대문자 문제를 해결할 수 있습니다. 이 함수는 문자열의 각 단어의 첫 글자를 대문자로, 나머지는 소문자로 변환한 다음 개수를 다시 계산합니다.
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 문자열에 대한 배경 정보는 ["R 필수 사항" 온라인 부록](https://tellingstorieswithdata.com/20-r_essentials.html)에서 확인할 수 있습니다.
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 문자열에 대한 배경 정보는 [온라인 부록 -@sec-r-essentials]에서 확인할 수 있습니다.
 :::
 
@@ -352,11 +352,11 @@ stopifnot(nrow(check_me) == 0)
 #| warning: false
 
 # 데이터셋의 길이가 1입니까?
-expect_length(check_me, 1) 
+expect_length(check_me, 1)
 # 관측치는 문자입니까?
-expect_equal(class(cleaned_data$names), "character") 
+expect_equal(class(cleaned_data$names), "character")
 # 모든 고유 관측치는 "Patricia"입니까?
-expect_equal(unique(cleaned_data$names), "Patricia") 
+expect_equal(unique(cleaned_data$names), "Patricia")
 ```
 
 테스트가 통과하면 아무 일도 일어나지 않지만, 테스트가 실패하면 스크립트가 중지됩니다.
@@ -402,7 +402,7 @@ youth_survey_data <-
 #| echo: false
 
 youth_survey_data_fixed <-
-  youth_survey_data |> 
+  youth_survey_data |>
   mutate(ages = if_else(ages == 150, 15.0, ages))
 ```
 
@@ -468,19 +468,19 @@ australian_names_data |>
 #| tbl-cap: "2019년 케냐 인구 조사에서 나이로비의 단일 연령의 마지막 숫자의 개수에서 0과 5 숫자의 초과"
 
 arrow::read_parquet(
-  file = "outputs/data/cleaned_nairobi_2019_census.parquet") |> 
-  filter(!age %in% c("Total", "NotStated", "100+")) |> 
+  file = "outputs/data/cleaned_nairobi_2019_census.parquet") |>
+  filter(!age %in% c("Total", "NotStated", "100+")) |>
   filter(age_type != "age-group") |>
-  mutate(age = str_squish(age)) |> 
-  mutate(age = as.integer(age)) |> 
-  filter(age >= 20 & age < 100) |> 
-  filter(gender == "total") |> 
-  mutate(final_digit = str_sub(age, start= -1)) |> 
+  mutate(age = str_squish(age)) |>
+  mutate(age = as.integer(age)) |>
+  filter(age >= 20 & age < 100) |>
+  filter(gender == "total") |>
+  mutate(final_digit = str_sub(age, start= -1)) |>
   summarise(sum = sum(number),
-            .by = final_digit) |> 
-  tt() |> 
-  style_tt(j = 1:2, align = "lr") |> 
-  format_tt(digits = 0, num_mark_big = ",", num_fmt = "decimal") |> 
+            .by = final_digit) |>
+  tt() |>
+  style_tt(j = 1:2, align = "lr") |>
+  format_tt(digits = 0, num_mark_big = ",", num_fmt = "decimal") |>
   setNames(c("나이의 마지막 숫자", "횟수"))
 ```
 
@@ -620,14 +620,14 @@ summary(out)
 
 #### 클래스
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 미국인들은 돈에 집착하고, 영국인들은 계급에 집착한다고 말하기도 합니다. 데이터 정리 및 준비의 경우 우리는 영국인이 되어야 합니다.\index{data!class} 클래스는 중요하며 특별한 주의를 기울여야 합니다. ["R 필수 사항" 온라인 부록](https://tellingstorieswithdata.com/20-r_essentials.html)에서 클래스를 소개하며, 여기서는 "numeric", "character", "factor"에 초점을 맞춥니다. 변수의 클래스에 대한 명시적인 검사는 필수적입니다. 변수에 잘못된 클래스를 할당하면 후속 분석에 큰 영향을 미칠 수 있습니다. 다음이 중요합니다.
 
 - 어떤 값이 숫자여야 하는지 또는 요인이어야 하는지 확인합니다. 그리고
 - 값이 문자가 아닌 숫자인지 확인합니다.
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 미국인들은 돈에 집착하고, 영국인들은 계급에 집착한다고 말하기도 합니다. 데이터 정리 및 준비의 경우 우리는 영국인이 되어야 합니다. 클래스는 중요하며 특별한 주의를 기울여야 합니다. [온라인 부록 -@sec-r-essentials]에서 클래스를 소개하며, 여기서는 "numeric", "character", "factor"에 초점을 맞춥니다. 변수의 클래스에 대한 명시적인 검사는 필수적입니다. 변수에 잘못된 클래스를 할당하면 후속 분석에 큰 영향을 미칠 수 있습니다. 다음이 중요합니다.
 
 - 어떤 값이 숫자여야 하는지 또는 요인이어야 하는지 확인합니다. 그리고
@@ -675,7 +675,7 @@ modelsummary(models)
 
 이 책에서 `read_csv()` 및 데이터를 가져오는 다른 함수를 사용할 때, 우리는 함수가 변수의 클래스를 추측하도록 허용했습니다. 앞으로는 더 의도적으로 "col_types"를 사용하여 직접 지정할 것입니다. 예를 들어, 다음 대신:
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 ```{r}
 #| eval: false
 #| echo: true
@@ -710,7 +710,7 @@ raw_igme_data <-
 ```
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 ```{r}
 #| eval: false
 #| echo: true
@@ -902,7 +902,7 @@ toronto_shelters_by_day |>
   theme_minimal() +
   scale_color_brewer(palette = "Set1")
 ```
- 
+
 월의 첫 12일 동안 문제가 있는 것으로 보입니다. 데이터를 보면 순서가 이상하다는 점을 지적했습니다. @fig-homeless-daycount-2를 보면 많은 관측치에 영향을 미치는 체계적인 문제가 있는 것 같습니다. 일반적으로 날짜 변수에서 첫 12일이 거꾸로 되어 있을 수 있습니다. 즉, 연-월-일이라고 생각하지만 실제로는 연-일-월입니다. 그러나 예외도 있습니다. 첫 번째 단계로, 각 월의 첫 12일을 뒤집어 보면 도움이 되는지 확인할 수 있습니다. 상당히 무뚝뚝한 방법이지만, 도움이 되기를 바랍니다.
 
 ```{r}
@@ -910,7 +910,7 @@ toronto_shelters_by_day |>
 padded_1_to_12 <- sprintf("%02d", 1:12)
 
 list_of_dates_to_flip <-
-  paste(2017, padded_1_to_12, 
+  paste(2017, padded_1_to_12,
         rep(padded_1_to_12, each = 12), sep = "-")
 
 toronto_shelters_2017_flip <-
@@ -1038,8 +1038,8 @@ stopifnot(
 #| include: true
 
 vickers_data <-
-  read_excel("13102_2016_52_MOESM2_ESM.xlsx") |> 
-  select(k5_ti, mf_ti) |> 
+  read_excel("13102_2016_52_MOESM2_ESM.xlsx") |>
+  select(k5_ti, mf_ti) |>
   drop_na()
 
 vickers_data
@@ -1050,8 +1050,8 @@ vickers_data
 #| echo: false
 
 vickers_data <-
-  read_excel("inputs/data/13102_2016_52_MOESM2_ESM.xlsx") |> 
-  select(k5_ti, mf_ti) |> 
+  read_excel("inputs/data/13102_2016_52_MOESM2_ESM.xlsx") |>
+  select(k5_ti, mf_ti) |>
   drop_na()
 
 vickers_data
@@ -1063,10 +1063,10 @@ vickers_data
 
 ```{r}
 vickers_data <-
-  vickers_data |> 
+  vickers_data |>
   mutate(five_km_time = round(k5_ti / 60, 1),
          marathon_time = round(mf_ti / 60, 1)
-         ) |> 
+         ) |>
   select(five_km_time, marathon_time)
 
 vickers_data
@@ -1091,7 +1091,7 @@ stopifnot(
 ## 이름
 
 > 프로그램은 사람들이 읽을 수 있도록 작성되어야 하며, 기계가 실행하는 것은 부수적인 일이다.
-> 
+>
 > @abelson1996structure
 
 이름은 중요합니다.\index{data!names} 이 책의 많은 부분이 쓰여진 땅은 오늘날 캐나다라고 불리지만, 오랫동안 터틀 아일랜드로 알려져 있었습니다. 마찬가지로, 호주 중앙에는 큰 바위가 있습니다. 오랫동안 울루루라고 불렸고, 그 다음에는 에어즈 록으로 알려졌습니다. 오늘날에는 두 가지 이름을 모두 사용하는 이중 이름을 가지고 있습니다. 그리고 사우스 캐롤라이나 주 의사당 주변의 표지판을 포함하여 미국 남부 일부 지역에서는 미국 남북 전쟁을 북부 침략 전쟁이라고 부릅니다. 이러한 예시에서 사용되는 이름은 사용자뿐만 아니라 상황에 대한 정보도 전달합니다. 심지어 영국 왕실도 이름의 힘을 인정합니다. 1917년에 그들은 작센-코부르크-고타 가문에서 윈저 가문으로 변경했습니다. 제1차 세계 대전을 고려할 때 전자가 너무 독일적이라고 느껴졌기 때문입니다. 이름은 일상생활에서 중요합니다. 그리고 우리 코드에서도 중요합니다.
@@ -1138,10 +1138,10 @@ bad_names_made_better
 ### 사람이 읽을 수 있는 이름
 
 > 프로그램은 사람들이 읽을 수 있도록 작성되어야 하며, 기계가 실행하는 것은 부수적인 일이다.
-> 
+>
 > @abelson1996structure
 
-@sec-on-writing에서 독자를 위해 논문을 작성한다고 강조했듯이, 여기서는 독자를 위해 코드를 작성한다고 강조합니다. 사람이 읽을 수 있는 이름은 추가적인 계층과 광범위한 고려가 필요합니다. @jsfcodingstandards [p. 25]에 따르면, "O" 문자 대신 "0" 숫자 또는 "D" 문자를 사용하거나, "S" 문자 대신 "5" 숫자를 사용하여만 다른 이름을 피해야 합니다. 마찬가지로 "S"와 "5"도 그렇습니다.
+[@sec-on-writing]에서 독자를 위해 논문을 작성한다고 강조했듯이, 여기서는 독자를 위해 코드를 작성한다고 강조합니다. 사람이 읽을 수 있는 이름은 추가적인 계층과 광범위한 고려가 필요합니다. @jsfcodingstandards [p. 25]에 따르면, "O" 문자 대신 "0" 숫자 또는 "D" 문자를 사용하거나, "S" 문자 대신 "5" 숫자를 사용하여만 다른 이름을 피해야 합니다. 마찬가지로 "S"와 "5"도 그렇습니다.
 
 다른 문화권과 그들이 우리가 사용하는 일부 이름을 어떻게 해석할지 고려해야 합니다. 또한 데이터셋의 후속 사용자가 가질 수 있는 다른 경험 수준도 고려해야 합니다. 이는 데이터 과학 경험뿐만 아니라 유사한 데이터셋 경험 측면에서도 마찬가지입니다. 예를 들어, "flag"라는 변수는 종종 변수에 후속 조치가 필요하거나 어떤 식으로든 신중하게 처리해야 하는 데이터가 포함되어 있음을 나타내는 데 사용됩니다. 숙련된 분석가는 이것을 알겠지만, 초보자는 모를 것입니다. 가능한 한 의미 있는 이름을 사용하려고 노력하십시오[@lin2020ten]. 짧은 이름이 이해하는 데 더 오래 걸릴 수 있다는 것이 밝혀졌으므로[@shorternamestakelonger], 가능한 한 흔하지 않은 약어를 피하는 것이 종종 유용합니다.
 
@@ -1308,7 +1308,7 @@ tanzania_dhs_separated <-
   separate(
     col = all,
     into = c(
-      "age_group", 
+      "age_group",
       "male_urban", "female_urban", "total_urban",
       "male_rural", "female_rural", "total_rural",
       "male_total", "female_total", "total_total"
@@ -1509,11 +1509,11 @@ demography_data_long
 demography_data_long <-
   demography_data_long |>
   mutate(
-    age_type = if_else(str_detect(age, "-"), 
-                       "age-group", 
+    age_type = if_else(str_detect(age, "-"),
+                       "age-group",
                        "single-year"),
-    age_type = if_else(str_detect(age, "Total"), 
-                       "age-group", 
+    age_type = if_else(str_detect(age, "Total"),
+                       "age-group",
                        age_type)
   )
 ```
@@ -1547,8 +1547,8 @@ demography_data_long |>
 ```{r}
 #| echo: true
 demography_data_long |>
-  mutate(age_groups = if_else(age_type == "age-group", 
-                              age, 
+  mutate(age_groups = if_else(age_type == "age-group",
+                              age,
                               NA_character_)) |>
   fill(age_groups, .direction = "up") |>
   mutate(
@@ -1557,7 +1557,7 @@ demography_data_long |>
     difference = total - group_sum,
     .by = c(age_groups)
   ) |>
-  filter(age_type == "age-group" & age_groups != "Total") |> 
+  filter(age_type == "age-group" & age_groups != "Total") |>
   head()
 ```
 
@@ -1569,8 +1569,8 @@ demography_data_long |>
 demography_data_tidy <-
   demography_data_long |>
   rename_with(~paste0(., "_total"), male:total) |>
-  pivot_longer(cols = contains("_total"), 
-               names_to = "type", 
+  pivot_longer(cols = contains("_total"),
+               names_to = "type",
                values_to = "number") |>
   separate(
     col = type,
@@ -1602,7 +1602,7 @@ demography_data_tidy |>
   select(age, gender, number) |>
   filter(gender != "total") |>
   ggplot(aes(x = age, y = number, fill = gender)) +
-  geom_col(aes(x = age, y = number, fill = gender), 
+  geom_col(aes(x = age, y = number, fill = gender),
            position = "dodge") +
   scale_y_continuous(labels = comma) +
   scale_x_discrete(breaks = c(seq(from = 0, to = 99, by = 5), "100+")) +
@@ -1634,7 +1634,7 @@ column_names_as_contracts <-
   )
 ```
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 `pointblank`를 사용하여 테스트를 설정할 수 있습니다(@fig-pointblankvalidation).
 
 ```{r}
@@ -1660,7 +1660,7 @@ agent
 ![Pointblank 유효성 검사 예시](figures/pointblank_screenshot.png){#fig-pointblankvalidation width=70% fig-align="center"}
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 `pointblank`를 사용하여 테스트를 설정할 수 있습니다.
 
 ```{r}

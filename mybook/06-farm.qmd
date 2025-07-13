@@ -4,7 +4,7 @@ engine: knitr
 
 # Measurement, censuses, and sampling {#sec-farm-data}
 
-::: {.callout-note}
+:::{.callout-note}
 Chapman and Hall/CRC published this book in July 2023. You can purchase that [here](https://www.routledge.com/Telling-Stories-with-Data-With-Applications-in-R/Alexander/p/book/9781032134772). This online version has some updates to what was printed.
 :::
 
@@ -29,7 +29,7 @@ Chapman and Hall/CRC published this book in July 2023. You can purchase that [he
 **Key packages and functions**
 
 - Base R [@citeR]
-- `cancensus` [@citecancensus] 
+- `cancensus` [@citecancensus]
 - `canlang` [@canlang] (this package is not on CRAN so install it with: `install.packages("devtools")` then `devtools::install_github("ttimbers/canlang")`)
 - `maps` [@citemaps]
 - `tidycensus` [@tidycensus]
@@ -68,17 +68,17 @@ Why do we even need classifications and groupings if it causes such concerns?\in
 
 All datasets have shortcomings. In this chapter we develop comfort with "farmed data". We use that term to refer to a dataset that has been developed specifically for the purpose of being used as data.
 
-Even though these farmed datasets are put together for us to use, and can generally be easily obtained, it is nonetheless especially important for us to develop a thorough understanding of their construction. James Mill, the nineteenth century Scottish author, famously wrote *The History of British India* without having set foot in the country. He claimed: 
+Even though these farmed datasets are put together for us to use, and can generally be easily obtained, it is nonetheless especially important for us to develop a thorough understanding of their construction. James Mill, the nineteenth century Scottish author, famously wrote *The History of British India* without having set foot in the country. He claimed:
 
 > Whatever is worth seeing or hearing in India, can be expressed in writing. As soon as every thing of importance is expressed in writing, a man who is duly qualified may attain more knowledge of India, in one year, in his closet in England, than he could obtain during the course of the longest life, by the use of his eyes and his ears in India.
-> 
+>
 > @thehistoryofbritishindia [p. xv]
 
 It may seem remarkable that he was considered an expert and his views had influence. Yet today, many will, say, use inflation statistics without ever having tried to track a few prices, use the responses from political surveys without themselves ever having asked a respondent a question, or use ImageNet without the experience of hand-labeling some of the images. We should always throw ourselves into the details of the data.
 
 ## Measurement
 
-Measurement\index{measurement} is an old concern. Even Aristotle distinguished between quantities and qualities [@sepmeasurementscience]. Measurement, and especially, the comparison of measurements, underpins all quantitative analysis. But deciding what to measure, and how to do it, is challenging. 
+Measurement\index{measurement} is an old concern. Even Aristotle distinguished between quantities and qualities [@sepmeasurementscience]. Measurement, and especially, the comparison of measurements, underpins all quantitative analysis. But deciding what to measure, and how to do it, is challenging.
 
 Measurement is trickier than it seems. For instance, in music, David Peterson, Professor of Political Science, Iowa State University, make it clear how difficult it is to define a one-hit wonder. A surprising number of artists that may immediately come to mind, turn out to have at least one or two other songs that did reasonably well in terms of making it onto charts [@molophany]. Should an analysis of all one-term governments include those that did not make it through a full term? How about those that only lasted a month, or even a week? How do we even begin to measure the extent of government transfers when so much of these are in-kind benefits [@garfinkel2006re]? How can we measure how well represented a person is in a democracy despite that being the fundamental concern [@Achen1978]? And why should the standard definition used by the World Health Organization (WHO) of pregnancy-related and maternal deaths only include those that occur within 42 days of delivery, termination, or abortion when this has a substantial effect on the estimate [@Gazeley2022]?\index{World Health Organization}
 
@@ -93,7 +93,7 @@ Instrumentation\index{measurement!instrumentation}\index{instrumentation} refers
 Knowing the time\index{measurement!time} is a critical measurement. For instance, Formula 1 times laps to the thousandth of a second. And Michael Phelps, an American swimmer, won a gold medal at the Beijing Olympics by only one-hundredth of a second. Timing allows us to distinguish between outcomes even when the event does not happen concurrently. For instance, think back to the discussion of swimmers by @chambliss1989mundanity and how this would be impossible without knowing how long each event took each swimmer. Timing is also critical in finance where we need market participants to agree on whether an asset is available for sale. But the answer to "What time is it?" can be difficult to answer. The time, according to some individual, can be set to different sources, and so will differ depending on who you ask. Since the 1970s the definitive answer has been to use atomic time. A cesium second is defined by "9192 631 770 cycles of the hyperfine transition frequency in the ground state of cesium 133" [@Levine2023, p. 4]. But the problem of clock synchronization---how to have all the non-atomic clocks match atomic time and each other---remains.\index{internet!clock synchronization} @hopper2022 provides an overview of how the Network Time Protocol (NTP) of @mills1991internet enables clock synchronization and some of the difficulties that exist for computer networks to discover atomic time. Another measure of time is astronomical time, which is based on the rotation of the Earth. But because the Earth spins inconsistently and other issues, adjustments have been made to ensure atomic and astronomical time match. This has resulted in the inclusions of positive leap seconds, and the possibility of a negative leap second, which have created problems [@Levine2023]. As a result, at some point in the future astronomical and atomic time will be allowed to diverge [@Gibney2022; @mitchell2022again].
 :::
 
-A common instrument of measurement is a survey, and we discuss these further in @sec-hunt-data. Another commonly-used instrument is sensors.\index{measurement!sensors} For instance, climate scientists may be interested in temperature, humidity, or pressure. Much analysis of animal movement, such as @LeosBarajas2016, uses accelerometers.\index{measurement!accelerometer} Sensors placed on satellites may be particularly concerned with images, and such data are available from the Landsat Program.\index{measurement!satellites} Physicists are very concerned with measurement, and can be constrained not only by their instrumentation, but also storage capacity. For instance, the ATLAS detector at CERN is focused on the collision of particles, but not all of the measurements can be saved because that would result in 80TB per second [@Colombo2016]! 
+A common instrument of measurement is a survey, and we discuss these further in @sec-hunt-data. Another commonly-used instrument is sensors.\index{measurement!sensors} For instance, climate scientists may be interested in temperature, humidity, or pressure. Much analysis of animal movement, such as @LeosBarajas2016, uses accelerometers.\index{measurement!accelerometer} Sensors placed on satellites may be particularly concerned with images, and such data are available from the Landsat Program.\index{measurement!satellites} Physicists are very concerned with measurement, and can be constrained not only by their instrumentation, but also storage capacity. For instance, the ATLAS detector at CERN is focused on the collision of particles, but not all of the measurements can be saved because that would result in 80TB per second [@Colombo2016]!
 And in the case of A/B testing,\index{A/B test} which we discuss in @sec-hunt-data, extensive use is made of cookies, beacons, system settings, and behavioral patterns. Another aspect of instrumentation is delivery.\index{instrumentation!delivery} For instance, if using surveys, then should they be mailed or online? Should they be filled out by the respondent or by an enumerator?
 
 The definition of measurement, provided by metrology, makes it clear that the second fundamental concern is a reference, which we refer to as units.\index{measurement!units} The choice of units is related to both the research question of interest and available instrumentation. For instance, in the Tutorial in @sec-introduction we were concerned with measuring the growth of plants. This would not be well served by using kilometers or miles as a unit. If we were using a ruler, then we may be able to measure millimeters, but with calipers, we might be able to consider tens of micrometers.
@@ -102,9 +102,9 @@ The definition of measurement, provided by metrology, makes it clear that the se
 
 Valid measurements are those where the quantity that we are measuring is related to the estimand and research question of interest.\index{measurement!valid} It speaks to appropriateness. Recall, from @sec-on-writing, that an estimand\index{estimand} is the actual effect, such as the (unknowable) actual effect of smoking on life expectancy. It can be useful to think about estimands as what is actually of interest. This means that we need to ensure that we are measuring relevant aspects of an individual. For instance, the number of cigarettes that they smoked, and the number of years they lived, rather than, say, their opinion about smoking.
 
-For some units, such as a meter or a second, there is a clear definition. And when that definition evolves it is widely agreed on [@mitchell2022]. But for other aspects that we may wish to measure it is less clear and so the validity of the measurement becomes critical. At one point in the fourteenth century attempts were made to measure grace and virtue [@crosby1997measure, p. 14]! More recently, we try to measure intelligence or even the quality of a university. That is not to say there are not people with more or less grace, virtue, and intelligence than others, and there are certainly better and worse universities. But the measurement of these is difficult. 
+For some units, such as a meter or a second, there is a clear definition. And when that definition evolves it is widely agreed on [@mitchell2022]. But for other aspects that we may wish to measure it is less clear and so the validity of the measurement becomes critical. At one point in the fourteenth century attempts were made to measure grace and virtue [@crosby1997measure, p. 14]! More recently, we try to measure intelligence or even the quality of a university. That is not to say there are not people with more or less grace, virtue, and intelligence than others, and there are certainly better and worse universities. But the measurement of these is difficult.
 
-The *U.S. News and World Report*\index{U.S. News and World Report} tries to quantify university quality based on aspects such as class size, number of faculty with a PhD, and number of full-time faculty. But an issue with such constructed measures, especially in social settings, is that it changes the incentives of those being measured. For instance, Columbia University increased from 18th in 1988 to 2nd in 2022. But Michael Thaddeus, Professor of Mathematics, Columbia University, showed how there was a difference, in Columbia's favor, between what Columbia reported to *U.S. News and World Report* and what was available through other sources [@hartocollis2022]. 
+The *U.S. News and World Report*\index{U.S. News and World Report} tries to quantify university quality based on aspects such as class size, number of faculty with a PhD, and number of full-time faculty. But an issue with such constructed measures, especially in social settings, is that it changes the incentives of those being measured. For instance, Columbia University increased from 18th in 1988 to 2nd in 2022. But Michael Thaddeus, Professor of Mathematics, Columbia University, showed how there was a difference, in Columbia's favor, between what Columbia reported to *U.S. News and World Report* and what was available through other sources [@hartocollis2022].
 
 Such concerns are of special importance in psychology\index{measurement!psychology} because there is no clear measure of many fundamental concepts. @Fried2022 review the measurement of depression and find many concerns including a lack of validity and reliability. This is not to say that we should not try to measure such things, but we should ensure transparency about measurement decisions.\index{measurement!transparency} For instance, @Flake2020 recommend answering various clarifying questions whenever measurements have to be constructed. These include questioning the underlying construct of interest, the decision process that led to the measure, what alternatives were considered, the quantification process, and the scale. These questions are especially important when the measure is being constructed for a particular purpose, rather than being adopted from elsewhere. This is because of the concern that the measure will be constructed in a way that provides a pre-ordained outcome.
 
@@ -144,7 +144,7 @@ set.seed(853)
 newborn_weight <-
   tibble(
     weight = rep(
-      x = rnorm(n = 1000, mean = 3.5, sd = 0.5), 
+      x = rnorm(n = 1000, mean = 3.5, sd = 0.5),
       times = 3),
     measurement = rep(
       x = c("Actual", "Censored", "Truncated"),
@@ -176,10 +176,10 @@ newborn_weight |>
 
 newborn_weight |>
   summarise(mean = mean(weight, na.rm = TRUE),
-            .by = measurement) |> 
-  tt() |> 
-  style_tt(j = 1:2, align = "lr") |> 
-  format_tt(digits = 3, num_fmt = "decimal") |> 
+            .by = measurement) |>
+  tt() |>
+  style_tt(j = 1:2, align = "lr") |>
+  format_tt(digits = 3, num_fmt = "decimal") |>
   setNames(c("Measurement", "Mean"))
 ```
 
@@ -213,11 +213,11 @@ Censuses of population are critical, but not unimpeachable. @anderson1999counts 
 Margo Anderson\index{Anderson, Margo} is Distinguished Professor, History and Urban Studies, at University of Wisconsin--Milwaukee. After earning a PhD in History from Rutgers University in 1978, she joined the University of Wisconsin--Milwaukee, and was promoted to professor in 1987. In addition to @anderson1999counts, another important book that she wrote is @anderson2015census. She was appointed a Fellow of the American Statistical Association in 1998.
 :::
 
-Another similarly large and established source of data are from long-running large surveys. These are conducted on a regular basis, and while not usually directly conducted by the government, they are usually funded, one way or another, by the government. For instance, here we often think of electoral surveys, such as the Canadian Election Study, which has run in association with every federal election since 1965, and similarly the British Election Study which has been associated with every general election since 1964. 
+Another similarly large and established source of data are from long-running large surveys. These are conducted on a regular basis, and while not usually directly conducted by the government, they are usually funded, one way or another, by the government. For instance, here we often think of electoral surveys, such as the Canadian Election Study, which has run in association with every federal election since 1965, and similarly the British Election Study which has been associated with every general election since 1964.
 
 More recently there has been a large push toward open data in government. The underlying principle---that the government should make available the data that it has---is undeniable. But the term has become a little contentious because of how it has occurred in practice. Governments only provide data that they want to provide. We may even sometimes see manipulation of data to suit a government's narrative [@Kalgin2014; @Zhang2019; @Berdine2018]. One way to get data that the government has, but does not necessarily want to provide, is to submit a Freedom of Information (FOI) request [@walby2019freedom]. For instance, @biasbehindbars use data from FOI to find evidence of systematic racism in the Canadian prison system.
 
-While farmed datasets have always been useful, they were developed for a time when much analysis was conducted without the use of programming languages. Many R packages have been developed to make it easier to get these datasets into R. Here we cover a few that are especially useful. 
+While farmed datasets have always been useful, they were developed for a time when much analysis was conducted without the use of programming languages. Many R packages have been developed to make it easier to get these datasets into R. Here we cover a few that are especially useful.
 
 
 
@@ -425,7 +425,7 @@ Steven Ruggles\index{Ruggles, Steven} is Regents Professor of History and Popula
 
 Go to [IPUMS](https://ipums.org), then "IPUMS USA", and click "Get Data". We are interested in a sample, so go to "SELECT SAMPLE". Un-select "Default sample from each year" and instead select "2019 ACS" and then "SUBMIT SAMPLE SELECTIONS" (@fig-ipumstwo).\index{IPUMS}
 
-::: {#fig-ipums layout-nrow=3}
+:::{#fig-ipums layout-nrow=3}
 
 ![Selecting a sample from IPUMS USA and specifying interest in the 2019 ACS](figures/ipums_redux_2.png){#fig-ipumstwo}
 
@@ -450,7 +450,7 @@ When we are done, we can click "VIEW CART", and then click "CREATE DATA EXTRACT"
 1. Change the "DATA FORMAT" from ".dat" to ".dta" (@fig-ipumsnine).
 2. Customize the sample size as we likely do not need three million responses, and could just change it to, say, 500,000 (@fig-ipumsten).
 
-Briefly check the dimensions of the request. It should not be much more than around 40MB. If it is then check whether there are variables accidentally selected that are not needed or further reduce the number of observations. 
+Briefly check the dimensions of the request. It should not be much more than around 40MB. If it is then check whether there are variables accidentally selected that are not needed or further reduce the number of observations.
 
 Finally, we want to include a descriptive name for the extract, for instance, "2023-05-15: State, age, sex, education", which specifies the date we made the extract and what is in the extract. After that we can click "SUBMIT EXTRACT".
 
@@ -458,7 +458,7 @@ We will be asked to log in or create an account, and after doing that will be ab
 
 It is critical that we cite this dataset when we use it. For instance we can use the following BibTeX entry for @ipumsusa.\index{citation!IPUMS}
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 ```
 @misc{ipumsusa,
   author       = {Ruggles,  Steven and Flood,  Sarah and $\dots$},
@@ -472,7 +472,7 @@ It is critical that we cite this dataset when we use it. For instance we can use
 ```
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 ```
 @misc{ipumsusa,
   author       = {Ruggles,  Steven and Flood,  Sarah and Foster,  Sophia and Goeken,  Ronald and Pacas,  Jose and Schouweiler,  Megan and Sobek,  Matthew},
@@ -496,7 +496,7 @@ We will briefly tidy and prepare this dataset because we will use it in @sec-mul
 
 ipums_extract <- read_dta("usa_00015.dta")
 
-ipums_extract <- 
+ipums_extract <-
   ipums_extract |>
   select(stateicp, sex, age, educd) |>
   to_factor()
@@ -514,7 +514,7 @@ ipums_extract
 
 ipums_extract <- read_dta(here::here("dont_push/usa_00015.dta"))
 
-ipums_extract <- 
+ipums_extract <-
   ipums_extract |>
   select(stateicp, sex, age, educd) |>
   to_factor()
@@ -528,7 +528,7 @@ arrow::write_parquet(
 #| eval: true
 #| echo: false
 
-ipums_extract <- 
+ipums_extract <-
   arrow::read_parquet(
     file = "inputs/data/ipums_extract.parquet"
     )
@@ -585,7 +585,7 @@ cleaned_ipums <-
 cleaned_ipums
 ```
 
-We will draw on this dataset in @sec-multilevel-regression-with-post-stratification, so we will save it. 
+We will draw on this dataset in @sec-multilevel-regression-with-post-stratification, so we will save it.
 
 ```{r}
 #| eval: false
@@ -672,7 +672,7 @@ One approach would be to talk to friends who also have toddlers. And then talk t
 
 @wuandthompson [p. 3] describe statistics\index{statistics!definition} as "the science of how to collect and analyze data and draw statements and conclusions about unknown populations." Here "population" is used in a statistical sense and refers to some infinite group that we can never know exactly, but that we can use the probability distributions of random variables to describe the characteristics of. We discuss probability distributions\index{distribution!probability} in more detail in @sec-its-just-a-linear-model. @fisherresearchworkers [p. 41] goes further and says:\index{Fisher, Ronald}
 
-> [t]he idea of an infinite population distributed in a frequency distribution in respect of one or more characters is fundamental to all statistical work. From a limited experience,$\dots$ we may obtain some idea of the infinite hypothetical population from which our sample is drawn, and so of the probable nature of future samples to which our conclusions are to be applied. 
+> [t]he idea of an infinite population distributed in a frequency distribution in respect of one or more characters is fundamental to all statistical work. From a limited experience,$\dots$ we may obtain some idea of the infinite hypothetical population from which our sample is drawn, and so of the probable nature of future samples to which our conclusions are to be applied.
 
 Another way to say this is that statistics\index{statistics} involves getting some data and trying to say something sensible based on it even though we can never have all of the data.
 
@@ -697,7 +697,7 @@ To be clearer, we consider two examples: a 1798 count of the number of inhabitan
 
 #### Survey of Dublin in 1798
 
-In 1798 the Reverend James Whitelaw conducted a survey of Dublin, Ireland,\index{Ireland!Population of Dublin in 1798} to count its population. @whitelaw1805 describes how population estimates at the time varied considerably. For instance, the estimated size of London at the time ranged from 128,570 to 300,000 people. Whitelaw expected that the Lord Mayor of Dublin could compel the person in charge of each house to affix a list of the inhabitants of that house to the door, and then Whitelaw could simply use this. 
+In 1798 the Reverend James Whitelaw conducted a survey of Dublin, Ireland,\index{Ireland!Population of Dublin in 1798} to count its population. @whitelaw1805 describes how population estimates at the time varied considerably. For instance, the estimated size of London at the time ranged from 128,570 to 300,000 people. Whitelaw expected that the Lord Mayor of Dublin could compel the person in charge of each house to affix a list of the inhabitants of that house to the door, and then Whitelaw could simply use this.
 
 Instead, he found that the lists were "frequently illegible, and generally short of the actual number by a third, or even one-half". And so instead he recruited assistants, and they went door-to-door making their own counts. The resulting estimates are particularly informative (@fig-whitelawsresults). The total population of Dublin in 1798 was estimated at 182,370.
 
@@ -717,22 +717,22 @@ A little over one hundred years after @whitelaw1805, @bowley1913working was inte
 
 ![Extract of the results that Bowley found about rent paid by the working-class in Reading, England](figures/bowleyrents.png){#fig-bowleyrents width=85% fig-align="center"}
 
-Then, having judged from the census that there were about 18,000 households in Reading, @bowley1913working applied a multiplier of 21 to the sample, resulting in estimates for Reading overall. The key aspect that ensures the resulting estimates are reasonable is that the sampling was done in a random way.\index{sampling!systematic} This is why @bowley1913working was so insistent that the visitors go to the actual house that was selected, and not substitute it for another. 
+Then, having judged from the census that there were about 18,000 households in Reading, @bowley1913working applied a multiplier of 21 to the sample, resulting in estimates for Reading overall. The key aspect that ensures the resulting estimates are reasonable is that the sampling was done in a random way.\index{sampling!systematic} This is why @bowley1913working was so insistent that the visitors go to the actual house that was selected, and not substitute it for another.
 
 ### Probabilistic sampling
 
-Having identified a target population and a sampling frame, we need to distinguish between probability and non-probability sampling: 
+Having identified a target population and a sampling frame, we need to distinguish between probability and non-probability sampling:
 
 - "Probability sampling": Every unit in the sampling frame has some known chance of being sampled and the specific sample is obtained randomly based on these chances. The chance of being sampled does not necessarily need to be same for each unit.\index{sampling!probability}
 - "Non-probability sampling": Units from the sampling frame are sampled based on convenience, quotas, judgement, or other non-random processes.\index{sampling!non-probability}
 
 Often the difference between probability and non-probability sampling is one of degree. For instance, we usually cannot forcibly obtain data, and so there is almost always an aspect of volunteering on the part of a respondent. Even when there are penalties for not providing data, such as the case for completing a census form in many countries, it is difficult for even a government to force people to fill it out completely or truthfully---famously in the 2001 New Zealand census more than one per cent of the population listed their religion as "Jedi" [@nzjedis]. The most important aspect to be clear about with probability sampling is the role of uncertainty. This allows us to make claims about the population, based on our sample, with known amounts of error. The trade-off is that probability sampling is often expensive and difficult.
 
-We will consider four types of probability sampling: 
+We will consider four types of probability sampling:
 
-1) simple random; 
-2) systematic; 
-3) stratified; and 
+1) simple random;
+2) systematic;
+3) stratified; and
 4) cluster.
 
 To add some more specificity to our discussion, in a way that is also used by @lohr [p. 27], it may help to consider the numbers one to 100 as our target population. With simple random sampling, every unit has the same chance of being included. In this case let us say it is 20 per cent.\index{sampling!simple random} That means we would expect to have around 20 units in our sample, or around one in five compared with our target population.
@@ -746,9 +746,9 @@ set.seed(853)
 illustrative_sampling <- tibble(
   unit = 1:100,
   simple_random_sampling =
-    sample(x = c("In", "Out"), 
-           size = 100, 
-           replace = TRUE, 
+    sample(x = c("In", "Out"),
+           size = 100,
+           replace = TRUE,
            prob = c(0.2, 0.8))
   )
 
@@ -767,8 +767,8 @@ illustrative_sampling <-
   illustrative_sampling |>
   mutate(
     systematic_sampling =
-      if_else(unit %in% seq.int(from = starting_point, to = 100, by = 5), 
-              "In", 
+      if_else(unit %in% seq.int(from = starting_point, to = 100, by = 5),
+              "In",
               "Out"
               )
     )
@@ -794,7 +794,7 @@ picked_in_strata <-
 
 illustrative_sampling <-
   illustrative_sampling |>
-  mutate(stratified_sampling = 
+  mutate(stratified_sampling =
            if_else(unit %in% picked_in_strata, "In", "Out"))
 
 illustrative_sampling |>
@@ -845,14 +845,14 @@ illustrative_sampling_long <-
     cols = names(new_labels), names_to = "sampling_method",
     values_to = "in_sample"
     ) |>
-  mutate(sampling_method = 
+  mutate(sampling_method =
            factor(sampling_method,levels = names(new_labels)))
 
 illustrative_sampling_long |>
   filter(in_sample == "In") |>
   ggplot(aes(x = unit, y = in_sample)) +
   geom_point() +
-  facet_wrap(vars(sampling_method), dir = "v", ncol = 1, 
+  facet_wrap(vars(sampling_method), dir = "v", ncol = 1,
              labeller = labeller(sampling_method = new_labels)
              ) +
   theme_minimal() +
@@ -993,17 +993,17 @@ illustrative_sampling_long |>
             .by = sampling_method) |>
   mutate(scaled_by_five = sum_from_sample * 5) |>
   mutate(
-    sampling_method = 
+    sampling_method =
       case_when(
         sampling_method == "systematic_sampling" ~ "Systematic sampling",
         sampling_method == "stratified_sampling" ~ "Stratified sampling",
         sampling_method == "cluster_sampling" ~ "Cluster sampling",
         sampling_method == "simple_random_sampling" ~ "Simple random sampling"
       )
-  ) |> 
-  tt() |> 
-  style_tt(j = 1:3, align = "lrr") |> 
-  format_tt(digits = 0, num_mark_big = ",") |> 
+  ) |>
+  tt() |>
+  style_tt(j = 1:3, align = "lrr") |>
+  format_tt(digits = 0, num_mark_big = ",") |>
   setNames(c(
       "Sampling method",
       "Sum of sample",
@@ -1060,9 +1060,9 @@ sleep |>
     toddler_sleep_average = mean(toddler_sleep),
     parent_sleep_average = mean(parent_sleep)
   ) |>
-  tt() |> 
-  style_tt(j = 1:2, align = "lr") |> 
-  format_tt(digits = 2, num_fmt = "decimal") |> 
+  tt() |>
+  style_tt(j = 1:2, align = "lr") |>
+  format_tt(digits = 2, num_fmt = "decimal") |>
   setNames(c("Toddler sleep average", "Parent sleep average"))
 ```
 
@@ -1080,7 +1080,7 @@ While acknowledging that it is a spectrum, much of statistics\index{statistics} 
 
 Non-probability samples have an important role to play because they are typically cheaper and quicker to obtain than probability samples.\index{sampling!non-probability} @beaumont2020probability describes a variety of factors in favor of non-probability samples including declining response rates to probability samples, and increased demand for real-time statistics. Further, as we have discussed, the difference between probability and non-probability samples is sometimes one of degree, rather than dichotomy. Non-probability samples are legitimate and appropriate for some tasks provided one is clear about the trade-offs and ensures transparency [@nonprobabilitysmaples]. Low response rates mean that true probability samples are rare, and so grappling with the implications of non-probability sampling is important.
 
-Convenience sampling involves gathering data from a sample that is easy to access.\index{sampling!convenience} For instance, one often asks one's friends and family to fill out a survey as a way of testing it before wide-scale distribution. If we were to analyze such a sample, then we would likely be using convenience sampling. 
+Convenience sampling involves gathering data from a sample that is easy to access.\index{sampling!convenience} For instance, one often asks one's friends and family to fill out a survey as a way of testing it before wide-scale distribution. If we were to analyze such a sample, then we would likely be using convenience sampling.
 
 The main concern with convenience sampling is whether it is able to speak to the broader population. There are also tricky ethical considerations, and typically a lack of anonymity which may further bias the results.\index{ethics!convenience sampling} On the other hand, it can be useful to cheaply get a quick sense of a situation.
 
@@ -1088,14 +1088,14 @@ Quota sampling occurs when we have strata, but we do not use random sampling wit
 
 As the saying goes, birds of a feather flock together. And we can take advantage of that in our sampling. Although @handcock2011comment describe various uses before this, and it is notoriously difficult to define attribution in multidisciplinary work, snowball sampling is nicely defined by @goodman1961snowball.\index{sampling!snowball} Following @goodman1961snowball, to conduct snowball sampling, we first draw a random sample from the sampling frame. Each of these is asked to name $k$ others also in the sample population, but not in that initial draw, and these form the "first stage". Each individual in the first stage is then similarly asked to name $k$ others who are also in the sample population, but again not in the random draw or the first stage, and these form the "second stage". We need to have specified the number of stages, $s$, and also $k$ ahead of time.
 
-Respondent-driven sampling was developed by @heckathorn1997respondent to focus on hidden populations, which are those where:\index{sampling!respondent-driven} 
+Respondent-driven sampling was developed by @heckathorn1997respondent to focus on hidden populations, which are those where:\index{sampling!respondent-driven}
 
-1) there is no sampling frame; and 
-2) being known to be in the sampling population could have a negative effect. 
+1) there is no sampling frame; and
+2) being known to be in the sampling population could have a negative effect.
 
-For instance, we could imagine various countries in which it would be difficult to sample from, say, the gay population or those who have had abortions. Respondent-driven sampling differs from snowball sampling in two ways: 
+For instance, we could imagine various countries in which it would be difficult to sample from, say, the gay population or those who have had abortions. Respondent-driven sampling differs from snowball sampling in two ways:
 
-1) In addition to compensation for their own response, as is the case with snowball sampling, respondent-driven sampling typically also involves compensation for recruiting others. 
+1) In addition to compensation for their own response, as is the case with snowball sampling, respondent-driven sampling typically also involves compensation for recruiting others.
 2) Respondents are not asked to provide information about others to the investigator, but instead recruit them into the study. Selection into the sample occurs not from sampling frame, but instead from the networks of those already in the sample [@salganik2004sampling].
 
 ## Exercises
@@ -1197,7 +1197,7 @@ For instance, we could imagine various countries in which it would be difficult 
     c. The percentage of questionnaires with partial responses.
     d.  The proportion of dwellings where the questionnaires does not meet the minimum content.
 21. With reference to @chen2019forensic and @martinez2019much, to what extent do you think we can trust government statistics? Please write at least a page and compare at least two governments in your answer.
-14. The 2021 census in Canada asked, firstly, "What was this person's sex at birth? Sex refers to sex assigned at birth. Male/Female", and then "What is this person's gender? Refers to current gender which may be different from sex assigned at birth and may be different from what is indicated on legal documents. Male/Female/Or please specify this person's gender (space for a typed or handwritten answer)". With reference to @statcan2020, please discuss the extent to which you think this is an appropriate way for the census to have proceeded. You are welcome to discuss the case of a different country if you are more familiar with that. 
+14. The 2021 census in Canada asked, firstly, "What was this person's sex at birth? Sex refers to sex assigned at birth. Male/Female", and then "What is this person's gender? Refers to current gender which may be different from sex assigned at birth and may be different from what is indicated on legal documents. Male/Female/Or please specify this person's gender (space for a typed or handwritten answer)". With reference to @statcan2020, please discuss the extent to which you think this is an appropriate way for the census to have proceeded. You are welcome to discuss the case of a different country if you are more familiar with that.
 22. Please use IPUMS to access the 2020 ACS. Making use of the codebook, how many respondents were there in California (STATEICP) that had a Doctoral degree as their highest educational attainment (EDUC) (pick one)?
     a. 2,007
     b. 732
@@ -1215,7 +1215,7 @@ For instance, we could imagine various countries in which it would be difficult 
     c. A subset of the population that is easily accessible for sampling.
     d. The list of individuals who have agreed to participate in the study.
 26. What is a sampling frame (pick one)?
-    a. The method used to collect data from respondents. 
+    a. The method used to collect data from respondents.
     b.  The list of all units in the target population from which a sample can be drawn.
     c. The timeframe during which data collection occurs.
     d. The entire group about which the researcher wants to draw conclusions.
@@ -1274,7 +1274,7 @@ For instance, we could imagine various countries in which it would be difficult 
     b. By inspecting census records.
     c. By collecting data from tax records.
     d.  Through volunteer interviews with households.
-40. Please discuss the following statement from @bowley1913working [p. 673] "It may appear to persons who are not familiar with processes of sampling that a proportion of i in 21 is too small for any conclusion, and that in any case not more than a vague probability can be obtained. ... [but] the precision of a sample depends not on its proportion to the whole, but on its own magnitude, if the conditions of random sampling are secured, as it is believed they have been in this inquiry." 
+40. Please discuss the following statement from @bowley1913working [p. 673] "It may appear to persons who are not familiar with processes of sampling that a proportion of i in 21 is too small for any conclusion, and that in any case not more than a vague probability can be obtained. ... [but] the precision of a sample depends not on its proportion to the whole, but on its own magnitude, if the conditions of random sampling are secured, as it is believed they have been in this inquiry."
 41. From @neyman1934two, what is the primary goal of stratified sampling (pick one)?
     a. To reduce the need for randomization.
     b.  To ensure all strata of the population are represented.
@@ -1335,15 +1335,15 @@ tibble(
   birth_year = c(1940, 1940, NA_integer_,
                  1975, 1975, 1976, 1974,
                  1989, 1989, NA_integer_, NA_integer_, 1989, 1990, 1990, 1991)
-  ) |> 
-  tt() |> 
-  style_tt(j = 1:3, align = "lrr") |> 
+  ) |>
+  tt() |>
+  style_tt(j = 1:3, align = "lrr") |>
   setNames(c("Band", "Person", "Year of birth"))
 ```
-- Please discuss sampling bias in the context of the response by Katherine Rundell, a fellow at All Souls College, in response to a question about whether the word "emancipation" is from John Donne: 
+- Please discuss sampling bias in the context of the response by Katherine Rundell, a fellow at All Souls College, in response to a question about whether the word "emancipation" is from John Donne:
 
 > It is, although, of course, I think it would be amiss of me not to offer the caveat that often, the OED has always found first uses in canonical authors, in part because they're just the ones who survived fire. So of course, he may have just been noting down a word in common parlance rather than being its inventor
-> 
+>
 > Katherine Rundell [@conversationswithkatherinerundell]
 
 - The dean wants to understand the average statistical ability of students in the faculty. She agrees to provide you with some funding, but not so much that you can do a census, and asks you to report back in a week. Please define the target population, sampling frame, and sample. Please further discuss whether you will use probability or non-probability sampling, and within these, which approach you want to use. Discuss the strengths and weaknesses of your approach.
@@ -1359,13 +1359,13 @@ tibble(
 
 The purpose of this task is to develop comfort with:
 
-1. dealing with larger datasets, 
-2. understand ratio estimators, and 
+1. dealing with larger datasets,
+2. understand ratio estimators, and
 3. sampling.
 
 Please use IPUMS to access the 2022 ACS. Making use of the codebook, how many respondents were there in each state (STATEICP) that had a doctoral degree as their highest educational attainment (EDUC)? (Hint: Make this a column in a tibble.)
 
-If there were 391,171 respondents in California (STATEICP) across all levels of education, then can you please use the ratio estimators approach of Laplace to estimate the total number of respondents in each state i.e. take the ratio that you worked out for California and apply it to the rest of the states. (Hint: You can now work out the ratio between the number of respondents with doctoral degrees in a state and number of respondents in a state and then apply that ratio to your column of the number of respondents with a doctoral degree in each state.) Compare it to the actual number of respondents in each state. 
+If there were 391,171 respondents in California (STATEICP) across all levels of education, then can you please use the ratio estimators approach of Laplace to estimate the total number of respondents in each state i.e. take the ratio that you worked out for California and apply it to the rest of the states. (Hint: You can now work out the ratio between the number of respondents with doctoral degrees in a state and number of respondents in a state and then apply that ratio to your column of the number of respondents with a doctoral degree in each state.) Compare it to the actual number of respondents in each state.
 
 Write a brief paper using Quarto and submit a link to a GitHub repo (one repo per group) that meets the general expectations of the course. Components of the rubric that are relevant are: "R/Python is cited", "Data are appropriately cited", "Class paper", "LLM usage is documented", "Title", "Author, date, and repo", "Abstract", "Introduction", "Data", "Results", "Discussion", "Prose", "Cross-references", "Captions", "Graphs and tables", "Referencing", "Commits", "Sketches", "Simulation", "Tests", and "Reproducible workflow".
 
@@ -1377,7 +1377,7 @@ Your paper should cover at least:
 - Some explanation of why you think they are different i.e. the strengths and weaknesses of using ratio estimators.
 - A discussion of the strengths and weaknesses of the sampling approaches used by the ACS. (Hint: One fun thing could be to find the actual population of one state, then given the number of respondents in that and every state, use the ratio estimators approach to estimate the population of every state and then compare it with the actual populations.)
 
-Do not forget to cite the data (but do not upload the raw data to GitHub). 
+Do not forget to cite the data (but do not upload the raw data to GitHub).
 
 
 Note:
@@ -1394,7 +1394,7 @@ The purpose of this task is to:
 1. compare simple random with cluster sampling.
 2. consider the difference between probability and non-probability sampling.
 
-A biobank contains de-identified biomedical data. For instance, UK Biobank contains samples from half a million UK participants. One use is to look at a respondent's whole genome sequencing data and then relate it to various conditions they have to better understand the extent of genetic determinant. 
+A biobank contains de-identified biomedical data. For instance, UK Biobank contains samples from half a million UK participants. One use is to look at a respondent's whole genome sequencing data and then relate it to various conditions they have to better understand the extent of genetic determinant.
 
 Please simulate the UK Biobank dataset. A whole genome would be a sequence of the letters A, T, C, and G, of a length of around 3 billion. For each individual, simulate only a length of 12 in total, made up of four groups of three letters. Then consider four conditions: colon cancer, cystic fibrosis, Parkinson's disease, and skin cancer. Create some probability association between different three letter combinations in your simulated genome sequences and whether a person has that condition. For instance, perhaps having AAA in the first three positions, is associated with five percent higher rate of colon cancer. Pretend that UK Biobank uses simple random sampling. Don't forget to set a seed.
 

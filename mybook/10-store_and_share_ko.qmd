@@ -92,11 +92,11 @@ FAIR 원칙\index{FAIR principles}은 데이터 공유 및 관리에 대해 더 
 
 데이터셋을 저장하는 가장 쉬운 방법은 GitHub입니다. 왜냐하면 이미 우리의 워크플로에 내장되어 있기 때문입니다.\index{GitHub!data storage} 예를 들어, 데이터셋을 공개 리포지토리에 푸시하면 데이터셋을 사용할 수 있게 됩니다. 이점 중 하나는 작업 공간을 적절하게 설정했다면 원본, 편집되지 않은 데이터와 정돈된 데이터, 그리고 하나를 다른 것으로 변환하는 데 필요한 스크립트를 저장할 가능성이 높다는 것입니다. 우리는 아무것도 변경하지 않고도 @heil2021reproducibility의 "브론즈" 표준에 거의 도달합니다.
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 일부 데이터를 저장한 방법의 예로, ["starter_folder"](https://github.com/RohanAlexander/starter_folder)에서 "raw_data.csv"에 접근할 수 있습니다. GitHub에서 파일로 이동한 다음("inputs" $\rightarrow$ "data" $\rightarrow$ "raw_data.csv") "Raw"를 클릭합니다(@fig-githubraw).
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 일부 데이터를 저장한 방법의 예로, ["starter_folder"](https://github.com/RohanAlexander/starter_folder)에서 "raw_data.csv"에 접근할 수 있습니다. GitHub에서 파일로 이동한 다음("inputs" $\rightarrow$ "data" $\rightarrow$ "raw_data.csv") "Raw"를 클릭합니다(@fig-githubraw).
 :::
 
@@ -355,7 +355,7 @@ some_private_information |>
 
 자체 해시 함수를 작성하는 대신 `openssl`의 `md5()`와 같은 암호화 해시 함수를 사용할 수 있습니다.
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 ```{r}
 #| message: false
 #| warning: false
@@ -379,7 +379,7 @@ some_private_information |>
   mutate(
     md5_names = md5(names),
     md5_ages = md5(ages |> as.character())
-  ) |> 
+  ) |>
   mutate(
     md5_names = str_trunc(md5_names, 20),
     md5_ages = str_trunc(md5_ages, 20)
@@ -388,7 +388,7 @@ some_private_information |>
 ```
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 ```{r}
 #| message: false
 #| warning: false
@@ -480,8 +480,8 @@ distr <- function(n) rnorm(n)
 
 mech <- sensitivitySampler(mech, oracle = distr, n = 5, gamma = 0.1)
 
-r <- releaseResponse(mech, 
-                     privacyParams = DPParamsEps(epsilon = 1), 
+r <- releaseResponse(mech,
+                     privacyParams = DPParamsEps(epsilon = 1),
                      X = grades$ps_1)
 ```
 
@@ -509,12 +509,12 @@ tibble(actual = mean(grades$ps_1),
 
 ## 데이터 효율성
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 대부분의 경우, 완벽한 것보다 완료하는 것이 낫고, 불필요한 최적화는 자원 낭비입니다.\index{efficiency!data} 그러나 어느 시점에서는 특히 데이터셋이 커질수록 데이터를 다루는 새로운 방식을 채택해야 합니다. 여기서는 여러 파일을 반복하는 것에 대해 논의한 다음, Apache Arrow 및 parquet 사용으로 전환합니다. 또 다른 자연스러운 단계는 SQL 사용이며, 이는 ["SQL" 온라인 부록](https://tellingstorieswithdata.com/26-sql.html)에서 다룹니다.
 :::
 
-::: {.content-visible unless-format="pdf"}
-대부분의 경우, 완벽한 것보다 완료하는 것이 낫고, 불필요한 최적화는 자원 낭비입니다.\index{efficiency!data} 그러나 어느 시점에서는 특히 데이터셋이 커질수록 데이터를 다루는 새로운 방식을 채택해야 합니다. 여기서는 여러 파일을 반복하는 것에 대해 논의한 다음, Apache Arrow 및 parquet 사용으로 전환합니다. 또 다른 자연스러운 단계는 SQL 사용이며, 이는 [온라인 부록 -@sec-sql]에서 다룹니다.
+:::{.content-visible unless-format="pdf"}
+대부분의 경우, 완벽한 것보다 완료하는 것이 낫고, 불필요한 최적화는 자원 낭비입니다.\index{efficiency!data} 그러나 어느 시점에서는 특히 데이터셋이 커질수록 데이터를 다루는 새로운 방식을 채택해야 합니다. 여기서는 여러 파일을 반복하는 것에 대해 논의한 다음, Apache Arrow 및 parquet 사용으로 전환합니다. 또 다른 자연스러운 단계는 SQL 사용이며, 이는 [온라인 부록 -[@sec-sql]]에서 다룹니다.
 :::
 
 ### 반복
@@ -754,42 +754,42 @@ file_size_comparison <-
           replace = TRUE
         ),
       )
-    
+
     tic.clearlog()
-    
+
     tic("csv - write")
     write_csv(x = a_million_random_digits,
               file = "a_million_random_digits.csv")
     toc(log = TRUE, quiet = TRUE)
-    
+
     tic("parquet - write")
     write_parquet(x = a_million_random_digits,
                   sink = "a_million_random_digits.parquet")
     toc(log = TRUE, quiet = TRUE)
-    
+
     file_size_comparison <- tibble(
       draws = num_draws,
       csv_size = file_size("a_million_random_digits.csv"),
       parquet_size = file_size("a_million_random_digits.parquet")
     )
-    
+
     rm(a_million_random_digits)
-    
+
     tic("csv - read")
     a_million_random_digits <-
       read_csv(file = "a_million_random_digits.csv")
     toc(log = TRUE, quiet = TRUE)
     rm(a_million_random_digits)
-    
+
     tic("parquet - read")
     a_million_random_digits <-
       read_parquet(file = "a_million_random_digits.parquet")
     toc(log = TRUE, quiet = TRUE)
     rm(a_million_random_digits)
-    
+
     file.remove("a_million_random_digits.csv")
     file.remove("a_million_random_digits.parquet")
-    
+
     need_for_speed <-
       tibble(raw = unlist(tic.log(format = TRUE))) |>
       separate(raw, into = c("thing", "time"), sep = ": ") |>
@@ -800,9 +800,9 @@ file_size_comparison <-
       select(names, time) |>
       pivot_wider(names_from = names,
                   values_from = time)
-    
+
     file_size_comparison <- cbind(file_size_comparison, need_for_speed)
-    
+
     file_size_comparison
   }) |>
   list_rbind()
@@ -1182,8 +1182,8 @@ class_marks <-
   )
 
 class_marks |>
-  tt() |> 
-  style_tt(j = 1:2, align = "lr") |> 
+  tt() |>
+  style_tt(j = 1:2, align = "lr") |>
   setNames(c("학생", "점수"))
 ```
 
@@ -1195,10 +1195,10 @@ Quarto를 사용하고, 적절한 제목, 저자, 날짜, GitHub 리포지토리
 
 ### 논문 {.unnumbered}
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 이 시점에서 ["논문" 온라인 부록](https://tellingstorieswithdata.com/23-assessment.html)의 *Dysart* 논문이 적절할 것입니다.
 :::
- 
-::: {.content-visible unless-format="pdf"}
+
+:::{.content-visible unless-format="pdf"}
 이 시점에서 [온라인 부록 -@sec-papers]의 *Dysart* 논문이 적절할 것입니다.
 :::

@@ -19,7 +19,7 @@ engine: knitr
 
 **Key concepts and skills**
 
-- The FAIR principles provide the foundation from which we consider data sharing and storage. These specify that data should be findable, accessible, interoperable, and reusable. 
+- The FAIR principles provide the foundation from which we consider data sharing and storage. These specify that data should be findable, accessible, interoperable, and reusable.
 - The most important step is the first one, and that is to get the data off our local computer, and to then make it accessible by others. After that, we build documentation, and datasheets, to make it easier for others to understand and use it. Finally, we ideally enable access without our involvement.
 - At the same time as wanting to share our datasets as widely as possible, we should respect those whose information are contained in them. This means, for instance, protecting, to a reasonable extent, and informed by costs and benefits, personally identifying information through selective disclosure, hashing, data simulation, and differential privacy.
 - Finally, as our data get larger, approaches that were viable when they were smaller start to break down. We need to consider efficiency, and explore other approaches, formats, and languages.
@@ -64,13 +64,13 @@ The FAIR principles\index{FAIR principles} are useful when we come to think more
 3. Interoperable. The dataset and its metadata use a broadly-applicable language and vocabulary.
 4. Reusable. There are extensive descriptions of the dataset and the usage conditions are made clear along with provenance.
 
-One reason for the rise of data science is that humans are at the heart of it.\index{data science!humans} And often the data that we are interested in directly concern humans. This means that there can be tension between sharing a dataset to facilitate reproducibility and maintaining privacy.\index{privacy!reproducibility} Medicine developed approaches to this over a long time. And out of that we have seen the Health Insurance Portability and Accountability Act (HIPAA)\index{Health Insurance Portability and Accountability Act} in the US, the broader General Data Protection Regulation (GDPR)\index{General Data Protection Regulation} in Europe introduced in 2016, and the California Consumer Privacy Act (CCPA)\index{California Consumer Privacy Act} introduced in 2018, among others. 
+One reason for the rise of data science is that humans are at the heart of it.\index{data science!humans} And often the data that we are interested in directly concern humans. This means that there can be tension between sharing a dataset to facilitate reproducibility and maintaining privacy.\index{privacy!reproducibility} Medicine developed approaches to this over a long time. And out of that we have seen the Health Insurance Portability and Accountability Act (HIPAA)\index{Health Insurance Portability and Accountability Act} in the US, the broader General Data Protection Regulation (GDPR)\index{General Data Protection Regulation} in Europe introduced in 2016, and the California Consumer Privacy Act (CCPA)\index{California Consumer Privacy Act} introduced in 2018, among others.
 
 Our concerns in data science tend to be about personally identifying information.\index{privacy!personally identifying information} We have a variety of ways to protect especially private information, such as emails and home addresses. For instance, we can hash those variables. Sometimes we may simulate data and distribute that instead of sharing the actual dataset. More recently, approaches based on differential privacy are being implemented, for instance for the US census. The fundamental problem of data privacy\index{data!privacy} is that increased privacy reduces the usefulness of a dataset. The trade-off means the appropriate decision is nuanced and depends on costs and benefits, and we should be especially concerned about differentiated effects on population minorities.
 
 Just because a dataset is FAIR, it is not necessarily an unbiased representation of the world. Further, it is not necessarily fair in the everyday way that word is used, i.e. impartial and honest [@deLima2022]. FAIR reflects whether a dataset is appropriately available, not whether it is appropriate.
 
-Finally, in this chapter we consider efficiency. As datasets and code bases get larger it becomes more difficult to deal with them, especially if we want them to be shared. We come to concerns around efficiency, not for its own sake, but to enable us to tell stories that could not otherwise be told. This might mean moving beyond CSV files to formats with other properties, or even using databases, such as Postgres, although even as we do so acknowledging that the simplicity of a CSV, as it is text-based which lends itself to human inspection, can be a useful feature. 
+Finally, in this chapter we consider efficiency. As datasets and code bases get larger it becomes more difficult to deal with them, especially if we want them to be shared. We come to concerns around efficiency, not for its own sake, but to enable us to tell stories that could not otherwise be told. This might mean moving beyond CSV files to formats with other properties, or even using databases, such as Postgres, although even as we do so acknowledging that the simplicity of a CSV, as it is text-based which lends itself to human inspection, can be a useful feature.
 
 ## Plan
 
@@ -92,11 +92,11 @@ Data provenance is especially important. This refers to documenting "where a pie
 
 The easiest place for us to get started with storing a dataset is GitHub because that is already built into our workflow.\index{GitHub!data storage} For instance, if we push a dataset to a public repository, then our dataset becomes available. One benefit of this is that if we have set up our workspace appropriately, then we likely store our original, unedited data and the tidy data, as well as the scripts that are needed to transform one to the other. We are most of the way to the "bronze" standard of @heil2021reproducibility without changing anything.
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 As an example of how we have stored some data, we can access "raw_data.csv" from the ["starter_folder"](https://github.com/RohanAlexander/starter_folder). We navigate to the file in GitHub ("inputs" $\rightarrow$ "data" $\rightarrow$ "raw_data.csv"), and then click "Raw" (@fig-githubraw).
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 As an example of how we have stored some data, we can access "raw_data.csv" from the ["starter_folder"](https://github.com/RohanAlexander/starter_folder). We navigate to the file in GitHub ("inputs" $\rightarrow$ "data" $\rightarrow$ "raw_data.csv"), and then click "Raw" (@fig-githubraw).
 :::
 
@@ -130,7 +130,7 @@ While we can store and retrieve a dataset easily in this way, it lacks explanati
 
 ### R packages for data
 
-To this point we have largely used R packages for their code, although we have seen a few that were focused on sharing data, for instance, `troopdata` and `babynames` in @sec-static-communication. We can build a R package for our dataset and then add it to GitHub and potentially eventually CRAN. This will make it easy to store and retrieve because we can obtain the dataset by loading the package. In contrast to the CSV-based approach, it also means a dataset brings its documentation along with it. 
+To this point we have largely used R packages for their code, although we have seen a few that were focused on sharing data, for instance, `troopdata` and `babynames` in @sec-static-communication. We can build a R package for our dataset and then add it to GitHub and potentially eventually CRAN. This will make it easy to store and retrieve because we can obtain the dataset by loading the package. In contrast to the CSV-based approach, it also means a dataset brings its documentation along with it.
 
 This will be the first R package that we build, and so we will jump over a number of steps. The key is to just try to get something working. In @sec-production, we return to R packages and use them to deploy models. This gives us another chance to further develop experience with them.
 
@@ -256,15 +256,15 @@ When creating a datasheet for a dataset, especially a dataset that we did not pu
 
 ## Personally identifying information
 
-By way of background, @christensen2019transparent [p. 180] define a variable as "confidential" if the researchers know who is associated with each observation, but the public version of the dataset removes this association. A variable is "anonymous" if even the researchers do not know.\index{privacy!personally identifying information} 
+By way of background, @christensen2019transparent [p. 180] define a variable as "confidential" if the researchers know who is associated with each observation, but the public version of the dataset removes this association. A variable is "anonymous" if even the researchers do not know.\index{privacy!personally identifying information}
 
 Personally identifying information (PII) is that which enables us to link an observation in our dataset with an actual person. This is a significant concern in fields focused on data about people. Email addresses are often PII, as are names and addresses. While some variables may not be PII for many respondents, it could be PII for some. For instance, consider a survey that is representative of the population age distribution. There is not likely to be many respondents aged over 100, and so the variable age may then become PII. The same scenario applies to income, wealth, and many other variables. One response to this is for data to be censored, which was discussed in @sec-farm-data. For instance, we may record age between zero and 90, and then group everyone over that into "90+". Another is to construct age-groups: "18-29", "30-44", $\dots$. Notice that with both these solutions we have had to trade-off privacy and usefulness. More concerningly, a variable may be PII, not by itself, but when combined with another variable.
 
 Our primary concern should be with ensuring that the privacy of our dataset is appropriate, given the expectations of the reasonable person.\index{privacy!personally identifying information}  This requires weighing costs and benefits. In national security settings there has been considerable concern about the over-classification of documents [@overclassification]. The reduced circulation of information because of this may result in unrealized benefits. To avoid this in data science, the test of the need to protect a dataset needs to be made by the reasonable person weighing up costs and benefits. It is easy, but incorrect, to argue that data should not be released unless it is perfectly anonymized. The fundamental problem of data privacy implies that such data would have limited utility. That approach, possibly motivated by the precautionary principle, would be too conservative and could cause considerable loss in terms of unrealized benefits.
 
-Randomized response [@randomizedresponse] is a clever way to enable anonymity without much overhead.\index{privacy!randomized response}  Each respondent flips a coin before they answer a question but does not show the researcher the outcome of the coin flip. The respondent is instructed to respond truthfully to the question if the coin lands on heads, but to always give some particular (but still plausible) response if tails. The results of the other options can then be re-weighted to enable an estimate, without a researcher ever knowing the truth about any particular respondent. This is especially used in association with snowball sampling, discussed in @sec-farm-data. One issue with randomized response is that the resulting dataset can be only used to answer specific questions. This requires careful planning, and the dataset will be of less general value. 
+Randomized response [@randomizedresponse] is a clever way to enable anonymity without much overhead.\index{privacy!randomized response}  Each respondent flips a coin before they answer a question but does not show the researcher the outcome of the coin flip. The respondent is instructed to respond truthfully to the question if the coin lands on heads, but to always give some particular (but still plausible) response if tails. The results of the other options can then be re-weighted to enable an estimate, without a researcher ever knowing the truth about any particular respondent. This is especially used in association with snowball sampling, discussed in @sec-farm-data. One issue with randomized response is that the resulting dataset can be only used to answer specific questions. This requires careful planning, and the dataset will be of less general value.
 
-@zook2017ten recommend considering whether data even need to be gathered in the first place.\index{privacy!not gathering data} For instance, if a phone number is not absolutely required then it might be better to not ask for it, rather than need to worry about protecting it before data dissemination. 
+@zook2017ten recommend considering whether data even need to be gathered in the first place.\index{privacy!not gathering data} For instance, if a phone number is not absolutely required then it might be better to not ask for it, rather than need to worry about protecting it before data dissemination.
 GDPR\index{General Data Protection Regulation} and HIPAA\index{Health Insurance Portability and Accountability Act} are two legal structures that govern data in Europe, and the United States, respectively. Due to the influence of these regions, they have a significant effect outside those regions also. GDPR concerns data generally, while HIPAA is focused on healthcare. GDPR applies to all personal data, which is defined as:
 
 > $\dots$any information relating to an identified or identifiable natural person ("data subject"); an identifiable natural person is one who can be identified, directly or indirectly, in particular by reference to an identifier such as a name, an identification number, location data, an online identifier or to one or more factors specific to the physical, physiological, genetic, mental, economic, cultural or social identity of that natural person;
@@ -277,7 +277,7 @@ There are a variety of ways of protecting PII, while still sharing some data, th
 
 ### Hashing
 
-A cryptographic hash is a one-way transformation, such that the same input always provides the same output, but given the output, it is not reasonably possible to obtain the input.\index{data!privacy} For instance, a function that doubled its input always gives the same output, for the same input, but is also easy to reverse, so would not work well as a hash. In contrast, the modulo, which for a non-negative number is the remainder after division and can be implemented in R using `%%`, would be difficult to reverse. 
+A cryptographic hash is a one-way transformation, such that the same input always provides the same output, but given the output, it is not reasonably possible to obtain the input.\index{data!privacy} For instance, a function that doubled its input always gives the same output, for the same input, but is also easy to reverse, so would not work well as a hash. In contrast, the modulo, which for a non-negative number is the remainder after division and can be implemented in R using `%%`, would be difficult to reverse.
 
 @knuth [p. 514] relates an interesting etymology for "hash". He first defines "to hash" as relating to chop up or make a mess, and then explaining that hashing relates to scrambling the input and using this partial information to define the output. A collision is when different inputs map to the same output, and one feature of a good hashing algorithm is that collisions are reduced. As mentioned, one simple approach is to rely on the modulo operator. For instance, if we were interested in ten different groupings for the integers 1 through to 10, then modulo would enable this. A better approach would be for the number of groupings to be a larger number, because this would reduce the number of values with the same hash outcome.\index{data!privacy}
 
@@ -358,7 +358,7 @@ While the approach for the first variable, names, is good because the names cann
 
 Rather than write our own hash functions, we can use cryptographic hash functions such as `md5()` from `openssl`.
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 ```{r}
 #| message: false
 #| warning: false
@@ -382,7 +382,7 @@ some_private_information |>
   mutate(
     md5_names = md5(names),
     md5_ages = md5(ages |> as.character())
-  ) |> 
+  ) |>
   mutate(
     md5_names = str_trunc(md5_names, 20),
     md5_ages = str_trunc(md5_ages, 20)
@@ -391,7 +391,7 @@ some_private_information |>
 ```
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 ```{r}
 #| message: false
 #| warning: false
@@ -430,7 +430,7 @@ For more nuanced situations, @koenecke2020synthetic recommend using the syntheti
 
 ### Differential privacy
 
-Differential privacy\index{privacy!differential privacy} is a mathematical definition of privacy [@Dwork2013, p. 6]. It is not just one algorithm, it is a definition that many algorithms satisfy. Further, there are many definitions of privacy, of which differential privacy is just one. The main issue it solves is that there are many datasets available. This means there is always the possibility that some combination of them could be used to identify respondents even if PII were removed from each of these individual datasets. For instance, experience with the Netflix prize found that augmenting the available dataset with data from IMBD resulted in better predictions, which points to why this would so commonly happen. Rather than needing to anticipate how various datasets could be combined to re-identify individuals and adjust variables to remove this possibility, a dataset that is created using a differentially private approach provides assurances that privacy will be maintained. 
+Differential privacy\index{privacy!differential privacy} is a mathematical definition of privacy [@Dwork2013, p. 6]. It is not just one algorithm, it is a definition that many algorithms satisfy. Further, there are many definitions of privacy, of which differential privacy is just one. The main issue it solves is that there are many datasets available. This means there is always the possibility that some combination of them could be used to identify respondents even if PII were removed from each of these individual datasets. For instance, experience with the Netflix prize found that augmenting the available dataset with data from IMBD resulted in better predictions, which points to why this would so commonly happen. Rather than needing to anticipate how various datasets could be combined to re-identify individuals and adjust variables to remove this possibility, a dataset that is created using a differentially private approach provides assurances that privacy will be maintained.
 
 :::{.callout-note}
 ## Shoulders of giants
@@ -453,7 +453,7 @@ Consider a situation in which a professor wants to release the average mark for 
 ```{r}
 set.seed(853)
 
-grades <- 
+grades <-
   tibble(ps_1 = sample(x = (1:100), size = 10, replace = TRUE))
 
 mean(grades$ps_1)
@@ -483,8 +483,8 @@ distr <- function(n) rnorm(n)
 
 mech <- sensitivitySampler(mech, oracle = distr, n = 5, gamma = 0.1)
 
-r <- releaseResponse(mech, 
-                     privacyParams = DPParamsEps(epsilon = 1), 
+r <- releaseResponse(mech,
+                     privacyParams = DPParamsEps(epsilon = 1),
                      X = grades$ps_1)
 ```
 
@@ -506,17 +506,17 @@ tibble(actual = mean(grades$ps_1),
   setNames(c("Actual mean", "Announceable mean"))
 ```
 
-The implementation of differential privacy is a costs and benefits issue [@hotz2022balancing; @kennetal22]. Stronger privacy protection fundamentally must mean less information [@clairemckaybowen, p. 39], and this differently affects various aspects of society. For instance, @Suriyakumar2021 found that, in the context of health care, differentially private learning can result in models that are disproportionately affected by large demographic groups. A variant of differential privacy has recently been implemented by the US census.\index{privacy!differential privacy} It may have a significant effect on redistricting [@kenny2021impact] and result in some publicly available data that are unusable in the social sciences [@ruggles2019differential]. 
+The implementation of differential privacy is a costs and benefits issue [@hotz2022balancing; @kennetal22]. Stronger privacy protection fundamentally must mean less information [@clairemckaybowen, p. 39], and this differently affects various aspects of society. For instance, @Suriyakumar2021 found that, in the context of health care, differentially private learning can result in models that are disproportionately affected by large demographic groups. A variant of differential privacy has recently been implemented by the US census.\index{privacy!differential privacy} It may have a significant effect on redistricting [@kenny2021impact] and result in some publicly available data that are unusable in the social sciences [@ruggles2019differential].
 
 
 
 ## Data efficiency
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 For the most part, done is better than perfect, and unnecessary optimization is a waste of resources.\index{efficiency!data} However, at a certain point, we need to adapt new ways of dealing with data, especially as our datasets start to get larger. Here we discuss iterating through multiple files, and then turn to the use of Apache Arrow and parquet. Another natural step would be the use of SQL, which is covered in the ["SQL" Online Appendix](https://tellingstorieswithdata.com/26-sql.html).
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 For the most part, done is better than perfect, and unnecessary optimization is a waste of resources.\index{efficiency!data} However, at a certain point, we need to adapt new ways of dealing with data, especially as our datasets start to get larger. Here we discuss iterating through multiple files, and then turn to the use of Apache Arrow and parquet. Another natural step would be the use of SQL, which is covered in [Online Appendix -@sec-sql].
 :::
 
@@ -673,7 +673,7 @@ year_of_data_using_purrr
 
 ### Apache Arrow
 
-CSVs are commonly used without much thought in data science.\index{data science!CSV alternatives}\index{data science!parquet}\index{efficiency!parquet} And while CSVs are good because they have little overhead and can be manually inspected, this also means they are quite minimal. This can lead to issues, for instance class is not preserved, and file sizes can become large leading to storage and performance issues. There are various alternatives, including Apache Arrow, which stores data in columns rather than rows like CSV. We focus on the ".parquet" format from Apache Arrow.\index{Apache Arrow!parquet} Like a CSV, parquet is an open standard.\index{parquet} The R package, `arrow`, enables us to use this format. The use of parquet has the advantage of requiring little change from us while delivering significant benefits. 
+CSVs are commonly used without much thought in data science.\index{data science!CSV alternatives}\index{data science!parquet}\index{efficiency!parquet} And while CSVs are good because they have little overhead and can be manually inspected, this also means they are quite minimal. This can lead to issues, for instance class is not preserved, and file sizes can become large leading to storage and performance issues. There are various alternatives, including Apache Arrow, which stores data in columns rather than rows like CSV. We focus on the ".parquet" format from Apache Arrow.\index{Apache Arrow!parquet} Like a CSV, parquet is an open standard.\index{parquet} The R package, `arrow`, enables us to use this format. The use of parquet has the advantage of requiring little change from us while delivering significant benefits.
 
 :::{.callout-note}
 ## Shoulders of giants
@@ -681,9 +681,9 @@ CSVs are commonly used without much thought in data science.\index{data science!
 Wes McKinney\index{McKinney, Wes} holds an undergraduate degree in theoretical mathematics from MIT. Starting in 2008, while working at AQR Capital Management, he developed the Python package, pandas, which has become a cornerstone of data science. He later wrote *Python for Data Analysis* [@pythonfordataanalysis]. In 2016, with Hadley Wickham,\index{Wickham, Hadley} he designed Feather, which was released in 2016. He now works as CTO of Voltron Data, which focuses on the Apache Arrow project.
 :::
 
-In particular, we focus on the benefit of using parquet for data storage, such as when we want to save a copy of an analysis dataset that we cleaned and prepared.\index{parquet!data storage} Among other aspects, parquet brings two specific benefits, compared with CSV:\index{parquet!benefits} 
+In particular, we focus on the benefit of using parquet for data storage, such as when we want to save a copy of an analysis dataset that we cleaned and prepared.\index{parquet!data storage} Among other aspects, parquet brings two specific benefits, compared with CSV:\index{parquet!benefits}
 
-- the file sizes are typically smaller; and 
+- the file sizes are typically smaller; and
 - class is preserved because parquet attaches a schema, which makes dealing with, say, dates and factors considerably easier.
 
 Having loaded `arrow`, we can use parquet files in a similar way to CSV files. Anywhere in our code that we used `write_csv()` and `read_csv()` we could alternatively, or additionally, use `write_parquet()` and `read_parquet()`, respectively. The decision to use parquet needs to consider both costs and benefits, and it is an active area of development.\index{A Million Random Digits with 100000 Normal Deviates}
@@ -757,42 +757,42 @@ file_size_comparison <-
           replace = TRUE
         ),
       )
-    
+
     tic.clearlog()
-    
+
     tic("csv - write")
     write_csv(x = a_million_random_digits,
               file = "a_million_random_digits.csv")
     toc(log = TRUE, quiet = TRUE)
-    
+
     tic("parquet - write")
     write_parquet(x = a_million_random_digits,
                   sink = "a_million_random_digits.parquet")
     toc(log = TRUE, quiet = TRUE)
-    
+
     file_size_comparison <- tibble(
       draws = num_draws,
       csv_size = file_size("a_million_random_digits.csv"),
       parquet_size = file_size("a_million_random_digits.parquet")
     )
-    
+
     rm(a_million_random_digits)
-    
+
     tic("csv - read")
     a_million_random_digits <-
       read_csv(file = "a_million_random_digits.csv")
     toc(log = TRUE, quiet = TRUE)
     rm(a_million_random_digits)
-    
+
     tic("parquet - read")
     a_million_random_digits <-
       read_parquet(file = "a_million_random_digits.parquet")
     toc(log = TRUE, quiet = TRUE)
     rm(a_million_random_digits)
-    
+
     file.remove("a_million_random_digits.csv")
     file.remove("a_million_random_digits.parquet")
-    
+
     need_for_speed <-
       tibble(raw = unlist(tic.log(format = TRUE))) |>
       separate(raw, into = c("thing", "time"), sep = ": ") |>
@@ -803,9 +803,9 @@ file_size_comparison <-
       select(names, time) |>
       pivot_wider(names_from = names,
                   values_from = time)
-    
+
     file_size_comparison <- cbind(file_size_comparison, need_for_speed)
-    
+
     file_size_comparison
   }) |>
   list_rbind()
@@ -1085,7 +1085,7 @@ We will use parquet more in the remainder of this book.
     b.  recommended uses.
     c.  motivation.
     d.  collection process.
-4. Discuss, with the help of examples and references, whether a person's name is PII (please write at least three paragraphs)? 
+4. Discuss, with the help of examples and references, whether a person's name is PII (please write at least three paragraphs)?
 5. Using `md5()` what is the hash of "Monica" (pick one)?
     a. 243f63354f4c1cc25d50f6269b844369
     b. 02df8936eee3d4d2568857ed530671b2
@@ -1161,10 +1161,10 @@ sample(x = 1:5, size = 5, replace = T)
 ```
 - Working with the instructor, pick a chapter from @lewiscrystal and create a five-slide summary of the key take-aways from the chapter. Present to the class.
 - Working with the instructor, make a pull request that fixes some small aspect of a work-in-progress book.^[Closely supervise the students, and especially check the pull requests before they are made to ensure they are reasonable; we don't want to annoy people. A good option might a fix to a couple of typos or similar.] Options include:^[These will need to change each year.] @lewiscrystal or @r4ds.
-- Pretend that you are in a small class, and have some results from an assessment (@tbl-classmarks). Use the code, but change the seed to generate your own dataset. 
+- Pretend that you are in a small class, and have some results from an assessment (@tbl-classmarks). Use the code, but change the seed to generate your own dataset.
     - Hash, but do not salt, the names, and then exchange with another group. Can they work out what the names are?
     - Continuing with the results that you generated, please write code that simulates the dataset. You will need to decide which features are important and which are not. Note two interesting aspects of this and then share with the class.
-    - Continuing with the results that you generated, please: 1) work out the class mean, 2) remove the mark of one student, 3) provide the mean and the off-by-one dataset to another group. Can they work out the mark of the student who opted not to share? 
+    - Continuing with the results that you generated, please: 1) work out the class mean, 2) remove the mark of one student, 3) provide the mean and the off-by-one dataset to another group. Can they work out the mark of the student who opted not to share?
     - Finally, please do the same exercise, but create a differentially private mean. What are they able to figure out now?
 ```{r}
 #| label: tbl-classmarks
@@ -1186,8 +1186,8 @@ class_marks <-
   )
 
 class_marks |>
-  tt() |> 
-  style_tt(j = 1:2, align = "lr") |> 
+  tt() |>
+  style_tt(j = 1:2, align = "lr") |>
   setNames(c("Student", "Mark"))
 ```
 
@@ -1199,10 +1199,10 @@ Use Quarto, and include an appropriate title, author, date, link to a GitHub rep
 
 ### Paper {.unnumbered}
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 At about this point the *Dysart* Paper in the ["Papers" Online Appendix](https://tellingstorieswithdata.com/23-assessment.html) would be appropriate.
 :::
- 
-::: {.content-visible unless-format="pdf"}
+
+:::{.content-visible unless-format="pdf"}
 At about this point the *Dysart* Paper from [Online Appendix -@sec-papers] would be appropriate.
 :::

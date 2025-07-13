@@ -31,7 +31,7 @@ RStudio 내에서 `Python`을 사용할 수도 있지만, 더 널리 사용되�
 
 VS Code를 열고(@fig-vscodesetup-a) 새 터미널을 엽니다: 터미널 -> 새 터미널(@fig-vscodesetup-b). 그런 다음 Python 패키지 관리자인 `uv`를 설치할 수 있습니다. 터미널에 `curl -LsSf https://astral.sh/uv/install.sh | sh`를 입력하고 엔터를 누릅니다(@fig-vscodesetup-c). 마지막으로, Python을 설치하려면 터미널에 `uv python install`을 입력하고 엔터를 누릅니다(@fig-vscodesetup-d).
 
-::: {#fig-vscodesetup layout-ncol="2"}
+:::{#fig-vscodesetup layout-ncol="2"}
 ![VS Code 열기](figures/B-VS_Code-1.png){#fig-vscodesetup-a width="50%"}
 
 ![VS Code에서 터미널 열기](figures/B-VS_Code-2.png){#fig-vscodesetup-b width="50%"}
@@ -114,9 +114,9 @@ if __name__ == "__main__":
 
 ### 계획
 
-이 데이터셋을 @sec-fire-hose 에서 처음 사용했지만, 다시 말하지만, 매일 각 쉼터에 대해 쉼터를 사용한 사람들의 수가 있습니다. 따라서 우리가 시뮬레이션하고 싶은 데이터셋은 @fig-python_torontohomeless-data 와 같고, @fig-python_torontohomeless-table 과 같이 매월 평균 일일 점유 침대 수 표를 만들고 싶습니다.
+이 데이터셋을 [@sec-fire-hose]에서 처음 사용했지만, 다시 말하지만, 매일 각 쉼터에 대해 쉼터를 사용한 사람들의 수가 있습니다. 따라서 우리가 시뮬레이션하고 싶은 데이터셋은 [@fig-python_torontohomeless-data]와 같고, [@fig-python_torontohomeless-table]과 같이 매월 평균 일일 점유 침대 수 표를 만들고 싶습니다.
 
-::: {#fig-python_torontohomeless layout-ncol="2"}
+:::{#fig-python_torontohomeless layout-ncol="2"}
 ![데이터셋의 빠른 스케치](figures/B-raw_data.jpeg){#fig-python_torontohomeless-data width="50%"}
 
 ![매월 평균 점유 침대 수 표의 빠른 스케치](figures/B-by_month.jpeg){#fig-python_torontohomeless-table width="50%"}

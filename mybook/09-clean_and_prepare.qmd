@@ -67,7 +67,7 @@ library(validate)
 ## Introduction
 
 > "Well, Lyndon, you may be right and they may be every bit as intelligent as you say," said Rayburn, "but I'd feel a whole lot better about them if just one of them had run for sheriff once."
-> 
+>
 > Sam Rayburn reacting to Lyndon Johnson's enthusiasm about John Kennedy's incoming cabinet, as quoted in *The Best and the Brightest* [@halberstam, p. 41].
 
 In this chapter we put in place more formal approaches for data cleaning and preparation\index{data!cleaning}. These are centered around:
@@ -86,13 +86,13 @@ The reproducibility crisis\index{reproducibility!crisis}, which was identified e
 
 While the statistical practices that underpin data science are themselves correct and robust when applied to simulated datasets, data science is not typically conducted with data that follow the assumptions underlying the models that are commonly fit. For instance, data scientists are interested in "messy, unfiltered, and possibly unclean data---tainted by heteroskedasticity, complex dependence and missingness patterns---that until recently were avoided in polite conversations between more traditional statisticians" [@craiu2019hiring]. Big data\index{data!big data} does not resolve this issue and may even exacerbate it. For instance, population inference based on larger amounts of poor-quality data, without adjusting for data issues, will just lead to more confidently wrong conclusions [@meng2018statistical]. The problems that are found in much of applied statistics research are not necessarily associated with researcher quality, or their biases [@silberzahn2018many]. Instead, they are a result of the context within which data science is conducted. This chapter provides an approach and tools to explicitly think about this work.
 
-@gelman2020most, writing about the most important statistical ideas of the past 50 years, say that each of them enabled new ways of thinking about data analysis. These ideas brought into the tent of statistics, approaches that "had been considered more a matter of taste or philosophy".\index{statistics} The focus on data cleaning and preparation\index{data!cleaning} in this chapter is analogous, insofar as it represents a codification, or bringing inside the tent, of aspects that are typically, incorrectly, considered those of taste rather than core statistical concerns. 
+@gelman2020most, writing about the most important statistical ideas of the past 50 years, say that each of them enabled new ways of thinking about data analysis. These ideas brought into the tent of statistics, approaches that "had been considered more a matter of taste or philosophy".\index{statistics} The focus on data cleaning and preparation\index{data!cleaning} in this chapter is analogous, insofar as it represents a codification, or bringing inside the tent, of aspects that are typically, incorrectly, considered those of taste rather than core statistical concerns.
 
 The workflow\index{workflow} for data cleaning and preparation\index{data!cleaning} that we advocate is:
 
 1. Save the original, unedited data.
 2. Begin with an end in mind by sketching and simulating.
-3. Write tests and documentation. 
+3. Write tests and documentation.
 4. Execute the plan on a small sample.
 5. Iterate the plan.
 6. Generalize the execution.
@@ -106,7 +106,7 @@ All data regardless of whether they were obtained from farming, gathering, or hu
 
 ### Save the original, unedited data
 
-The first step is to save the original, unedited data\index{data!unedited} into a separate, local folder. The original, unedited data establishes the foundation for reproducibility [@wilsongoodenough]. If we obtained our data from a third-party, such as a government website, then we have no control over whether they will continue to host that data, update it, or change the address at which it is available. Saving a local copy also reduces the burden that we impose on their servers. 
+The first step is to save the original, unedited data\index{data!unedited} into a separate, local folder. The original, unedited data establishes the foundation for reproducibility [@wilsongoodenough]. If we obtained our data from a third-party, such as a government website, then we have no control over whether they will continue to host that data, update it, or change the address at which it is available. Saving a local copy also reduces the burden that we impose on their servers.
 
 Having locally saved the original, unedited data we must maintain a copy of it in that state, and not modify it. As we begin to clean and prepare it, we instead make these changes to a copy of the dataset. Maintaining the original, unedited dataset, and using scripts to create the dataset that we are interested in analyzing, ensures that our entire workflow is reproducible. It may be that the changes that we decide to make today, are not ones that we would make tomorrow, having learnt more about the dataset. We need to ensure that we have that data in the original, unedited state in case we need to return to it [@Borer2009].
 
@@ -115,7 +115,7 @@ We may not always be allowed to share that original, unedited data, but we can a
 
 ### Plan
 
-Planning the endpoint forces us to begin with an end in mind and is important for a variety of reasons. As with scraping data, introduced in @sec-gather-data, it helps us to be proactive about scope-creep. But with data cleaning it additionally forces us to really think about what we want the final dataset to look like. 
+Planning the endpoint forces us to begin with an end in mind and is important for a variety of reasons. As with scraping data, introduced in @sec-gather-data, it helps us to be proactive about scope-creep. But with data cleaning it additionally forces us to really think about what we want the final dataset to look like.
 
 The first step is to sketch the dataset that we are interested in. The key features of the sketch will be aspects such as the names of the columns, their class, and the possible range of values. For instance, we might be interested in the populations of US states. Our sketch might look like @fig-sketchdataplan.
 
@@ -142,7 +142,7 @@ simulated_population
 ```
 
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 Our purpose, during data cleaning and preparation\index{data!cleaning}, is to then bring our original, unedited data close to that plan. Ideally, we would plan so that the desired endpoint of our dataset is "tidy data"\index{tidy data}. This is introduced in the ["R essentials" Online Appendix](https://tellingstorieswithdata.com/20-r_essentials.html), but briefly, it means that [@r4ds; @wickham2014tidy, p. 4]:
 
 1. each variable is in its own column;
@@ -152,7 +152,7 @@ Our purpose, during data cleaning and preparation\index{data!cleaning}, is to th
 Begin thinking about validity and internal consistency\index{consistency!internal} at this stage. What are some of the features that these data should have? Note these as you go through the process of simulating the dataset because we will draw on them to write tests.
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 Our purpose, during data cleaning and preparation\index{data!cleaning}, is to then bring our original, unedited data close to that plan. Ideally, we would plan so that the desired endpoint of our dataset is "tidy data"\index{tidy data}. This is introduced in [Online Appendix -@sec-r-essentials], but briefly, it means that [@r4ds; @wickham2014tidy, p. 4]:
 
 1. each variable is in its own column;
@@ -225,11 +225,11 @@ tidy_data
 
 ### Write tests and documentation
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 Having established a rectangular dataset, albeit a messy one, we should begin to look at the classes that we have. We do not necessarily want to fix the classes at this point, because that can result in lost data. But we look at the class to see what it is, compare it to our simulated dataset, and note the columns where it is different to see what changes need to be made. Background on `class()` is available in the ["R essentials" Online Appendix](https://tellingstorieswithdata.com/20-r_essentials.html).
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 Having established a rectangular dataset, albeit a messy one, we should begin to look at the classes that we have. We do not necessarily want to fix the classes at this point, because that can result in lost data. But we look at the class to see what it is, compare it to our simulated dataset, and note the columns where it is different to see what changes need to be made. Background on `class()` is available in [Online Appendix -@sec-r-essentials].
 :::
 
@@ -276,13 +276,13 @@ messy_dataset |>
   count(names, sort = TRUE)
 ```
 
-The most common unique observation is the correct one. The next one---"PatricIa"---looks like the "i" has been incorrectly capitalized. This is true for "PatrIcia" as well. We can fix the capitalization issues with `str_to_title()`, which converts the first letter of each word in a string to uppercase and the rest to lowercase, and then redo the count. 
+The most common unique observation is the correct one. The next one---"PatricIa"---looks like the "i" has been incorrectly capitalized. This is true for "PatrIcia" as well. We can fix the capitalization issues with `str_to_title()`, which converts the first letter of each word in a string to uppercase and the rest to lowercase, and then redo the count.
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 Background on strings is available in the ["R essentials" Online Appendix](https://tellingstorieswithdata.com/20-r_essentials.html).
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 Background on strings is available in [Online Appendix -@sec-r-essentials].
 :::
 
@@ -352,25 +352,25 @@ Another way to write tests for our dataset is to use `testthat`. Although develo
 #| warning: false
 
 # Is the dataset of length one?
-expect_length(check_me, 1) 
+expect_length(check_me, 1)
 # Are the observations characters?
-expect_equal(class(cleaned_data$names), "character") 
+expect_equal(class(cleaned_data$names), "character")
 # Is every unique observation "Patricia"?
-expect_equal(unique(cleaned_data$names), "Patricia") 
+expect_equal(unique(cleaned_data$names), "Patricia")
 ```
 
 If the tests pass then nothing happens, but if the tests fail then the script will stop.
 
-What do we test? It is a difficult problem, and we detail a range of more-specific tests in the next section. But broadly we test what we have, against what we expect. The engineers working on the software for the Apollo\index{Apollo} program in the 1960s initially considered writing tests to be "busy work" [@digitalapollo, p. 170]. But they eventually came to realize that NASA would not have faith that software could be used to send men to the moon unless it was accompanied by a comprehensive suite of tests.  And it is the same for data science.\index{data science!need for tests} 
+What do we test? It is a difficult problem, and we detail a range of more-specific tests in the next section. But broadly we test what we have, against what we expect. The engineers working on the software for the Apollo\index{Apollo} program in the 1960s initially considered writing tests to be "busy work" [@digitalapollo, p. 170]. But they eventually came to realize that NASA would not have faith that software could be used to send men to the moon unless it was accompanied by a comprehensive suite of tests.  And it is the same for data science.\index{data science!need for tests}
 
-Start with tests for validity\index{validity}\index{testing!validity}. These will typically check the class of the variables, their unique values, and the number of observations. For instance, if we were using a recent dataset then columns that are years could be tested to ensure that all elements have four digits and start with a "2". @peterbaumgartnertesting describes this as tests on the schema. 
+Start with tests for validity\index{validity}\index{testing!validity}. These will typically check the class of the variables, their unique values, and the number of observations. For instance, if we were using a recent dataset then columns that are years could be tested to ensure that all elements have four digits and start with a "2". @peterbaumgartnertesting describes this as tests on the schema.
 
-After that, turn to checks of internal consistency\index{consistency!internal}. For instance, if there are variables of different numeric responses, then check that the sum of those equals a total variable, or if it does not then this difference is explainable. Finally, turn to tests for external consistency\index{consistency!external}. Here we want to use outside information to inform our tests. For instance, if we had a variable of the neonatal mortality rate (NMR) for Germany (this concept was introduced in @sec-fire-hose), then we could look at the estimates from the World Health Organization (WHO), and ensure our NMR variable aligns. Experienced analysts do this all in their head. The issue is that it does not scale, can be inconsistent, and overloads on reputation. We return to this issue in @sec-its-just-a-linear-model in the context of modeling. 
+After that, turn to checks of internal consistency\index{consistency!internal}. For instance, if there are variables of different numeric responses, then check that the sum of those equals a total variable, or if it does not then this difference is explainable. Finally, turn to tests for external consistency\index{consistency!external}. Here we want to use outside information to inform our tests. For instance, if we had a variable of the neonatal mortality rate (NMR) for Germany (this concept was introduced in @sec-fire-hose), then we could look at the estimates from the World Health Organization (WHO), and ensure our NMR variable aligns. Experienced analysts do this all in their head. The issue is that it does not scale, can be inconsistent, and overloads on reputation. We return to this issue in @sec-its-just-a-linear-model in the context of modeling.
 
 We write tests throughout our code, rather than right at the end. In particular, using `stopifnot()` statements on intermediate steps ensures that the dataset is being cleaned in a way that we expect. For instance, when merging two datasets we could check:
 
-1) The variable names in the datasets are unique, apart from the column/s to be used as the key/s. 
-2) The number of observations of each type is being carried through appropriately. 
+1) The variable names in the datasets are unique, apart from the column/s to be used as the key/s.
+2) The number of observations of each type is being carried through appropriately.
 3) The dimensions of the dataset are not being unexpectedly changed.
 
 
@@ -382,7 +382,7 @@ We could now iterate the plan. In this most recent case, we started with ten ent
 
 Robert Caro, the biographer of Lyndon Johnson introduced in @sec-on-writing, spent years tracking down everyone connected to the 36th President of the United States. Caro and his wife Ina went so far as to live in Texas Hill Country for three years so that they could better understand where Johnson was from. When Caro heard that Johnson, as a senator, would run to the Senate from where he stayed in D.C., he ran that route multiple times himself to try to understand why Johnson was running. Caro eventually understood it only when he ran the route as the sun was rising, just as Johnson had done; it turns out that the sun hits the Senate Rotunda in a particularly inspiring way [@caroonworking, p. 156]. This background work enabled him to uncover aspects that no one else knew. For instance, Johnson almost surely stole his first election win [@caroonworking, p. 116]. We need to understand our data to this same extent. We want to metaphorically turn every page.
 
-The idea of negative space is well established in design. It refers to that which surrounds the subject. Sometimes negative space is used as an effect. For instance the logo of FedEx, an American logistics company, has negative space between the E and X that creates an arrow. In a similar way, we want to be cognizant of the data that we have, and the data that we do not have [@citemyboy]. We are worried that the data that we do not have somehow has meaning, potentially even to the extent of changing our conclusions. When we are cleaning data, we are looking for anomalies. We are interested in values that are in the dataset that should not be, but also the opposite situation---values that should be in the dataset but are not. There are three tools that we use to identify these situations: graphs, counts, and tests. 
+The idea of negative space is well established in design. It refers to that which surrounds the subject. Sometimes negative space is used as an effect. For instance the logo of FedEx, an American logistics company, has negative space between the E and X that creates an arrow. In a similar way, we want to be cognizant of the data that we have, and the data that we do not have [@citemyboy]. We are worried that the data that we do not have somehow has meaning, potentially even to the extent of changing our conclusions. When we are cleaning data, we are looking for anomalies. We are interested in values that are in the dataset that should not be, but also the opposite situation---values that should be in the dataset but are not. There are three tools that we use to identify these situations: graphs, counts, and tests.
 
 We also use these tools to ensure that we are not changing correct observations to incorrect. Especially when our cleaning and preparation requires many steps, it may be that fixes at one stage are undone later. We use graphs, counts, and especially tests, to prevent this. The importance of these grows exponentially with the size of the dataset. Small and medium datasets are more amenable to manual inspection and other aspects that rely on the analyst, while larger datasets especially require more efficient strategies [@hand2018statistical].
 
@@ -402,7 +402,7 @@ youth_survey_data <-
 #| echo: false
 
 youth_survey_data_fixed <-
-  youth_survey_data |> 
+  youth_survey_data |>
   mutate(ages = if_else(ages == 150, 15.0, ages))
 ```
 
@@ -468,34 +468,34 @@ For instance, later in this chapter we will gather, clean, and prepare some data
 #| tbl-cap: "Excess of 0 and 5 digits in counts of the final digits of single-year ages in Nairobi from the 2019 Kenyan census"
 
 arrow::read_parquet(
-  file = "outputs/data/cleaned_nairobi_2019_census.parquet") |> 
-  filter(!age %in% c("Total", "NotStated", "100+")) |> 
+  file = "outputs/data/cleaned_nairobi_2019_census.parquet") |>
+  filter(!age %in% c("Total", "NotStated", "100+")) |>
   filter(age_type != "age-group") |>
-  mutate(age = str_squish(age)) |> 
-  mutate(age = as.integer(age)) |> 
-  filter(age >= 20 & age < 100) |> 
-  filter(gender == "total") |> 
-  mutate(final_digit = str_sub(age, start= -1)) |> 
+  mutate(age = str_squish(age)) |>
+  mutate(age = as.integer(age)) |>
+  filter(age >= 20 & age < 100) |>
+  filter(gender == "total") |>
+  mutate(final_digit = str_sub(age, start= -1)) |>
   summarise(sum = sum(number),
-            .by = final_digit) |> 
-  tt() |> 
-  style_tt(j = 1:2, align = "lr") |> 
-  format_tt(digits = 0, num_mark_big = ",", num_fmt = "decimal") |> 
+            .by = final_digit) |>
+  tt() |>
+  style_tt(j = 1:2, align = "lr") |>
+  format_tt(digits = 0, num_mark_big = ",", num_fmt = "decimal") |>
   setNames(c("Final digit of age", "Number of times"))
 ```
 
 
 ### Tests
 
-As we said in @sec-reproducible-workflows, if you write code, then you are a programmer, but there is a difference between someone coding for fun, and, say, writing the code that runs the James Webb Telescope. Following @weinbergpsychology [p. 122], we can distinguish between amateurs and professionals based the existence of subsequent users. When you first start out coding, you typically write code that only you will use. For instance, you may write some code for a class paper. After you get a grade, then in most cases, the code will not be run again. In contrast, a professional writes code for, and often with, other people. 
+As we said in @sec-reproducible-workflows, if you write code, then you are a programmer, but there is a difference between someone coding for fun, and, say, writing the code that runs the James Webb Telescope. Following @weinbergpsychology [p. 122], we can distinguish between amateurs and professionals based the existence of subsequent users. When you first start out coding, you typically write code that only you will use. For instance, you may write some code for a class paper. After you get a grade, then in most cases, the code will not be run again. In contrast, a professional writes code for, and often with, other people.
 
-Much academic research these days relies on code. If that research is to contribute to lasting knowledge, then the code that underpins it is being written for others and must work for others well after the researcher has moved to other projects. A professional places appropriate care on tasks that ensure code can be considered by others. A large part of that is tests. 
+Much academic research these days relies on code. If that research is to contribute to lasting knowledge, then the code that underpins it is being written for others and must work for others well after the researcher has moved to other projects. A professional places appropriate care on tasks that ensure code can be considered by others. A large part of that is tests.
 
 @jplcodingstandards [p. 14] claim that analysis after the fact "often find at least one defect per one hundred lines of code written". There is no reason to believe that code without tests is free of defects, just that they are not known. As such, we should strive to include tests in our code when possible.\index{data!tests} There is some infrastructure for testing data science code. For instance, in Python there is the Test-Driven Data Analysis library of @tdda, but more is needed.
 
-Some things are so important that we require that the cleaned dataset have them. These are conditions that we should check. They would typically come from experience, expert knowledge, or the planning and simulation stages. For instance, there should be no negative numbers in an age variable, and few ages above 110. For these we could specifically require that the condition is met. Another example is when doing cross-country analysis, a list of country names that we know should be in our dataset would be useful. Our test would then be that there were: 
+Some things are so important that we require that the cleaned dataset have them. These are conditions that we should check. They would typically come from experience, expert knowledge, or the planning and simulation stages. For instance, there should be no negative numbers in an age variable, and few ages above 110. For these we could specifically require that the condition is met. Another example is when doing cross-country analysis, a list of country names that we know should be in our dataset would be useful. Our test would then be that there were:
 
-1) values not in that list that were in our dataset, or vice versa; and 
+1) values not in that list that were in our dataset, or vice versa; and
 2) countries that we expected to be in our dataset that were not.
 
 To have a concrete example, let us consider if we were doing some analysis about the five largest counties in Kenya\index{Kenya}. From looking it up, we find these are: "Nairobi", "Kiambu", "Nakuru", "Kakamega", and "Bungoma". We can create that variable.
@@ -559,7 +559,7 @@ We will talk about explicit tests for class and dates, given their outsized impo
 
 - Variables of monetary values should be tested for reasonable bounds given the situation. In some cases negative values will not be possible. Sometimes an upper bound can be identified. Monetary variables should be numeric. They should not have commas or other separators. They should not contain symbols such as currency signs or semicolons.
 - Variables of population values should likely not be negative. Populations of cities should likely be somewhere between 100,000 and 50,000,000. They again should be numeric, and contain only numbers, no symbols.
-- Names should be character variables. They likely do not contain numbers. They may contain some limited set of symbols, and this would be context specific. 
+- Names should be character variables. They likely do not contain numbers. They may contain some limited set of symbols, and this would be context specific.
 - The number of observations is surprisingly easy to inadvertently change. While it is fine for this to happen deliberately, when it happens accidentally it can create substantial problems. The number of observations should be tested at the start of any data cleaning process against the data simulation and this expectation updated as necessary. It should be tested throughout the data cleaning process, but especially before and after any joins.
 
 More generally, work with experts and draw on prior knowledge to work out some reasonable features for the variables of interest and then implement these. For instance, consider how @scamswillnotsaveus was able to quickly identify an error in a claim about user numbers by roughly comparing it with how many institutions in the US receive federal financial aid.
@@ -620,17 +620,17 @@ As mentioned in @sec-farm-data, gender is something that we need to be especiall
 
 #### Class
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 It is sometimes said that Americans are obsessed with money, while the English are obsessed with class. In the case of data cleaning and preparation we need to be English.\index{data!class} Class is critical and worthy of special attention. We introduce class in the ["R essentials" Online Appendix](https://tellingstorieswithdata.com/20-r_essentials.html) and here we focus on "numeric", "character", and "factor". Explicit checks of the class of variables are essential. Accidentally assigning the wrong class to a variable can have a large effect on subsequent analysis. It is important to:
 
-- check whether some value should be a number or a factor; and 
+- check whether some value should be a number or a factor; and
 - check that values are numbers not characters.
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 It is sometimes said that Americans are obsessed with money, while the English are obsessed with class. In the case of data cleaning and preparation we need to be English. Class is critical and worthy of special attention. We introduce class in [Online Appendix -@sec-r-essentials] and here we focus on "numeric", "character", and "factor". Explicit checks of the class of variables are essential. Accidentally assigning the wrong class to a variable can have a large effect on subsequent analysis. It is important to:
 
-- check whether some value should be a number or a factor; and 
+- check whether some value should be a number or a factor; and
 - check that values are numbers not characters.
 :::
 
@@ -676,7 +676,7 @@ There are many open questions around the effect and implications of type in comp
 
 To this point in this book when we have used `read_csv()`, and other functions for importing data, we have allowed the function to guess the class of the variables. Moving forward we will be more deliberate and instead specify it ourselves using "col_types". For instance, instead of:
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 ```{r}
 #| eval: false
 #| echo: true
@@ -711,7 +711,7 @@ raw_igme_data <-
 ```
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 ```{r}
 #| eval: false
 #| echo: true
@@ -864,7 +864,7 @@ toronto_shelters_2017 |>
   )
 ```
 
-As mentioned, one graph that is especially useful when cleaning a dataset is the order the observations appear in the dataset. For instance, we would generally expect that there would be a rough ordering in terms of date. To examine whether this is the case, we can graph the date variable in the order it appears in the dataset (@fig-homeless-daycount-2). 
+As mentioned, one graph that is especially useful when cleaning a dataset is the order the observations appear in the dataset. For instance, we would generally expect that there would be a rough ordering in terms of date. To examine whether this is the case, we can graph the date variable in the order it appears in the dataset (@fig-homeless-daycount-2).
 
 While this is just a quick graph it illustrates the point---there are a lot in order, but not all. If they were in order, then we would expect them to be along the diagonal. It is odd that the data are not in order, especially as there appears to be something systematic initially. We can summarize the data to get a count of occupancy by day.
 
@@ -903,7 +903,7 @@ toronto_shelters_by_day |>
   theme_minimal() +
   scale_color_brewer(palette = "Set1")
 ```
- 
+
 It is clear there seems to be an issue with the first 12 days of the month. We noted that when we look at the data it is a bit odd that it is not in order. From @fig-homeless-daycount-2 it looks like there are some systematic issue that affects many observations. In general, it seems that it might be the case that in the date variable the first 12 days are the wrong way around, i.e. we think it is year-month-day, but it is actually year-day-month. But there are exceptions. As a first pass, we can flip those first 12 days of each month and see if that helps. It will be fairly blunt, but hopefully gets us somewhere.
 
 ```{r}
@@ -911,7 +911,7 @@ It is clear there seems to be an issue with the first 12 days of the month. We n
 padded_1_to_12 <- sprintf("%02d", 1:12)
 
 list_of_dates_to_flip <-
-  paste(2017, padded_1_to_12, 
+  paste(2017, padded_1_to_12,
         rep(padded_1_to_12, each = 12), sep = "-")
 
 toronto_shelters_2017_flip <-
@@ -931,7 +931,7 @@ toronto_shelters_2017_flip <-
   select(-year, -month, -day)
 ```
 
-Now let us take a look (@fig-sheltersdatebyrowadj). 
+Now let us take a look (@fig-sheltersdatebyrowadj).
 
 ```{r}
 #| label: fig-sheltersdatebyrowadj
@@ -966,7 +966,7 @@ It has not fixed all the issues. For instance, notice there are now no entries b
 
 ## Simulated example: running times
 
-To provide a specific example, which we will return to in @sec-its-just-a-linear-model, consider the time it takes someone to run five kilometers (which is a little over three miles), compared with the time it takes them to run a marathon (@fig-fivekmvsmarathon-1). 
+To provide a specific example, which we will return to in @sec-its-just-a-linear-model, consider the time it takes someone to run five kilometers (which is a little over three miles), compared with the time it takes them to run a marathon (@fig-fivekmvsmarathon-1).
 
 Here we consider "simulate" and "acquire", focused on testing. In the simulation we specify a relationship of 8.4, as that is roughly the ratio between a five-kilometer run and the 42.2 kilometer distance of a marathon (a little over 26 miles).\index{simulation!running times}\index{distribution!Normal}
 
@@ -1037,9 +1037,9 @@ We can then take these tests to real data. Actual survey data on the relationshi
 #| eval: false
 #| include: true
 
-vickers_data <- 
-  read_excel("13102_2016_52_MOESM2_ESM.xlsx") |> 
-  select(k5_ti, mf_ti) |> 
+vickers_data <-
+  read_excel("13102_2016_52_MOESM2_ESM.xlsx") |>
+  select(k5_ti, mf_ti) |>
   drop_na()
 
 vickers_data
@@ -1049,9 +1049,9 @@ vickers_data
 #| eval: true
 #| echo: false
 
-vickers_data <- 
-  read_excel("inputs/data/13102_2016_52_MOESM2_ESM.xlsx") |> 
-  select(k5_ti, mf_ti) |> 
+vickers_data <-
+  read_excel("inputs/data/13102_2016_52_MOESM2_ESM.xlsx") |>
+  select(k5_ti, mf_ti) |>
   drop_na()
 
 vickers_data
@@ -1062,11 +1062,11 @@ The first thing that we notice is that our data are in seconds, whereas we were 
 In this case, we will divide by sixty, and round, to shift our data into minutes.
 
 ```{r}
-vickers_data <- 
-  vickers_data |> 
+vickers_data <-
+  vickers_data |>
   mutate(five_km_time = round(k5_ti / 60, 1),
          marathon_time = round(mf_ti / 60, 1)
-         ) |> 
+         ) |>
   select(five_km_time, marathon_time)
 
 vickers_data
@@ -1098,14 +1098,14 @@ Names matter.\index{data!names} The land on which much of this book was written 
 
 When coding, names are critical and worthy of special attention because [@hermans2021programmer]:\index{data!names}
 
-1) they help document our code as they are contained in the code; 
-2) they make up a large proportion of any script; 
-3) they are referred to a lot by others; and 
+1) they help document our code as they are contained in the code;
+2) they make up a large proportion of any script;
+3) they are referred to a lot by others; and
 4) they help the reader understand what is happening in the code.
 
-In addition to respecting the nature of the data, names need to satisfy two additional considerations: 
+In addition to respecting the nature of the data, names need to satisfy two additional considerations:
 
-1) they need to be machine readable, and 
+1) they need to be machine readable, and
 2) they need to be human readable.
 
 ### Machine-readable
@@ -1138,7 +1138,7 @@ bad_names_made_better
 ### Human-readable
 
 > Programs must be written for people to read, and only incidentally for machines to execute
-> 
+>
 > @abelson1996structure
 
 In the same way that we emphasized in @sec-on-writing that we write papers for the reader, here we emphasize that we write code for the reader. Human-readable names require an additional layer, and extensive consideration. Following @jsfcodingstandards [p. 25], we should avoid names that only differ by the use of the letter "O", instead of the number "0" or the letter "D". Similarly, "S" with "5".
@@ -1238,13 +1238,13 @@ simulated_tanzania_dataset <-
 simulated_tanzania_dataset
 ```
 
-Based on this simulation we are interested to test:\index{testing} 
+Based on this simulation we are interested to test:\index{testing}
 
 a) Whether there are only numbers.
 b) Whether the sum of urban and rural match the total column.
 c) Whether the sum of the age-groups match the total.
 
-We begin by downloading the data.^[Or use: https://www.tellingstorieswithdata.com/inputs/pdfs/1996_Tanzania_DHS.pdf.] 
+We begin by downloading the data.^[Or use: https://www.tellingstorieswithdata.com/inputs/pdfs/1996_Tanzania_DHS.pdf.]
 
 ```{r}
 #| eval: false
@@ -1324,7 +1324,7 @@ tanzania_dhs_separated <-
   separate(
     col = all,
     into = c(
-      "age_group", 
+      "age_group",
       "male_urban", "female_urban", "total_urban",
       "male_rural", "female_rural", "total_rural",
       "male_total", "female_total", "total_total"
@@ -1384,7 +1384,7 @@ The distribution of population by age, sex, and administrative unit from the 201
 
 ### Gather and clean
 
-We first need to download and read in the PDF of the 2019 Kenyan census.^[If the Kenyan government link breaks then replace their URL with: https://www.tellingstorieswithdata.com/inputs/pdfs/2019_Kenya_census.pdf.] 
+We first need to download and read in the PDF of the 2019 Kenyan census.^[If the Kenyan government link breaks then replace their URL with: https://www.tellingstorieswithdata.com/inputs/pdfs/2019_Kenya_census.pdf.]
 
 ```{r}
 #| eval: false
@@ -1504,7 +1504,7 @@ Having got it into a rectangular format, we now need to clean the dataset to mak
 
 #### Validity
 
-To attain validity\index{validity} requires a number of steps. The first step is to make the numbers into actual numbers, rather than characters. Before we can convert the type, we need to remove anything that is not a number otherwise that cell will be converted into an NA. We first identify any values that are not numbers so that we can remove them, and `distinct()` is especially useful. 
+To attain validity\index{validity} requires a number of steps. The first step is to make the numbers into actual numbers, rather than characters. Before we can convert the type, we need to remove anything that is not a number otherwise that cell will be converted into an NA. We first identify any values that are not numbers so that we can remove them, and `distinct()` is especially useful.
 
 ```{r}
 demography_data_long |>
@@ -1534,11 +1534,11 @@ The census has done some of the work of putting together age-groups for us, but 
 demography_data_long <-
   demography_data_long |>
   mutate(
-    age_type = if_else(str_detect(age, "-"), 
-                       "age-group", 
+    age_type = if_else(str_detect(age, "-"),
+                       "age-group",
                        "single-year"),
-    age_type = if_else(str_detect(age, "Total"), 
-                       "age-group", 
+    age_type = if_else(str_detect(age, "Total"),
+                       "age-group",
                        age_type)
   )
 ```
@@ -1572,8 +1572,8 @@ Finally, we want to check that the single-age counts sum to the age-groups.
 ```{r}
 #| echo: true
 demography_data_long |>
-  mutate(age_groups = if_else(age_type == "age-group", 
-                              age, 
+  mutate(age_groups = if_else(age_type == "age-group",
+                              age,
                               NA_character_)) |>
   fill(age_groups, .direction = "up") |>
   mutate(
@@ -1582,7 +1582,7 @@ demography_data_long |>
     difference = total - group_sum,
     .by = c(age_groups)
   ) |>
-  filter(age_type == "age-group" & age_groups != "Total") |> 
+  filter(age_type == "age-group" & age_groups != "Total") |>
   head()
 ```
 
@@ -1594,8 +1594,8 @@ Now that we are reasonably confident that everything is looking good, we can con
 demography_data_tidy <-
   demography_data_long |>
   rename_with(~paste0(., "_total"), male:total) |>
-  pivot_longer(cols = contains("_total"), 
-               names_to = "type", 
+  pivot_longer(cols = contains("_total"),
+               names_to = "type",
                values_to = "number") |>
   separate(
     col = type,
@@ -1627,7 +1627,7 @@ demography_data_tidy |>
   select(age, gender, number) |>
   filter(gender != "total") |>
   ggplot(aes(x = age, y = number, fill = gender)) +
-  geom_col(aes(x = age, y = number, fill = gender), 
+  geom_col(aes(x = age, y = number, fill = gender),
            position = "dodge") +
   scale_y_continuous(labels = comma) +
   scale_x_discrete(breaks = c(seq(from = 0, to = 99, by = 5), "100+")) +
@@ -1659,7 +1659,7 @@ column_names_as_contracts <-
   )
 ```
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 We can then use `pointblank` to set up tests for us (@fig-pointblankvalidation).
 
 ```{r}
@@ -1685,7 +1685,7 @@ agent
 ![Example of Pointblank Validation](figures/pointblank_screenshot.png){#fig-pointblankvalidation width=70% fig-align="center"}
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 We can then use `pointblank` to set-up tests for us.
 
 ```{r}
@@ -1771,7 +1771,7 @@ tibble(
     - Write five tests for it in a different R script.
     - Give the code to create the dataset (not the tests) to someone else, via a GitHub Gist. Have them use code to deliberately create three different data issues in the dataset and then send it back to you (some ideas include: inconsistent date formatting, adding missing values, adding negative values, changing the decimal place)
     - Do your tests identify the issues?
-- Discuss, with the help of simulation, the following claim: "This house believes that strings are better than factors".^[The underlying idea for this exercise is from Michael Donnelly.] 
+- Discuss, with the help of simulation, the following claim: "This house believes that strings are better than factors".^[The underlying idea for this exercise is from Michael Donnelly.]
 - I obtain some data about income. Why would I be concerned if there were many respondents with income "999999"?
 - Create a new R project and use an R script to download and load the original "Adélie penguin data" [@penguinsoriginaldata], (some code^[This code is from Christina Wei.] is included below to help with this) then:
     - Use `rename()` to improve the names.
@@ -1799,9 +1799,9 @@ tibble(
 )
 ```
 - How do you think missing data should be coded in a dataset?
-- Using a new R project, for a city that you are interested in:^[The idea for this exercise is from Taylor John Wright.]  
+- Using a new R project, for a city that you are interested in:^[The idea for this exercise is from Taylor John Wright.]
     - Write reproducible code to download a ShotSpotter dataset from [here](http://justicetechlab.org/shotspotter-data/) and clean up the dataset.
-    - Add your code to GitHub. 
+    - Add your code to GitHub.
     - Exchange your repo with someone else in the class. They are to make a pull request that uses your dataset to make a graph.
 - Get the ImageNet dataset and open ten random images. Apply your own label. To what extent does your label agree with the actual label? What are the effects of this on the outcomes of models trained on this dataset?
 - Imagine you are interested in understanding intergenerational wealth, and one aspect of this is linking the educational outcomes of people today with those of people one hundred years ago, and in different countries. Please make the dataset consistent, and document why you made the choices that you made.
@@ -1864,7 +1864,7 @@ tibble(
 
 ### Task {.unnumbered}
 
-With regard to @Jordan2019Artificial, @datafeminism2020 [Chapter 6], @thatrandyauperson, and other relevant work, to what extent do you think we should let the data speak for themselves? Please write at least two pages. 
+With regard to @Jordan2019Artificial, @datafeminism2020 [Chapter 6], @thatrandyauperson, and other relevant work, to what extent do you think we should let the data speak for themselves? Please write at least two pages.
 
 Use Quarto, and include an appropriate title, author, date, link to a GitHub repo, and citations to produce a draft. After this, please pair with another student and exchange your written work. Update it based on their feedback, and be sure to acknowledge them by name in your paper. Submit a PDF.
 

@@ -8,7 +8,7 @@ engine: knitr
 
 - [AidData](https://www.aiddata.org/datasets)는 개발 및 해외 원조 연구와 관련된 많은 데이터셋을 제공합니다.
 - [Alex Cookson의 데이터셋](https://github.com/tacookson/data).
-- @andrews2012data는 다양한 데이터셋을 제공하며, [여기](https://www.york.ac.uk/depts/maths/histstat/pml1/r/andrews.htm)에서 확인할 수 있습니다.
+- @Anders2020 는 다양한 데이터셋을 제공하며, [여기](https://www.york.ac.uk/depts/maths/histstat/pml1/r/andrews.htm)에서 확인할 수 있습니다.
 - [*사회 과학자를 위한 API*](https://bookdown.org/paul/apis_for_social_scientists/)는 데이터를 수집하는 데 사용할 수 있는 다양한 API를 제공합니다.
 - @Bombieri2023은 5,000건 이상의 대형 육식 동물 인간 공격에 대한 데이터셋을 제공합니다.
 - 영국 도서관의 [세계 신문 목록](https://bl.iro.bl.uk/concern/datasets/943bd083-6355-44a1-97eb-b8ff898f87d5?locale=en)에는 출판 시작 및 종료 연도, 출판 장소, 변형된 제목 및 판, 출판 언어에 대한 정보가 포함되어 있습니다.
@@ -43,7 +43,7 @@ engine: knitr
 - 뉴욕 현대 미술관 (MoMA)은 [컬렉션](https://github.com/MuseumofModernArt/collection) 및 [전시회](https://github.com/MuseumofModernArt/exhibitions)에 대한 데이터셋을 제공합니다.
 - NASA의 [행성 데이터 시스템](https://pds.nasa.gov).
 - [ProPublica 데이터 스토어](https://www.propublica.org/datastore/)는 미국에 대한 방대한 데이터셋을 제공하며, 일부는 상당히 큽니다. 예를 들어, [Open Payments Data (2016)](https://www.propublica.org/datastore/dataset/cms-open-payments-data-2016)는 6GB입니다.
-- @bhht3의 Notable People [데이터셋](https://medialab.github.io/bhht-datascape/)은 기원전 3500년부터 2018년까지의 주목할 만한 인물에 대한 교차 검증된 데이터베이스를 제공합니다.
+- [@bhht3]의 Notable People [데이터셋](https://medialab.github.io/bhht-datascape/)은 기원전 3500년부터 2018년까지의 주목할 만한 인물에 대한 교차 검증된 데이터베이스를 제공합니다.
 - OECD는 경제 데이터를 [제공](https://data.oecd.org)합니다.
 - ParlEE 데이터셋은 EU 입법부 회의실에서 수백만 건의 연설에 대한 주석이 달린 전문을 포함합니다 [@parlee].
 - Prison Policy Initiative는 미국 교도소 및 구치소에 대한 많은 [데이터셋](https://www.prisonpolicy.org/data/)을 제공합니다.

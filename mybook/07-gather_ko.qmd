@@ -4,7 +4,7 @@ engine: knitr
 
 # API, 스크래핑, 파싱 {#sec-gather-data}
 
-::: {.callout-note}
+:::{.callout-note}
 Chapman and Hall/CRC에서 2023년 7월에 이 책을 출판했습니다. [여기](https://www.routledge.com/Telling-Stories-with-Data-With-Applications-in-R/Alexander/p/book/9781032134772)에서 구매할 수 있습니다. 이 온라인 버전은 인쇄된 내용에서 일부 업데이트되었습니다.
 :::
 
@@ -36,7 +36,7 @@ Chapman and Hall/CRC에서 2023년 7월에 이 책을 출판했습니다. [여�
 - `pdftools` [@pdftools]
 - `purrr` [@citepurrr]
 - `rvest` [@citervest]
-- `spotifyr` [@spotifyr] (이 패키지는 CRAN에 없으므로 `install.packages("devtools")` 후 `devtools::install_github("charlie86/spotifyr")`로 설치하세요)
+- `spotifyr` [@spotifyr ] (이 패키지는 CRAN에 없으므로 `install.packages("devtools")` 후 `devtools::install_github("charlie86/spotifyr")`로 설치하세요)
 - `tesseract` [@citetesseract]
 - `tidyverse` [@tidyverse]
 - `tinytable` [@tinytable]
@@ -68,15 +68,15 @@ library(xml2)
 
 ## 서론
 
-이 장에서는 우리가 직접 수집해야 하는 데이터를 다룹니다. 이는 관측치가 존재하지만, 우리가 고려할 데이터셋을 얻기 위해 그것들을 파싱하고, 가져오고, 정리하고, 준비해야 한다는 것을 의미합니다. @sec-farm-data에서 논의된 양식 데이터와 달리, 종종 이러한 관측치는 분석 목적으로 제공되지 않습니다. 이는 문서화, 포함 및 제외 결정, 결측 데이터, 윤리적 행동에 특히 주의해야 함을 의미합니다.
+이 장에서는 우리가 직접 수집해야 하는 데이터를 다룹니다. 이는 관측치가 존재하지만, 우리가 고려할 데이터셋을 얻기 위해 그것들을 파싱하고, 가져오고, 정리하고, 준비해야 한다는 것을 의미합니다. [@sec-farm-data]에서 논의된 양식 데이터와 달리, 종종 이러한 관측치는 분석 목적으로 제공되지 않습니다. 이는 문서화, 포함 및 제외 결정, 결측 데이터, 윤리적 행동에 특히 주의해야 함을 의미합니다.
 
 이러한 데이터셋의 예로, @Cummins2022는 1892년에서 1992년 사이에 영국에서 개별 유언 검인 기록을 사용하여 데이터셋을 생성했습니다. 그들은 "엘리트" 상속의 약 3분의 1이 은폐되어 있음을 발견했습니다.\index{England!inheritance} 마찬가지로, @Taflaga2019는 호주 장관 전화번호부를 기반으로 직무 책임에 대한 체계적인 데이터셋을 구축했습니다. 그들은 성별에 따라 상당한 차이가 있음을 발견했습니다. 유언장이나 전화번호부 모두 데이터셋에 포함될 목적으로 생성된 것이 아닙니다. 그러나 존중하는 접근 방식을 통해 다른 방법으로는 얻을 수 없는 통찰력을 얻을 수 있습니다. 우리는 이것을 "데이터 수집"이라고 부릅니다. 즉, 데이터는 존재하지만 우리는 그것을 얻어야 합니다.
 
-프로젝트 시작 시 프로젝트가 가져야 할 가치에 대해 결정해야 합니다. 예를 들어, @huggingfaceethics는 투명성, 재현성, 공정성, 자기 비판, 그리고 공로 인정에 가치를 둡니다. 이것이 프로젝트에 어떤 영향을 미칠까요?\index{ethics!values} "공로 인정"에 가치를 둔다는 것은 귀속 및 라이선스에 대해 특히 열성적이어야 한다는 것을 의미할 수 있습니다. 수집된 데이터의 경우, 원본, 편집되지 않은 데이터가 우리의 것이 아닐 수 있으므로 이에 대해 특별히 고려해야 합니다.
+프로젝트 시작 시 프로젝트가 가져야 할 가치에 대해 결정해야 합니다. 예를 들어, @huggingfaceethics 는 투명성, 재현성, 공정성, 자기 비판, 그리고 공로 인정에 가치를 둡니다. 이것이 프로젝트에 어떤 영향을 미칠까요?\index{ethics!values} "공로 인정"에 가치를 둔다는 것은 귀속 및 라이선스에 대해 특히 열성적이어야 한다는 것을 의미할 수 있습니다. 수집된 데이터의 경우, 원본, 편집되지 않은 데이터가 우리의 것이 아닐 수 있으므로 이에 대해 특별히 고려해야 합니다.
 
 데이터 과학 워크플로의 결과는 기본 데이터보다 좋을 수 없습니다[@bailey2008design]. 아무리 정교한 통계 분석도 제대로 수집되지 않은 데이터를 조정하는 데 어려움을 겪을 것입니다. 이는 팀으로 작업할 때 데이터 수집은 팀의 선임 구성원이 감독하고 적어도 부분적으로 수행해야 함을 의미합니다. 그리고 혼자 작업할 때는 이 단계에 특별한 고려와 주의를 기울이십시오.
 
-이 장에서는 데이터를 수집하는 다양한 접근 방식을 살펴봅니다. API 및 JSON, XML과 같은 반정형 데이터 사용부터 시작합니다. API를 사용하는 것은 일반적으로 데이터 제공자가 접근을 허용하는 조건을 지정한 상황입니다. API를 사용하면 데이터를 수집하는 코드를 작성할 수 있습니다. 이는 효율적이고 확장이 가능하기 때문에 가치가 있습니다. API를 통해 데이터를 수집하는 데 익숙해지면 흥미로운 데이터셋에 접근할 수 있습니다. 예를 들어, @facebookapitrump는 페이스북 정치 광고 API를 사용하여 트럼프 2020년 캠페인 광고 218,100개를 수집하여 캠페인을 더 잘 이해했습니다.
+이 장에서는 데이터를 수집하는 다양한 접근 방식을 살펴봅니다. API 및 JSON, XML과 같은 반정형 데이터 사용부터 시작합니다. API를 사용하는 것은 일반적으로 데이터 제공자가 접근을 허용하는 조건을 지정한 상황입니다. API를 사용하면 데이터를 수집하는 코드를 작성할 수 있습니다. 이는 효율적이고 확장이 가능하기 때문에 가치가 있습니다. API를 통해 데이터를 수집하는 데 익숙해지면 흥미로운 데이터셋에 접근할 수 있습니다. 예를 들어, @facebookapitrump 는 페이스북 정치 광고 API를 사용하여 트럼프 2020년 캠페인 광고 218,100개를 수집하여 캠페인을 더 잘 이해했습니다.
 
 그런 다음 웹 스크래핑으로 넘어갑니다. 웹사이트에 데이터가 있을 때 웹 스크래핑을 사용하고 싶을 수 있습니다. 이러한 데이터는 일반적으로 데이터셋으로 사용될 목적으로 구성되지 않았으므로 프로젝트에 대한 의도적이고 명확한 가치를 갖는 것이 특히 중요합니다. 스크래핑은 데이터 수집의 중요한 부분입니다. 왜냐하면 데이터 제공자의 우선 순위로 인해 API를 구현하지 않은 많은 데이터 소스가 있기 때문입니다. 예를 들어, 팬데믹 초기에 COVID-19 대시보드를 만드는 데 웹 스크래핑이 광범위하게 사용되었습니다[@scrapecoviddata].
 
@@ -88,7 +88,7 @@ library(xml2)
 
 일상 언어에서, 그리고 우리의 목적을 위해, API(Application Programming Interface)는 누군가가 자신의 컴퓨터에 특정 파일을 설정하여 우리가 그들의 지침을 따라 그것들을 얻을 수 있는 상황입니다.\index{API} 예를 들어, Slack에서 GIF를 사용할 때, 백그라운드에서 작동하는 한 가지 방법은 Slack이 Giphy 서버에 적절한 GIF를 요청하고, Giphy 서버가 Slack에 그 GIF를 제공한 다음, Slack이 그것을 채팅에 삽입하는 것입니다. Slack과 Giphy가 상호 작용하는 방식은 Giphy의 API에 의해 결정됩니다. 더 엄밀히 말하면, API는 HTTP 프로토콜을 사용하여 우리가 접근하는 서버에서 실행되는 애플리케이션입니다.
 
-여기서는 데이터 수집을 위한 API 사용에 중점을 둡니다. 이 맥락에서 API는 사람이 아닌 다른 컴퓨터가 접근할 수 있도록 설정된 웹사이트입니다. 예를 들어, [Google Maps](https://www.google.com/maps)로 이동할 수 있습니다.\index{Google!Maps} 그리고 스크롤하고 클릭하고 드래그하여 지도를, 예를 들어 호주 캔버라에 중앙에 놓을 수 있습니다.\index{Australia!Canberra} 또는 [이 링크](https://www.google.com/maps/@-35.2812958,149.1248113,16z)를 브라우저에 붙여넣을 수 있습니다. 탐색하는 대신 그 링크를 붙여넣음으로써 우리는 API를 사용하는 방식을 모방했습니다. 즉, URL을 제공하고 무언가를 돌려받는 것입니다. 이 경우 결과는 @fig-focuson2020과 같은 지도여야 합니다.\index{maps!API}
+여기서는 데이터 수집을 위한 API 사용에 중점을 둡니다. 이 맥락에서 API는 사람이 아닌 다른 컴퓨터가 접근할 수 있도록 설정된 웹사이트입니다. 예를 들어, [Google Maps](https://www.google.com/maps)로 이동할 수 있습니다.\index{Google!Maps} 그리고 스크롤하고 클릭하고 드래그하여 지도를, 예를 들어 호주 캔버라에 중앙에 놓을 수 있습니다.\index{Australia!Canberra} 또는 [이 링크](https://www.google.com/maps/@-35.2812958,149.1248113,16z)를 브라우저에 붙여넣을 수 있습니다. 탐색하는 대신 그 링크를 붙여넣음으로써 우리는 API를 사용하는 방식을 모방했습니다. 즉, URL을 제공하고 무언가를 돌려받는 것입니다. 이 경우 결과는 [@fig-focuson2020]과 같은 지도여야 합니다.\index{maps!API}
 
 ![2023년 2월 12일 기준 Google Maps의 API 응답 예시](figures/07-googlemaps_canberra.png){#fig-focuson2020 width=75% fig-align="center"}
 
@@ -117,7 +117,7 @@ status_code(arxiv)
 
 `status_code()`를 사용하여 응답을 확인할 수 있습니다. 예를 들어, 200은 성공을 의미하고, 400은 서버에서 오류를 받았음을 의미합니다. 서버에서 무언가를 받았다고 가정하면 `content()`를 사용하여 표시할 수 있습니다. 이 경우 XML 형식의 데이터를 받았습니다. XML은 항목이 태그로 식별되는 마크업 언어이며, 태그는 다른 태그 안에 중첩될 수 있습니다.\index{XML} `xml2`를 설치하고 로드한 후 `read_xml()`을 사용하여 XML을 읽을 수 있습니다. XML은 반정형 구조이며, `html_structure()`를 사용하여 먼저 살펴보는 것이 유용할 수 있습니다.
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 ```{r}
 #| eval: false
 #| echo: true
@@ -128,7 +128,7 @@ content(arxiv) |>
 ```
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 ```{r}
 #| eval: false
 
@@ -140,7 +140,7 @@ content(arxiv) |>
 
 이 XML 트리에서 다양한 측면을 추출하여 데이터셋을 만들고 싶을 수 있습니다.\index{XML} 예를 들어, 8번째 항목인 "entry"를 살펴보고, 특히 "entry" 내의 4번째 및 9번째 항목인 "title"과 "URL"을 얻을 수 있습니다.
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 ```{r}
 #| eval: false
 #| echo: true
@@ -161,7 +161,7 @@ data_from_arxiv <-
 ```
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 ```{r}
 #| eval: false
 
@@ -193,7 +193,7 @@ NASA_APOD_20190719 <-
 
 `content()`를 사용하여 반환된 데이터를 검사하면 날짜, 제목, 설명 및 URL과 같은 다양한 필드가 제공됨을 알 수 있습니다.
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 공간상의 이유로 여기서는 출력이 생략되었지만, 이 [책](https://tellingstorieswithdata.com)의 무료 온라인 버전에서 볼 수 있습니다.
 
 ```{r}
@@ -209,7 +209,7 @@ content(NASA_APOD_20190719)$url
 
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 ```{r}
 # APOD 2019년 7월 19일
 content(NASA_APOD_20190719)$date
@@ -220,7 +220,7 @@ content(NASA_APOD_20190719)$url
 
 `knitr`의 `include_graphics()`에 해당 URL을 제공하여 표시할 수 있습니다(@fig-nasaone).
 
-::: {#fig-nasaone}
+:::{#fig-nasaone}
 ![고요의 바다 파노라마 (이미지 출처: 닐 암스트롱, 아폴로 11호, NASA)](figures/apollo11TranquilitybasePan.jpg){#fig-nasamoon}
 
 NASA APOD API에서 얻은 이미지
@@ -247,7 +247,7 @@ css}
 
 `jsonlite`로 JSON을 파싱할 수 있습니다. 특정 예를 고려하기 위해 데이터셋 공유를 더 쉽게 만드는 웹 애플리케이션인 "Dataverse"를 사용합니다. API를 사용하여 데모 데이터버스를 쿼리할 수 있습니다. 예를 들어, 정치와 관련된 데이터셋에 관심이 있을 수 있습니다.\index{API!Dataverse}
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 ```{r}
 #| message: false
 #| warning: false
@@ -259,7 +259,7 @@ politics_datasets <-
 ```
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 ```{r}
 #| message: false
 #| warning: false
@@ -400,7 +400,7 @@ as_tibble(politics_datasets[["data"]][["items"]])
 
 ### Spotify
 
-때로는 API를 중심으로 구축된 `R` 패키지가 있어 이전에 본 것과 유사한 방식으로 상호 작용할 수 있습니다. 예를 들어, `spotifyr`는 Spotify API를 감싸는 래퍼입니다.\index{API!Spotify}\index{Spotify!API} API를 사용할 때, 심지어 `R` 패키지(이 경우 `spotifyr`)로 래핑된 경우에도 접근이 제공되는 조건을 읽는 것이 중요합니다.
+때로는 API를 중심으로 구축된 `R` 패키지가 있어 이전에 본 것과 유사한 방식으로 상호 작용할 수 있습니다. 예를 들어, `spotifyr` 는 Spotify API를 감싸는 래퍼입니다.\index{API!Spotify}\index{Spotify!API} API를 사용할 때, 심지어 `R` 패키지(이 경우 `spotifyr`)로 래핑된 경우에도 접근이 제공되는 조건을 읽는 것이 중요합니다.
 
 Spotify API에 접근하려면 [Spotify 개발자 계정](https://developer.spotify.com/dashboard/)이 필요합니다.\index{Spotify} 이것은 무료이지만 Spotify 계정으로 로그인한 다음 개발자 약관에 동의해야 합니다(@fig-spotifyaccept).
 
@@ -534,7 +534,7 @@ the_national <- readRDS("inputs/data/the_national.rds")
 
 rbind(taylor_swift, the_national, radiohead) |>
   select(artist_name, album_release_date, valence) |>
-  mutate(album_release_date = ymd(album_release_date)) |> 
+  mutate(album_release_date = ymd(album_release_date)) |>
   ggplot(aes( x = album_release_date, y = valence, color = artist_name)) +
   geom_point(alpha = 0.3) +
   geom_smooth() +
@@ -549,7 +549,7 @@ rbind(taylor_swift, the_national, radiohead) |>
   theme(legend.position = "bottom")
 ```
 
-이 모든 정보가 아주 적은 노력과 비용으로 제공되는 세상에 살고 있다는 것이 얼마나 놀라운 일입니까! 그리고 데이터를 수집한 후에는 할 수 있는 일이 많습니다. 예를 들어, @kaylinpavlik는 확장된 데이터셋을 사용하여 음악 장르를 분류하고 @theeconomistonspotify는 언어가 Spotify에서 음악 스트리밍과 어떻게 관련되어 있는지 살펴봅니다. 이러한 데이터를 수집할 수 있는 능력은 과거에는 실험적으로 고려해야 했던 질문에 답할 수 있게 해줍니다. 예를 들어, @salganik2006experimental은 이제 접근할 수 있는 관찰 데이터 대신 실험 데이터를 사용하여 히트곡을 만드는 사회적 측면을 분석해야 했습니다.
+이 모든 정보가 아주 적은 노력과 비용으로 제공되는 세상에 살고 있다는 것이 얼마나 놀라운 일입니까! 그리고 데이터를 수집한 후에는 할 수 있는 일이 많습니다. 예를 들어, @kaylinpavlik 는 확장된 데이터셋을 사용하여 음악 장르를 분류하고 @theeconomistonspotify 는 언어가 Spotify에서 음악 스트리밍과 어떻게 관련되어 있는지 살펴봅니다. 이러한 데이터를 수집할 수 있는 능력은 과거에는 실험적으로 고려해야 했던 질문에 답할 수 있게 해줍니다. 예를 들어, @salganik2006experimental은 이제 접근할 수 있는 관찰 데이터 대신 실험 데이터를 사용하여 히트곡을 만드는 사회적 측면을 분석해야 했습니다.
 
 그렇긴 하지만, valence가 측정하려는 것이 무엇인지 생각해 볼 가치가 있습니다. Spotify 문서에는 그것이 어떻게 생성되었는지에 대한 정보가 거의 없습니다. 하나의 숫자가 노래의 긍정성을 완전히 나타낼 수 있다는 것은 의심스럽습니다. 그리고 Spotify에 없거나 공개되지 않은 이 아티스트들의 노래는 어떻습니까? 이것은 측정과 표본 추출이 데이터로 이야기를 하는 모든 측면에 어떻게 스며드는지를 보여주는 좋은 예입니다.\index{Spotify!measurement}
 
@@ -561,7 +561,7 @@ rbind(taylor_swift, the_national, radiohead) |>
 
 웹 스크래핑은 웹사이트에서 데이터를 가져오는 방법입니다.\index{web scraping} 브라우저를 사용하여 웹사이트로 이동한 다음 사본을 저장하는 대신, 우리는 우리를 위해 이 작업을 수행하는 코드를 작성합니다. 이것은 우리에게 상당한 데이터를 열어주지만, 다른 한편으로는 일반적으로 이러한 목적으로 제공되는 데이터가 아닙니다. 이는 존중하는 태도를 갖는 것이 특히 중요하다는 것을 의미합니다. 일반적으로 불법은 아니지만, 웹 스크래핑의 합법성에 대한 구체적인 내용은 관할권과 우리가 무엇을 하는지에 따라 다르므로 주의하는 것이 중요합니다. 우리의 사용이 상업적으로 경쟁적이지 않더라도, 특히 우려되는 것은 우리의 작업이 재현 가능해야 한다는 필요성과 데이터 재게시를 허용하지 않을 수 있는 서비스 약관을 존중해야 한다는 필요성 사이의 갈등입니다[@luscombe2021algorithmic].
 
-개인 정보 보호는 종종 재현성보다 우선합니다.\index{ethics!privacy vs reproducibility} 웹사이트에서 공개적으로 사용 가능한 데이터와 스크래핑, 정리 및 데이터셋으로 준비된 다음 공개적으로 출시되는 데이터 사이에는 상당한 차이가 있습니다. 예를 들어, @kirkegaard2016okcupid는 공개적으로 사용 가능한 OKCupid\index{ethics!OKCupid} 프로필을 스크래핑한 다음 결과 데이터셋을 쉽게 사용할 수 있도록 했습니다[@hackett2016researchers]. @zimmer2018addressing은 "피해 최소화", "정보에 입각한 동의", 그리고 데이터셋에 있는 사람들이 "개인 정보 및 기밀 유지"를 유지하도록 보장하는 것을 포함하여 간과된 몇 가지 중요한 고려 사항을 자세히 설명합니다.\index{ethics!context specific} OKCupid가 데이터를 공개했다고 말하는 것이 옳지만, 그들은 특정 맥락에서 그렇게 했고, 그들의 데이터가 스크래핑되었을 때 그 맥락이 변경되었습니다.
+개인 정보 보호는 종종 재현성보다 우선합니다.\index{ethics!privacy vs reproducibility} 웹사이트에서 공개적으로 사용 가능한 데이터와 스크래핑, 정리 및 데이터셋으로 준비된 다음 공개적으로 출시되는 데이터 사이에는 상당한 차이가 있습니다. 예를 들어, @kirkegaard2016okcupid 는 공개적으로 사용 가능한 OKCupid\index{ethics!OKCupid} 프로필을 스크래핑한 다음 결과 데이터셋을 쉽게 사용할 수 있도록 했습니다[@hackett2016researchers]. @zimmer2018addressing은 "피해 최소화", "정보에 입각한 동의", 그리고 데이터셋에 있는 사람들이 "개인 정보 및 기밀 유지"를 유지하도록 보장하는 것을 포함하여 간과된 몇 가지 중요한 고려 사항을 자세히 설명합니다.\index{ethics!context specific} OKCupid가 데이터를 공개했다고 말하는 것이 옳지만, 그들은 특정 맥락에서 그렇게 했고, 그들의 데이터가 스크래핑되었을 때 그 맥락이 변경되었습니다.
 
 :::{.callout-note}
 ## 아, 그것에 대해 좋은 데이터가 있다고 생각하는군요!
@@ -667,7 +667,7 @@ books_data <- read_html("https://rohansbooks.com")
 write_html(books_data, "inputs/my_website/raw_data.html")
 ```
 
-```{r} 
+```{r}
 #| echo: true
 #| eval: false
 #| include: true
@@ -679,11 +679,11 @@ write_html(books_data, "raw_data.html")
 
 원하는 측면을 얻기 위해 HTML을 탐색해야 합니다.\index{web scraping!HTML} 그리고 가능한 한 빨리 데이터를 티블로 가져오려고 노력해야 합니다. 이렇게 하면 `dplyr` 동사 및 `tidyverse`의 다른 함수를 더 쉽게 사용할 수 있습니다.
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 익숙하지 않다면 ["R 필수 사항"](https://tellingstorieswithdata.com/20-r_essentials.html)을 참조하십시오.
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 익숙하지 않다면 [온라인 부록 -@sec-r-essentials]을 참조하십시오.
 :::
 
@@ -719,7 +719,7 @@ books_data
 
 데이터를 티블로 가져오려면 먼저 HTML 태그를 사용하여 관심 있는 데이터를 식별해야 합니다. 웹사이트를 보면 목록 항목에 집중해야 한다는 것을 알 수 있습니다(@fig-rohansbooks-display). 그리고 소스를 보면 특히 목록을 찾을 수 있습니다(@fig-rohansbooks-html).
 
-::: {#fig-rohansbooks layout-ncol=2}
+:::{#fig-rohansbooks layout-ncol=2}
 
 ![표시된 도서 웹사이트](figures/books_display.png){#fig-rohansbooks-display width=50%}
 
@@ -777,9 +777,9 @@ all_books |>
     first_letter = str_sub(author, 1, 1)
   ) |>
   count(.by = first_letter) |>
-  tt() |> 
-  style_tt(j = 1:2, align = "lr") |> 
-  format_tt(digits = 0, num_mark_big = ",", num_fmt = "decimal") |> 
+  tt() |>
+  style_tt(j = 1:2, align = "lr") |>
+  format_tt(digits = 0, num_mark_big = ",", num_fmt = "decimal") |>
   setNames(c("첫 글자", "횟수"))
 ```
 
@@ -815,7 +815,7 @@ simulated_dataset <-
 simulated_dataset
 ```
 
-시뮬레이션된 데이터셋을 생성하는 장점 중 하나는 그룹으로 작업하는 경우 한 사람이 시뮬레이션된 데이터셋을 사용하여 그래프를 만들기 시작할 수 있고, 다른 사람은 데이터를 수집할 수 있다는 것입니다. 그래프 측면에서 우리는 @fig-pmsgraphexample과 같은 것을 목표로 합니다.
+시뮬레이션된 데이터셋을 생성하는 장점 중 하나는 그룹으로 작업하는 경우 한 사람이 시뮬레이션된 데이터셋을 사용하여 그래프를 만들기 시작할 수 있고, 다른 사람은 데이터를 수집할 수 있다는 것입니다. 그래프 측면에서 우리는 [@fig-pmsgraphexample]과 같은 것을 목표로 합니다.
 
 ![영국 총리가 얼마나 오래 살았는지 보여주는 계획된 그래프 스케치](figures/pms_graph_plan.png){#fig-pmsgraphexample width=75% fig-align="center"}
 
@@ -837,7 +837,7 @@ raw_data <-
 write_html(raw_data, "inputs/wiki/pms.html") # 파일을 HTML 파일로 저장합니다.
 ```
 
-```{r} 
+```{r}
 #| echo: true
 #| eval: false
 #| include: true
@@ -891,12 +891,12 @@ head(parse_data_selector_gadget)
 #| include: true
 
 parsed_data <-
-  parse_data_selector_gadget |> 
-  clean_names() |> 
-  rename(raw_text = prime_minister_office_lifespan) |> 
-  select(raw_text) |> 
-  filter(raw_text != "Prime ministerOffice(Lifespan)") |> 
-  distinct() 
+  parse_data_selector_gadget |>
+  clean_names() |>
+  rename(raw_text = prime_minister_office_lifespan) |>
+  select(raw_text) |>
+  filter(raw_text != "Prime ministerOffice(Lifespan)") |>
+  distinct()
 
 head(parsed_data)
 ```
@@ -911,12 +911,12 @@ initial_clean <-
   parsed_data |>
   separate(
     raw_text, into = c("name", "not_name"), sep = "\\[", extra = "merge",
-  ) |> 
+  ) |>
   mutate(date = str_extract(not_name, "[[:digit:]]{4}–[[:digit:]]{4}"),
          born = str_extract(not_name, "born[[:space:]][[:digit:]]{4}")
          ) |>
   select(name, date, born)
-  
+
 head(initial_clean)
 ```
 
@@ -928,16 +928,16 @@ head(initial_clean)
 
 cleaned_data <-
   initial_clean |>
-  separate(date, into = c("birth", "died"), 
+  separate(date, into = c("birth", "died"),
            sep = "–") |>   # 사망한 총리는 출생 및 사망 연도가 하이픈으로 구분되지만, 하이픈이 약간 이상한 유형이므로 복사/붙여넣기해야 합니다.
   mutate(
     born = str_remove_all(born, "born[[:space:]]"),
     birth = if_else(!is.na(born), born, birth)
   ) |> # 살아있는 총리는 형식이 약간 다릅니다.
   select(-born) |>
-  rename(born = birth) |> 
-  mutate(across(c(born, died), as.integer)) |> 
-  mutate(Age_at_Death = died - born) |> 
+  rename(born = birth) |>
+  mutate(across(c(born, died), as.integer)) |>
+  mutate(Age_at_Death = died - born) |>
   distinct() # 일부 총리는 두 번 시도했습니다.
 
 head(cleaned_data)
@@ -953,8 +953,8 @@ head(cleaned_data)
 
 cleaned_data |>
   head() |>
-  tt() |> 
-  style_tt(j = 1:4, align = "lrrr") |> 
+  tt() |>
+  style_tt(j = 1:4, align = "lrrr") |>
   setNames(c("총리", "출생 연도", "사망 연도", "사망 시 나이"))
 ```
 
@@ -1011,8 +1011,8 @@ statements_of_interest <-
     )
 ```
 
-::: {.content-visible unless-format="pdf"}
-```{r} 
+:::{.content-visible unless-format="pdf"}
+```{r}
 statements_of_interest
 ```
 :::
@@ -1027,9 +1027,9 @@ visit_download_and_wait <-
            where_to_save_it_locally) {
     download.file(url = address_to_visit,
                   destfile = where_to_save_it_locally)
-    
+
     print(paste("완료:", address_to_visit, "시간:", Sys.time()))
-    
+
     Sys.sleep(sample(5:10, 1))
   }
 ```
@@ -1115,7 +1115,7 @@ second_example
 ```
 
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 ```{r}
 #| eval: true
 #| echo: false
@@ -1126,7 +1126,7 @@ second_example |> str_trunc(width = 70)
 ```
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 ```{r}
 #| eval: true
 #| echo: false
@@ -1148,7 +1148,7 @@ class(third_example)
 third_example
 ```
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 ```{r}
 #| eval: true
 #| echo: false
@@ -1159,7 +1159,7 @@ third_example |> str_trunc(width = 70)
 ```
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 ```{r}
 #| eval: true
 #| echo: false
@@ -1230,7 +1230,7 @@ summary_tfr_dataset <- read_csv("inputs/tfr_tables_info.csv")
 ```
 
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 
 ```{r}
 #| include: true
@@ -1241,10 +1241,10 @@ summary_tfr_dataset <- read_csv("inputs/tfr_tables_info.csv")
 #| tbl-cap: "TFR 표에 대한 연도 및 관련 데이터"
 
 summary_tfr_dataset |>
-  select(year, page, table, column_name, url) |> 
-  filter(year == 2000) |> 
-  tt() |> 
-  style_tt(j = 1:5, align = "lrrrr") |> 
+  select(year, page, table, column_name, url) |>
+  filter(year == 2000) |>
+  tt() |>
+  style_tt(j = 1:5, align = "lrrrr") |>
   setNames(c("연도", "페이지", "표", "열", "URL"))
 ```
 :::
@@ -1400,7 +1400,7 @@ dhs_2000_cleaned <-
   dhs_2000_separate_data |>
   select(state, TFR) |>
   slice(18:74) |>
-  drop_na() |> 
+  drop_na() |>
   mutate(
     TFR = str_remove_all(TFR, ","),
     TFR = as.numeric(TFR),
@@ -1425,9 +1425,9 @@ all(state.name %in% dhs_2000_cleaned$state)
 
 dhs_2000_cleaned |>
   slice(1:10) |>
-  tt() |> 
-  style_tt(j = 1:2, align = "lr") |> 
-  format_tt(digits = 0, num_mark_big = ",", num_fmt = "decimal") |> 
+  tt() |>
+  style_tt(j = 1:2, align = "lr") |>
+  format_tt(digits = 0, num_mark_big = ",", num_fmt = "decimal") |>
   setNames(c("주", "TFR"))
 ```
 
@@ -1436,8 +1436,8 @@ dhs_2000_cleaned |>
 #| label: fig-smalldhsexample
 #| fig-height: 7
 
-dhs_2000_cleaned |> 
-  filter(state != "Total") |> 
+dhs_2000_cleaned |>
+  filter(state != "Total") |>
   ggplot(aes(x = TFR, y = fct_reorder(state, TFR))) +
   geom_point() +
   theme_classic() +
@@ -1531,7 +1531,7 @@ repo_info <- tibble(
     a. 147.679
     b. 172.988
     c. 204.124
-    d.  128.665 
+    d.  128.665
 
 ```{r}
 #| eval: false
@@ -1661,10 +1661,10 @@ un_data |>
 - Spotify API를 사용하여 비욘세 앨범 중 어떤 앨범이 평균 "춤추기 쉬움"이 가장 높은지 확인하십시오.
 - 카밀라 카베요가 2016년 12월 피프스 하모니를 탈퇴한 것이 스튜디오 앨범 노래의 valence에 영향을 미쳤는지 여부에 답하기 위한 그래프를 만드십시오.^[빨리 끝내는 학생들은 제시카가 2014년 9월 소녀시대를 탈퇴한 것도 비슷하게 살펴보고, 두 상황을 비교해 보십시오.] 다음은 유용한 정리 코드입니다.
 ```{r}
-#| eval: false 
+#| eval: false
 
 fifth_harmony |>
-  filter(album_name %in% c("Reflection", "7/27 (Deluxe)", "Fifth Harmony")) |> 
+  filter(album_name %in% c("Reflection", "7/27 (Deluxe)", "Fifth Harmony")) |>
   mutate(album_release_date = ymd(album_release_date)) |>
   filter(album_release_date != "2017-10-29") # 본질적으로 중복되는 앨범이 있습니다.
 ```

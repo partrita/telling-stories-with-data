@@ -17,7 +17,7 @@ engine: knitr
 
 **Key concepts and skills**
 
-- Running an experiment is not always possible, but we can use various approaches to nonetheless be able to speak to causality to some extent. 
+- Running an experiment is not always possible, but we can use various approaches to nonetheless be able to speak to causality to some extent.
 - We need to be careful of common paradoxes including Simpson's paradox and Berkson's paradox, and be aware of both the potential and pitfalls of matching.
 - We can use difference-in-differences when we have data on both treated and untreated units at both time periods. Regression discontinuity is useful when a group is either treated or not, but the two groups are very similar apart from the treatment. And instrumental variables is an approach used to estimate causality indirectly through another variable.
 - In general, these approaches need to be used with humility and concern for weaknesses and assumptions, both those that we can test and those that we cannot.
@@ -66,10 +66,10 @@ This chapter is about using observational data in sophisticated ways. How we can
 
 ## Two common paradoxes
 
-There are two situations where data can trick us that are so common that we will explicitly go through them. These are: 
+There are two situations where data can trick us that are so common that we will explicitly go through them. These are:
 
-1) Simpson's paradox,\index{Simpson's paradox} and 
-2) Berkson's paradox.\index{Berkson's paradox} 
+1) Simpson's paradox,\index{Simpson's paradox} and
+2) Berkson's paradox.\index{Berkson's paradox}
 
 ### Simpson's paradox
 
@@ -131,7 +131,7 @@ both_departments |>
 
 Simpson's paradox is often illustrated using real-world data from University of California, Berkeley,\index{Berkeley} on graduate admissions [@bickel1975sex]. This paper was mentioned in @sec-on-writing as having one of the greatest sub-titles ever published. @Hernn2011 create DAGs that further illuminate the relationship and the cause of the paradox.
 
-More recently, as mentioned in its documentation, the "penguins" dataset from `palmerpenguins` provides an example of Simpson's paradox, using real-world data on the relationship between body mass and bill depth in different species of penguins (@fig-simpsonsparadoxinpenguins). The overall negative trend occurs because Gentoo penguins tend to be heavier but with shorter bills compared to Adelie and Chinstrap penguins. 
+More recently, as mentioned in its documentation, the "penguins" dataset from `palmerpenguins` provides an example of Simpson's paradox, using real-world data on the relationship between body mass and bill depth in different species of penguins (@fig-simpsonsparadoxinpenguins). The overall negative trend occurs because Gentoo penguins tend to be heavier but with shorter bills compared to Adelie and Chinstrap penguins.
 
 ```{r}
 #| eval: true
@@ -217,7 +217,7 @@ professionals_and_public |>
 
 ## Difference-in-differences
 
-The ideal situation of being able to conduct an experiment is rarely possible. Can we reasonably expect that Netflix would allow us to change prices? And even if they did once, would they let us do it again, and again, and again? Further, rarely can we explicitly create treatment and control groups. Finally, experiments can be expensive or unethical. Instead, we need to make do with what we have. Rather than our counterfactual coming to us through randomization, and hence us knowing that the two are the same but for the treatment, we try to identify groups that were similar but for the treatment, and hence any differences can be attributed to the treatment.\index{difference-in-differences} 
+The ideal situation of being able to conduct an experiment is rarely possible. Can we reasonably expect that Netflix would allow us to change prices? And even if they did once, would they let us do it again, and again, and again? Further, rarely can we explicitly create treatment and control groups. Finally, experiments can be expensive or unethical. Instead, we need to make do with what we have. Rather than our counterfactual coming to us through randomization, and hence us knowing that the two are the same but for the treatment, we try to identify groups that were similar but for the treatment, and hence any differences can be attributed to the treatment.\index{difference-in-differences}
 
 With observational data, sometimes there are differences between our two groups before we treat. Provided those pre-treatment differences satisfy assumptions that essentially amount to the differences being both consistent, and that we expect that consistency to continue in the absence of the treatment---the "parallel trends" assumption---then we can look to any difference in the differences as the effect of the treatment. One of the aspects of difference-in-differences analysis is that we can do it using relatively straight forward methods, for instance @Tang2015. Linear regression with a binary variable is enough to get started and do a convincing job.
 
@@ -226,7 +226,7 @@ Consider wanting to know the effect of a new tennis racket on serve speed. One w
 We begin by measuring Federer's serve speed and compare it to Ville's serve speed, both without the new racket. We then measure Federer's serve speed again, and measure Ville's serve speed with the new racket. That difference in the differences would then be the estimate of the effect of the new racket. There are a few key questions we must ask to see if this analysis is appropriate:
 
 1) Is there something else that may have affected only Ville, and not Federer that could affect Ville's serve speed?
-2) Is it likely that Federer and Ville have the same trajectory of serve speed improvement? This is the "parallel trends" assumption, and it dominates many discussions of difference-in-differences analysis. 
+2) Is it likely that Federer and Ville have the same trajectory of serve speed improvement? This is the "parallel trends" assumption, and it dominates many discussions of difference-in-differences analysis.
 3) Finally, is it likely that the variance of our serve speeds of Federer and Ville are the same?
 
 Despite these requirements, difference-in-differences is a powerful approach because we do not need the treatment and control group to be the same before the treatment. We just need to have a good idea of how they differed.
@@ -267,7 +267,7 @@ simulated_diff_in_diff <-
 simulated_diff_in_diff
 ```
 
-```{r} 
+```{r}
 #| eval: true
 #| fig-cap: "Illustration of simulated data that shows a difference before and after getting a new tennis racket"
 #| include: true
@@ -387,13 +387,13 @@ modelsummary(
 
 If we want to use difference-in-differences, then we need to satisfy the assumptions.\index{difference-in-differences!assumptions}  There were three that were touched on earlier, but here we will focus on the "parallel trends" assumption. The parallel trends assumption haunts everything to do with difference-in-differences analysis because we can never prove it; we can just be convinced of it, and try to convince others.
 
-To see why we can never prove it, consider an example in which we want to know the effect of a new stadium on a professional sports team's wins/loses. To do this we consider two professional basketball teams: the Golden State Warriors and the Toronto Raptors. The Warriors changed stadiums at the start of the 2019-20 season, while the Raptors did not, so we will consider four time periods: the 2016-17 season, 2017-18 season, 2018-19 season, and finally we will compare the performance with the one after they moved, so the 2019-20 season. The Raptors here act as our counterfactual. This means that we assume the relationship between the Warriors and the Raptors, in the absence of a new stadium, would have continued to change in a consistent way. But the fundamental problem of causal inference means that we can never know that for certain.\index{causal inference!fundamental problem} We must present sufficient evidence to assuage any concerns that a reader may have. 
+To see why we can never prove it, consider an example in which we want to know the effect of a new stadium on a professional sports team's wins/loses. To do this we consider two professional basketball teams: the Golden State Warriors and the Toronto Raptors. The Warriors changed stadiums at the start of the 2019-20 season, while the Raptors did not, so we will consider four time periods: the 2016-17 season, 2017-18 season, 2018-19 season, and finally we will compare the performance with the one after they moved, so the 2019-20 season. The Raptors here act as our counterfactual. This means that we assume the relationship between the Warriors and the Raptors, in the absence of a new stadium, would have continued to change in a consistent way. But the fundamental problem of causal inference means that we can never know that for certain.\index{causal inference!fundamental problem} We must present sufficient evidence to assuage any concerns that a reader may have.
 
 There are four main threats to validity when we use difference-in-differences, and we need to address all of them [@Cunningham2021, p. 272--277]:
 
 1. Non-parallel trends. The treatment and control groups may be based on differences. As such it can be difficult to convincingly argue for parallel trends. In this case, maybe try to find another factor to consider in your model that may adjust for some of that. This may require triple-differenced approaches. For instance, in the earlier example, we could perhaps add the San Francisco 49ers, a football team, as they are in the same broad geographic area as the Warriors. Or maybe rethink the analysis to see if we can make a different control group. Adding additional earlier time periods may help but may introduce more issues, which we touch on in the third point.
-2. Compositional differences. This is a concern when working with repeated cross-sections. What if the composition of those cross-sections change? For instance, if we are working at an app that is rapidly growing, and we want to look at the effect of some change. In our initial cross-section, we may have mostly young people, but in a subsequent cross-section, we may have more older people as the demographics of the app usage change. Hence our results may just be an age-effect, not an effect of the change that we are interested in. 
-3. Long-term effects compared with reliability. As we discussed in @sec-hunt-data, there is a trade-off between the length of the analysis that we run. As we run the analysis for longer there is more opportunity for other factors to affect the results. There is also increased chance for someone who was not treated to be treated. But, on the other hand, it can be difficult to convincingly argue that short-term results will continue in the long term. 
+2. Compositional differences. This is a concern when working with repeated cross-sections. What if the composition of those cross-sections change? For instance, if we are working at an app that is rapidly growing, and we want to look at the effect of some change. In our initial cross-section, we may have mostly young people, but in a subsequent cross-section, we may have more older people as the demographics of the app usage change. Hence our results may just be an age-effect, not an effect of the change that we are interested in.
+3. Long-term effects compared with reliability. As we discussed in @sec-hunt-data, there is a trade-off between the length of the analysis that we run. As we run the analysis for longer there is more opportunity for other factors to affect the results. There is also increased chance for someone who was not treated to be treated. But, on the other hand, it can be difficult to convincingly argue that short-term results will continue in the long term.
 4. Functional form dependence. This is less of an issue when the outcomes are similar, but if they are different then functional form may be responsible for some aspects of the results.
 
 
@@ -407,7 +407,7 @@ There are four main threats to validity when we use difference-in-differences, a
 
 ### French newspaper prices between 1960 and 1974
 
-In this case study we introduce @angelucci2019newspapers. They are interested in understanding the effect of the introduction of television on French newspapers. We will replicate one of the main findings.\index{France!newspaper prices}\index{difference-in-differences!French newspapers} 
+In this case study we introduce @angelucci2019newspapers. They are interested in understanding the effect of the introduction of television on French newspapers. We will replicate one of the main findings.\index{France!newspaper prices}\index{difference-in-differences!French newspapers}
 
 The business model of newspapers has been challenged by the internet and many local newspapers have closed. This issue is not new. When television was introduced, there were similar concerns. @angelucci2019newspapers use the introduction of television advertising in France, announced in 1967, to examine the effect of decreased advertising revenue on newspapers. They create a dataset of French newspapers from 1960 to 1974 and then use difference-in-differences to examine the effect of the reduction in advertising revenues on newspapers' content and prices. The change that they focus on is the introduction of television advertising, which they argue affected national newspapers more than local newspapers. They find that this change results in both less journalism content in the newspapers and lower newspaper prices. Focusing on this change, and analyzing it using difference-in-differences, is important because it allows us to disentangle a few competing effects. For instance, did newspapers become redundant because they could no longer charge high prices for their advertisements, or because consumers preferred to get their news from the television?
 
@@ -421,7 +421,7 @@ newspapers <- read_dta("Angelucci_Cage_AEJMicro_dataset.dta")
 ```
 
 
-```{r} 
+```{r}
 #| echo: false
 
 newspapers <- read_dta("inputs/data/116438-V1/data/dta/Angelucci_Cage_AEJMicro_dataset.dta")
@@ -439,8 +439,8 @@ newspapers <-
   newspapers |>
   select(
     year, id_news, after_national, local, national, ra_cst, ps_cst, qtotal
-    ) |> 
-  mutate(ra_cst_div_qtotal = ra_cst / qtotal, 
+    ) |>
+  mutate(ra_cst_div_qtotal = ra_cst / qtotal,
          across(c(id_news, after_national, local, national), as.factor),
          year = as.integer(year))
 
@@ -592,7 +592,7 @@ subscription_price <-
   readRDS(file = "outputs/model/subscription_price.rds")
 ```
 
-Looking at the advertising-side variables, such as revenue and prices, in @tbl-frenchnewspapersadvertising we find consistently negative coefficients. 
+Looking at the advertising-side variables, such as revenue and prices, in @tbl-frenchnewspapersadvertising we find consistently negative coefficients.
 
 ```{r}
 #| label: tbl-frenchnewspapersadvertising
@@ -648,7 +648,7 @@ purchase_data <-
       prob = c(0.49, 0.47, 0.02)
     ),
     income = rnorm(n = sample_size, mean = 60000, sd = 15000) |> round(0)
-  ) 
+  )
 
 purchase_data
 ```
@@ -658,7 +658,7 @@ Then we need to add some probability of being treated with free shipping. We wil
 ```{r}
 #| echo: true
 
-purchase_data <- 
+purchase_data <-
   purchase_data |>
   mutate(
     # change characteristics to bounded numbers
@@ -706,8 +706,8 @@ Naively we can see that there is a difference in the average spend between those
 purchase_data |>
   summarise(average_spend = round(mean(spend), 2), .by = free_shipping) |>
   mutate(free_shipping = if_else(free_shipping == 0, "No", "Yes")) |>
-  tt() |> 
-  style_tt(j = 1:2, align = "lr") |> 
+  tt() |>
+  style_tt(j = 1:2, align = "lr") |>
   setNames(c("Received free shipping?", "Average spend"))
 ```
 
@@ -718,7 +718,7 @@ We use `matchit()` from `MatchIt` to implement logistic regression and create ma
 #| message: false
 #| warning: false
 
-matched_groups <- 
+matched_groups <-
   matchit(
   free_shipping ~ age + gender + income,
   data = purchase_data,
@@ -762,7 +762,7 @@ The fundamental problem of unobservables can never be shown to be inconsequentia
 
 Regression discontinuity design (RDD)\index{regression discontinuity design} was established by @thistlethwaite1960regression and is a popular way to get causality when there is a continuous variable with cut-offs that determine treatment. Is there a difference between a student who gets 79 per cent and a student who gets 80 per cent? Probably not much, but one may get a A-, while the other may get a B+. Seeing that on a transcript could affect who gets a job which could affect income. In this case the percentage is a "forcing variable" or "forcing function" and the cut-off for an A- is a "threshold". As the treatment is determined by the forcing variable we need to control for that variable. These seemingly arbitrary cut-offs can be seen all the time. Hence, there has been a great deal of work using RDD.
 
-There is sometimes slightly different terminology used when it comes to RDD. For instance, @Cunningham2021 refers to the forcing function as a running variable. The exact terminology that is used does not matter provided we use it consistently.  
+There is sometimes slightly different terminology used when it comes to RDD. For instance, @Cunningham2021 refers to the forcing function as a running variable. The exact terminology that is used does not matter provided we use it consistently.
 
 ### Simulated example: income and grades
 
@@ -795,7 +795,7 @@ rdd_example_data <-
 rdd_example_data
 ```
 
-```{r} 
+```{r}
 #| eval: true
 #| fig-cap: "Illustration of simulated data that shows an effect on income from getting a mark that is 80, compared with 79"
 #| include: true
@@ -904,7 +904,7 @@ modelsummary(
 
 There are various caveats to this estimate that we will discuss, but the essentials of RDD are here. Given an appropriate set-up, and model, RDD can compare favorably to randomized trials [@bloombellreiman2020].
 
-We could also implement RDD using `rdrobust`. The advantage of this approach is that many common extensions are easily available. 
+We could also implement RDD using `rdrobust`. The advantage of this approach is that many common extensions are easily available.
 
 ```{r}
 rdrobust(
@@ -929,19 +929,19 @@ The first assumption is largely about being unable to manipulate the cut-off, an
 
 When we discussed randomized control trials and A/B testing in @sec-hunt-data the randomized assignment of the treatment meant that the control and treatment groups were the same, but for the treatment. Then we moved to difference-in-differences, and we assumed that there was a common trend between the treated and control groups. We allowed that the groups could be different, but that we could "difference out" their differences. Finally, we considered matching, and we said that even if the control and treatment groups seemed different, we were able to match, to some extent, those who were treated with a group that were like them in all ways, apart from the fact that they were not treated.
 
-In regression discontinuity we consider a slightly different setting. The two groups are completely different in terms of the forcing variable. They are on either side of the threshold. There is no overlap at all. But we know the threshold and believe that those on either side are essentially matched. Let us consider the 2019 NBA Eastern Conference Semifinals---Toronto and Philadelphia: 
+In regression discontinuity we consider a slightly different setting. The two groups are completely different in terms of the forcing variable. They are on either side of the threshold. There is no overlap at all. But we know the threshold and believe that those on either side are essentially matched. Let us consider the 2019 NBA Eastern Conference Semifinals---Toronto and Philadelphia:
 
-- Game 1: Raptors win 108-95; 
-- Game 2: 76ers win 94-89; 
-- Game 3: 76ers win 116-95; 
-- Game 4: Raptors win 101-96; 
-- Game 5: Raptors win 125-89; 
-- Game 6: 76ers win 112-101; and finally, 
-- Game 7: Raptors win 92-90, because of a ball that went in after bouncing on the rim four times. 
+- Game 1: Raptors win 108-95;
+- Game 2: 76ers win 94-89;
+- Game 3: 76ers win 116-95;
+- Game 4: Raptors win 101-96;
+- Game 5: Raptors win 125-89;
+- Game 6: 76ers win 112-101; and finally,
+- Game 7: Raptors win 92-90, because of a ball that went in after bouncing on the rim four times.
 
 Was there really that much difference between the teams?
 
-The continuity assumption is important, but we cannot test this as it is based on a counterfactual. Instead, we need to convince people of it. Ways to do this include: 
+The continuity assumption is important, but we cannot test this as it is based on a counterfactual. Instead, we need to convince people of it. Ways to do this include:
 
 - Using a test/train set-up.
 - Trying different specifications. We are especially concerned if results do not broadly persist with just linear or quadratic functions.
@@ -952,13 +952,13 @@ The continuity assumption is important, but we cannot test this as it is based o
 
 The threshold is also important. For instance, is there an actual shift or is there a non-linear relationship?
 
-There are a variety of weaknesses of RDD, including: 
+There are a variety of weaknesses of RDD, including:
 
 - External validity may be difficult. For instance, when we think about the A-/B+ example, it is hard to see those generalizing to also B-/C+ students.
 - The important responses are those that are close to the cut-off. This means that even if we have many A and B students, they do not help much. Hence, we need a lot of data or we may have concerns about our ability to support our claims [@green2009testing].
 - As the researcher, we have a lot of freedom to implement different options. This means that open science best practice becomes vital.
 
-To this point we have considered "sharp" RDD. That is, the threshold is strict. But, in reality, often the boundary is a little less strict. In a sharp RDD setting, if we know the value of the forcing function then we know the outcome. For instance, if a student gets a mark of 80 then we know that they got an A-, but if they got a mark of 79 then we know that they got a B+. But with fuzzy RDD it is only known with some probability. 
+To this point we have considered "sharp" RDD. That is, the threshold is strict. But, in reality, often the boundary is a little less strict. In a sharp RDD setting, if we know the value of the forcing function then we know the outcome. For instance, if a student gets a mark of 80 then we know that they got an A-, but if they got a mark of 79 then we know that they got a B+. But with fuzzy RDD it is only known with some probability.
 
 We want as "sharp" an effect as possible, but if the thresholds are known, then they will be gamed. For instance, there is a lot of evidence that people run for certain marathon times, and we know that people aim for certain grades. Similarly, from the other side, it is a lot easier for an instructor to just give out As than it is to have to justify Bs. One way to look at this is to consider how "balanced" the sample is on either side of the threshold. We can do this using histograms with appropriate bins. For instance, think of the age-heaping that we found in the cleaned Kenyan census data in @sec-clean-and-prepare.
 
@@ -1215,7 +1215,7 @@ num_observations <- 10000
 
 iv_example_data <- tibble(
   person = c(1:num_observations),
-  smoker = 
+  smoker =
     sample(x = c(0:1), size = num_observations, replace = TRUE)
   )
 ```
@@ -1257,7 +1257,7 @@ iv_example_data <- iv_example_data |>
         prob = c(1/4, 3/4)
       )
     ),
-    tax = case_when(province == "Alberta" ~ 0.3, 
+    tax = case_when(province == "Alberta" ~ 0.3,
                     province == "Nova Scotia" ~ 0.5,
                     TRUE ~ 9999999
                     )
@@ -1266,7 +1266,7 @@ iv_example_data <- iv_example_data |>
 iv_example_data
 ```
 
-Now we can look at our data. 
+Now we can look at our data.
 
 ```{r}
 iv_example_data |>
@@ -1315,7 +1315,7 @@ iv_robust(health ~ smoker | tax, data = iv_example_data) |>
 
 ### Assumptions
 
-::: {.content-visible when-format="pdf"}
+:::{.content-visible when-format="pdf"}
 The set-up of instrumental variables is described in @fig-dot-taxrebateasiv-pdf, which shows education as a confounder between income and happiness.\index{confounder} A tax rebate likely only affects income, not education, and could be used as an instrumental variable.
 
 ```{dot}
@@ -1324,14 +1324,14 @@ The set-up of instrumental variables is described in @fig-dot-taxrebateasiv-pdf,
 //| echo: true
 //| fig-width: 2
 digraph D {
-  
+
   node [shape=plaintext, fontname = "helvetica"];
   a [label = "Income"]
   b [label = "Happiness"]
   c [label = "Education"]
   d [label = "Tax rebate"]
   { rank=same a b};
-  
+
   a->b
   c->a
   c->b
@@ -1340,7 +1340,7 @@ digraph D {
 ```
 :::
 
-::: {.content-visible unless-format="pdf"}
+:::{.content-visible unless-format="pdf"}
 The set-up of instrumental variables is described in @fig-dot-taxrebateasiv-quarto, which shows education as a confounder between income and happiness.\index{confounder} A tax rebate likely only affects income, not education, and could be used as an instrumental variable.
 
 ```{dot}
@@ -1349,14 +1349,14 @@ The set-up of instrumental variables is described in @fig-dot-taxrebateasiv-quar
 //| echo: true
 //| fig-width: 4
 digraph D {
-  
+
   node [shape=plaintext, fontname = "helvetica"];
   a [label = "Income"]
   b [label = "Happiness"]
   c [label = "Education"]
   d [label = "Tax rebate"]
   { rank=same a b};
-  
+
   a->b
   c->a
   c->b
@@ -1368,7 +1368,7 @@ digraph D {
 As discussed earlier, there are a variety of assumptions that are made when using instrumental variables. The two most important are:\index{instrumental variables!assumptions}
 
 1. Exclusion Restriction. This assumption is that the instrumental variable only affects the outcome variable through the predictor variable of interest.
-2. Relevance. There must actually be a relationship between the instrumental variable and the predictor variable. 
+2. Relevance. There must actually be a relationship between the instrumental variable and the predictor variable.
 
 There is typically a trade-off between these two. There are plenty of variables that satisfy one, precisely because they do not satisfy the other. @Cunningham2021 [p. 211] describes how one test of a good instrument is if people are initially confused before you explain it to them, only to think it obvious in hindsight.
 
