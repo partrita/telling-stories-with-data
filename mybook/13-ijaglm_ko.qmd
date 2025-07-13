@@ -1,0 +1,1935 @@
+---
+engine: knitr
+---
+
+# 일반화 선형 모델 {#sec-its-just-a-generalized-linear-model}
+
+::: {.callout-note}
+Chapman and Hall/CRC에서 2023년 7월에 이 책을 출판했습니다. [여기](https://www.routledge.com/Telling-Stories-with-Data-With-Applications-in-R/Alexander/p/book/9781032134772)에서 구매할 수 있습니다.
+
+이 온라인 버전은 인쇄된 내용에서 일부 업데이트되었습니다. 인쇄 버전과 일치하는 온라인 버전은 [여기](https://rohanalexander.github.io/telling_stories-published/)에서 사용할 수 있습니다.
+:::
+
+**선수 지식**
+
+- *회귀 및 기타 이야기*, [@gelmanhillvehtari2020]
+  - 일반화 선형 모델에 대한 자세한 가이드를 제공하는 13장 "로지스틱 회귀" 및 15장 "기타 일반화 선형 모델"에 집중하세요.
+- *R을 사용한 통계 학습 소개*, [@islr]
+  - 다른 관점에서 일반화 선형 모델에 대한 보완적인 처리를 제공하는 4장 "분류"에 집중하세요.
+- *우리는 네 명의 훌륭한 여론 조사원에게 동일한 원시 데이터를 주었다. 그들은 네 가지 다른 결과를 얻었다*, [@cohn2016]
+  - 동일한 데이터셋이 주어졌을 때 다른 모델링 선택이 다른 예측으로 이어지는 상황을 자세히 설명합니다.
+
+**핵심 개념 및 기술**
+
+- 선형 회귀는 대체 유형의 결과 변수에 대해 일반화될 수 있습니다.
+- 로지스틱 회귀는 이진 결과 변수가 있을 때 사용할 수 있습니다.
+- 포아송 회귀는 정수 개수 결과 변수가 있을 때 사용할 수 있습니다. 음이항 회귀는 가정이 덜 까다롭기 때문에 종종 고려되는 변형입니다.
+- 다단계 모델링은 데이터를 더 잘 활용할 수 있는 접근 방식입니다.
+
+**소프트웨어 및 패키지**
+
+- Base R [@citeR]
+- `boot` [@boot; @bootii]
+- `broom.mixed` [@mixedbroom]
+- `collapse` [@collapse]
+- `dataverse` [@dataverse]
+- `gutenbergr` [@gutenbergr]
+- `janitor` [@janitor]
+- `marginaleffects` [@marginaleffects]
+- `modelsummary` [@citemodelsummary]
+- `rstanarm` [@citerstanarm]
+- `tidybayes` [@citetidybayes]
+- `tidyverse` [@tidyverse]
+- `tinytable` [@tinytable]
+	
+```{
+r}
+#| message: false
+#| warning: false
+
+library(boot)
+library(broom.mixed)
+library(collapse)
+library(dataverse)
+library(gutenbergr)
+library(janitor)
+library(marginaleffects)
+library(modelsummary)
+library(rstanarm)
+library(tidybayes)
+library(tidyverse)
+library(tinytable)
+```
+
+## 서론
+
+@sec-its-just-a-linear-model에서 다루었던 선형 모델은 지난 세기 동안 상당히 발전했습니다.\index{statistics!history of} @sec-hunt-data에서 언급된 프랜시스 골턴\index{Galton, Francis}과 그의 세대 사람들은 1800년대 후반과 1900년대 초반에 선형 회귀를 진지하게 사용했습니다. 이진 결과는 빠르게 관심의 대상이 되었고 특별한 처리가 필요했으며, 이는 1900년대 중반에 로지스틱 회귀 및 유사한 방법의 개발과 광범위한 적용으로 이어졌습니다[@cramer2002origins]. 일반화 선형 모델 프레임워크는 1970년대에 @nelder1972generalized에 의해 공식적인 의미로 등장했습니다. 일반화 선형 모델(GLM)\index{linear models!generalized}은 허용되는 결과의 유형을 확장합니다. 우리는 여전히 결과를 선형 함수로 모델링하지만, 제약이 덜합니다. 결과는 지수족에 속하는 어떤 것이든 될 수 있으며, 인기 있는 선택에는 로지스틱 분포와 포아송 분포가 포함됩니다. 완성된 이야기를 위해 이 책의 범위를 벗어나는 접근 방식으로 전환하면, GLM의 추가 일반화는 일반화 가법 모델(GAM)이며, 여기서 설명 측면의 구조를 확장합니다. 우리는 여전히 결과 변수를 다양한 조각의 가법 함수로 설명하지만, 그 조각들은 함수가 될 수 있습니다. 이 프레임워크는 1990년대에 @hastie1990generalized에 의해 제안되었습니다.
+
+일반화 선형 모델 측면에서, 이 장에서는 로지스틱, 포아송, 음이항 회귀를 다룹니다. 그러나 선형 모델과 일반화 선형 모델 모두와 관련된 변형인 다단계 모델링도 탐색합니다. 이는 데이터셋 내에 존재하는 어떤 유형의 그룹화를 활용하는 경우입니다.
+
+## 로지스틱 회귀
+
+선형 회귀\index{regression!logistic}\index{logistic regression}는 데이터를 더 잘 이해하는 데 유용한 방법입니다. 그러나 이는 실수선상의 어떤 숫자도 취할 수 있는 연속 결과 변수를 가정합니다. 이 조건을 충족할 수 없을 때 동일한 메커니즘을 사용하고 싶습니다. 이진 및 개수 결과 변수에 대해 각각 로지스틱 및 포아송 회귀로 전환합니다. 예측 변수가 선형 방식으로 들어가기 때문에 여전히 선형 모델입니다.
+
+로지스틱 회귀\index{logistic regression} 및 그 변형은 선거[@wang2015forecasting]부터 경마[@chellel2018gambler; @boltonruth]에 이르기까지 다양한 설정에서 유용합니다. 결과 변수가 0 또는 1, 또는 "예" 또는 "아니오"와 같은 이진 결과일 때 로지스틱 회귀를 사용합니다. 이진 결과 변수\index{binary outcome}의 존재가 제한적으로 들릴 수 있지만, 결과가 자연스럽게 이 상황에 속하거나 조정될 수 있는 많은 상황이 있습니다. 예를 들어, 승리 또는 패배, 사용 가능 또는 사용 불가능, 지지 또는 비지지.
+
+이것의 기초는 베르누이 분포\index{distribution!Bernoulli}입니다. 결과 "1"의 확률 $p$가 있고, 나머지 $1-p$는 결과 "0"에 대한 것입니다. `rbinom()`을 한 번의 시행("size = 1")으로 사용하여 베르누이 분포에서 데이터를 시뮬레이션할 수 있습니다.\index{simulation}
+
+```{
+r}
+#| message: false
+#| warning: false
+
+set.seed(853)
+
+bernoulli_example <-
+  tibble(draws = rbinom(n = 20, size = 1, prob = 0.1))
+
+bernoulli_example |> pull(draws)
+```
+
+로지스틱 회귀\index{logistic regression}를 사용하는 한 가지 이유는 확률을 모델링할 것이므로 0과 1 사이에 제한될 것이기 때문입니다. 선형 회귀에서는 이 범위를 벗어나는 값을 얻을 수 있습니다. 로지스틱 회귀의 기초는 로짓 함수\index{logit function}입니다.
+
+$$
+\mbox{logit}(x) = \log\left(\frac{x}{1-x}\right).
+$$
+이것은 0과 1 사이의 값을 실수선으로 변환합니다. 예를 들어, `logit(0.1) = -2.2`, `logit(0.5) = 0`, `logit(0.9) = 2.2`입니다(@fig-heyitslogit). 우리는 이것을 "링크 함수"라고 부릅니다. 이는 일반화 선형 모델에서 관심 있는 분포를 선형 모델에서 사용하는 메커니즘과 연결합니다.
+
+```{
+r}
+#| eval: true
+#| include: true
+#| echo: false
+#| fig-cap: "0과 1 사이의 값에 대한 로짓 함수의 예시"
+#| label: fig-heyitslogit
+#| message: false
+#| warning: false
+
+tibble(values = seq(from = 0, to = 1, by = 0.001),
+       logit = logit(values)) |>
+  ggplot(aes(x = values, y = logit)) +
+  geom_line() +
+  theme_classic() +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  labs(x = "x 값",
+       y = "logit(x)")
+```
+
+### 시뮬레이션 예시: 낮 또는 밤
+
+로지스틱 회귀\index{logistic regression}를 설명하기 위해, 도로 위의 자동차 수를 기반으로 주중 또는 주말인지 여부에 대한 데이터를 시뮬레이션할 것입니다.\index{simulation} 주중에는 도로가 더 혼잡하다고 가정할 것입니다.\index{distribution!Normal}
+
+```{
+r}
+#| message: false
+#| warning: false
+
+set.seed(853)
+
+week_or_weekday <-
+  tibble(
+    num_cars = sample.int(n = 100, size = 1000, replace = TRUE),
+    noise = rnorm(n = 1000, mean = 0, sd = 10),
+    is_weekday = if_else(num_cars + noise > 50, 1, 0)
+  ) |>
+  select(-noise)
+
+week_or_weekday
+```
+
+```{
+r}
+#| eval: false
+#| include: false
+
+arrow::write_parquet(x = week_or_weekday,
+                     sink = "outputs/data/week_or_weekday.parquet")
+```
+
+base R의 `glm()`을 사용하여 빠른 추정을 수행할 수 있습니다.\index{logistic regression!Base R} 이 경우, 우리가 볼 수 있는 자동차 수를 기반으로 주중 또는 주말인지 여부를 파악하려고 노력할 것입니다. @eq-logisticexample를 추정하는 데 관심이 있습니다.
+
+$$
+\mbox{Pr}(y_i=1) = \mbox{logit}^{-1}\left(\beta_0+\beta_1 x_i\right)
+$$ {#eq-logisticexample}
+
+여기서 $y_i$는 주중인지 여부이고 $x_i$는 도로 위의 자동차 수입니다.
+
+
+```{
+r}
+week_or_weekday_model <-
+  glm(
+    is_weekday ~ num_cars,
+    data = week_or_weekday,
+    family = "binomial"
+  )
+
+summary(week_or_weekday_model)
+```
+
+자동차 수에 대한 추정 계수는 0.19입니다. 로지스틱 회귀\index{logistic regression!interpretation}에서 계수의 해석은 이진 결과의 로그-오즈 변화와 관련되므로 선형 회귀보다 더 복잡합니다. 예를 들어, 0.19의 추정치는 도로에서 자동차 한 대를 더 관찰할 때 주중일 로그-오즈의 평균 변화입니다. 계수는 양수이므로 증가를 의미합니다. 비선형이므로 특정 변화를 지정하려면 관측치의 다른 기준 수준에 따라 달라집니다. 즉, 0.19 로그-오즈의 증가는 기준 로그-오즈가 2일 때보다 0일 때 더 큰 영향을 미칩니다.
+
+우리는 추정치를 주어진 자동차 수에 대한 주중일 확률로 변환할 수 있습니다. `marginaleffects`의 `predictions()`를 사용하여 각 관측치에 대한 주중일 암시된 확률을 추가할 수 있습니다.
+
+```{
+r}
+week_or_weekday_predictions <-
+  predictions(week_or_weekday_model) |>
+  as_tibble()
+
+week_or_weekday_predictions
+```
+
+그리고 각 관측치에 대해 모델이 암시하는 주중일 확률을 그래프로 그릴 수 있습니다(@fig-dayornightprobs). 이것은 적합도를 설명하는 몇 가지 다른 방법을 고려할 수 있는 좋은 기회입니다. 산점도를 사용하는 것이 일반적이지만(@fig-dayornightprobs-1), ECDF를 사용하는 것도 가능합니다(@fig-dayornightprobs-2).
+
+```{
+r}
+#| eval: true
+#| fig-cap: "주변 자동차 수를 기반으로 주중 또는 주말인지 여부에 대한 시뮬레이션된 데이터를 사용한 로지스틱 회귀 확률 결과"
+#| include: true
+#| label: fig-dayornightprobs
+#| message: false
+#| warning: false
+#| fig-subcap: ["산점도로 적합도 설명", "ECDF로 적합도 설명"]
+#| layout-ncol: 2
+
+# 패널 (a)
+week_or_weekday_predictions |>
+  mutate(is_weekday = factor(is_weekday)) |>
+  ggplot(aes(x = num_cars, y = estimate, color = is_weekday)) +
+  geom_jitter(width = 0.01, height = 0.01, alpha = 0.3) +
+  labs(
+    x = "관찰된 자동차 수",
+    y = "주중일 추정 확률",
+    color = "실제 주중"
+  ) +
+  theme_classic() +
+  scale_color_brewer(palette = "Set1") +
+  theme(legend.position = "bottom")
+
+# 패널 (b)
+week_or_weekday_predictions |>
+  mutate(is_weekday = factor(is_weekday)) |>
+  ggplot(aes(x = num_cars, y = estimate, color = is_weekday)) +
+  stat_ecdf(geom = "point", alpha = 0.75) +
+  labs(
+    x = "관찰된 자동차 수",
+    y = "주중일 추정 확률",
+    color = "실제 주중"
+  ) +
+  theme_classic() +
+  scale_color_brewer(palette = "Set1") +
+  theme(legend.position = "bottom")
+```
+
+각 관측치에서의 한계 효과\index{marginal effects}는 이 확률이 어떻게 변하는지 보여주므로 흥미롭습니다. 이를 통해 중앙값(이 경우 자동차 50대를 볼 경우)에서 주중일 확률이 자동차 한 대를 더 볼 경우 거의 5% 증가한다고 말할 수 있습니다(@tbl-marginaleffectcar).
+
+```{
+r}
+#| label: tbl-marginaleffectcar
+#| tbl-cap: "중앙값에서 자동차 한 대가 주중일 확률에 미치는 한계 효과"
+
+slopes(week_or_weekday_model, newdata = "median") |>
+  select(term, estimate, std.error) |>
+  tt() |> 
+  style_tt(j = 1:3, align = "lrr") |> 
+  format_tt(digits = 3, num_mark_big = ",", num_fmt = "decimal") |> 
+  setNames(c("항목", "추정치", "표준 오차"))
+```
+
+상황을 더 철저히 조사하기 위해 `rstanarm`을 사용하여 베이즈 모델을 구축하고 싶을 수 있습니다.\index{Bayesian!logistic regression}\index{logistic regression!Bayesian} @sec-its-just-a-linear-model에서와 마찬가지로 모델에 대한 사전 분포를 지정할 것이지만, 이는 `rstanarm`이 사용하는 기본 사전 분포일 뿐입니다.
+
+$$
+\begin{aligned}
+y_i|\pi_i & \sim \mbox{Bern}(\pi_i) \\
+\mbox{logit}(\pi_i) & = \beta_0+\beta_1 x_i \\
+\beta_0 & \sim \mbox{Normal}(0, 2.5)\\
+\beta_1 & \sim \mbox{Normal}(0, 2.5)
+\end{aligned}
+$$
+여기서 $y_i$는 주중인지 여부(실제로는 0 또는 1)이고 $x_i$는 도로 위의 자동차 수이며, $\pi_i$는 관측치 $i$가 주중일 확률입니다.
+
+```{
+r}
+#| eval: false
+#| echo: true
+#| message: false
+#| warning: false
+
+week_or_weekday_rstanarm <-
+  stan_glm(
+    is_weekday ~ num_cars,
+    data = week_or_weekday,
+    family = binomial(link = "logit"),
+    prior = normal(location = 0, scale = 2.5, autoscale = TRUE),
+    prior_intercept = normal(location = 0, scale = 2.5, autoscale = TRUE),
+    seed = 853
+  )
+
+saveRDS(
+  week_or_weekday_rstanarm,
+  file = "week_or_weekday_rstanarm.rds"
+)
+```
+
+```{
+r}
+#| eval: false
+#| include: false
+#| message: false
+#| warning: false
+
+# INTERNAL
+saveRDS(
+  week_or_weekday_rstanarm,
+  file = "outputs/model/week_or_weekday_rstanarm.rds"
+)
+```
+
+```{
+r}
+#| eval: true
+#| include: false
+#| message: false
+#| warning: false
+
+week_or_weekday_rstanarm <-
+  readRDS(file = "outputs/model/week_or_weekday_rstanarm.rds")
+```
+
+베이즈 모델의 결과는 base를 사용하여 구축한 빠른 모델과 유사합니다(@tbl-modelsummarylogistic).
+
+```{
+r}
+#| label: tbl-modelsummarylogistic
+#| tbl-cap: "도로 위의 자동차 수를 기반으로 낮 또는 밤인지 설명"
+#| message: false
+#| warning: false
+
+modelsummary(
+  list(
+    "낮 또는 밤" = week_or_weekday_rstanarm
+  )
+)
+```
+
+@tbl-modelsummarylogistic는 이 경우 각 접근 방식이 유사하다는 것을 분명히 합니다. 그들은 주중일 확률에 대한 추가 자동차 한 대의 효과 방향에 동의합니다. 심지어 효과의 크기도 유사하게 추정됩니다.
+
+
+### 미국 정치적 지지
+
+로지스틱 회귀가 자주 사용되는 분야 중 하나는 정치 여론 조사입니다.\index{United States!political polling} 많은 경우 투표는 하나의 선호도 순위가 필요하다는 것을 의미하며, 따라서 문제는 적절하든 아니든 "지지" 또는 "비지지"로 축소됩니다.\index{elections!US 2020 Presidential Election}
+
+이 책에서 옹호하는 워크플로는 다음과 같습니다.\index{workflow}
+
+$$\mbox{계획} \rightarrow \mbox{시뮬레이션} \rightarrow \mbox{획득} \rightarrow \mbox{탐색} \rightarrow \mbox{공유}$$
+
+여기서는 모델을 사용한 데이터 탐색에 초점을 맞추지만, 다른 측면도 수행해야 합니다. 계획부터 시작합니다. 이 경우, 우리는 미국 정치적 지지에 관심이 있습니다. 특히 응답자의 최고 교육 수준과 성별만으로 응답자가 누구에게 투표할 가능성이 있는지 예측할 수 있는지에 관심이 있습니다. 이는 개인이 누구에게 투표했는지, 그리고 성별 및 교육과 같은 특성에 대한 변수가 있는 데이터셋에 관심이 있다는 것을 의미합니다. 그러한 데이터셋의 빠른 스케치는 @fig-uspoliticalsupportsketch입니다. 우리는 모델이 이러한 점들을 평균화하기를 원합니다. 빠른 스케치는 @fig-uspoliticalsupportmodel입니다.
+
+::: {#fig-uspoliticalsuppor layout-ncol=2 layout-valign="bottom"}
+
+![미국 정치적 지지를 조사하는 데 사용할 수 있는 데이터셋의 빠른 스케치](figures/IMG_2054.png){#fig-uspoliticalsupportsketch}
+
+![데이터 또는 분석을 최종화하기 전에 분석에서 예상하는 것에 대한 빠른 스케치](figures/IMG_2055.png){#fig-uspoliticalsupportmodel}
+
+예상 데이터셋 및 분석 초점의 스케치는 나중에 업데이트될지라도 우리의 생각을 집중하고 명확하게 합니다.
+:::
+
+개인이 바이든을 지지할 확률이 성별과 교육에 따라 달라지는 데이터셋을 시뮬레이션할 것입니다.\index{simulation}
+
+```{
+r}
+set.seed(853)
+
+num_obs <- 1000
+
+us_political_preferences <- tibble(
+  education = sample(0:4, size = num_obs, replace = TRUE),
+  gender = sample(0:1, size = num_obs, replace = TRUE),
+  support_prob = ((education + gender) / 5),
+) |>
+  mutate(
+    supports_biden = if_else(runif(n = num_obs) < support_prob, "yes", "no"),
+    education = case_when(
+      education == 0 ~ "< 고등학교",
+      education == 1 ~ "고등학교",
+      education == 2 ~ "일부 대학",
+      education == 3 ~ "대학",
+      education == 4 ~ "대학원"
+    ),
+    gender = if_else(gender == 0, "남성", "여성")
+  ) |>
+  select(-support_prob, supports_biden, gender, education)
+```
+
+실제 데이터의 경우 2020년 협동 선거 연구\index{Cooperative Election Study} (CES) [@cooperativeelectionstudyus]를 사용할 수 있습니다. 이것은 미국 정치 여론에 대한 오랜 연례 설문 조사입니다. 2020년에는 61,000명의 응답자가 선거 후 설문 조사를 완료했습니다. @guidetothe2020ces [p. 13]에 자세히 설명된 표본 추출 방법론은 매칭에 의존하며, 표본 추출 문제와 비용의 균형을 맞추는 허용된 접근 방식입니다.
+
+`dataverse`를 설치하고 로드한 후 `get_dataframe_by_name()`을 사용하여 CES에 접근할 수 있습니다. 이 접근 방식은 @sec-gather-data 및 @sec-store-and-share에서 소개되었습니다. 우리는 관심 있는 데이터를 저장한 다음, 저장된 데이터셋을 참조합니다.
+
+```{
+r}
+#| echo: true
+#| eval: false
+
+ces2020 <-
+  get_dataframe_by_name(
+    filename = "CES20_Common_OUTPUT_vv.csv",
+    dataset = "10.7910/DVN/E9N6PH",
+    server = "dataverse.harvard.edu",
+    .f = read_csv
+  ) |>
+  select(votereg, CC20_410, gender, educ)
+
+write_csv(ces2020, "ces2020.csv")
+```
+
+```{
+r}
+#| echo: false
+#| eval: false
+
+# INTERNAL
+
+write_csv(ces2020, "inputs/data/ces2020.csv")
+```
+
+```{
+r}
+#| echo: true
+#| eval: false
+
+ces2020 <-
+  read_csv(
+    "ces2020.csv",
+    col_types =
+      cols(
+        "votereg" = col_integer(),
+        "CC20_410" = col_integer(),
+        "gender" = col_integer(),
+        "educ" = col_integer()
+      )
+  )
+
+ces2020
+```
+
+```{
+r}
+#| echo: false
+#| eval: true
+
+# INTERNAL
+
+ces2020 <-
+  read_csv(
+    "inputs/data/ces2020.csv",
+    col_types =
+      cols(
+        "votereg" = col_integer(),
+        "CC20_410" = col_integer(),
+        "gender" = col_integer(),
+        "educ" = col_integer()
+      )
+  )
+
+ces2020
+```
+
+실제 데이터를 보면, 스케치에서 예상하지 못했던 문제들이 있습니다. 코드북을 사용하여 이를 더 철저히 조사합니다. 우리는 투표 등록된 응답자만 원하며, 바이든 또는 트럼프에게 투표한 사람들에게만 관심이 있습니다. 변수 "CC20_410"이 1이면 응답자가 바이든을 지지했고, 2이면 트럼프를 지지했음을 의미합니다. 해당 응답자만 필터링한 다음 더 유익한 레이블을 추가할 수 있습니다. CES에서 "여성"과 "남성" 성별을 사용할 수 있으며, 변수 "gender"가 1이면 "남성"을 의미하고, 2이면 "여성"을 의미합니다. 마지막으로, 코드북은 "educ"가 교육 수준이 증가하는 1부터 6까지의 변수라고 알려줍니다.
+
+```{
+r}
+ces2020 <-
+  ces2020 |>
+  filter(votereg == 1,
+         CC20_410 %in% c(1, 2)) |>
+  mutate(
+    voted_for = if_else(CC20_410 == 1, "Biden", "Trump"),
+    voted_for = as_factor(voted_for),
+    gender = if_else(gender == 1, "남성", "여성"),
+    education = case_when(
+      educ == 1 ~ "고등학교 미만",
+      educ == 2 ~ "고등학교 졸업",
+      educ == 3 ~ "일부 대학",
+      educ == 4 ~ "2년제",
+      educ == 5 ~ "4년제",
+      educ == 6 ~ "대학원"
+    ),
+    education = factor(
+      education,
+      levels = c(
+        "고등학교 미만",
+        "고등학교 졸업",
+        "일부 대학",
+        "2년제",
+        "4년제",
+        "대학원"
+      )
+    )
+  ) |>
+  select(voted_for, gender, education)
+```
+
+```{
+r}
+#| eval: false
+#| include: false
+
+arrow::write_parquet(x = ces2020,
+                     sink = "outputs/data/ces2020.parquet")
+```
+
+결과적으로 43,554명의 응답자가 남았습니다(@fig-cesissogooditslikecheating).
+
+```{
+r}
+#| eval: true
+#| echo: true
+#| message: false
+#| warning: false
+#| fig-cap: "성별 및 최고 교육 수준별 대통령 선호도 분포"
+#| label: fig-cesissogooditslikecheating
+
+ces2020 |>
+  ggplot(aes(x = education, fill = voted_for)) +
+  stat_count(position = "dodge") +
+  facet_wrap(facets = vars(gender)) +
+  theme_minimal() +
+  labs(
+    x = "최고 교육 수준",
+    y = "응답자 수",
+    fill = "투표 대상"
+  ) +
+  coord_flip() +
+  scale_fill_brewer(palette = "Set1") +
+  theme(legend.position = "bottom")
+```
+
+우리가 관심 있는 모델은 다음과 같습니다.
+
+$$
+\begin{aligned}
+y_i|\pi_i & \sim \mbox{Bern}(\pi_i) \\
+\mbox{logit}(\pi_i) & = \beta_0+\beta_1 \times \mbox{gender}_i + \beta_2 \times \mbox{education}_i \\
+\beta_0 & \sim \mbox{Normal}(0, 2.5)\\
+\beta_1 & \sim \mbox{Normal}(0, 2.5)\\
+\beta_2 & \sim \mbox{Normal}(0, 2.5)
+\end{aligned}
+$$
+
+여기서 $y_i$는 응답자의 정치적 선호도이며 바이든이면 1, 트럼프이면 0입니다. $\mbox{gender}_i$는 응답자의 성별이고 $\mbox{education}_i$는 응답자의 교육 수준입니다. `stan_glm()`을 사용하여 매개변수를 추정할 수 있습니다. 모델은 일반적으로 허용되는 약어입니다. 실제로는 `rstanarm`은 범주형 변수를 일련의 지표 변수로 변환하며 여러 계수가 추정됩니다. 실행 시간을 고려하여 전체 데이터셋 대신 1,000개의 관측치를 무작위로 샘플링하여 모델을 적합할 것입니다.
+
+```{
+r}
+#| eval: false
+#| echo: true
+#| message: false
+#| warning: false
+
+set.seed(853)
+
+ces2020_reduced <-
+  ces2020 |> 
+  slice_sample(n = 1000)
+
+political_preferences <-
+  stan_glm(
+    voted_for ~ gender + education,
+    data = ces2020_reduced,
+    family = binomial(link = "logit"),
+    prior = normal(location = 0, scale = 2.5, autoscale = TRUE),
+    prior_intercept = 
+      normal(location = 0, scale = 2.5, autoscale = TRUE),
+    seed = 853
+  )
+
+saveRDS(
+  political_preferences,
+  file = "political_preferences.rds"
+)
+```
+
+```{
+r}
+#| eval: false
+#| echo: false
+
+# INTERNAL
+
+saveRDS(
+  political_preferences,
+  file = "outputs/model/political_preferences.rds"
+)
+```
+
+```{
+r}
+#| echo: true
+#| eval: false
+#| message: false
+#| warning: false
+
+political_preferences <-
+  readRDS(file = "political_preferences.rds")
+```
+
+```{
+r}
+#| eval: true
+#| include: false
+#| message: false
+#| warning: false
+
+political_preferences <-
+  readRDS(file = "outputs/model/political_preferences.rds")
+```
+
+모델 결과는 흥미롭습니다. 남성이 바이든에게 투표할 가능성이 낮고, 교육 수준에 상당한 영향을 미친다는 것을 시사합니다(@tbl-modelsummarylogisticpolitical).
+
+```{
+r}
+#| label: tbl-modelsummarylogisticpolitical
+#| tbl-cap: "성별 및 교육 수준을 기반으로 응답자가 바이든에게 투표할 가능성"
+#| message: false
+#| warning: false
+
+modelsummary(
+  list(
+    "바이든 지지" = political_preferences
+  ),
+  statistic = "mad"
+  )
+```
+
+이러한 예측 변수의 신뢰 구간을 플로팅하는 것이 유용할 수 있습니다(@fig-modelplotlogisticpolitical). 특히 부록에서 특히 유용할 수 있습니다.
+
+```{
+r}
+#| label: tbl-modelplotlogisticpolitical
+#| fig-cap: "바이든 지지 예측 변수에 대한 신뢰 구간"
+
+modelplot(political_preferences, conf_level = 0.9) +
+  labs(x = "90% 신뢰 구간")
+```
+
+## 포아송 회귀
+
+개수 데이터가 있을 때 처음에는 포아송 분포를 활용하는 것을 고려해야 합니다.\index{distribution!Poisson}\index{regression!Poisson} 포아송 회귀의 한 가지 응용은 스포츠 결과 모델링입니다. 예를 들어 @Burch2023은 @Baio2010이 축구 결과의 포아송 모델을 구축한 것을 따라 하키 결과의 포아송 모델을 구축합니다.
+
+포아송 분포는 하나의 매개변수 $\lambda$에 의해 결정됩니다. 이는 음수가 아닌 정수에 대한 확률을 분포시키므로 분포의 모양을 결정합니다. 따라서 포아송 분포는 평균이 분산과 동일하다는 흥미로운 특징을 가집니다. 평균이 증가하면 분산도 증가합니다. 포아송 확률 질량 함수는 다음과 같습니다[@pitman, p. 121].
+
+$$P_{\lambda}(k) = e^{-\lambda}\lambda^k/k!\mbox{, for }k=0,1,2,\dots$$
+`rpois()`를 사용하여 $\lambda$가 3인 포아송 분포에서 $n=20$개의 표본을 시뮬레이션할 수 있습니다.\index{distribution!Poisson}\index{simulation}
+
+```{
+r}
+rpois(n = 20, lambda = 3)
+```
+
+$\lambda$ 값을 변경할 때 분포에 어떤 일이 발생하는지 살펴볼 수도 있습니다(@fig-poissondistributiontakingshape).\index{distribution!Poisson}
+
+```{
+r}
+#| eval: true
+#| include: true
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-cap: "포아송 분포는 평균 값에 의해 결정되며, 이는 분산과 동일합니다."
+#| label: fig-poissondistributiontakingshape
+
+set.seed(853)
+
+number_of_each <- 100
+
+lambdas <- c(0, 1, 2, 4, 7, 10, 15, 25, 50)
+
+poisson_takes_shape <-
+  map(lambdas, ~ tibble(lambda = rep(.x, number_of_each),
+                        draw = rpois(n = number_of_each, lambda = .x))) |> 
+  list_rbind()
+
+poisson_takes_shape <- poisson_takes_shape |>
+  mutate(lambda = paste("lambda =", lambda),
+         lambda = factor(lambda, levels = paste("lambda =", lambdas)))
+
+ggplot(poisson_takes_shape, aes(x = draw)) +
+  geom_density() +
+  facet_wrap(vars(lambda), scales = "free_y") +
+  theme_minimal() +
+  labs(x = "정수", y = "밀도")
+```
+
+### 시뮬레이션 예시: 학과별 A 학점 수
+
+상황을 설명하기 위해 각 대학 과정에서 부여되는 A 학점 수에 대한 데이터를 시뮬레이션할 수 있습니다.\index{simulation} 이 시뮬레이션된 예시에서는 세 개의 학과를 고려하며, 각 학과에는 많은 과정이 있습니다. 각 과정은 다른 수의 A 학점을 부여할 것입니다.\index{distribution!Poisson}
+
+```{
+r}
+set.seed(853)
+
+class_size <- 26
+
+count_of_A <-
+  tibble(
+    # Chris DuBois에서: https://stackoverflow.com/a/1439843
+    department = 
+      c(rep.int("1", 26), rep.int("2", 26), rep.int("3", 26)),
+    course = c(
+      paste0("DEP_1_", letters),
+      paste0("DEP_2_", letters),
+      paste0("DEP_3_", letters)
+    ),
+    number_of_As = c(
+      rpois(n = class_size, lambda = 5),
+      rpois(n = class_size, lambda = 10),
+      rpois(n = class_size, lambda = 20)
+    )
+  )
+```
+
+```{
+r}
+#| eval: false
+#| include: false
+
+arrow::write_parquet(x = count_of_A,
+                     sink = "outputs/data/count_of_A.parquet")
+```
+
+```{
+r}
+#| echo: true
+#| eval: true
+#| message: false
+#| warning: false
+#| fig-cap: "세 학과에 걸쳐 다양한 수업에서 시뮬레이션된 A 학점 수"
+#| label: fig-simgradesdepartments
+
+count_of_A |>
+  ggplot(aes(x = number_of_As)) +
+  geom_histogram(aes(fill = department), position = "dodge") +
+  labs(
+    x = "부여된 A 학점 수",
+    y = "수업 수",
+    fill = "학과"
+  ) +
+  theme_classic() +
+  scale_fill_brewer(palette = "Set1") +
+  theme(legend.position = "bottom")
+```
+
+시뮬레이션된 데이터셋은 학과 내에 구조화된 과정별 A 학점 수를 가지고 있습니다(@fig-simgradesdepartments). @sec-multilevel-regression-with-post-stratification에서는 이 학과 구조를 활용할 것이지만, 지금은 이를 무시하고 학과 간의 차이에 초점을 맞출 것입니다.
+
+우리가 추정하는 데 관심 있는 모델은 다음과 같습니다.
+
+$$
+\begin{aligned}
+y_i|\lambda_i &\sim \mbox{Poisson}(\lambda_i)\\
+\log(\lambda_i) & = \beta_0 + \beta_1 \times \mbox{department}_i
+\end{aligned}
+$$
+여기서 $y_i$는 부여된 A 학점 수이며, 학과별로 어떻게 다른지에 관심이 있습니다.
+
+base R의 `glm()`을 사용하여 데이터를 빠르게 파악할 수 있습니다. 이 함수는 매우 일반적이며, "family" 매개변수를 설정하여 포아송 회귀를 지정합니다. 추정치는 @tbl-modelsummarypoisson의 첫 번째 열에 포함되어 있습니다.
+
+```{
+r}
+grades_base <-
+  glm(
+    number_of_As ~ department,
+    data = count_of_A,
+    family = "poisson"
+  )
+
+summary(grades_base)
+```
+
+로지스틱 회귀와 마찬가지로 포아송 회귀\index{regression!Poisson}에서 계수의 해석은 어려울 수 있습니다. "department2"의 계수 해석은 학과 간 예상 차이의 로그입니다. 학과 1과 비교하여 학과 2와 3에서 각각 $e^{0.883} \approx 2.4$배 및 $e^{1.703} \approx 5.5$배 많은 A 학점을 예상합니다(@tbl-modelsummarypoisson).
+
+베이즈 모델을 구축하고 `rstanarm`으로 추정할 수 있습니다(@tbl-modelsummarypoisson).
+
+$$
+\begin{aligned}
+y_i|\lambda_i &\sim \mbox{Poisson}(\lambda_i)\\
+\log(\lambda_i) & = \beta_0 + \beta_1 \times\mbox{department}_i\\
+\beta_0 & \sim \mbox{Normal}(0, 2.5)\\
+\beta_1 & \sim \mbox{Normal}(0, 2.5)
+\end{aligned}
+$$
+여기서 $y_i$는 부여된 A 학점 수입니다.
+
+```{
+r}
+#| include: true
+#| message: false
+#| warning: false
+#| eval: false
+
+grades_rstanarm <-
+  stan_glm(
+    number_of_As ~ department,
+    data = count_of_A,
+    family = poisson(link = "log"),
+    prior = normal(location = 0, scale = 2.5, autoscale = TRUE),
+    prior_intercept = normal(location = 0, scale = 2.5, autoscale = TRUE),
+    seed = 853
+  )
+
+saveRDS(
+  grades_rstanarm,
+  file = "grades_rstanarm.rds"
+)
+```
+
+```{
+r}
+#| eval: false
+#| include: false
+#| message: false
+#| warning: false
+
+# INTERNAL
+saveRDS(
+  grades_rstanarm,
+  file = "outputs/model/grades_rstanarm.rds"
+)
+```
+
+```{
+r}
+#| eval: true
+#| include: false
+#| message: false
+#| warning: false
+
+grades_rstanarm <-
+  readRDS(file = "outputs/model/grades_rstanarm.rds")
+```
+
+결과는 @tbl-modelsummarypoisson에 있습니다.
+
+```{
+r}
+#| label: tbl-modelsummarypoisson
+#| tbl-cap: "다른 학과에서 부여된 A 학점 수 조사"
+
+modelsummary(
+  list(
+    "A 학점 수" = grades_rstanarm
+  )
+)
+```
+
+로지스틱 회귀와 마찬가지로 `marginaleffects`의 `slopes()`를 사용하여 이러한 결과를 해석하는 데 도움을 받을 수 있습니다.\index{marginal effects} 한 학과에서 다른 학과로 이동할 때 A 학점 수가 어떻게 변할 것으로 예상하는지 고려하는 것이 유용할 수 있습니다. @tbl-marginaleffectspoisson은 데이터셋에서 학과 2의 수업이 학과 1보다 약 5개의 A 학점을 더 많이 받는 경향이 있고, 학과 3의 수업이 학과 1보다 약 17개의 A 학점을 더 많이 받는 경향이 있음을 시사합니다.
+
+```{
+r}
+#| label: tbl-marginaleffectspoisson
+#| tbl-cap: "각 학과에서 부여된 A 학점 수의 추정된 차이"
+
+slopes(grades_rstanarm) |>
+  select(contrast, estimate, conf.low, conf.high) |>
+  unique() |> 
+  tt() |> 
+  style_tt(j = 1:4, align = "lrrr") |> 
+  format_tt(digits = 2, num_mark_big = ",", num_fmt = "decimal") |> 
+  setNames(c("학과 비교", "추정치", "2.5%", "97.5%"))
+```
+
+
+### *제인 에어*에 사용된 문자
+
+이전 시대에 @edgeworth1885methods는 버질의 *아이네이스*에서 닥틸 수를 세었습니다(@Stigler1978 [p. 301]은 유용한 배경 정보와 `HistData`의 `Dactyl`을 사용하여 데이터셋을 제공합니다[@HistData]). 이에 영감을 받아 `gutenbergr`를 사용하여 샬럿 브론테의 *제인 에어* 텍스트를 가져올 수 있습니다.\index{Brontë, Charlotte!Jane Eyre}\index{text!analysis} (@sec-gather-data에서 *제인 에어*의 PDF를 데이터셋으로 변환하는 방법을 보여주었습니다.) 그런 다음 각 장의 처음 10줄을 고려하고, 단어 수를 세고, "E" 또는 "e"가 나타나는 횟수를 셀 수 있습니다. 단어 수가 증가함에 따라 e/E의 수가 증가하는지 여부에 관심이 있습니다. 그렇지 않다면, e/E의 분포가 일관되지 않다는 것을 시사할 수 있으며, 이는 언어학자들에게 흥미로울 수 있습니다.\index{regression!Poisson}
+
+이 책에서 옹호하는 워크플로를 따라, 먼저 데이터셋과 모델을 스케치합니다.\index{workflow} 데이터셋이 어떻게 생겼을지에 대한 빠른 스케치는 @fig-letterssketch이고, 모델에 대한 빠른 스케치는 @fig-lettersmodel입니다.
+
+::: {#fig-letterss layout-ncol=2 layout-valign="bottom" layout="[[50,10,50]]"}
+
+![*제인 에어*의 줄 및 장별 계획된 개수](figures/IMG_2056.png){#fig-letterssketch}
+
+![줄의 e/E 개수와 단어 수 사이의 예상 관계](figures/IMG_2075.png){#fig-lettersmodel}
+
+예상 데이터셋 및 분석 스케치는 우리가 관심 있는 것을 고려하도록 강요합니다.
+:::
+
+포아송 분포를 따라 e/E의 수가 어떻게 분포될 수 있는지에 대한 데이터셋을 시뮬레이션합니다(@fig-simenum).\index{simulation}\index{distribution!Poisson}\index{distribution!uniform}
+
+```{
+r}
+#| echo: true
+#| eval: true
+#| message: false
+#| warning: false
+#| fig-cap: "e/E의 시뮬레이션된 개수"
+#| label: fig-simenum
+
+count_of_e_simulation <-
+  tibble(
+    chapter = c(rep(1, 10), rep(2, 10), rep(3, 10)),
+    line = rep(1:10, 3),
+    number_words_in_line = runif(min = 0, max = 15, n = 30) |> round(0),
+    number_e = rpois(n = 30, lambda = 10)
+  )
+
+count_of_e_simulation |>
+  ggplot(aes(y = number_e, x = number_words_in_line)) +
+  geom_point() +
+  labs(
+    x = "줄의 단어 수",
+    y = "처음 10줄의 e/E 수"
+  ) +
+  theme_classic() +
+  scale_fill_brewer(palette = "Set1")
+```
+
+이제 데이터를 수집하고 준비할 수 있습니다. `gutenbergr`의 `gutenberg_download()`를 사용하여 프로젝트 구텐베르크에서 책 텍스트를 다운로드합니다.\index{text!gathering}\index{Project Gutenberg}
+
+```{
+r}
+#| eval: false
+#| echo: true
+
+gutenberg_id_of_janeeyre <- 1260
+
+jane_eyre <-
+  gutenberg_download(
+    gutenberg_id = gutenberg_id_of_janeeyre,
+    mirror = "https://gutenberg.pglaf.org/"
+  )
+
+jane_eyre
+
+write_csv(jane_eyre, "jane_eyre.csv")
+```
+
+다운로드한 다음 프로젝트 구텐베르크\index{Project Gutenberg} 서버에 과도한 부담을 주지 않기 위해 로컬 사본을 사용할 것입니다.
+
+```{
+r}
+#| eval: false
+#| echo: false
+
+# INTERNAL
+
+write_csv(jane_eyre, "inputs/jane_eyre.csv")
+```
+
+```{
+r}
+#| eval: false
+#| echo: true
+
+jane_eyre <- read_csv(
+  "jane_eyre.csv",
+  col_types = cols(
+    gutenberg_id = col_integer(),
+    text = col_character()
+  )
+)
+
+jane_eyre
+```
+
+```{
+r}
+#| eval: true
+#| echo: false
+
+# INTERNAL
+
+jane_eyre <- read_csv(
+  "inputs/jane_eyre.csv",
+  col_types = cols(
+    gutenberg_id = col_integer(),
+    text = col_character()
+  )
+)
+
+jane_eyre
+```
+
+내용이 있는 줄에만 관심이 있으므로 간격을 위해 있는 빈 줄은 제거합니다.\index{text!cleaning} 그런 다음 각 장의 처음 10줄에 대해 해당 줄의 e/E 수를 계산할 수 있습니다. 예를 들어, 처음 몇 줄을 보면 첫 줄에 5개의 e/E가 있고 두 번째 줄에 8개가 있음을 알 수 있습니다.
+
+```{
+r}
+jane_eyre_reduced <-
+  jane_eyre |>
+  filter(!is.na(text)) |> # 빈 줄 제거
+  mutate(chapter = if_else(str_detect(text, "CHAPTER") == TRUE,
+                           text,
+                           NA_character_)) |> # 장 시작 찾기
+  fill(chapter, .direction = "down") |> 
+  mutate(chapter_line = row_number(), 
+         .by = chapter) |> # 각 장에 줄 번호 추가
+  filter(!is.na(chapter), 
+         chapter_line %in% c(2:11)) |> # "CHAPTER I" 등 제거
+  select(text, chapter) |>
+  mutate(
+    chapter = str_remove(chapter, "CHAPTER "),
+    chapter = str_remove(chapter, "—CONCLUSION"),
+    chapter = as.integer(as.roman(chapter))
+  ) |> # 장을 정수로 변경
+  mutate(
+    count_e = str_count(text, "e|E"),
+    word_count = str_count(text, "\\w+")
+         # 출처: https://stackoverflow.com/a/38058033
+         ) 
+```
+
+
+```{
+r}
+jane_eyre_reduced |>
+  select(chapter, word_count, count_e, text) |>
+  head()
+```
+
+e/E 수의 평균과 분산이 대략 비슷하다는 것을 모든 데이터를 플로팅하여 확인할 수 있습니다(@fig-janeecounts). 분홍색으로 표시된 평균은 6.7이고, 파란색으로 표시된 분산은 6.2입니다. 완전히 동일하지는 않지만 비슷합니다. 데이터에 대해 생각하는 데 도움이 되도록 @fig-janeecounts-2에 대각선을 포함합니다. 데이터가 $y=x$ 선에 있다면, 평균적으로 단어당 하나의 e/E가 있을 것입니다. 해당 선 아래의 점들의 질량을 고려할 때, 평균적으로 단어당 하나 미만일 것으로 예상합니다.
+
+```{
+r}
+#| echo: true
+#| eval: true
+#| fig-cap: "제인 에어 각 장의 처음 10줄에 있는 e/E 문자 수"
+#| label: fig-janeecounts
+#| message: false
+#| warning: false
+#| layout-ncol: 2
+#| fig-subcap: ["e/E 수의 분포", "줄의 e/E 수와 단어 수 비교"]
+
+mean_e <- mean(jane_eyre_reduced$count_e)
+variance_e <- var(jane_eyre_reduced$count_e)
+
+jane_eyre_reduced |>
+  ggplot(aes(x = count_e)) +
+  geom_histogram() +
+  geom_vline(xintercept = mean_e, 
+             linetype = "dashed", 
+             color = "#C64191") +
+  geom_vline(xintercept = variance_e, 
+             linetype = "dashed", 
+             color = "#0ABAB5") +
+  theme_minimal() +
+  labs(
+    y = "개수",
+    x = "처음 10줄의 줄당 e 수"
+  )
+
+jane_eyre_reduced |>
+  ggplot(aes(x = word_count, y = count_e)) +
+  geom_jitter(alpha = 0.5) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
+  theme_minimal() +
+  labs(
+    x = "줄의 단어 수",
+    y = "줄의 e/E 수"
+  )
+```
+
+다음 모델을 고려할 수 있습니다.
+
+$$
+\begin{aligned}
+y_i|\lambda_i &\sim \mbox{Poisson}(\lambda_i)\\
+\log(\lambda_i) & = \beta_0 + \beta_1 \times \mbox{단어 수}_i\\
+\beta_0 & \sim \mbox{Normal}(0, 2.5)\\
+\beta_1 & \sim \mbox{Normal}(0, 2.5)
+\end{aligned}
+$$
+여기서 $y_i$는 줄의 e/E 수이고 설명 변수는 줄의 단어 수입니다. `stan_glm()`을 사용하여 모델을 추정할 수 있습니다.
+
+```{
+r}
+#| eval: false
+#| echo: true
+#| message: false
+#| warning: false
+
+jane_e_counts <-
+  stan_glm(
+    count_e ~ word_count,
+    data = jane_eyre_reduced,
+    family = poisson(link = "log"),
+    prior = normal(location = 0, scale = 2.5, autoscale = TRUE),
+    prior_intercept = normal(location = 0, scale = 2.5, autoscale = TRUE),
+    seed = 853
+  )
+
+saveRDS(
+  jane_e_counts,
+  file = "jane_e_counts.rds"
+)
+```
+
+```{
+r}
+#| eval: false
+#| echo: false
+
+# INTERNAL
+
+saveRDS(
+  jane_e_counts,
+  file = "outputs/model/jane_e_counts.rds"
+)
+```
+
+```{
+r}
+#| eval: true
+#| include: false
+#| message: false
+#| warning: false
+
+jane_e_counts <-
+  readRDS(file = "outputs/model/jane_e_counts.rds")
+```
+
+<!-- (@tbl-modelsummaryjanee). -->
+
+<!-- ```{r} -->
+<!-- #| label: tbl-modelsummaryjanee -->
+<!-- #| tbl-cap: "도로 위의 자동차 수를 기반으로 낮 또는 밤인지 예측 및 설명 모델" -->
+
+<!-- modelsummary::modelsummary( -->
+<!--   list( -->
+<!--     "rstanarm" = jane_e_counts -->
+<!--   ), -->
+<!--   statistic = "mad" -->
+<!-- ) -->
+<!-- ``` -->
+
+일반적으로 추정치 표에 관심이 있겠지만, 지금은 몇 번 보았으므로 추정치 표를 다시 만드는 대신 `marginaleffects`의 `plot_cap()`을 소개합니다. 이를 사용하여 모델이 예측한 e/E 수를 각 줄의 단어 수를 기반으로 표시할 수 있습니다. @fig-predictionsjaneecounts는 양의 관계를 예상한다는 것을 분명히 합니다.
+
+```{
+r}
+#| label: tbl-predictionsjaneecounts
+#| fig-cap: "단어 수를 기반으로 각 줄의 e/E 예측 수"
+
+plot_predictions(jane_e_counts, condition = "word_count") +
+  labs(x = "단어 수",
+       y = "처음 10줄의 평균 e/E 수") +
+  theme_classic()
+```
+
+## 음이항 회귀
+
+포아송 회귀의 제약 중 하나는 평균과 분산이 동일하다는 가정입니다. 음이항 회귀\index{regression!negative binomial}라는 유사한 변형을 사용하여 과분산을 허용하도록 이 가정을 완화할 수 있습니다.
+
+포아송 및 음이항 모델은 서로 밀접하게 관련되어 있습니다. 종종 두 모델을 모두 적합한 다음 비교하게 됩니다. 예를 들어:
+
+- @maher1982modelling은 잉글랜드 축구 리그 결과의 맥락에서 두 모델을 모두 고려하고, 어떤 모델이 다른 모델보다 더 적절하다고 간주될 수 있는 상황을 논의합니다.
+- @thanksleo는 2000년 미국 대통령 선거와 특히 포아송 분석에서 과분산 문제를 고려합니다.
+- @Osgood2000은 범죄 데이터의 경우 두 모델을 비교합니다.
+
+<!-- 음이항 분포의 모양은 성공 확률 $p$와 성공 횟수 $r$이라는 두 매개변수에 의해 결정됩니다[@pitman, p. 482]. -->
+
+<!-- $$P(F_r = n) = {n+r-1\choose r-1}p^r(1-p)^n\mbox{, for }n=0,1,2,...$$ -->
+<!-- 여기서 $F_r$은 베르누이 시행에서 $r$번째 성공 전의 실패 횟수입니다. -->
+
+<!-- 예를 들어, *제인 에어*의 동일한 줄에서 k의 수를 고려한다면, 많은 0이 있을 것입니다(@fig-janeecountsk). -->
+
+<!-- ```{r} -->
+<!-- jane_eyre_reduced <- -->
+<!--   jane_eyre_reduced |> -->
+<!--   mutate(count_k = str_count(text, "k|K")) -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- #| echo: true -->
+<!-- #| eval: true -->
+<!-- #| fig-cap: "제인 에어 각 장의 처음 10줄에 있는 'K' 또는 'k'의 수" -->
+<!-- #| label: fig-janeecountsk -->
+<!-- #| message: false -->
+<!-- #| warning: false -->
+
+<!-- mean_k <- mean(jane_eyre_reduced$count_k) -->
+<!-- variance_k <- var(jane_eyre_reduced$count_k) -->
+
+<!-- jane_eyre_reduced |> -->
+<!--   ggplot(aes(y = chapter, x = count_k)) + -->
+<!--   geom_point(alpha = 0.5) + -->
+<!--   geom_vline(xintercept = mean_k, linetype = "dashed", color = "#C64191") + -->
+<!--   geom_vline(xintercept = variance_k, linetype = "dashed", color = "#0ABAB5") + -->
+<!--   theme_minimal() + -->
+<!--   labs( -->
+<!--     x = "처음 10줄의 줄당 k 수", -->
+<!--     y = "장" -->
+<!--   ) -->
+<!-- ``` -->
+
+### 캐나다 앨버타주의 사망률
+
+다소 병적으로 들릴 수 있지만, 매년 각 개인은 사망하거나 사망하지 않습니다.\index{mortality} 지리적 지역의 관점에서, 우리는 매년 사망 원인별 사망자 수에 대한 데이터를 수집할 수 있습니다. 캐나다 앨버타주\index{Canada!Alberta}는 2001년부터 매년 상위 30가지 사망 원인별 사망자 수를 [공개](https://open.alberta.ca/opendata/leading-causes-of-death)했습니다.
+
+항상 그렇듯이 먼저 데이터셋과 모델을 스케치합니다. 데이터셋이 어떻게 생겼을지에 대한 빠른 스케치는 @fig-albertadatasketch이고, 모델에 대한 빠른 스케치는 @fig-albertamodelsketch입니다.
+
+::: {#fig-letterss layout-ncol=2 layout-valign="bottom"}
+
+![앨버타주의 사망 원인을 조사하는 데 사용할 수 있는 데이터셋의 빠른 스케치](figures/IMG_2076.png){#fig-albertadatasketch}
+
+![데이터 또는 분석을 최종화하기 전에 앨버타주의 사망 원인 분석에서 예상하는 것에 대한 빠른 스케치](figures/IMG_2061.png){#fig-albertamodelsketch}
+
+앨버타주의 사망 원인에 대한 예상 데이터셋 및 분석 스케치
+:::
+
+음이항 분포를 따르는 사망 원인 데이터셋을 시뮬레이션할 것입니다.\index{simulation}\index{distribution!binomial}
+
+```{
+r}
+alberta_death_simulation <-
+  tibble(
+    cause = rep(x = c("심장", "뇌졸중", "당뇨병"), times = 10),
+    year = rep(x = 2016:2018, times = 10),
+    deaths = rnbinom(n = 30, size = 20, prob = 0.1)
+  )
+
+alberta_death_simulation
+```
+
+연도별 및 원인별 사망 분포를 살펴볼 수 있습니다(@fig-albertacod). 일부 원인은 상당히 길기 때문에 전체 사망 원인을 잘라냈습니다. 일부 원인은 매년 상위 30위 안에 들지 않으므로 모든 원인이 동일한 발생 횟수를 가지지는 않습니다.
+
+::: {.content-visible when-format="pdf"}
+```{
+r}
+#| eval: false
+#| echo: true
+
+alberta_cod <-
+  read_csv(
+    paste0("https://open.alberta.ca/dataset/03339dc5-fb51-4552-",
+           "97c7-853688fc428d/resource/3e241965-fee3-400e-9652-",
+           "07cfbf0c0bda/download/deaths-leading-causes.csv"),
+    skip = 2,
+    col_types = cols(
+      `Calendar Year` = col_integer(),
+      Cause = col_character(),
+      Ranking = col_integer(),
+      `Total Deaths` = col_integer()
+    )
+  ) |>
+  clean_names() |>
+  add_count(cause) |>
+  mutate(cause = str_trunc(cause, 30))
+```
+:::
+
+::: {.content-visible unless-format="pdf"}
+```{
+r}
+#| eval: false
+#| echo: true
+
+alberta_cod <-
+  read_csv(
+    "https://open.alberta.ca/dataset/03339dc5-fb51-4552-97c7-853688fc428d/resource/3e241965-fee3-400e-9652-07cfbf0c0bda/download/deaths-leading-causes.csv",
+    skip = 2,
+    col_types = cols(
+      `Calendar Year` = col_integer(),
+      Cause = col_character(),
+      Ranking = col_integer(),
+      `Total Deaths` = col_integer()
+    )
+  ) |>
+  clean_names() |>
+  add_count(cause) |>
+  mutate(cause = str_trunc(cause, 30))
+```
+:::
+
+
+```{
+r}
+#| eval: true
+#| echo: false
+
+# 2023년 초에 다운로드된 원본 데이터셋을 참조합니다. 이 장을 업데이트할 때 업데이트된 데이터셋으로 돌아와 업데이트하십시오.
+
+alberta_cod <-
+  read_csv(
+    "inputs/alberta_COD.csv",
+    col_types = cols(
+      `Calendar Year` = col_integer(),
+      Cause = col_character(),
+      Ranking = col_integer(),
+      `Total Deaths` = col_integer()
+    )
+  ) |>
+  clean_names() |>
+  add_count(cause) |>
+  mutate(cause = str_trunc(cause, 30))
+```
+
+2021년 상위 10가지 원인을 살펴보면 다양한 흥미로운 측면을 발견할 수 있습니다(@tbl-albertahuh). 예를 들어, 가장 흔한 원인이 데이터의 21년 전체에 걸쳐 나타날 것으로 예상할 것입니다. 그러나 가장 흔한 원인인 "기타 불분명하고 알 수 없는 사망 원인"은 3년 동안만 나타납니다. "COVID-19, 바이러스 확인"은 캐나다에서 2020년 이전에 알려진 COVID 사망자가 없었기 때문에 다른 2년 동안만 나타납니다.
+
+```{
+r}
+#| label: tbl-albertahuh
+#| tbl-cap: "2021년 앨버타주의 사망 원인 상위 10가지"
+#| warning: false
+
+alberta_cod |>
+  filter(
+    calendar_year == 2021,
+    ranking <= 10
+  ) |>
+  mutate(total_deaths = format(total_deaths, big.mark = ",")) |>
+  tt() |> 
+  style_tt(j = 1:5, align = "lrrrr") |> 
+  format_tt(digits = 0, num_mark_big = ",", num_fmt = "decimal") |> 
+  setNames(c("연도", "원인", "순위", "사망자 수", "연수"))
+```
+
+간단하게 하기 위해 2021년 가장 흔한 사망 원인 중 매년 존재했던 5가지 원인으로 제한합니다.
+
+```{
+r}
+alberta_cod_top_five <-
+  alberta_cod |>
+  filter(
+    calendar_year == 2021,
+    n == 21
+  ) |>
+  slice_max(order_by = desc(ranking), n = 5) |>
+  pull(cause)
+
+alberta_cod <-
+  alberta_cod |>
+  filter(cause %in% alberta_cod_top_five)
+```
+
+
+```{
+r}
+#| fig-cap: "2001년 이후 캐나다 앨버타주의 상위 5가지 사망 원인별 연간 사망자 수"
+#| label: fig-albertacod
+#| message: false
+#| warning: false
+#| fig-height: 6
+
+alberta_cod |>
+  ggplot(aes(x = calendar_year, y = total_deaths, color = cause)) +
+  geom_line() +
+  theme_minimal() +
+  scale_color_brewer(palette = "Set1") +
+  labs(x = "연도", y = "앨버타주의 연간 사망자 수") +
+  facet_wrap(vars(cause), dir = "v", ncol = 1) +
+  theme(legend.position = "none")
+```
+
+한 가지 주목할 점은 평균 1,273이 분산 182,378과 다르다는 것입니다(@tbl-ohboyalberta).
+
+```{
+r}
+#| echo: false
+#| eval: true
+#| label: tbl-ohboyalberta
+#| tbl-cap: "캐나다 앨버타주의 연간 사망자 수에 대한 요약 통계, 원인별"
+
+datasummary(
+  total_deaths ~ Min + Mean + Max + SD + Var + N,
+  fmt = 0,
+  data = alberta_cod
+)
+```
+
+`stan_glm()`을 사용할 때 "family"에 음이항 분포를 지정하여 음이항 회귀\index{regression!negative binomial}를 구현할 수 있습니다. 이 경우 포아송과 음이항 모두 실행합니다.
+
+```{
+r}
+#| echo: true
+#| eval: false
+#| message: false
+#| warning: false
+
+cause_of_death_alberta_poisson <-
+  stan_glm(
+    total_deaths ~ cause,
+    data = alberta_cod,
+    family = poisson(link = "log"),
+    seed = 853
+  )
+
+cause_of_death_alberta_neg_binomial <-
+  stan_glm(
+    total_deaths ~ cause,
+    data = alberta_cod,
+    family = neg_binomial_2(link = "log"),
+    seed = 853
+  )
+```
+
+
+```{
+r}
+#| echo: false
+#| eval: false
+
+# INTERNAL
+
+saveRDS(
+  cause_of_death_alberta_poisson,
+  file = "outputs/model/cause_of_death_alberta_poisson.rds"
+)
+
+saveRDS(
+  cause_of_death_alberta_neg_binomial,
+  file = "outputs/model/cause_of_death_alberta_neg_binomial.rds"
+)
+```
+
+```{
+r}
+#| eval: true
+#| echo: false
+
+cause_of_death_alberta_poisson <-
+  readRDS(file = "outputs/model/cause_of_death_alberta_poisson.rds")
+
+cause_of_death_alberta_neg_binomial <-
+  readRDS(file = "outputs/model/cause_of_death_alberta_neg_binomial.rds")
+```
+
+다른 모델을 비교할 수 있습니다(@tbl-modelsummarypoissonvsnegbinomial).
+
+```{
+r}
+#| label: tbl-modelsummarypoissonvsnegbinomial
+#| tbl-cap: "2001-2020년 앨버타주의 가장 흔한 사망 원인 모델링"
+#| eval: FALSE
+
+coef_short_names <-
+  c("causeAll other forms of chronic ischemic heart disease"
+    = "causeAll other forms of...",
+    "causeMalignant neoplasms of trachea, bronchus and lung"
+    = "causeMalignant neoplas...",
+    "causeOrganic dementia"
+    = "causeOrganic dementia",
+    "causeOther chronic obstructive pulmonary disease"
+    = "causeOther chronic obst..."
+    )
+
+modelsummary(
+  list(
+    "포아송" = cause_of_death_alberta_poisson,
+    "음이항" = cause_of_death_alberta_neg_binomial
+  ),
+  coef_map = coef_short_names
+)
+```
+
+추정치는 비슷합니다. @sec-inferencewithbayesianmethods에서 소개된 사후 예측 검사\index{Bayesian!posterior predictive check}를 사용하여 음이항 접근 방식이 이 상황에 더 나은 선택임을 보여줄 수 있습니다(@fig-ppcheckpoissonvsbinomial).
+
+```{
+r}
+#| echo: true
+#| eval: true
+#| message: false
+#| warning: false
+#| label: fig-ppcheckpoissonvsbinomial
+#| layout-ncol: 2
+#| fig-cap: "포아송 및 음이항 모델에 대한 사후 예측 검사 비교"
+#| fig-subcap: ["포아송 모델", "음이항 모델"]
+
+pp_check(cause_of_death_alberta_poisson) +
+  theme(legend.position = "bottom")
+
+pp_check(cause_of_death_alberta_neg_binomial) +
+  theme(legend.position = "bottom")
+```
+
+마지막으로, 리샘플링 방법인 leave-one-out\index{leave-one-out} (LOO) 교차 검증(CV)\index{cross-validation}을 사용하여 모델을 비교할 수 있습니다. 이는 교차 검증의 변형으로, 각 폴드의 크기가 1입니다. 즉, 100개의 관측치가 있는 데이터셋이 있다면, 이 LOO는 100겹 교차 검증과 동일합니다. 각 모델에 대해 `loo()`를 사용하여 `rstanarm`에서 이를 구현한 다음, `loo_compare()`를 사용하여 모델을 비교할 수 있습니다. 여기서 값이 높을수록 좋습니다.^[배경 지식으로, LOO-CV는 `loo()`에 의해 수행되지 않습니다. 왜냐하면 계산적으로 너무 집약적이기 때문입니다. 대신 근사치가 수행되어 예상 로그 포인트별 예측 밀도(ELPD)를 제공합니다. `rstanarm` 비네트는 더 자세한 정보를 제공합니다.]
+
+::: {.content-visible when-format="pdf"}
+교차 검증에 대한 자세한 정보는 ["예측" 온라인 부록](https://tellingstorieswithdata.com/27-prediction.html)에서 제공합니다.
+:::
+
+::: {.content-visible unless-format="pdf"}
+교차 검증에 대한 자세한 정보는 [온라인 부록 -@sec-predictingpythons]에서 제공합니다.
+:::
+
+```{
+r}
+#| message: false
+#| warning: false
+
+poisson <- loo(cause_of_death_alberta_poisson, cores = 2)
+neg_binomial <- loo(cause_of_death_alberta_neg_binomial, cores = 2)
+
+loo_compare(poisson, neg_binomial)
+```
+
+이 경우 음이항 모델이 포아송 모델보다 더 잘 적합한다는 것을 알 수 있습니다. ELPD가 더 크기 때문입니다.
+
+## 다단계 모델링
+
+다단계 모델링은 "계층적" 및 "랜덤 효과"를 포함한 다양한 이름으로 불립니다.\index{multilevel modeling!definition}\index{hierarchical modeling|see {multilevel modeling}}\index{random effects|see {multilevel modeling}} 분야마다 의미에 약간의 차이가 있지만, 일반적으로 동일하거나 적어도 유사한 아이디어를 지칭합니다. 다단계 모델링의 근본적인 통찰은 대부분의 경우 우리의 관측치가 서로 완전히 독립적이지 않고, 대신 그룹화될 수 있다는 것입니다. 모델링할 때 그 그룹화를 고려하면 유용한 정보를 얻을 수 있습니다. 예를 들어, 프로 운동선수의 수입은 남성 또는 여성 종목에서 경쟁하는지 여부에 따라 다릅니다. 특정 운동선수의 수입을 그들의 경기 결과를 기반으로 예측하려고 한다면, 개인이 어떤 유형의 종목에서 경쟁했는지 아는 것이 모델이 더 나은 예측을 하는 데 도움이 될 것입니다.
+
+:::{.callout-note}
+## 거인의 어깨 위에 서서
+
+피오나 스틸 박사\index{Steele, Fiona}는 런던 경제 대학(LSE)의 통계학 교수입니다.
+1996년 사우샘프턴 대학교에서 통계학 박사 학위를 받은 후, LSE에서 강사로 임명되었고, 런던 대학교와 브리스톨 대학교로 옮겨 2008년 정교수로 임명되었습니다. 2013년 LSE로 돌아왔습니다.
+그녀의 연구 분야 중 하나는 다단계 모델링과 인구 통계학, 교육, 가족 심리학 및 건강 분야의 응용입니다. 예를 들어, @Steele2007은 종단 데이터에 대한 다단계 모델을 살펴보고, @Steele2007again은 다단계 모델을 사용하여 학교 자원과 학생 성취도 간의 관계를 살펴봅니다.
+그녀는 2008년 왕립 통계 학회 가이 메달\index{Guy Medal!Bronze} 동상을 수상했습니다.
+:::
+
+우리는 세 가지 설정을 구별합니다.\index{multilevel modeling!pooling}
+
+1) 완전 풀링: 모든 관측치를 동일한 그룹에서 온 것으로 처리합니다. 이는 지금까지 우리가 해왔던 방식입니다.
+2) 풀링 없음: 모든 그룹을 별도로 처리합니다. 이는 각 그룹에 대해 별도의 회귀를 실행하는 경우 발생할 수 있습니다.
+3) 부분 풀링: 그룹 구성원이 어떤 영향을 미치도록 허용합니다.
+
+예를 들어, 전 세계 각국의 GDP와 인플레이션 간의 관계에 관심이 있다고 가정해 봅시다. 완전 풀링은 모든 국가를 하나의 그룹에 넣을 것이고, 풀링 없음은 각 대륙에 대해 별도의 회귀를 실행할 것입니다. 이제 부분 풀링 접근 방식을 설명할 것입니다.
+
+일반적으로 이를 수행하는 두 가지 방법이 있습니다.
+
+1) 다양한 절편을 활성화하거나,
+2) 다양한 기울기를 활성화합니다.
+
+이 책에서는 첫 번째만 고려하지만, @gelmanhillvehtari2020, @citemcelreath, @bayesrules로 넘어가야 합니다.
+
+### 시뮬레이션 예시: 정치적 지지
+
+개인의 성별과 거주하는 주에 따라 특정 정당에 대한 지지 확률이 달라지는 상황을 고려해 봅시다.
+
+$$
+\begin{aligned}
+y_i|\pi_i & \sim \mbox{Bern}(\pi_i) \\
+\mbox{logit}(\pi_i) & = \beta_0 + \alpha_{g[i]}^{\mbox{gender}} + \alpha_{s[i]}^{\mbox{state}} \\
+\beta_0 & \sim \mbox{Normal}(0, 2.5)\\
+\alpha_{g}^{\mbox{gender}} & \sim \mbox{Normal}(0, 2.5)\mbox{ for }g=1, 2\\
+\alpha_{s}^{\mbox{state}} & \sim \mbox{Normal}\left(0, \sigma_{\mbox{state}}^2\right)\mbox{ for }s=1, 2, \dots, S\\
+\sigma_{\mbox{state}} & \sim \mbox{Exponential}(1)
+\end{aligned}
+$$
+
+여기서 $\pi_i = \mbox{Pr}(y_i=1)$이고, 두 가지 성별 그룹이 있습니다. 왜냐하면 @sec-multilevel-regression-with-post-stratification에서 사용할 설문 조사에서 사용할 수 있는 것이 그것이기 때문입니다. 그리고 $S$는 총 주 수입니다. `rstanarm`의 `stan_glmer()` 내에서 "(1 | state)"를 사용하여 함수에 이를 포함합니다[@citerstanarm]. 이 용어는 주별 그룹 효과를 보고 있음을 나타내며, 이는 적합된 모델의 절편이 주에 따라 달라질 수 있음을 의미합니다.\index{distribution!Normal}
+
+```{
+r}
+#| warning: false
+#| message: false
+
+set.seed(853)
+
+political_support <-
+  tibble(
+    state = sample(1:50, size = 1000, replace = TRUE),
+    gender = sample(c(1, 2), size = 1000, replace = TRUE),
+    noise = rnorm(n = 1000, mean = 0, sd = 10) |> round(),
+    supports = if_else(state + gender + noise > 50, 1, 0)
+  )
+
+political_support
+```
+
+```{
+r}
+#| eval: false
+#| echo: true
+#| message: false
+#| warning: false
+
+voter_preferences <-
+  stan_glmer(
+    supports ~ gender + (1 | state),
+    data = political_support,
+    family = binomial(link = "logit"),
+    prior = normal(location = 0, scale = 2.5, autoscale = TRUE),
+    prior_intercept = normal(location = 0, scale = 2.5, autoscale = TRUE),
+    seed = 853
+  )
+
+saveRDS(
+  voter_preferences,
+  file = "voter_preferences.rds"
+)
+```
+
+```{
+r}
+#| eval: false
+#| include: false
+#| message: false
+#| warning: false
+
+# INTERNAL
+saveRDS(
+  voter_preferences,
+  file = "outputs/model/voter_preferences.rds"
+)
+```
+
+```{
+r}
+#| eval: true
+#| echo: false
+#| message: false
+#| warning: false
+
+voter_preferences <-
+  readRDS(file = "outputs/model/voter_preferences.rds")
+```
+
+```{
+r}
+voter_preferences
+```
+
+새로운 모델링 상황에 직면했을 때, 특히 추론이 주요 관심사인 경우 다단계 모델을 사용할 기회를 찾는 것이 좋습니다. 모델에 더 많은 정보를 제공하기 위해 활용할 수 있는 어떤 그룹화가 종종 있습니다.
+
+다단계 모델링으로 전환할 때, 일부 `rstanarm` 모델에서 "발산 전환"에 대한 경고가 발생할 수 있습니다.\index{multilevel modeling!divergent transition} 이 책에서 모델을 작동시키는 목적을 위해, 경고가 소수이고 계수의 Rhat 값이 모두 1에 가까우면(`any(summary(change_this_to_the_model_name)[, "Rhat"] > 1.1)`로 확인) 무시하십시오. 경고가 소수 이상이거나 Rhat 중 하나라도 1에 가깝지 않다면, `stan_glmer()`에 "adapt_delta = 0.99"를 인수로 추가하고 모델을 다시 실행하십시오(실행 시간이 더 오래 걸린다는 점을 염두에 두십시오). 이것으로 문제가 해결되지 않으면 변수를 제거하여 모델을 단순화하십시오. @sec-multilevel-regression-with-post-stratification에서 MRP를 2020년 미국 선거에 적용할 때 "adapt_delta" 전략이 문제를 해결하는 예시를 볼 것입니다.
+
+### 오스틴, 브론테, 디킨스, 셰익스피어
+
+다단계 모델링의 예시로, 프로젝트 구텐베르크의 제인 오스틴, 샬럿 브론테, 찰스 디킨스, 윌리엄 셰익스피어 네 작가의 책 길이에 대한 데이터를 고려합니다. 오스틴, 브론테, 디킨스는 책을 썼으므로 셰익스피어(희곡을 썼으므로)보다 더 긴 책을 썼을 것으로 예상합니다. 그러나 세 책 작가 간에 어떤 차이를 예상해야 할지는 명확하지 않습니다.
+
+```{
+r}
+#| eval: false
+#| echo: true
+authors <- c("오스틴, 제인", "디킨스, 찰스", 
+             "셰익스피어, 윌리엄", "브론테, 샬럿")
+
+# 중복 및 원치 않는 문자에 대한 문서 값
+dont_get_shakespeare <-
+  c(2270, 4774, 5137, 9077, 10606, 12578, 22791, 23041, 23042, 23043, 
+    23044, 23045, 23046, 28334, 45128, 47518, 47715, 47960, 49007, 
+    49008, 49297, 50095, 50559)
+dont_get_bronte <- c(31100, 42078)
+dont_get_dickens <-
+  c(25852, 25853, 25854, 30368, 32241, 35536, 37121, 40723, 42232, 43111, 
+    43207, 46675, 47529, 47530, 47531, 47534, 47535, 49927, 50334)
+
+books <-
+  gutenberg_works(
+    author %in% authors,
+    !gutenberg_id %in% 
+      c(dont_get_shakespeare, dont_get_bronte, dont_get_dickens)
+    ) |>
+  gutenberg_download(
+    meta_fields = c("title", "author"),
+    mirror = "https://gutenberg.pglaf.org/"
+  )
+
+write_csv(books, "books-austen_bronte_dickens_shakespeare.csv")
+```
+
+```{
+r}
+#| eval: false
+#| echo: false
+
+# INTERNAL
+
+write_csv(books, "dont_push/books-austen_bronte_dickens_shakespeare.csv")
+```
+
+```{
+r}
+#| eval: false
+#| echo: false
+
+# INTERNAL
+
+books <- read_csv(
+  "dont_push/books-austen_bronte_dickens_shakespeare.csv",
+  col_types = cols(
+    gutenberg_id = col_integer(),
+    text = col_character(),
+    title = col_character(),
+    author = col_character()
+  )
+)
+```
+
+```{
+r}
+#| eval: false
+#| echo: true
+
+books <- read_csv(
+  "books-austen_bronte_dickens_shakespeare.csv",
+  col_types = cols(
+    gutenberg_id = col_integer(),
+    text = col_character(),
+    title = col_character(),
+    author = col_character()
+  )
+)
+```
+
+
+```{
+r}
+#| eval: false
+#| echo: true
+
+lines_by_author_work <-
+  books |>
+  summarise(number_of_lines = n(),
+            .by = c(author, title))
+
+lines_by_author_work
+```
+
+```{
+r}
+#| eval: false
+#| echo: false
+
+# INTERNAL
+
+write_csv(lines_by_author_work, "outputs/lines_by_author_work.csv")
+```
+
+```{
+r}
+#| eval: true
+#| echo: false
+
+lines_by_author_work <- read_csv(
+  "outputs/lines_by_author_work.csv",
+  col_types = cols(
+    author = col_character(),
+    title = col_character(),
+    number_of_lines = col_integer()
+  )
+)
+
+lines_by_author_work
+```
+
+
+```{
+r}
+#| echo: true
+#| eval: false
+
+author_lines_rstanarm <-
+  stan_glm(
+    number_of_lines ~ author,
+    data = lines_by_author_work,
+    family = neg_binomial_2(link = "log"),
+    prior = normal(location = 0, scale = 3, autoscale = TRUE),
+    prior_intercept = normal(location = 0, scale = 3, autoscale = TRUE),
+    seed = 853
+  )
+
+saveRDS(
+  author_lines_rstanarm,
+  file = "author_lines_rstanarm.rds"
+)
+
+author_lines_rstanarm_multilevel <-
+  stan_glmer(
+    number_of_lines ~ (1 | author),
+    data = lines_by_author_work,
+    family = neg_binomial_2(link = "log"),
+    prior = normal(location = 0, scale = 3, autoscale = TRUE),
+    prior_intercept = normal(location = 0, scale = 3, autoscale = TRUE),
+    seed = 853
+  )
+
+saveRDS(
+  author_lines_rstanarm_multilevel,
+  file = "author_lines_rstanarm_multilevel.rds"
+)
+```
+
+
+```{
+r}
+#| echo: false
+#| eval: false
+#| message: false
+#| warning: false
+
+# INTERNAL
+saveRDS(
+  author_lines_rstanarm,
+  file = "outputs/model/author_lines_rstanarm.rds"
+)
+
+saveRDS(
+  author_lines_rstanarm_multilevel,
+  file = "outputs/model/author_lines_rstanarm_multilevel.rds"
+)
+```
+
+```{
+r}
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+
+author_lines_rstanarm <-
+  readRDS(file = "outputs/model/author_lines_rstanarm.rds")
+
+author_lines_rstanarm_multilevel <-
+  readRDS(file = "outputs/model/author_lines_rstanarm_multilevel.rds")
+```
+
+
+```{
+r}
+#| label: tbl-modelsummaryaustenshakes
+#| tbl-cap: "오스틴, 브론테, 디킨스, 셰익스피어가 줄 수를 기반으로 책을 썼는지 설명"
+#| warning: false
+#| eval: false
+
+modelsummary(
+  list(
+    "음이항" = author_lines_rstanarm,
+    "다단계 음이항" = author_lines_rstanarm_multilevel
+  )
+)
+```
+
+@tbl-modelsummaryaustenshakes는 다단계 모델의 경우 약간 비어 있으며, 독자에게 숫자로 압도하는 것을 피하기 위해 종종 그래프를 사용합니다(@sec-multilevel-regression-with-post-stratification에서 이에 대한 예시를 볼 것입니다). 예를 들어, @fig-multilevelexampleleveldistribution은 `tidybayes`의 `spread_draws()`를 사용하여 네 작가 각각에 대한 표본 분포를 보여줍니다.
+
+```{
+r}
+#| echo: true
+#| eval: true
+#| message: false
+#| warning: false
+#| label: tbl-multilevelexampleleveldistribution
+#| fig-cap: "네 작가 각각에 대한 표본 분포 검토"
+
+author_lines_rstanarm_multilevel |>
+  spread_draws(`(Intercept)`, b[, group]) |>
+  mutate(condition_mean = `(Intercept)` + b) |>
+  ggplot(aes(y = group, x = condition_mean)) +
+  stat_halfeye() +
+  theme_minimal()
+```
+
+이 경우, 우리는 브론테가 세 책 작가 중 가장 긴 책을 쓸 것으로 예상합니다. 셰익스피어는 예상대로 가장 적은 줄을 가진 작품을 썼습니다.
+
+## 결론
+
+이 장에서는 일반화 선형 모델을 고려하고 다단계 모델링을 소개했습니다. @sec-its-just-a-linear-model에서 확립된 기초를 바탕으로 베이즈 모델 구축에 필요한 몇 가지 필수 사항을 제공했습니다. @sec-its-just-a-linear-model에서 언급했듯이, 이것은 시작하기에 충분합니다. 더 많은 것을 배우고 싶으시다면 @sec-concluding-remarks에서 권장하는 모델링 책부터 시작해야 합니다.
+
+@sec-its-just-a-linear-model와 @sec-its-just-a-generalized-linear-model를 통해 다양한 베이즈 모델 접근 방식을 다루었습니다. 그러나 모든 모델에 대해 모든 것을 다루지는 않았습니다.
+
+"충분하다"는 것이 무엇인지 명확하게 정의하기는 어렵습니다. 왜냐하면 맥락에 따라 다르기 때문입니다. 그러나 @sec-its-just-a-linear-model와 @sec-its-just-a-generalized-linear-model에서 소개된 개념을 바탕으로 한 다음 체크리스트는 시작하는 데 대부분의 목적에 충분할 것입니다. 논문의 모델 섹션에서 방정식을 사용하여 모델을 작성하고, 방정식을 설명하는 몇 단락의 텍스트를 포함하십시오. 그런 다음 모델 선택을 정당화하고, 고려했던 대안을 간략하게 설명하십시오. 마지막으로 모델이 어떻게 적합되었는지 설명하는 문장을 포함하십시오. 이 경우 `rstanarm`으로 적합되었을 가능성이 높으며, 진단은 교차 참조된 부록에서 확인할 수 있습니다. 해당 부록에는 사전 예측 검사, 트레이스 플롯, Rhat 플롯, 사후 분포 및 사후 예측 검사가 포함되어야 합니다.
+
+결과 섹션에는 `modelsummary`를 사용하여 구축된 추정치 표를 포함하고, `marginaleffects`의 도움을 받아 설명하십시오. 특히 다단계 모델을 사용하는 경우 `tidybayes`의 도움을 받아 결과 그래프를 포함하는 것도 유용할 수 있습니다. 모델 자체는 별도의 R 스크립트에서 실행되어야 합니다. 클래스 및 관측치 수에 대한 테스트가 선행되어야 합니다. 계수에 대한 테스트가 뒤따라야 합니다. 이들은 시뮬레이션을 기반으로 해야 합니다. 해당 R 스크립트에서 `saveRDS()`를 사용하여 모델을 저장해야 합니다. Quarto 문서에서는 `readRDS()`를 사용하여 해당 모델을 읽어들여야 합니다.
+
+## 연습 문제
+
+### 연습 {.unnumbered}
+
+1. *(계획)* 다음 시나리오를 고려하십시오: *어떤 사람이 호주 시드니에서 암으로 인한 사망자 수에 관심이 있습니다. 그들은 지난 20년 동안 가장 큰 5개 병원에서 데이터를 수집합니다.* 데이터셋이 어떻게 생겼을지 스케치한 다음, 모든 관측치를 보여주기 위해 만들 수 있는 그래프를 스케치하십시오.
+2. *(시뮬레이션)* 설명된 시나리오를 더 고려하고 상황을 시뮬레이션하십시오. 결과(원인별 사망자 수)와 몇 가지 예측 변수를 모두 포함하십시오. 시뮬레이션된 데이터를 기반으로 최소 10개의 테스트를 포함하십시오.
+3. *(수집)* 그러한 데이터셋의 가능한 출처를 설명하십시오.
+4. *(탐색)* `ggplot2`를 사용하여 스케치한 그래프를 만드십시오. 그런 다음 `rstanarm`을 사용하여 모델을 구축하십시오.
+5. *(소통)* 자신이 한 일에 대해 두 단락을 작성하십시오.
+
+### 퀴즈 {.unnumbered}
+
+1. 로지스틱 회귀를 언제 고려해야 합니까 (하나 선택)?
+    a. 연속 결과 변수.
+    b. 이진 결과 변수.
+    c. 개수 결과 변수.
+2. 2020년 미국 대통령 선거에서 투표 의향이 개인의 소득에 따라 어떻게 달라지는지 연구하는 데 관심이 있습니다. 이 관계를 연구하기 위해 로지스틱 회귀 모델을 설정합니다. 이 연구에서 가능한 결과 변수 중 하나는 (하나 선택)?
+    a. 응답자가 미국 시민인지 여부 (예/아니오)
+    b. 응답자의 개인 소득 (높음/낮음)
+    c. 응답자가 바이든에게 투표할 것인지 여부 (예/아니오)
+    d. 응답자가 2016년에 누구에게 투표했는지 (트럼프/클린턴)
+3. 2020년 미국 대통령 선거에서 투표 의향이 개인의 소득에 따라 어떻게 달라지는지 연구하는 데 관심이 있습니다. 이 관계를 연구하기 위해 로지스틱 회귀 모델을 설정합니다. 이 연구에서 가능한 예측 변수는 (모두 선택하십시오)?
+    a.  응답자의 인종 (백인/비백인)
+    b.  응답자의 혼인 상태 (기혼/미혼)
+    d. 응답자가 바이든에게 투표할 것인지 여부 (예/아니오)
+4. 포아송 분포의 평균은 무엇과 같습니까?
+    a. 중앙값.
+    b. 표준 편차.
+    c. 분산.
+5. 미국 선거의 `rstanarm` 예시를 다시 수행하되, 추가 변수를 포함하십시오. 어떤 변수를 선택했으며, 모델의 성능은 어떻게 향상되었습니까?
+6. $\lambda = 75$일 때 포아송 분포의 밀도 그래프를 만드십시오.
+7. @gelmanhillvehtari2020에 따르면, 포아송 회귀에서 오프셋은 무엇입니까?
+8. *제인 에어* 예시를 다시 수행하되, "A/a"에 대해 수행하십시오.
+9. 20세기 영국 통계학자 조지 박스는 유명하게 "모든 모델은 틀렸으므로 과학자는 중요하게 틀린 것에 주의해야 한다. 호랑이가 돌아다니는데 쥐에 대해 걱정하는 것은 부적절하다."라고 말했습니다[@Box1976, p. 792]. 예시와 인용을 통해 논의하십시오.
+
+### 수업 활동 {.unnumbered}
+
+- 축구 또는 하키 중 무엇을 선호하는지, 그리고 연령, 성별, 위치와 어떤 관련이 있는지 조사하기 위한 베이즈 회귀 모델을 어떻게 구축할 것인지 논의하십시오. 다음을 작성하십시오.
+    - 관심 결과 및 가능성
+    - 관심 결과에 대한 회귀 모델
+    - 모델에서 추정할 매개변수에 대한 사전 분포.
+- @sec-its-just-a-linear-model에서와 마찬가지로, `palmerpenguins`를 사용하여 부리 길이와 깊이 사이의 관계를 이해하는 데 다시 관심이 있지만, 이번에는 세 종 모두에 대해 관심이 있습니다. 각 종에 대해 별도의 모델을 추정하는 것으로 시작하십시오. 그런 다음 세 종 모두에 대해 하나의 모델을 추정하십시오. 마지막으로, 부분 풀링을 사용하는 모델을 추정하십시오.
+- [시작 폴더](https://github.com/RohanAlexander/starter_folder)를 사용하고 새 리포지토리를 만드십시오. 수업의 공유 Google 문서에 GitHub 리포지토리 링크를 추가하십시오.
+    - 교육, 연령대, 성별 및 주를 기반으로 민주당 또는 공화당 지지를 설명하는 데 관심이 있습니다. 상황을 스케치하고 시뮬레이션하십시오.
+    - @cohn2016의 기반 데이터를 [여기](https://github.com/TheUpshot/2016-upshot-siena-polls/)에서 얻으십시오. 편집되지 않은 데이터를 저장하고, 분석 데이터셋을 구성하십시오(시작하는 데 도움이 되는 일부 코드가 아래에 있습니다). 각 변수의 그래프를 개별적으로 데이터 섹션에 추가하고, 그들이 어떻게 관련되는지에 대한 그래프도 추가하십시오.
+    - "vt_pres_2"를 "gender", "educ", "age"의 함수로 설명하는 모델을 하나 구축하고, 추가로 "state"를 고려하는 모델을 하나 더 구축하십시오. 두 모델을 모델 섹션에 작성하고, 결과를 결과 섹션에 추가하십시오(다시, 시작하는 데 도움이 되는 일부 코드가 아래에 있습니다).
+```{
+r}
+#| echo: true
+#| eval: false
+
+vote_data <-
+  read_csv(
+    "https://raw.githubusercontent.com/TheUpshot/2016-upshot-siena-polls/master/upshot-siena-polls.csv"
+  )
+
+cleaned_vote_data <-
+  vote_data |>
+  select(vt_pres_2, gender, educ, age, state) |>
+  rename(vote = vt_pres_2) |>
+  mutate(
+    gender = factor(gender),
+    educ = factor(educ),
+    state = factor(state),
+    age = as.integer(age)
+  ) |>
+  mutate(
+    vote =
+      case_when(
+        vote == "Donald Trump, the Republican" ~ "0",
+        vote == "Hillary Clinton, the Democrat" ~ "1",
+        TRUE ~ vote
+      )
+  ) |>
+  filter(vote %in% c("0", "1")) |>
+  mutate(vote = as.integer(vote))
+```
+
+```{
+r}
+#| echo: true
+#| eval: false
+
+vote_model <-
+  stan_glm(
+    formula = vote ~ age + educ,
+    data = cleaned_vote_data,
+    family = gaussian(),
+    prior = normal(location = 0, scale = 2.5),
+    prior_intercept = normal(location = 0, scale = 2.5),
+    prior_aux = exponential(rate = 1),
+    seed = 853
+  )
+```
+
+### 과제 {.unnumbered}
+
+@maher1982modelling, @thanksleo, 또는 @cohn2016을 고려하십시오. 그들의 모델의 단순화된 버전을 구축하십시오.
+
+최근 관련 데이터를 얻고, 모델을 추정하고, 로지스틱, 포아송, 음이항 회귀 중 선택에 대해 논의하십시오.
+
+Quarto를 사용하고, 적절한 제목, 저자, 날짜, GitHub 리포지토리 링크, 섹션 및 인용을 포함하고, 모델을 철저히 지정하십시오.
+
+
+### 논문 {.unnumbered}
+
+::: {.content-visible when-format="pdf"}
+이 시점에서 ["논문" 온라인 부록](https://tellingstorieswithdata.com/23-assessment.html)의 *Spadina* 논문이 적절할 것입니다.
+:::
+
+::: {.content-visible unless-format="pdf"}
+이 시점에서 [온라인 부록 -@sec-papers]의 *Spadina* 논문이 적절할 것입니다.
+:::

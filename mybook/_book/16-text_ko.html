@@ -1,0 +1,1854 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>17&nbsp; 데이터로서의 텍스트 – 데이터로 이야기하기</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./17-concluding_ko.html" rel="next">
+<link href="./15-mrp_ko.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-b22ef3f334bfc3d7f06e555e13679c65.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "일치 없음",
+    "search-matching-documents-text": "일치된 문서",
+    "search-copy-link-title": "검색 링크 복사",
+    "search-hide-matches-text": "추가 검색 결과 숨기기",
+    "search-more-match-text": "추가 검색결과",
+    "search-more-matches-text": "추가 검색결과",
+    "search-clear-button-title": "제거",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "취소",
+    "search-submit-button-title": "검색",
+    "search-label": "검색"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./14-causality_from_obs_ko.html">적용</a></li><li class="breadcrumb-item"><a href="./16-text_ko.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">데이터로서의 텍스트</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="검색" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">데이터로 이야기하기</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/RohanAlexander/telling_stories/" title="소스 코드" class="quarto-navigation-tool px-1" aria-label="소스 코드"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="검색"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">서문</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./00-errata_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">오류 및 업데이트</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">기초</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-introduction_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">데이터로 이야기하기</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-drinking_from_a_fire_hose_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">소방 호스에서 마시기</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-workflow_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">재현 가능한 워크플로우</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">소통</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-writing_research_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">연구 작성</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-graphs_tables_maps_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">그래프, 표, 지도</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">획득</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-farm_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">측정, 인구 조사, 표본 추출</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-gather_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">API, 스크래핑, 파싱</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-hunt_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">실험 및 설문 조사</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">준비</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-clean_and_prepare_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">정리, 준비 및 테스트</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-store_and_share_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">저장 및 공유</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-eda_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">탐색적 데이터 분석</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">모델링</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-ijalm_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">선형 모델</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-ijaglm_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">일반화 선형 모델</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-prediction_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">예측</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">적용</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-causality_from_obs_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">관찰 데이터에서 인과 관계</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-mrp_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">사후 층화 다단계 회귀</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-text_ko.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">데이터로서의 텍스트</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./17-concluding_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">17-concluding_ko.html</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text">부록</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20-r_essentials_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">R 필수 사항</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./21-python_essentials_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Python 필수 사항</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./22-sql_essentials_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">SQL 필수</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./23-datasets_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">데이터셋</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./24-rmarkdown_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">R 마크다운</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./25-papers_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">논문</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./26-deploy_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">생산</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./98-cocktails_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">칵테일</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./99-references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">목차</h2>
+   
+  <ul>
+  <li><a href="#서론" id="toc-서론" class="nav-link active" data-scroll-target="#서론"><span class="header-section-number">17.1</span> 서론</a></li>
+  <li><a href="#텍스트-정리-및-준비" id="toc-텍스트-정리-및-준비" class="nav-link" data-scroll-target="#텍스트-정리-및-준비"><span class="header-section-number">17.2</span> 텍스트 정리 및 준비</a>
+  <ul class="collapse">
+  <li><a href="#불용어" id="toc-불용어" class="nav-link" data-scroll-target="#불용어"><span class="header-section-number">17.2.1</span> 불용어</a></li>
+  <li><a href="#대소문자-숫자-및-구두점" id="toc-대소문자-숫자-및-구두점" class="nav-link" data-scroll-target="#대소문자-숫자-및-구두점"><span class="header-section-number">17.2.2</span> 대소문자, 숫자 및 구두점</a></li>
+  <li><a href="#오타-및-흔하지-않은-단어" id="toc-오타-및-흔하지-않은-단어" class="nav-link" data-scroll-target="#오타-및-흔하지-않은-단어"><span class="header-section-number">17.2.3</span> 오타 및 흔하지 않은 단어</a></li>
+  <li><a href="#튜플" id="toc-튜플" class="nav-link" data-scroll-target="#튜플"><span class="header-section-number">17.2.4</span> 튜플</a></li>
+  <li><a href="#어간-추출-및-표제어-추출" id="toc-어간-추출-및-표제어-추출" class="nav-link" data-scroll-target="#어간-추출-및-표제어-추출"><span class="header-section-number">17.2.5</span> 어간 추출 및 표제어 추출</a></li>
+  <li><a href="#중복" id="toc-중복" class="nav-link" data-scroll-target="#중복"><span class="header-section-number">17.2.6</span> 중복</a></li>
+  </ul></li>
+  <li><a href="#용어-빈도-역-문서-빈도-tf-idf" id="toc-용어-빈도-역-문서-빈도-tf-idf" class="nav-link" data-scroll-target="#용어-빈도-역-문서-빈도-tf-idf"><span class="header-section-number">17.3</span> 용어 빈도-역 문서 빈도 (TF-IDF)</a>
+  <ul class="collapse">
+  <li><a href="#점성술-구별" id="toc-점성술-구별" class="nav-link" data-scroll-target="#점성술-구별"><span class="header-section-number">17.3.1</span> 점성술 구별</a></li>
+  </ul></li>
+  <li><a href="#주제-모델" id="toc-주제-모델" class="nav-link" data-scroll-target="#주제-모델"><span class="header-section-number">17.4</span> 주제 모델</a>
+  <ul class="collapse">
+  <li><a href="#캐나다-의회에서-무엇이-논의되는가" id="toc-캐나다-의회에서-무엇이-논의되는가" class="nav-link" data-scroll-target="#캐나다-의회에서-무엇이-논의되는가"><span class="header-section-number">17.4.1</span> 캐나다 의회에서 무엇이 논의되는가?</a></li>
+  </ul></li>
+  <li><a href="#연습-문제" id="toc-연습-문제" class="nav-link" data-scroll-target="#연습-문제"><span class="header-section-number">17.5</span> 연습 문제</a>
+  <ul class="collapse">
+  <li><a href="#연습" id="toc-연습" class="nav-link" data-scroll-target="#연습">연습</a></li>
+  <li><a href="#퀴즈" id="toc-퀴즈" class="nav-link" data-scroll-target="#퀴즈">퀴즈</a></li>
+  <li><a href="#수업-활동" id="toc-수업-활동" class="nav-link" data-scroll-target="#수업-활동">수업 활동</a></li>
+  <li><a href="#과제" id="toc-과제" class="nav-link" data-scroll-target="#과제">과제</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/RohanAlexander/telling_stories/edit/main/16-text_ko.qmd" class="toc-action"><i class="bi bi-github"></i>편집</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./14-causality_from_obs_ko.html">적용</a></li><li class="breadcrumb-item"><a href="./16-text_ko.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">데이터로서의 텍스트</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-text-as-data" class="quarto-section-identifier"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">데이터로서의 텍스트</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><strong>선수 지식</strong></p>
+<ul>
+<li><em>데이터로서의 텍스트: 개요</em>, <span class="citation" data-cites="benoit2020text">(<a href="#ref-benoit2020text" role="doc-biblioref">Benoit 2020</a>)</span>
+<ul>
+<li>이 장은 텍스트를 데이터로 사용하는 것에 대한 개요를 제공합니다.</li>
+</ul></li>
+<li><em>R을 사용한 텍스트 분석을 위한 지도 기계 학습</em>, <span class="citation" data-cites="hvitfeldt2021supervised">(<a href="#ref-hvitfeldt2021supervised" role="doc-biblioref">Hvitfeldt 와/과 Silge 2021</a>)</span>
+<ul>
+<li>텍스트를 데이터로 사용하여 선형 및 일반화 선형 모델을 구현하는 6장 “회귀” 및 7장 “분류”에 집중하세요.</li>
+</ul></li>
+<li><em>벌거벗은 진실: 6,816개 피부색 제품 이름이 아름다움의 편향을 어떻게 드러낼 수 있는가</em>, <span class="citation" data-cites="thenakedtruth">(<a href="#ref-thenakedtruth" role="doc-biblioref">Amaka 와/과 Thomas 2021</a>)</span>
+<ul>
+<li>화장품 텍스트 분석.</li>
+</ul></li>
+</ul>
+<p><strong>핵심 개념 및 기술</strong></p>
+<ul>
+<li>텍스트를 분석할 수 있는 데이터 소스로 이해하면 많은 흥미로운 질문을 고려할 수 있습니다.</li>
+<li>텍스트 정리 및 준비는 가능한 결과가 많기 때문에 특히 중요합니다. 이 단계에서 많은 결정을 내려야 하며, 이는 분석 후반에 중요한 영향을 미칩니다.</li>
+<li>텍스트 데이터셋을 고려하는 한 가지 방법은 특정 문서를 구별하는 단어를 살펴보는 것입니다.</li>
+<li>또 다른 방법은 문서에 포함된 주제를 고려하는 것입니다.</li>
+</ul>
+<p><strong>소프트웨어 및 패키지</strong></p>
+<ul>
+<li>Base R <span class="citation" data-cites="citeR">(<a href="#ref-citeR" role="doc-biblioref">R Core Team 2024</a>)</span></li>
+<li><code>astrologer</code> <span class="citation" data-cites="astrologer">(<a href="#ref-astrologer" role="doc-biblioref">Gelfand 2022</a>)</span> (이 패키지는 CRAN에 없으므로 <code>devtools::install_github("sharlagelfand/astrologer")</code>로 설치하세요)</li>
+<li><code>beepr</code> <span class="citation" data-cites="beepr">(<a href="#ref-beepr" role="doc-biblioref">Bååth 2018</a>)</span></li>
+<li><code>fs</code> <span class="citation" data-cites="fs">(<a href="#ref-fs" role="doc-biblioref">Hester, Wickham, 와/과 Csárdi 2021</a>)</span></li>
+<li><code>gutenbergr</code> <span class="citation" data-cites="gutenbergr">(<a href="#ref-gutenbergr" role="doc-biblioref">Johnston 와/과 Robinson 2022</a>)</span></li>
+<li><code>quanteda</code> <span class="citation" data-cites="quanteda">(<a href="#ref-quanteda" role="doc-biblioref">Benoit 기타 2018</a>)</span></li>
+<li><code>stm</code> <span class="citation" data-cites="stm">(<a href="#ref-stm" role="doc-biblioref">Roberts, Stewart, 와/과 Tingley 2019</a>)</span></li>
+<li><code>tidytext</code> <span class="citation" data-cites="SilgeRobinson2016">(<a href="#ref-SilgeRobinson2016" role="doc-biblioref">Silge 와/과 Robinson 2016</a>)</span></li>
+<li><code>tidyverse</code> <span class="citation" data-cites="tidyverse">(<a href="#ref-tidyverse" role="doc-biblioref">Wickham 기타 2019</a>)</span></li>
+<li><code>tinytable</code> <span class="citation" data-cites="tinytable">(<a href="#ref-tinytable" role="doc-biblioref">Arel-Bundock 2024</a>)</span></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(astrologer)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># library(beepr)</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fs)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># library(gutenbergr)</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># library(quanteda)</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># library(stm)</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidytext)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tinytable)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="서론" class="level2" data-number="17.1">
+<h2 data-number="17.1" class="anchored" data-anchor-id="서론"><span class="header-section-number">17.1</span> 서론</h2>
+<p>텍스트는 우리 주변에 있습니다. 많은 경우, 텍스트는 우리가 접하는 가장 초기 유형의 데이터입니다. 계산 능력의 증가, 새로운 방법의 개발, 그리고 텍스트의 엄청난 가용성은 텍스트를 데이터로 사용하는 데 큰 관심을 불러일으켰습니다. 텍스트를 데이터로 사용하면 독특한 분석 기회를 제공합니다. 예를 들어:</p>
+<ul>
+<li>아프리카 국가의 국영 신문 텍스트 분석은 정부의 조작을 식별할 수 있습니다<span class="citation" data-cites="Hassan2022">(<a href="#ref-Hassan2022" role="doc-biblioref">Hassan 2022</a>)</span>;</li>
+<li>영국 일간 신문 텍스트는 GDP 및 인플레이션에 대한 더 나은 예측을 생성하는 데 사용될 수 있으며<span class="citation" data-cites="Kalamara2022">(<a href="#ref-Kalamara2022" role="doc-biblioref">Kalamara 기타 2022</a>)</span>, 마찬가지로 <em>뉴욕 타임즈</em>는 미국 경제 활동과 상관 관계가 있는 불확실성 지수를 생성하는 데 사용될 수 있습니다<span class="citation" data-cites="Alexopoulos2015">(<a href="#ref-Alexopoulos2015" role="doc-biblioref">Alexopoulos 와/과 Cohen 2015</a>)</span>;</li>
+<li>전자 건강 기록(EHR)의 메모 분석은 질병 예측의 효율성을 향상시킬 수 있습니다<span class="citation" data-cites="jessgronsbell">(<a href="#ref-jessgronsbell" role="doc-biblioref">Gronsbell 기타 2019</a>)</span>; 그리고</li>
+<li>미국 의회 기록 분석은 여성 의원들이 남성에게 얼마나 자주 방해받는지 보여줍니다<span class="citation" data-cites="millersutherland2022">(<a href="#ref-millersutherland2022" role="doc-biblioref">Miller 와/과 Sutherland 2022</a>)</span>.</li>
+</ul>
+<p>텍스트 분석에 대한 초기 접근 방식은 컨텍스트와 분리된 단어를 숫자로 변환하는 경향이 있었습니다. 그런 다음 로지스틱 회귀의 변형과 같은 전통적인 접근 방식을 사용하여 분석할 수 있었습니다. 더 최근의 방법은 텍스트에 내재된 구조를 활용하려고 시도하며, 이는 추가적인 의미를 가져올 수 있습니다. 그 차이는 아마도 유사한 색상을 그룹화할 수 있는 아이와 어떤 물체가 무엇인지 아는 아이의 차이와 같을 것입니다. 악어와 나무는 모두 녹색이며, 그 지식으로 무언가를 할 수 있지만, 악어가 당신을 잡아먹을 수 있고 나무는 아마도 그렇지 않을 것이라는 것을 아는 것이 유용합니다.</p>
+<p>텍스트는 이 책 전체에서 사용한 데이터셋의 다루기 어렵지만 유사한 버전으로 간주될 수 있습니다. 주요 차이점은 일반적으로 각 변수가 단어 또는 더 일반적으로 토큰인 넓은 데이터로 시작한다는 것입니다. 종종 각 항목은 개수입니다. 그런 다음 일반적으로 이를 단어 변수와 개수 변수가 있는 상당히 긴 데이터로 변환합니다. 텍스트를 데이터로 간주하는 것은 자연스럽게 컨텍스트에서 일부 추상화를 필요로 합니다. 그러나 이는 역사적 불평등을 영속화할 수 있으므로 완전히 분리되어서는 안 됩니다. 예를 들어, <span class="citation" data-cites="koenecke2020은">(<a href="#ref-koenecke2020은" role="doc-biblioref"><strong>koenecke2020은?</strong></a>)</span> 자동 음성 인식 시스템이 백인 화자에 비해 흑인 화자에 대해 훨씬 더 나쁜 성능을 보인다는 것을 발견했으며, <span class="citation" data-cites="davidson2019racial은">(<a href="#ref-davidson2019racial은" role="doc-biblioref"><strong>davidson2019racial은?</strong></a>)</span> 특정하게 정의된 기술 용어인 흑인 미국 영어를 사용하는 트윗이 표준 미국 영어(다시 기술 용어임)의 유사한 트윗보다 더 높은 비율로 혐오 발언으로 분류된다는 것을 발견했습니다.</p>
+<p>텍스트 데이터의 흥미로운 측면 중 하나는 일반적으로 분석 목적으로 생성되지 않는다는 것입니다. 단점은 우리가 작업할 수 있는 형태로 만들기 위해 일반적으로 더 많은 작업을 해야 한다는 것입니다. 데이터 정리 및 준비 단계에서 많은 결정을 내려야 합니다.</p>
+<p>텍스트 데이터셋의 크기가 커질수록 분석에 있어서 시뮬레이션하고 작게 시작하는 것이 특히 중요합니다. 텍스트를 데이터로 사용하는 것은 우리에게 사용 가능한 텍스트의 양과 다양성 때문에 흥미롭습니다. 그러나 일반적으로 텍스트 데이터셋을 다루는 것은 지저분합니다. 일반적으로 많은 정리 및 준비가 필요합니다. 종종 텍스트 데이터셋은 큽니다. 따라서 재현 가능한 워크플로를 마련하고 발견한 내용을 명확하게 전달하는 것이 중요합니다. 그럼에도 불구하고, 흥미로운 분야입니다.</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+거인의 어깨 위에 서서
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>케네스 브누아 교수는 런던 경제 정치 대학(LSE)의 계산 사회 과학 교수이자 데이터 과학 연구소 소장입니다. 1998년 하버드 대학교에서 게리 킹과 케네스 셰플의 지도를 받아 정부학 박사 학위를 받은 후, 더블린 트리니티 칼리지에서 자리를 잡았고 2007년 교수로 승진했습니다. 2020년 LSE로 옮겼습니다. 그는 텍스트 데이터, 특히 정치 텍스트 및 소셜 미디어를 분석하는 정량적 방법의 전문가입니다. 그의 중요한 논문 중 일부는 정치 텍스트에서 정책 입장을 추출하고 정치학에서 “데이터로서의 텍스트” 하위 분야를 시작하는 데 도움이 된 <span class="citation" data-cites="laver2003을">(<a href="#ref-laver2003을" role="doc-biblioref"><strong>laver2003을?</strong></a>)</span> 포함합니다. 그는 또한 수십 개국에서 원본 전문가 설문 조사 입장을 제공한 <span class="citation" data-cites="benoitbook과">(<a href="#ref-benoitbook과" role="doc-biblioref"><strong>benoitbook과?</strong></a>)</span> 전문가 설문 조사를 당 정책 입장의 수동 코딩 분석과 비교한 <span class="citation" data-cites="benoit2007과">(<a href="#ref-benoit2007과" role="doc-biblioref"><strong>benoit2007과?</strong></a>)</span> 같은 정책 입장을 추정하는 다른 방법에도 광범위하게 작업했습니다. 핵심 기여는 “텍스트 데이터의 정량적 분석”을 위한 <code>quanteda</code><span class="citation" data-cites="quanteda">(<a href="#ref-quanteda" role="doc-biblioref">Benoit 기타 2018</a>)</span>로 알려진 R 패키지 제품군으로, 텍스트 데이터를 쉽게 분석할 수 있게 해줍니다.</p>
+</div>
+</div>
+<p>이 장에서는 먼저 텍스트 데이터셋 준비를 고려합니다. 그런 다음 용어 빈도-역 문서 빈도(TF-IDF) 및 주제 모델을 고려합니다.</p>
+</section>
+<section id="텍스트-정리-및-준비" class="level2" data-number="17.2">
+<h2 data-number="17.2" class="anchored" data-anchor-id="텍스트-정리-및-준비"><span class="header-section-number">17.2</span> 텍스트 정리 및 준비</h2>
+<p>텍스트 모델링은 흥미로운 연구 분야입니다. 그러나 일반적으로 말하자면, 정리 및 준비 측면은 모델링만큼이나 어렵습니다. 몇 가지 필수 사항을 다루고 구축할 수 있는 기반을 제공할 것입니다.</p>
+<p>첫 번째 단계는 데이터를 가져오는 것입니다. <a href="#sec-gather-data에서" class="quarto-xref"><span class="quarto-unresolved-ref">sec-gather-data에서</span></a> 데이터 수집에 대해 논의했으며, 다음을 포함한 많은 출처를 언급했습니다.</p>
+<ul>
+<li>리뷰에서 텍스트를 제공하는 <em>Inside Airbnb</em> 사용.</li>
+<li>저작권이 만료된 책에서 텍스트를 제공하는 프로젝트 구텐베르크.</li>
+<li>위키피디아 또는 기타 웹사이트 스크래핑.</li>
+</ul>
+<p>텍스트 정리 및 준비에 필요한 핵심 패키지는 <code>tidyverse</code>의 일부인 <code>stringr</code>와 <code>quanteda</code>입니다.</p>
+<p>설명을 위해 토니 모리슨의 <em>빌러브드</em>, 헬렌 드윗의 <em>마지막 사무라이</em>, 샬럿 브론테의 <em>제인 에어</em> 세 권의 책에서 첫 문장 또는 두 문장으로 구성된 코퍼스를 구성합니다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>last_samurai <span class="ot">&lt;-</span><span class="st">"우리 아버지의 아버지는 감리교 목사였다."</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>beloved <span class="ot">&lt;-</span> <span class="st">"124는 악의적이었다. 아기의 독으로 가득했다."</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>jane_eyre <span class="ot">&lt;-</span> <span class="st">"그날은 산책을 할 가능성이 없었다."</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>bookshelf <span class="ot">&lt;-</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">book =</span> <span class="fu">c</span>(<span class="st">"마지막 사무라이"</span>, <span class="st">"빌러브드"</span>, <span class="st">"제인 에어"</span>),</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">first_sentence =</span> <span class="fu">c</span>(last_samurai, beloved, jane_eyre)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>bookshelf</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 2
+  book            first_sentence                             
+  &lt;chr&gt;           &lt;chr&gt;                                      
+1 마지막 사무라이 우리 아버지의 아버지는 감리교 목사였다.    
+2 빌러브드        124는 악의적이었다. 아기의 독으로 가득했다.
+3 제인 에어       그날은 산책을 할 가능성이 없었다.          </code></pre>
+</div>
+</div>
+<p>우리는 일반적으로 각 관측치에 문서, 각 열에 단어, 그리고 관련 메타데이터와 함께 각 조합에 대한 개수를 포함하는 문서-특징 행렬을 구성하고자 합니다. 예를 들어, 코퍼스가 에어비앤비 리뷰 텍스트였다면, 각 문서는 리뷰일 수 있으며, 일반적인 특징에는 “The”, “Airbnb”, “was”, “great” 등이 포함될 수 있습니다. 여기서 문장이 다른 단어로 분리되었다는 점에 유의하십시오. 우리는 일반적으로 관심 있는 다양한 측면 때문에 단어에서 벗어나 “토큰”이라는 용어를 사용하지만, 단어가 일반적으로 사용됩니다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>books_corpus <span class="ot">&lt;-</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">corpus</span>(bookshelf, </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">docid_field =</span> <span class="st">"book"</span>, </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">text_field =</span> <span class="st">"first_sentence"</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>books_corpus</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>quanteda</code><span class="citation" data-cites="quanteda">(<a href="#ref-quanteda" role="doc-biblioref">Benoit 기타 2018</a>)</span>의 <code>dfm()</code>을 사용하여 코퍼스의 토큰을 사용하여 문서-특징 행렬(DFM)을 구성합니다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>books_dfm <span class="ot">&lt;-</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  books_corpus <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tokens</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm</span>()</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>books_dfm</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>이제 이 과정의 일부로 내려야 할 많은 결정을 고려합니다. 명확한 정답이나 오답은 없습니다. 대신, 데이터셋을 무엇에 사용할지에 따라 결정을 내립니다.</p>
+<section id="불용어" class="level3" data-number="17.2.1">
+<h3 data-number="17.2.1" class="anchored" data-anchor-id="불용어"><span class="header-section-number">17.2.1</span> 불용어</h3>
+<p>불용어는 “the”, “and”, “a”와 같은 단어입니다. 오랫동안 불용어는 많은 의미를 전달하지 않는다고 생각되었고, 메모리 제약 계산에 대한 우려가 있었습니다. 텍스트 데이터셋을 준비하는 일반적인 단계는 불용어를 제거하는 것이었습니다. 이제 불용어가 많은 의미를 가질 수 있다는 것을 알고 있습니다<span class="citation" data-cites="schofield2017">(<a href="#ref-schofield2017" role="doc-biblioref">Schofield, Magnusson, 와/과 Mimno 2017</a>)</span>. 불용어를 제거할지 여부에 대한 결정은 상황에 따라 달라지는 미묘한 결정입니다.</p>
+<p><code>quanteda</code>의 <code>stopwords()</code>를 사용하여 불용어 목록을 얻을 수 있습니다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stopwords</span>(<span class="at">source =</span> <span class="st">"snowball"</span>)[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>그런 다음 해당 목록의 모든 단어 인스턴스를 찾아 <code>str_replace_all()</code>을 사용하여 대략적으로 제거할 수 있습니다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>stop_word_list <span class="ot">&lt;-</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="fu">stopwords</span>(<span class="at">source =</span> <span class="st">"snowball"</span>), <span class="at">collapse =</span> <span class="st">" | "</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>bookshelf <span class="sc">|&gt;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">no_stops =</span> <span class="fu">str_replace_all</span>(</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">string =</span> first_sentence,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">pattern =</span> stop_word_list,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">replacement =</span> <span class="st">" "</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(no_stops, first_sentence)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>다른 사람들이 만든 많은 불용어 목록이 있습니다. 예를 들어, <code>stopwords()</code>는 “snowball”, “stopwords-iso”, “smart”, “marimo”, “ancient”, “nltk”를 포함한 목록을 사용할 수 있습니다. 더 일반적으로, 불용어를 사용하기로 결정하면 종종 프로젝트별 단어로 그러한 목록을 보강해야 합니다. 코퍼스에서 개별 단어의 개수를 생성한 다음, 가장 흔한 단어를 기준으로 정렬하고 적절하게 불용어 목록에 추가하여 이를 수행할 수 있습니다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>stop_word_list_updated <span class="ot">&lt;-</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Methodist |"</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"spiteful |"</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"possibility |"</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    stop_word_list,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">collapse =</span> <span class="st">" | "</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>bookshelf <span class="sc">|&gt;</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">no_stops =</span> <span class="fu">str_replace_all</span>(</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">string =</span> first_sentence,</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">pattern =</span> stop_word_list_updated,</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">replacement =</span> <span class="st">" "</span>)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(no_stops)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>quanteda</code>의 <code>dfm_remove()</code>를 사용하여 불용어 제거를 DFM 구성에 통합할 수 있습니다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>books_dfm <span class="sc">|&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dfm_remove</span>(<span class="fu">stopwords</span>(<span class="at">source =</span> <span class="st">"snowball"</span>))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>불용어를 제거하면 데이터셋을 인위적으로 조정합니다. 때로는 그렇게 하는 것이 좋은 이유가 있을 수 있습니다. 그러나 무심코 해서는 안 됩니다. 예를 들어, <a href="#sec-farm-data" class="quarto-xref"><span class="quarto-unresolved-ref">sec-farm-data</span></a> 및 <a href="#sec-store-and-share에서" class="quarto-xref"><span class="quarto-unresolved-ref">sec-store-and-share에서</span></a> 데이터셋이 응답자의 개인 정보 보호를 위해 검열, 절단 또는 유사한 방식으로 조작되어야 할 수 있다고 논의했습니다. 자연어 처리에서 불용어 제거를 기본 단계로 통합한 것은 이러한 방법이 개발되었을 때 더 제한적이었을 수 있는 계산 능력 때문일 수 있습니다. 어쨌든, <span class="citation" data-cites="jurafskymartin">Jurafsky 와/과 Martin (<a href="#ref-jurafskymartin" role="doc-biblioref">[2000년] 2023</a>, p.&nbsp;62)</span>은 불용어 제거가 텍스트 분류 성능을 향상시키지 않는다고 결론 내립니다. 관련하여, <span class="citation" data-cites="schofield2017은">(<a href="#ref-schofield2017은" role="doc-biblioref"><strong>schofield2017은?</strong></a>)</span> 나중에 다룰 주제 모델링의 맥락에서, 어간 추출이 거의 영향을 미치지 않으며, 가장 흔한 단어를 제외한 다른 단어를 제거할 필요가 거의 없다는 것을 발견했습니다. 불용어를 제거해야 한다면, 주제가 구성된 후에 제거할 것을 권장합니다.</p>
+</section>
+<section id="대소문자-숫자-및-구두점" class="level3" data-number="17.2.2">
+<h3 data-number="17.2.2" class="anchored" data-anchor-id="대소문자-숫자-및-구두점"><span class="header-section-number">17.2.2</span> 대소문자, 숫자 및 구두점</h3>
+<p>단어만 중요하고 대소문자나 구두점은 중요하지 않은 경우가 있습니다. 예를 들어, 텍스트 코퍼스가 특히 지저분하거나 특정 단어의 존재가 유익한 경우입니다. 정보 손실을 감수하고 더 간단하게 만드는 이점을 얻습니다. <code>str_to_lower()</code>로 소문자로 변환하고, <code>str_replace_all()</code>을 사용하여 “[:punct:]”로 구두점을 제거하고, “[:digit:]”로 숫자를 제거할 수 있습니다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>bookshelf <span class="sc">|&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">lower_sentence =</span> <span class="fu">str_to_lower</span>(<span class="at">string =</span> first_sentence)) <span class="sc">|&gt;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(lower_sentence)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 1
+  lower_sentence                             
+  &lt;chr&gt;                                      
+1 우리 아버지의 아버지는 감리교 목사였다.    
+2 124는 악의적이었다. 아기의 독으로 가득했다.
+3 그날은 산책을 할 가능성이 없었다.          </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>bookshelf <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">no_punctuation_numbers =</span> <span class="fu">str_replace_all</span>(</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">string =</span> first_sentence,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">pattern =</span> <span class="st">"[:punct:]|[:digit:]"</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">replacement =</span> <span class="st">" "</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">|&gt;</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(no_punctuation_numbers)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 1
+  no_punctuation_numbers                       
+  &lt;chr&gt;                                        
+1 "우리 아버지의 아버지는 감리교 목사였다 "    
+2 "   는 악의적이었다  아기의 독으로 가득했다 "
+3 "그날은 산책을 할 가능성이 없었다 "          </code></pre>
+</div>
+</div>
+<p>여담으로, <code>str_replace_all()</code>에서 “[:graph:]”를 사용하여 문자, 숫자 및 구두점을 제거할 수 있습니다. 이는 교과서 예시에서는 거의 필요하지 않지만, 실제 데이터셋에서는 특히 유용합니다. 왜냐하면 일반적으로 식별하고 제거해야 할 소수의 예상치 못한 기호가 있기 때문입니다. 우리는 익숙한 모든 것을 제거하고, 익숙하지 않은 것만 남겨둡니다.</p>
+<p>더 일반적으로, <code>quanteda()</code>의 <code>tokens()</code>에서 인수를 사용하여 이를 수행할 수 있습니다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>books_corpus <span class="sc">|&gt;</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tokens</span>(<span class="at">remove_numbers =</span> <span class="cn">TRUE</span>, <span class="at">remove_punct =</span> <span class="cn">TRUE</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="오타-및-흔하지-않은-단어" class="level3" data-number="17.2.3">
+<h3 data-number="17.2.3" class="anchored" data-anchor-id="오타-및-흔하지-않은-단어"><span class="header-section-number">17.2.3</span> 오타 및 흔하지 않은 단어</h3>
+<p>그런 다음 오타 및 기타 사소한 문제에 대해 무엇을 할지 결정해야 합니다. 모든 실제 텍스트에는 오타가 있습니다. 때로는 명확하게 수정해야 합니다. 그러나 체계적인 방식으로 만들어진 경우, 예를 들어 특정 작가가 항상 동일한 실수를 하는 경우, 작가별로 그룹화하는 데 관심이 있다면 가치가 있을 수 있습니다. OCR 사용은 <a href="#sec-gather-data에서" class="quarto-xref"><span class="quarto-unresolved-ref">sec-gather-data에서</span></a> 보았듯이 일반적인 문제를 야기할 것입니다. 예를 들어, “the”는 일반적으로 “thc”로 잘못 인식됩니다.</p>
+<p>불용어를 수정하는 것과 동일한 방식으로 오타를 수정할 수 있습니다. 즉, 수정 목록을 사용하는 것입니다. 흔하지 않은 단어의 경우, <code>dfm_trim()</code>을 사용하여 문서-특징 행렬 생성에 이를 포함할 수 있습니다. 예를 들어, 최소 두 번 이상 나타나지 않는 단어를 제거하기 위해 “min_termfreq = 2”를 사용하거나, 문서의 5% 이상에 나타나지 않는 단어를 제거하기 위해 “min_docfreq = 0.05”를 사용하거나, 문서의 90% 이상에 나타나는 단어를 제거하기 위해 “max_docfreq = 0.90”을 사용할 수 있습니다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>books_corpus <span class="sc">|&gt;</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tokens</span>(<span class="at">remove_numbers =</span> <span class="cn">TRUE</span>, <span class="at">remove_punct =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm</span>(<span class="at">tolower =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm_trim</span>(<span class="at">min_termfreq =</span> <span class="dv">2</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="튜플" class="level3" data-number="17.2.4">
+<h3 data-number="17.2.4" class="anchored" data-anchor-id="튜플"><span class="header-section-number">17.2.4</span> 튜플</h3>
+<p>튜플은 정렬된 요소 목록입니다. 텍스트의 맥락에서는 일련의 단어입니다. 튜플이 두 단어로 구성되면 “바이그램”, 세 단어는 “트라이그램” 등으로 부릅니다. 이것들은 텍스트 정리 및 준비와 관련하여 문제입니다. 왜냐하면 우리는 종종 공백을 기준으로 용어를 분리하기 때문입니다. 이는 부적절한 분리로 이어질 것입니다.</p>
+<p>이는 지명과 관련하여 명확한 문제입니다. 예를 들어, “British Columbia”, “New Hampshire”, “United Kingdom”, “Port Hedland”를 고려해 보십시오. 한 가지 방법은 그러한 장소 목록을 만든 다음 <code>str_replace_all()</code>을 사용하여 밑줄을 추가하는 것입니다. 예를 들어, “British_Columbia”, “New_Hampshire”, “United_Kingdom”, “Port_Hedland”입니다. 또 다른 옵션은 <code>quanteda</code>의 <code>tokens_compound()</code>를 사용하는 것입니다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>some_places <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"British Columbia"</span>, </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"New Hampshire"</span>, </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"United Kingdom"</span>, </span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"Port Hedland"</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>a_sentence <span class="ot">&lt;-</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="st">"밴쿠버는 브리티시 컬럼비아에 있고 뉴햄프셔는 아니다."</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">tokens</span>(a_sentence) <span class="sc">|&gt;</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tokens_compound</span>(<span class="at">pattern =</span> <span class="fu">phrase</span>(some_places))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>이 경우 우리는 튜플이 무엇인지 알고 있었습니다. 그러나 코퍼스에서 일반적인 튜플이 무엇인지 확신하지 못했을 수도 있습니다. <code>tokens_ngrams()</code>를 사용하여 식별할 수 있습니다. 예를 들어, <em>제인 에어</em>의 발췌문에서 모든 바이그램을 요청할 수 있습니다. <a href="#sec-its-just-a-generalized-linear-model에서" class="quarto-xref"><span class="quarto-unresolved-ref">sec-its-just-a-generalized-linear-model에서</span></a> 프로젝트 구텐베르크에서 이 책의 텍스트를 다운로드하는 방법을 보여주었으므로, 여기서는 이전에 저장한 로컬 버전을 로드합니다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>jane_eyre <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"jane_eyre.csv"</span>,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">col_types =</span> <span class="fu">cols</span>(</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">gutenberg_id =</span> <span class="fu">col_integer</span>(),</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">text =</span> <span class="fu">col_character</span>()</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>jane_eyre</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 21,001 × 2
+   gutenberg_id text                           
+          &lt;int&gt; &lt;chr&gt;                          
+ 1         1260 JANE EYRE                      
+ 2         1260 AN AUTOBIOGRAPHY               
+ 3         1260 &lt;NA&gt;                           
+ 4         1260 by Charlotte Brontë            
+ 5         1260 &lt;NA&gt;                           
+ 6         1260 _ILLUSTRATED BY F. H. TOWNSEND_
+ 7         1260 &lt;NA&gt;                           
+ 8         1260 London                         
+ 9         1260 SERVICE &amp; PATON                
+10         1260 5 HENRIETTA STREET             
+# ℹ 20,991 more rows</code></pre>
+</div>
+</div>
+<p>빈 줄이 많으므로 제거할 것입니다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>jane_eyre <span class="ot">&lt;-</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  jane_eyre <span class="sc">|&gt;</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(text))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>jane_eyre_text <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">book =</span> <span class="st">"제인 에어"</span>,</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">text =</span> <span class="fu">paste</span>(jane_eyre<span class="sc">$</span>text, <span class="at">collapse =</span> <span class="st">" "</span>) <span class="sc">|&gt;</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_replace_all</span>(<span class="at">pattern =</span> <span class="st">"[:punct:]"</span>,</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">replacement =</span> <span class="st">" "</span>) <span class="sc">|&gt;</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_replace_all</span>(<span class="at">pattern =</span> stop_word_list,</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>                    <span class="at">replacement =</span> <span class="st">" "</span>)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>jane_eyre_corpus <span class="ot">&lt;-</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">corpus</span>(jane_eyre_text, <span class="at">docid_field =</span> <span class="st">"book"</span>, <span class="at">text_field =</span> <span class="st">"text"</span>)</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>ngrams <span class="ot">&lt;-</span> <span class="fu">tokens_ngrams</span>(<span class="fu">tokens</span>(jane_eyre_corpus), <span class="at">n =</span> <span class="dv">2</span>)</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>ngram_counts <span class="ot">&lt;-</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(<span class="at">ngrams =</span> <span class="fu">unlist</span>(ngrams)) <span class="sc">|&gt;</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(ngrams, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ngram_counts)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>일부 일반적인 바이그램을 식별했으므로 변경할 목록에 추가할 수 있습니다. 이 예시에는 “Mr Rochester” 및 “St John”과 같은 이름이 포함되어 있으며, 분석을 위해 함께 유지되어야 합니다.</p>
+</section>
+<section id="어간-추출-및-표제어-추출" class="level3" data-number="17.2.5">
+<h3 data-number="17.2.5" class="anchored" data-anchor-id="어간-추출-및-표제어-추출"><span class="header-section-number">17.2.5</span> 어간 추출 및 표제어 추출</h3>
+<p>단어의 어간 추출 및 표제어 추출은 텍스트 데이터셋의 차원 축소를 위한 또 다른 일반적인 접근 방식입니다. 어간 추출은 단어의 마지막 부분을 제거하여 더 일반적인 단어를 얻을 것으로 예상하는 것을 의미합니다. 예를 들어, “Canadians”, “Canadian”, “Canada”는 모두 “Canad”로 어간 추출됩니다. 표제어 추출은 유사하지만 더 복잡합니다. 이는 단어를 철자뿐만 아니라 정식 형태로 변경하는 것을 의미합니다<span class="citation" data-cites="textasdata">(<a href="#ref-textasdata" role="doc-biblioref">Grimmer, Roberts, 와/과 Stewart 2022</a>, p.&nbsp;54)</span>. 예를 들어, “Canadians”, “Canadian”, “Canucks”, “Canuck”는 모두 “Canada”로 변경될 수 있습니다.</p>
+<p><code>dfm_wordstem()</code>을 사용하여 이를 수행할 수 있습니다. 예를 들어, “minister”가 “minist”로 변경되었음을 알 수 있습니다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">char_wordstem</span>(<span class="fu">c</span>(<span class="st">"Canadians"</span>, <span class="st">"Canadian"</span>, <span class="st">"Canada"</span>))</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>books_corpus <span class="sc">|&gt;</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tokens</span>(<span class="at">remove_numbers =</span> <span class="cn">TRUE</span>, <span class="at">remove_punct =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm</span>(<span class="at">tolower =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm_wordstem</span>()</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>이것은 텍스트를 데이터로 사용하는 일반적인 단계이지만, <span class="citation" data-cites="schofield2017understanding은">(<a href="#ref-schofield2017understanding은" role="doc-biblioref"><strong>schofield2017understanding은?</strong></a>)</span> 나중에 다룰 주제 모델링의 맥락에서, 어간 추출이 거의 영향을 미치지 않으며, 이를 수행할 필요가 거의 없다는 것을 발견했습니다.</p>
+</section>
+<section id="중복" class="level3" data-number="17.2.6">
+<h3 data-number="17.2.6" class="anchored" data-anchor-id="중복"><span class="header-section-number">17.2.6</span> 중복</h3>
+<p>중복은 텍스트 데이터셋의 크기 때문에 주요 관심사입니다. 예를 들어, <span class="citation" data-cites="bandy2021addressing은">(<a href="#ref-bandy2021addressing은" role="doc-biblioref"><strong>bandy2021addressing은?</strong></a>)</span> BookCorpus 데이터셋의 약 30%가 부적절하게 중복되었음을 보여주었으며, <span class="citation" data-cites="schofield2017quantifying은">(<a href="#ref-schofield2017quantifying은" role="doc-biblioref"><strong>schofield2017quantifying은?</strong></a>)</span> 이것이 주요 관심사이며 결과에 상당한 영향을 미칠 수 있음을 보여줍니다. 그러나 이는 미묘하고 진단하기 어려운 문제일 수 있습니다. 예를 들어, <a href="#sec-its-just-a-generalized-linear-model에서" class="quarto-xref"><span class="quarto-unresolved-ref">sec-its-just-a-generalized-linear-model에서</span></a> 포아송 회귀의 맥락에서 다양한 작가의 페이지 번호 개수를 고려했을 때, 각 셰익스피어 항목을 실수로 두 번 포함했을 수 있습니다. 왜냐하면 각 희곡에 대한 항목뿐만 아니라 모든 희곡을 포함하는 많은 선집도 있기 때문입니다. 데이터셋에 대한 신중한 고려는 문제를 식별했지만, 대규모에서는 어려울 것입니다.</p>
+</section>
+</section>
+<section id="용어-빈도-역-문서-빈도-tf-idf" class="level2" data-number="17.3">
+<h2 data-number="17.3" class="anchored" data-anchor-id="용어-빈도-역-문서-빈도-tf-idf"><span class="header-section-number">17.3</span> 용어 빈도-역 문서 빈도 (TF-IDF)</h2>
+<section id="점성술-구별" class="level3" data-number="17.3.1">
+<h3 data-number="17.3.1" class="anchored" data-anchor-id="점성술-구별"><span class="header-section-number">17.3.1</span> 점성술 구별</h3>
+<p>실제 데이터셋을 탐색하기 위해 점성술 데이터셋인 <code>astrologer</code>를 설치하고 로드합니다.</p>
+<p>그런 다음 “horoscopes” 데이터셋에 접근할 수 있습니다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>horoscopes</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1,272 × 4
+   startdate  zodiacsign  horoscope                                        url  
+   &lt;date&gt;     &lt;fct&gt;       &lt;chr&gt;                                            &lt;chr&gt;
+ 1 2015-01-05 Aries       Considering the fact that this past week (espec… http…
+ 2 2015-01-05 Taurus      It's time Taurus. You aren't one to be rushed a… http…
+ 3 2015-01-05 Gemini      Soon it will be time to review what you know, t… http…
+ 4 2015-01-05 Cancer      Feeling &nbsp;feelings and being full of flavorful s… http…
+ 5 2015-01-05 Leo         Look, listen, watch, meditate and engage in pra… http…
+ 6 2015-01-05 Virgo       Last week's astrology is still reverberating th… http…
+ 7 2015-01-05 Libra       Get out your markers and your glue sticks. Get … http…
+ 8 2015-01-05 Scorpio     Time to pay extra attention to the needs of you… http…
+ 9 2015-01-05 Sagittarius Everything right now is about how you say it, h… http…
+10 2015-01-05 Capricorn   The full moon on January 4th/5th was a healthy … http…
+# ℹ 1,262 more rows</code></pre>
+</div>
+</div>
+<p>네 가지 변수가 있습니다: “startdate”, “zodiacsign”, “horoscope”, “url” (URL은 웹사이트가 업데이트되었기 때문에 오래된 것입니다. 예를 들어, 첫 번째 URL은 <a href="https://chaninicholas.com/horoscopes-week-january-5th/">여기</a>를 참조합니다). 우리는 각 별자리의 운세를 구별하는 데 사용되는 단어에 관심이 있습니다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>horoscopes <span class="sc">|&gt;</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(zodiacsign)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 12 × 2
+   zodiacsign      n
+   &lt;fct&gt;       &lt;int&gt;
+ 1 Aries         106
+ 2 Taurus        106
+ 3 Gemini        106
+ 4 Cancer        106
+ 5 Leo           106
+ 6 Virgo         106
+ 7 Libra         106
+ 8 Scorpio       106
+ 9 Sagittarius   106
+10 Capricorn     106
+11 Aquarius      106
+12 Pisces        106</code></pre>
+</div>
+</div>
+<p>각 별자리에 대해 106개의 운세가 있습니다. 이 예시에서는 먼저 단어별로 토큰화한 다음, 날짜가 아닌 별자리만 기준으로 개수를 생성합니다. <span class="citation" data-cites="hvitfeldt2021supervised에서">(<a href="#ref-hvitfeldt2021supervised에서" role="doc-biblioref"><strong>hvitfeldt2021supervised에서?</strong></a>)</span> 광범위하게 사용되므로 <code>tidytext</code>를 사용합니다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>horoscopes_by_word <span class="ot">&lt;-</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  horoscopes <span class="sc">|&gt;</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>startdate,<span class="sc">-</span>url) <span class="sc">|&gt;</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(<span class="at">output =</span> word,</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">input =</span> horoscope,</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">token =</span> <span class="st">"words"</span>)</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>horoscopes_counts_by_word <span class="ot">&lt;-</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  horoscopes_by_word <span class="sc">|&gt;</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(zodiacsign, word, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>horoscopes_counts_by_word</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 41,847 × 3
+   zodiacsign  word      n
+   &lt;fct&gt;       &lt;chr&gt; &lt;int&gt;
+ 1 Cancer      to     1440
+ 2 Sagittarius to     1377
+ 3 Aquarius    to     1357
+ 4 Aries       to     1335
+ 5 Pisces      to     1313
+ 6 Leo         to     1302
+ 7 Libra       to     1270
+ 8 Sagittarius you    1264
+ 9 Virgo       to     1262
+10 Scorpio     to     1260
+# ℹ 41,837 more rows</code></pre>
+</div>
+</div>
+<p>가장 인기 있는 단어들이 다른 별자리에서도 비슷하게 나타나는 것을 알 수 있습니다. 이 시점에서 다양한 방식으로 데이터를 사용할 수 있습니다.</p>
+<p>각 그룹을 특징짓는 단어가 무엇인지, 즉 각 그룹에서만 일반적으로 사용되는 단어가 무엇인지 알고 싶을 수 있습니다. 이를 위해 먼저 단어의 용어 빈도(TF)를 살펴볼 수 있습니다. 이는 각 별자리의 운세에서 단어가 사용된 횟수입니다. 문제는 컨텍스트에 관계없이 일반적으로 사용되는 단어가 많다는 것입니다. 따라서 많은 별자리의 운세에 나타나는 단어에 “벌점”을 주는 역 문서 빈도(IDF)도 살펴보고 싶을 수 있습니다. 많은 별자리의 운세에 나타나는 단어는 하나의 별자리의 운세에만 나타나는 단어보다 낮은 IDF를 가질 것입니다. 용어 빈도-역 문서 빈도(tf-idf)는 이들의 곱입니다.</p>
+<p><code>tidytext</code>의 <code>bind_tf_idf()</code>를 사용하여 이 값을 생성할 수 있습니다. 각 측정값에 대한 새 변수를 생성합니다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>horoscopes_counts_by_word_tf_idf <span class="ot">&lt;-</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  horoscopes_counts_by_word <span class="sc">|&gt;</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_tf_idf</span>(</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">term =</span> word,</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">document =</span> zodiacsign,</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> n</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="sc">-</span>tf_idf)</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>horoscopes_counts_by_word_tf_idf</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 41,847 × 6
+   zodiacsign  word            n       tf   idf   tf_idf
+   &lt;fct&gt;       &lt;chr&gt;       &lt;int&gt;    &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;
+ 1 Capricorn   goat            6 0.000236  2.48 0.000585
+ 2 Pisces      pisces         14 0.000531  1.10 0.000584
+ 3 Sagittarius sagittarius    10 0.000357  1.39 0.000495
+ 4 Cancer      cancer         10 0.000348  1.39 0.000483
+ 5 Gemini      gemini          7 0.000263  1.79 0.000472
+ 6 Taurus      bulls           5 0.000188  2.48 0.000467
+ 7 Aries       warns           5 0.000186  2.48 0.000463
+ 8 Cancer      organize        7 0.000244  1.79 0.000437
+ 9 Cancer      overwork        5 0.000174  2.48 0.000432
+10 Taurus      let's          10 0.000376  1.10 0.000413
+# ℹ 41,837 more rows</code></pre>
+</div>
+</div>
+<p><a href="#tbl-zodiac에서" class="quarto-xref">표&nbsp;<span class="quarto-unresolved-ref">tbl-zodiac에서</span></a> 각 별자리의 운세를 구별하는 단어를 살펴봅니다. 가장 먼저 주목할 점은 일부 별자리가 자체 별자리 이름을 가지고 있다는 것입니다. 한편으로는 이를 제거해야 한다는 주장이 있지만, 다른 한편으로는 모든 별자리에 해당되지 않는다는 사실이 각 별자리의 운세의 본질에 대한 정보를 제공할 수 있습니다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>horoscopes_counts_by_word_tf_idf <span class="sc">|&gt;</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">.by =</span> zodiacsign) <span class="sc">|&gt;</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(zodiacsign, word) <span class="sc">|&gt;</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">all =</span> <span class="fu">paste0</span>(word, <span class="at">collapse =</span> <span class="st">"; "</span>),</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">.by =</span> zodiacsign) <span class="sc">|&gt;</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tt</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">style_tt</span>(<span class="at">j =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">align =</span> <span class="st">"lr"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setNames</span>(<span class="fu">c</span>(<span class="st">"별자리"</span>, <span class="st">"해당 별자리에 고유한 가장 흔한 단어"</span>))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="tbl-zodiac" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-zodiac-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+표&nbsp;17.1: 특정 별자리에 고유한 운세에서 가장 흔한 단어
+</figcaption>
+<div aria-describedby="tbl-zodiac-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<!-- preamble start -->
+
+    <script>
+
+      function styleCell_lqrul8oxdgl6i8vuwtts(i, j, css_id) {
+          var table = document.getElementById("tinytable_lqrul8oxdgl6i8vuwtts");
+          var cell = table.querySelector(`[data-row="${i}"][data-col="${j}"]`);
+          if (cell) {
+              console.log(`Styling cell at (${i}, ${j}) with class ${css_id}`);
+              cell.classList.add(css_id);
+          } else {
+              console.warn(`Cell at (${i}, ${j}) not found.`);
+          }
+      }
+      function insertSpanRow(i, colspan, content) {
+        var table = document.getElementById('tinytable_lqrul8oxdgl6i8vuwtts');
+        // Find the row with data-row attribute matching i
+        var targetRow = table.querySelector(`tr [data-row="${i}"]`).closest('tr');
+        var newRow = table.insertRow(targetRow.rowIndex);
+        var newCell = newRow.insertCell(0);
+        newCell.setAttribute("colspan", colspan);
+        newCell.setAttribute("data-col", "0");
+        newCell.setAttribute("data-row", i - 1);
+        // newCell.innerText = content;
+        // this may be unsafe, but innerText does not interpret <br>
+        newCell.innerHTML = content;
+      }
+      function spanCell_lqrul8oxdgl6i8vuwtts(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_lqrul8oxdgl6i8vuwtts");
+        const targetCell = table.querySelector(`[data-row="${i}"][data-col="${j}"]`);
+        if (!targetCell) {
+          console.warn(`Cell at (${i}, ${j}) not found.`);
+        }
+
+        // Get all cells that need to be removed
+        const cellsToRemove = [];
+        for (let r = 0; r < rowspan; r++) {
+          for (let c = 0; c < colspan; c++) {
+            if (r === 0 && c === 0) continue; // Skip the target cell
+            const cell = table.querySelector(`[data-row="${i + r}"][data-col="${j + c}"]`);
+            if (cell) {
+              cellsToRemove.push(cell);
+            }
+          }
+        }
+
+        // Remove all cells
+        cellsToRemove.forEach(cell => cell.remove());
+
+        // Set rowspan and colspan of the target cell if it exists
+        if (targetCell) {
+          targetCell.rowSpan = rowspan;
+          targetCell.colSpan = colspan;
+        }
+      }
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: '12', j: 1 },  ], css_id: 'tinytable_css_et0228dlwu2ervwco30z',}, 
+          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '4', j: 1 }, { i: '5', j: 1 }, { i: '6', j: 1 }, { i: '7', j: 1 }, { i: '8', j: 1 }, { i: '9', j: 1 }, { i: '10', j: 1 }, { i: '11', j: 1 },  ], css_id: 'tinytable_css_z2i5icmsh4jed0lwy0cp',}, 
+          { positions: [ { i: '0', j: 1 },  ], css_id: 'tinytable_css_m69mj1phtr5q02swc7tb',}, 
+          { positions: [ { i: '12', j: 0 },  ], css_id: 'tinytable_css_i5x3hjk9hge2ite6j027',}, 
+          { positions: [ { i: '1', j: 0 }, { i: '2', j: 0 }, { i: '3', j: 0 }, { i: '4', j: 0 }, { i: '5', j: 0 }, { i: '6', j: 0 }, { i: '7', j: 0 }, { i: '8', j: 0 }, { i: '9', j: 0 }, { i: '10', j: 0 }, { i: '11', j: 0 },  ], css_id: 'tinytable_css_kyahyz51aaxycwkueqyx',}, 
+          { positions: [ { i: '0', j: 0 },  ], css_id: 'tinytable_css_rn1thcf3mip4237morue',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  styleCell_lqrul8oxdgl6i8vuwtts(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <style>
+      /* tinytable css entries after */
+      .table td.tinytable_css_et0228dlwu2ervwco30z, .table th.tinytable_css_et0228dlwu2ervwco30z { text-align: right; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_z2i5icmsh4jed0lwy0cp, .table th.tinytable_css_z2i5icmsh4jed0lwy0cp { text-align: right; }
+      .table td.tinytable_css_m69mj1phtr5q02swc7tb, .table th.tinytable_css_m69mj1phtr5q02swc7tb { text-align: right; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_i5x3hjk9hge2ite6j027, .table th.tinytable_css_i5x3hjk9hge2ite6j027 { text-align: left; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_kyahyz51aaxycwkueqyx, .table th.tinytable_css_kyahyz51aaxycwkueqyx { text-align: left; }
+      .table td.tinytable_css_rn1thcf3mip4237morue, .table th.tinytable_css_rn1thcf3mip4237morue { text-align: left; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+    </style>
+    <div class="container">
+      <table class="table table-borderless" id="tinytable_lqrul8oxdgl6i8vuwtts" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        <thead>
+        
+              <tr>
+                <th scope="col" data-row="0" data-col="0">별자리</th>
+                <th scope="col" data-row="0" data-col="1">해당 별자리에 고유한 가장 흔한 단어</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td data-row="1" data-col="0">Capricorn</td>
+                  <td data-row="1" data-col="1">goat; capricorn; capricorns; signify; neighborhood</td>
+                </tr>
+                <tr>
+                  <td data-row="2" data-col="0">Pisces</td>
+                  <td data-row="2" data-col="1">pisces; wasted; missteps; node; shoes</td>
+                </tr>
+                <tr>
+                  <td data-row="3" data-col="0">Sagittarius</td>
+                  <td data-row="3" data-col="1">sagittarius; rolodex; distorted; coat; reinvest</td>
+                </tr>
+                <tr>
+                  <td data-row="4" data-col="0">Cancer</td>
+                  <td data-row="4" data-col="1">cancer; organize; overwork; procrastinate; scuttle</td>
+                </tr>
+                <tr>
+                  <td data-row="5" data-col="0">Gemini</td>
+                  <td data-row="5" data-col="1">gemini; mood; output; admit; faces</td>
+                </tr>
+                <tr>
+                  <td data-row="6" data-col="0">Taurus</td>
+                  <td data-row="6" data-col="1">bulls; let's; painfully; virgin; taurus</td>
+                </tr>
+                <tr>
+                  <td data-row="7" data-col="0">Aries</td>
+                  <td data-row="7" data-col="1">warns; vesta; aries; fearful; chase</td>
+                </tr>
+                <tr>
+                  <td data-row="8" data-col="0">Virgo</td>
+                  <td data-row="8" data-col="1">digesting; trace; liberate; someone's; final</td>
+                </tr>
+                <tr>
+                  <td data-row="9" data-col="0">Libra</td>
+                  <td data-row="9" data-col="1">proof; inevitably; recognizable; reference; disguise</td>
+                </tr>
+                <tr>
+                  <td data-row="10" data-col="0">Scorpio</td>
+                  <td data-row="10" data-col="1">skate; advocate; knots; bottle; meditating</td>
+                </tr>
+                <tr>
+                  <td data-row="11" data-col="0">Aquarius</td>
+                  <td data-row="11" data-col="1">saves; consult; yearnings; sexy; athene</td>
+                </tr>
+                <tr>
+                  <td data-row="12" data-col="0">Leo</td>
+                  <td data-row="12" data-col="1">trines; blessed; regrets; leo; agree</td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+</div>
+</div>
+</figure>
+</div>
+</div>
+</section>
+</section>
+<section id="주제-모델" class="level2" data-number="17.4">
+<h2 data-number="17.4" class="anchored" data-anchor-id="주제-모델"><span class="header-section-number">17.4</span> 주제 모델</h2>
+<p>주제 모델은 많은 문장이 있고 유사한 단어를 사용하는 문장을 기반으로 그룹을 만들고 싶을 때 유용합니다. 우리는 유사한 단어 그룹을 주제로 정의합니다. 각 문장의 주제에 대한 일관된 추정치를 얻는 한 가지 방법은 주제 모델을 사용하는 것입니다. 많은 변형이 있지만, 한 가지 방법은 <code>stm</code>에 의해 구현된 <span class="citation" data-cites="Blei2003latent의">(<a href="#ref-Blei2003latent의" role="doc-biblioref"><strong>Blei2003latent의?</strong></a>)</span> 잠재 디리클레 할당(LDA) 방법을 사용하는 것입니다. 명확성을 위해 이 장의 맥락에서 LDA는 잠재 디리클레 할당을 의미하며, 선형 판별 분석을 의미하지는 않습니다. 비록 이것이 LDA 약어와 관련된 또 다른 일반적인 주제이지만 말입니다.</p>
+<p>LDA 방법의 핵심 가정은 각 문장, 즉 문서가 해당 문서에서 이야기하고 싶은 주제를 결정하고, 그런 다음 해당 주제에 적합한 단어, 즉 용어를 선택하는 사람에 의해 만들어진다는 것입니다. 주제는 용어의 모음으로 생각할 수 있고, 문서는 주제의 모음으로 생각할 수 있습니다. 주제는 <em>사전에</em> 지정되지 않습니다. 그것들은 방법의 결과입니다. 용어는 반드시 특정 주제에 고유하지 않으며, 문서는 하나 이상의 주제에 관한 것일 수 있습니다. 이는 엄격한 단어 개수 방법과 같은 다른 접근 방식보다 더 많은 유연성을 제공합니다. 목표는 문서에서 발견된 단어들이 스스로 그룹화되어 주제를 정의하도록 하는 것입니다.</p>
+<p>LDA는 각 문장을 사람이 이야기하고 싶은 주제를 먼저 선택하는 과정의 결과로 간주합니다. 주제를 선택한 후, 사람은 각 주제에 사용할 적절한 단어를 선택합니다. 더 일반적으로, LDA 주제 모델은 각 문서를 주제에 대한 어떤 확률 분포에 의해 생성된 것으로 간주하여 작동합니다. 예를 들어, 5개의 주제와 2개의 문서가 있다면, 첫 번째 문서는 주로 처음 몇 개의 주제로 구성될 수 있고, 다른 문서는 주로 마지막 몇 개의 주제에 관한 것일 수 있습니다(<a href="#fig-topicsoverdocuments" class="quarto-xref">그림&nbsp;<span class="quarto-unresolved-ref">fig-topicsoverdocuments</span></a>).</p>
+<div id="fig-topicsoverdocuments" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-topicsoverdocuments-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-topicsoverdocuments" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-topicsoverdocuments-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-topicsoverdocuments-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="16-text_ko_files/figure-html/fig-topicsoverdocuments-1.png" class="img-fluid figure-img" data-ref-parent="fig-topicsoverdocuments" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-topicsoverdocuments-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) 문서 1에 대한 분포
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-topicsoverdocuments" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-topicsoverdocuments-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-topicsoverdocuments-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="16-text_ko_files/figure-html/fig-topicsoverdocuments-2.png" class="img-fluid figure-img" data-ref-parent="fig-topicsoverdocuments" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-topicsoverdocuments-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) 문서 2에 대한 분포
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-topicsoverdocuments-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+그림&nbsp;17.1: 주제에 대한 확률 분포
+</figcaption>
+</figure>
+</div>
+<p>마찬가지로, 각 주제는 용어에 대한 확률 분포로 간주될 수 있습니다. 각 문서에서 사용되는 용어를 선택하기 위해 화자는 각 주제에서 적절한 비율로 용어를 선택합니다. 예를 들어, 10개의 용어가 있다면, 한 주제는 이민과 관련된 용어에 더 많은 가중치를 부여하여 정의될 수 있고, 다른 주제는 경제와 관련된 용어에 더 많은 가중치를 부여할 수 있습니다(<a href="#fig-topicsoverterms" class="quarto-xref">그림&nbsp;<span class="quarto-unresolved-ref">fig-topicsoverterms</span></a>).</p>
+<div id="fig-topicsoverterms" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-topicsoverterms-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-topicsoverterms" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-topicsoverterms-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-topicsoverterms-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="16-text_ko_files/figure-html/fig-topicsoverterms-1.png" class="img-fluid figure-img" data-ref-parent="fig-topicsoverterms" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-topicsoverterms-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) 주제 1에 대한 분포
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-topicsoverterms" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-topicsoverterms-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-topicsoverterms-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="16-text_ko_files/figure-html/fig-topicsoverterms-2.png" class="img-fluid figure-img" data-ref-parent="fig-topicsoverterms" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-topicsoverterms-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) 주제 2에 대한 분포
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-topicsoverterms-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+그림&nbsp;17.2: 용어에 대한 확률 분포
+</figcaption>
+</figure>
+</div>
+<!-- @BleiLafferty2009, @blei2012 및 @GriffithsSteyvers2004에 따르면, 문서가 생성되는 과정은 더 공식적으로 다음과 같이 간주됩니다. -->
+<!-- 1. $1, 2, \dots, k, \dots, K$개의 주제가 있고 어휘는 $1, 2, \dots, V$개의 용어로 구성됩니다. 각 주제에 대해 용어에 대한 분포를 무작위로 추출하여 주제가 사용하는 용어를 결정합니다. $k$번째 주제에 대한 용어 분포는 $\beta_k$입니다. 일반적으로 주제는 소수의 용어이므로 하이퍼파라미터 $0<\eta<1$을 가진 디리클레 분포가 사용됩니다: $\beta_k \sim \mbox{Dirichlet}(\eta)$.[^Dirichletfootnote] 엄밀히 말하면, $\eta$는 각 $K$에 대한 하이퍼파라미터 벡터이지만, 실제로는 모두 동일한 값을 가지는 경향이 있습니다. -->
+<!-- 2. $1, 2, \dots, d, \dots, D$개의 문서 각각에 대해 $K$개의 주제에 대한 분포를 무작위로 추출하여 각 문서가 다룰 주제를 결정합니다. $d$번째 문서에 대한 주제 분포는 $\theta_d$이고, $\theta_{d,k}$는 문서 $d$의 주제 $k$에 대한 주제 분포입니다. 다시, 일반적으로 문서가 소수의 주제만 다루므로 하이퍼파라미터 $0<\alpha<1$을 가진 디리클레 분포가 여기에 사용됩니다: $\theta_d \sim \mbox{Dirichlet}(\alpha)$. 다시, 엄밀히 말하면 $\alpha$는 길이 $K$의 하이퍼파라미터 벡터이지만, 실제로는 각 값이 동일한 값을 가지는 경향이 있습니다. -->
+<!-- 3. $d$번째 문서에 $1, 2, \dots, n, \dots, N$개의 용어가 있다면, $n$번째 용어 $w_{d, n}$을 선택하려면: -->
+<!--     a. 해당 문서 $d$에서 해당 용어 $n$에 대한 주제 $z_{d,n}$을 해당 문서의 주제에 대한 다항 분포에서 무작위로 선택합니다: $z_{d,n} \sim \mbox{Multinomial}(\theta_d)$. -->
+<!--     b. 해당 주제에 대한 용어에 대한 관련 다항 분포에서 용어를 무작위로 선택합니다: $w_{d,n} \sim \mbox{Multinomial}(\beta_{z_{d,n}})$. -->
+<p>배경 지식으로, 디리클레 분포는 범주형 및 다항 변수에 대한 사전 분포로 일반적으로 사용되는 베타 분포의 변형입니다. 두 가지 범주만 있다면 디리클레 분포와 베타 분포는 동일합니다. 대칭 디리클레 분포의 특수한 경우인 <span class="math inline">\(\eta=1\)</span>일 때, 이는 균일 분포와 동일합니다. <span class="math inline">\(\eta&lt;1\)</span>이면 분포는 희소하고 더 적은 수의 값에 집중되며, 이 수는 <span class="math inline">\(\eta\)</span>가 감소함에 따라 감소합니다. 이 용법에서 하이퍼파라미터는 사전 분포의 매개변수입니다.</p>
+<!-- 이 설정을 고려할 때, 변수에 대한 결합 분포는 다음과 같습니다[@blei2012, p.6]. -->
+<!-- $$p(\beta_{1:K}, \theta_{1:D}, z_{1:D, 1:N}, w_{1:D, 1:N}) = \prod^{K}_{i=1}p(\beta_i) \prod^{D}_{d=1}p(\theta_d) \left(\prod^N_{n=1}p(z_{d,n}|\theta_d)p\left(w_{d,n}|\beta_{1:K},z_{d,n}\right) \right).$$ -->
+<p>문서가 생성된 후, 그것들이 우리가 분석할 수 있는 전부입니다. 각 문서의 용어 사용은 관찰되지만, 주제는 숨겨져 있거나 “잠재적”입니다. 우리는 각 문서의 주제를 모르고, 용어가 주제를 어떻게 정의했는지도 모릅니다. 즉, <a href="#fig-topicsoverdocuments" class="quarto-xref">그림&nbsp;<span class="quarto-unresolved-ref">fig-topicsoverdocuments</span></a> 또는 <a href="#fig-topicsoverterms의" class="quarto-xref">그림&nbsp;<span class="quarto-unresolved-ref">fig-topicsoverterms의</span></a> 확률 분포를 모릅니다. 어떤 의미에서 우리는 문서 생성 프로세스를 역전시키려고 노력하고 있습니다. 즉, 용어를 가지고 있고, 주제를 발견하고 싶습니다.</p>
+<p>각 문서의 용어를 관찰하면 주제의 추정치를 얻을 수 있습니다<span class="citation" data-cites="SteyversGriffiths2006">(<a href="#ref-SteyversGriffiths2006" role="doc-biblioref">Steyvers 와/과 Griffiths 2006</a>)</span>. LDA 프로세스의 결과는 확률 분포입니다. 이 분포가 주제를 정의합니다. 각 용어는 특정 주제의 구성원일 확률을 부여받고, 각 문서는 특정 주제에 관한 것일 확률을 부여받습니다.</p>
+<!-- 즉, 각 문서에서 관찰된 용어가 주어졌을 때 주제의 사후 분포를 계산하려고 합니다(@blei2012, p.7). -->
+<!-- $$p(\beta_{1:K}, \theta_{1:D}, z_{1:D, 1:N} | w_{1:D, 1:N}) = \frac{p\left(\beta_{1:K}, \theta_{1:D}, z_{1:D, 1:N}, w_{1:D, 1:N}\right)}{p(w_{1:D, 1:N})}.$$ -->
+<p>코퍼스 문서가 주어졌을 때 LDA를 구현할 때의 초기 실용적인 단계는 일반적으로 불용어를 제거하는 것입니다. 비록 앞서 언급했듯이 이것이 필수는 아니며, 그룹이 생성된 후에 수행하는 것이 더 나을 수 있습니다. 우리는 종종 구두점과 대소문자도 제거합니다. 그런 다음 <code>quanteda</code>의 <code>dfm()</code>을 사용하여 문서-특징 행렬을 구성합니다.</p>
+<p>데이터셋이 준비되면 <code>stm</code>을 사용하여 LDA를 구현하고 사후 분포를 근사할 수 있습니다. <!-- 깁스 샘플링 또는 변분 기대-최대화 알고리즘을 사용하여 이를 수행합니다. @SteyversGriffiths2006 및 @Darling2011에 따르면, 깁스 샘플링 --> 이 프로세스는 특정 문서의 특정 용어에 대한 주제를 찾으려고 시도합니다. 다른 모든 문서의 다른 모든 용어의 주제가 주어졌을 때 말입니다. 광범위하게 말하면, 먼저 모든 문서의 모든 용어를 디리클레 사전 분포에 의해 지정된 무작위 주제에 할당합니다. <!-- $\alpha = \frac{50}{K}$ 및 $\eta = 0.1$ (@SteyversGriffiths2006은 $\eta = 0.01$을 권장), 여기서 $\alpha$는 주제에 대한 분포를 나타내고 $\eta$는 용어에 대한 분포를 나타냅니다(@Grun2011, p.7). --> 그런 다음 특정 문서의 특정 용어를 선택하고, 다른 모든 문서의 다른 모든 용어에 대한 주제가 주어진 조건부 분포를 기반으로 새 주제에 할당합니다<span class="citation" data-cites="Grun2011">(<a href="#ref-Grun2011" role="doc-biblioref">Grün 와/과 Hornik 2011.6</a>)</span>. <!-- $$p(z_{d, n}=k | w_{1:D, 1:N}, z'_{d, n}) \propto \frac{\lambda'_{n\rightarrow k}+\eta}{\lambda'_{.\rightarrow k}+V\eta} \frac{\lambda'^{(d)}_{n\rightarrow k}+\alpha}{\lambda'^{(d)}_{-i}+K\alpha} $$ --> <!-- 여기서 $z'_{d, n}$은 다른 모든 주제 할당을 나타냅니다. $\lambda'_{n\rightarrow k}$는 해당 용어가 주제 $k$에 할당된 다른 횟수를 나타냅니다. $\lambda'_{.\rightarrow k}$는 어떤 용어가 주제 $k$에 할당된 다른 횟수를 나타냅니다. $\lambda'^{(d)}_{n\rightarrow k}$는 해당 용어가 해당 특정 문서에서 주제 $k$에 할당된 다른 횟수를 나타냅니다. 그리고 $\lambda'^{(d)}_{-i}$는 해당 문서에서 해당 용어가 할당된 다른 횟수를 나타냅니다. --> 이것이 추정되면, 단어의 주제 분포와 문서의 주제 분포에 대한 추정치를 역추적할 수 있습니다.</p>
+<p>조건부 분포는 용어가 이전에 해당 주제에 얼마나 자주 할당되었는지, 그리고 해당 문서에서 주제가 얼마나 흔한지에 따라 주제를 할당합니다<span class="citation" data-cites="SteyversGriffiths2ash">(<a href="#ref-SteyversGriffiths2ash" role="doc-biblioref"><strong>SteyversGriffiths2ash?</strong></a>)</span>. 문서 코퍼스를 통한 초기 통과 결과는 좋지 않지만, 충분한 시간이 주어지면 알고리즘은 적절한 추정치로 수렴합니다.</p>
+<p>주제 수 <span class="math inline">\(k\)</span>의 선택은 결과에 영향을 미치며, <em>사전에</em> 지정되어야 합니다. 특정 수에 대한 강력한 이유가 있다면 이를 사용할 수 있습니다. 그렇지 않으면 적절한 수를 선택하는 한 가지 방법은 테스트 및 훈련 세트 프로세스를 사용하는 것입니다. 본질적으로, 이는 <em>k</em>의 다양한 가능한 값에 대해 프로세스를 실행한 다음, 잘 수행되는 적절한 값을 선택하는 것을 의미합니다.</p>
+<p>LDA 방법의 한 가지 약점은 단어의 순서가 중요하지 않은 “단어 가방”을 고려한다는 것입니다<span class="citation" data-cites="blei2012">(<a href="#ref-blei2012" role="doc-biblioref">Blei 2012</a>)</span>. 모델을 확장하여 단어 가방 가정의 영향을 줄이고 단어 순서에 조건성을 추가할 수 있습니다. 또한 디리클레 분포의 대안을 사용하여 모델을 확장하여 상관 관계를 허용할 수 있습니다.</p>
+<section id="캐나다-의회에서-무엇이-논의되는가" class="level3" data-number="17.4.1">
+<h3 data-number="17.4.1" class="anchored" data-anchor-id="캐나다-의회에서-무엇이-논의되는가"><span class="header-section-number">17.4.1</span> 캐나다 의회에서 무엇이 논의되는가?</h3>
+<p>영국 의회의 예를 따라, 캐나다 의회에서 말한 내용을 기록한 것은 “한사드”라고 불립니다. 완전히 그대로는 아니지만, 매우 가깝습니다. <span class="citation" data-cites="BeelenEtc2017이">(<a href="#ref-BeelenEtc2017이" role="doc-biblioref"><strong>BeelenEtc2017이?</strong></a>)</span> 구축한 <a href="https://www.lipad.ca">LiPaD</a>에서 CSV 형식으로 사용할 수 있습니다.</p>
+<p>2018년 캐나다 의회에서 무엇이 논의되었는지에 관심이 있습니다. 시작하려면 <a href="https://www.lipad.ca/data/">여기</a>에서 전체 코퍼스를 다운로드한 다음, 2018년을 제외한 모든 연도를 버릴 수 있습니다. 데이터셋이 “2018”이라는 폴더에 있다면, <code>read_csv()</code>를 사용하여 모든 CSV를 읽고 결합할 수 있습니다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>files_of_interest <span class="ot">&lt;-</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dir_ls</span>(<span class="at">path =</span> <span class="st">"2018/"</span>, <span class="at">glob =</span> <span class="st">"*.csv"</span>, <span class="at">recurse =</span> <span class="dv">2</span>)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>hansard_canada_2018 <span class="ot">&lt;-</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_csv</span>(</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    files_of_interest,</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">col_types =</span> <span class="fu">cols</span>(</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">basepk =</span> <span class="fu">col_integer</span>(),</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">speechdate =</span> <span class="fu">col_date</span>(),</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">speechtext =</span> <span class="fu">col_character</span>(),</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">speakerparty =</span> <span class="fu">col_character</span>(),</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">speakerriding =</span> <span class="fu">col_character</span>(),</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">speakername =</span> <span class="fu">col_character</span>()</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">col_select =</span></span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(basepk, speechdate, speechtext, speakername, speakerparty, </span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>        speakerriding)) <span class="sc">|&gt;</span></span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(speakername))</span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>hansard_canada_2018</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 33,105 × 6
+    basepk speechdate speechtext          speakername speakerparty speakerriding
+     &lt;int&gt; &lt;date&gt;     &lt;chr&gt;               &lt;chr&gt;       &lt;chr&gt;        &lt;chr&gt;        
+ 1 4732776 2018-01-29 "Mr. Speaker, I wo… Julie Dabr… Liberal      Toronto—Danf…
+ 2 4732777 2018-01-29 "Mr. Speaker, I wa… Matthew Du… New Democra… Beloeil—Cham…
+ 3 4732778 2018-01-29 "Mr. Speaker, I am… Stephanie … Conservative Calgary Midn…
+ 4 4732779 2018-01-29 "Resuming debate.\… Anthony Ro… Liberal      Nipissing—Ti…
+ 5 4732780 2018-01-29 "Mr. Speaker, we a… Alain Rayes Conservative Richmond—Art…
+ 6 4732781 2018-01-29 "The question is o… Anthony Ro… Liberal      Nipissing—Ti…
+ 7 4732782 2018-01-29 "Agreed.\n No."     Some hon. … &lt;NA&gt;         &lt;NA&gt;         
+ 8 4732783 2018-01-29 "All those in favo… Anthony Ro… Liberal      Nipissing—Ti…
+ 9 4732784 2018-01-29 "Yea."              Some hon. … &lt;NA&gt;         &lt;NA&gt;         
+10 4732785 2018-01-29 "All those opposed… Anthony Ro… Liberal      Nipissing—Ti…
+# ℹ 33,095 more rows</code></pre>
+</div>
+</div>
+<p><code>filter()</code>를 사용하는 것은 “지시”와 같은 비연설 측면이 한사드에 포함되는 경우가 있기 때문에 필요합니다. 예를 들어, <code>filter()</code>를 포함하지 않으면 첫 줄은 “하원은 2017년 11월 9일부터 동의안 심의를 재개했습니다.”입니다. 그런 다음 코퍼스를 구성할 수 있습니다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>hansard_canada_2018_corpus <span class="ot">&lt;-</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">corpus</span>(hansard_canada_2018, </span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">docid_field =</span> <span class="st">"basepk"</span>, </span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">text_field =</span> <span class="st">"speechtext"</span>)</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>hansard_canada_2018_corpus</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>코퍼스의 토큰을 사용하여 문서-특징 행렬을 구성합니다. 계산적으로 좀 더 쉽게 하기 위해, 최소 두 번 이상 나타나지 않는 단어와 최소 두 문서에 나타나지 않는 단어는 모두 제거합니다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>hansard_dfm <span class="ot">&lt;-</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  hansard_canada_2018_corpus <span class="sc">|&gt;</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tokens</span>(</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">remove_punct =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">remove_symbols =</span> <span class="cn">TRUE</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm</span>() <span class="sc">|&gt;</span></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm_trim</span>(<span class="at">min_termfreq =</span> <span class="dv">2</span>, <span class="at">min_docfreq =</span> <span class="dv">2</span>) <span class="sc">|&gt;</span></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm_remove</span>(<span class="fu">stopwords</span>(<span class="at">source =</span> <span class="st">"snowball"</span>))</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>hansard_dfm</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>이 시점에서 <code>stm</code>의 <code>stm()</code>을 사용하여 LDA 모델을 구현할 수 있습니다. 문서-특징 행렬과 주제 수를 지정해야 합니다. 주제 모델은 본질적으로 요약일 뿐입니다. 문서가 단어 모음이 되는 대신, 각 주제와 관련된 어떤 확률을 가진 주제 모음이 됩니다. 그러나 실제 기본 의미보다는 유사한 시기에 사용되는 경향이 있는 단어 모음을 제공하기 때문에, 우리가 관심 있는 주제 수를 지정해야 합니다. 이 결정은 큰 영향을 미칠 것이며, 몇 가지 다른 숫자를 고려해야 합니다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>hansard_topics <span class="ot">&lt;-</span> <span class="fu">stm</span>(<span class="at">documents =</span> hansard_dfm, <span class="at">K =</span> <span class="dv">10</span>)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>beepr<span class="sc">::</span><span class="fu">beep</span>()</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  hansard_topics,</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"hansard_topics.rda"</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>이것은 시간이 좀 걸릴 것입니다. 아마 15-30분 정도 걸릴 것이므로, 완료되면 <code>write_rds()</code>를 사용하여 모델을 저장하고, <code>beep</code>를 사용하여 완료 알림을 받는 것이 유용합니다. 그런 다음 <code>read_rds()</code>를 사용하여 결과를 다시 읽어들일 수 있습니다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>hansard_topics <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"hansard_topics.rda"</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>labelTopics()</code>를 사용하여 각 주제의 단어를 살펴볼 수 있습니다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">labelTopics</span>(hansard_topics)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="연습-문제" class="level2" data-number="17.5">
+<h2 data-number="17.5" class="anchored" data-anchor-id="연습-문제"><span class="header-section-number">17.5</span> 연습 문제</h2>
+<section id="연습" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="연습">연습</h3>
+<ol type="1">
+<li><em>(계획)</em> 다음 시나리오를 고려하십시오: <em>뉴스 웹사이트를 운영하고 있으며 익명 댓글을 허용할지 여부를 파악하려고 합니다. A/B 테스트를 수행하기로 결정했습니다. 모든 것을 동일하게 유지하되, 사이트의 한 버전에서만 익명 댓글을 허용합니다. 테스트에서 얻는 텍스트 데이터만 결정하면 됩니다.</em> 데이터셋이 어떻게 생겼을지 스케치한 다음, 모든 관측치를 보여주기 위해 만들 수 있는 그래프를 스케치하십시오.</li>
+<li><em>(시뮬레이션)</em> 설명된 시나리오를 더 고려하고 상황을 시뮬레이션하십시오. 시뮬레이션된 데이터를 기반으로 최소 10개의 테스트를 포함하십시오.</li>
+<li><em>(수집)</em> 그러한 데이터셋의 가능한 출처를 설명하십시오.</li>
+<li><em>(탐색)</em> <code>ggplot2</code>를 사용하여 스케치한 그래프를 만드십시오. <code>rstanarm</code>을 사용하여 모델을 구축하십시오.</li>
+<li><em>(소통)</em> 자신이 한 일에 대해 두 단락을 작성하십시오.</li>
+</ol>
+</section>
+<section id="퀴즈" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="퀴즈">퀴즈</h3>
+<ol type="1">
+<li><code>str_replace_all()</code>의 어떤 인수가 구두점을 제거합니까?
+<ol type="a">
+<li>“[:punct:]”</li>
+<li>“[:digit:]”</li>
+<li>“[:alpha:]”</li>
+<li>“[:lower:]”</li>
+</ol></li>
+<li><code>stopwords(source = "snowball")[1:10]</code>를 변경하여 “nltk” 목록에서 아홉 번째 불용어를 찾으십시오.
+<ol type="a">
+<li>“her”</li>
+<li>“my”</li>
+<li>“you”</li>
+<li>“i”</li>
+</ol></li>
+<li><code>quanteda()</code>의 어떤 함수가 코퍼스를 토큰화합니까?
+<ol type="a">
+<li><code>tokenizer()</code></li>
+<li><code>token()</code></li>
+<li><code>tokenize()</code></li>
+<li><code>tokens()</code></li>
+</ol></li>
+<li><code>dfm_trim()</code>의 어떤 인수를 사용해야 최소 두 번 이상 나타나는 용어만 포함할 수 있습니까? = 2)
+<ol type="a">
+<li>“min_wordfreq”</li>
+<li>“min_termfreq”</li>
+<li>“min_term_occur”</li>
+<li>“min_ occurrence”</li>
+</ol></li>
+<li>가장 좋아하는 트라이그램 예시는 무엇입니까?</li>
+<li>게자리 운세에서 두 번째로 흔하게 사용되는 단어는 무엇입니까?
+<ol type="a">
+<li>to</li>
+<li>your</li>
+<li>the</li>
+<li>you</li>
+</ol></li>
+<li>물고기자리 운세에서 여섯 번째로 흔하게 사용되는 단어는 무엇이며, 해당 별자리에만 고유한 단어는 무엇입까?
+<ol type="a">
+<li>shoes</li>
+<li>prayer</li>
+<li>fishes</li>
+<li>pisces</li>
+</ol></li>
+<li>캐나다 주제 모델을 다시 실행하되, 5개의 주제만 포함하십시오. 각 주제의 단어를 보고, 각각이 무엇에 관한 것인지 어떻게 설명하시겠습니까?</li>
+</ol>
+</section>
+<section id="수업-활동" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="수업-활동">수업 활동</h3>
+<ul>
+<li>아이들은 “개”, “고양이”, 또는 “새” 중 무엇을 먼저 배웁니까? Wordbank 데이터베이스를 사용하십시오.</li>
+</ul>
+</section>
+<section id="과제" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="과제">과제</h3>
+<p><em>R을 사용한 텍스트 분석을 위한 지도 기계 학습</em>의 5.2장 “단어 임베딩을 직접 찾아 이해하기”에 있는 <span class="citation" data-cites="hvitfeldt2021supervised의">(<a href="#ref-hvitfeldt2021supervised의" role="doc-biblioref"><strong>hvitfeldt2021supervised의?</strong></a>)</span> 코드를 따라 <a href="https://www.lipad.ca">LiPaD</a>에서 1년치 데이터를 사용하여 자신만의 단어 임베딩을 구현하십시오.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-Alexopoulos2015" class="csl-entry" role="listitem">
+Alexopoulos, Michelle, 와/과 Jon Cohen. 2015. <span>“<span>The power of print: Uncertainty shocks, markets, and the economy</span>”</span>. <em><span>International Review of Economics &amp; Finance</span></em> 40 (11월): 8–28. <a href="https://doi.org/10.1016/j.iref.2015.02.002">https://doi.org/10.1016/j.iref.2015.02.002</a>.
+</div>
+<div id="ref-thenakedtruth" class="csl-entry" role="listitem">
+Amaka, Ofunne, 와/과 Amber Thomas. 2021. <span>“The Naked Truth: How the names of 6,816 complexion products can reveal bias in beauty”</span>. <em>The Pudding</em>, 3월. <a href="https://pudding.cool/2021/03/foundation-names/">https://pudding.cool/2021/03/foundation-names/</a>.
+</div>
+<div id="ref-tinytable" class="csl-entry" role="listitem">
+Arel-Bundock, Vincent. 2024. <em><span>tinytable: Simple and Configurable Tables in <span>“HTML”</span>, <span>“LaTeX”</span>, <span>“Markdown”</span>, <span>“Word”</span>, <span>“PNG”</span>, <span>“PDF”</span>, and <span>“Typst”</span> Formats</span></em>. <a href="https://vincentarelbundock.github.io/tinytable/">https://vincentarelbundock.github.io/tinytable/</a>.
+</div>
+<div id="ref-beepr" class="csl-entry" role="listitem">
+Bååth, Rasmus. 2018. <em><span>beepr: Easily Play Notification Sounds on any Platform</span></em>. <a href="https://CRAN.R-project.org/package=beepr">https://CRAN.R-project.org/package=beepr</a>.
+</div>
+<div id="ref-benoit2020text" class="csl-entry" role="listitem">
+Benoit, Kenneth. 2020. <span>“Text as data: An overview”</span>. In <em>The SAGE Handbook of Research Methods in Political Science and International Relations</em>, 편집자： Luigi Curini 와/과 Robert Franzese, 461–97. London: SAGE Publishing. <a href="https://doi.org/10.4135/9781526486387.n29">https://doi.org/10.4135/9781526486387.n29</a>.
+</div>
+<div id="ref-quanteda" class="csl-entry" role="listitem">
+Benoit, Kenneth, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, 와/과 Akitaka Matsuo. 2018. <span>“<span>quanteda: An R package for the quantitative analysis of textual data</span>”</span>. <em>Journal of Open Source Software</em> 3 (30): 774. <a href="https://doi.org/10.21105/joss.00774">https://doi.org/10.21105/joss.00774</a>.
+</div>
+<div id="ref-blei2012" class="csl-entry" role="listitem">
+Blei, David. 2012. <span>“Probabilistic Topic Models”</span>. <em>Communications of the ACM</em> 55 (4): 77–84. <a href="https://doi.org/10.1145/2133806.2133826">https://doi.org/10.1145/2133806.2133826</a>.
+</div>
+<div id="ref-astrologer" class="csl-entry" role="listitem">
+Gelfand, Sharla. 2022. <em>astrologer: Chani Nicholas Weekly Horoscopes (2013-2017)</em>. <a href="http://github.com/sharlagelfand/astrologer">http://github.com/sharlagelfand/astrologer</a>.
+</div>
+<div id="ref-textasdata" class="csl-entry" role="listitem">
+Grimmer, Justin, Margaret Roberts, 와/과 Brandon Stewart. 2022. <em><span>Text As Data: A New Framework for Machine Learning and the Social Sciences</span></em>. New Jersey: Princeton University Press.
+</div>
+<div id="ref-jessgronsbell" class="csl-entry" role="listitem">
+Gronsbell, Jessica, Jessica Minnier, Sheng Yu, Katherine Liao, 와/과 Tianxi Cai. 2019. <span>“Automated feature selection of predictors in electronic medical records data”</span>. <em>Biometrics</em> 75 (1): 268–77. <a href="https://doi.org/10.1111/biom.12987">https://doi.org/10.1111/biom.12987</a>.
+</div>
+<div id="ref-Grun2011" class="csl-entry" role="listitem">
+Grün, Bettina, 와/과 Kurt Hornik. 2011. <span>“<span>topicmodels</span>: An <span>R</span> Package for Fitting Topic Models”</span>. <em>Journal of Statistical Software</em> 40 (13): 1–30. <a href="https://doi.org/10.18637/jss.v040.i13">https://doi.org/10.18637/jss.v040.i13</a>.
+</div>
+<div id="ref-Hassan2022" class="csl-entry" role="listitem">
+Hassan, Mai. 2022. <span>“New Insights On Africa’s Autocratic Past”</span>. <em>African Affairs</em> 121 (483): 321–33. <a href="https://doi.org/10.1093/afraf/adac002">https://doi.org/10.1093/afraf/adac002</a>.
+</div>
+<div id="ref-fs" class="csl-entry" role="listitem">
+Hester, Jim, Hadley Wickham, 와/과 Gábor Csárdi. 2021. <em><span>fs: Cross-Platform File System Operations Based on <span>“libuv”</span></span></em>. <a href="https://CRAN.R-project.org/package=fs">https://CRAN.R-project.org/package=fs</a>.
+</div>
+<div id="ref-hvitfeldt2021supervised" class="csl-entry" role="listitem">
+Hvitfeldt, Emil, 와/과 Julia Silge. 2021. <em><span>Supervised Machine Learning for Text Analysis in R</span></em>. 1st ed. Chapman; Hall/CRC. <a href="https://doi.org/10.1201/9781003093459">https://doi.org/10.1201/9781003093459</a>.
+</div>
+<div id="ref-gutenbergr" class="csl-entry" role="listitem">
+Johnston, Myfanwy, 와/과 David Robinson. 2022. <em><span>gutenbergr: Download and Process Public Domain Works from Project Gutenberg</span></em>. <a href="https://CRAN.R-project.org/package=gutenbergr">https://CRAN.R-project.org/package=gutenbergr</a>.
+</div>
+<div id="ref-jurafskymartin" class="csl-entry" role="listitem">
+Jurafsky, Dan, 와/과 James Martin. (2000년) 2023. <em>Speech and Language Processing</em>. 3rd ed. <a href="https://web.stanford.edu/~jurafsky/slp3/">https://web.stanford.edu/~jurafsky/slp3/</a>.
+</div>
+<div id="ref-Kalamara2022" class="csl-entry" role="listitem">
+Kalamara, Eleni, Arthur Turrell, Chris Redl, George Kapetanios, 와/과 Sujit Kapadia. 2022. <span>“<span>Making text count: Economic forecasting using newspaper text</span>”</span>. <em><span>Journal of Applied Econometrics</span></em> 37 (5): 896–919. <a href="https://doi.org/10.1002/jae.2907">https://doi.org/10.1002/jae.2907</a>.
+</div>
+<div id="ref-millersutherland2022" class="csl-entry" role="listitem">
+Miller, Michael, 와/과 Joseph Sutherland. 2022. <span>“The Effect of Gender on Interruptions at Congressional Hearings”</span>. <em>American Political Science Review</em>, 1–19. <a href="https://doi.org/10.1017/S0003055422000260">https://doi.org/10.1017/S0003055422000260</a>.
+</div>
+<div id="ref-citeR" class="csl-entry" role="listitem">
+R Core Team. 2024. <em>R: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="https://www.R-project.org/">https://www.R-project.org/</a>.
+</div>
+<div id="ref-stm" class="csl-entry" role="listitem">
+Roberts, Margaret, Brandon Stewart, 와/과 Dustin Tingley. 2019. <span>“<span>stm</span>: An <span>R</span> Package for Structural Topic Models”</span>. <em>Journal of Statistical Software</em> 91 (2): 1–40. <a href="https://doi.org/10.18637/jss.v091.i02">https://doi.org/10.18637/jss.v091.i02</a>.
+</div>
+<div id="ref-schofield2017" class="csl-entry" role="listitem">
+Schofield, Alexandra, Måns Magnusson, 와/과 David Mimno. 2017. <span>“Pulling Out the Stops: Rethinking Stopword Removal for Topic Models”</span>. In <em>Proceedings of the 15th Conference of the <span>E</span>uropean Chapter of the Association for Computational Linguistics: Volume 2, Short Papers</em>, 432–36. Valencia, Spain: Association for Computational Linguistics. <a href="https://aclanthology.org/E17-2069">https://aclanthology.org/E17-2069</a>.
+</div>
+<div id="ref-SilgeRobinson2016" class="csl-entry" role="listitem">
+Silge, Julia, 와/과 David Robinson. 2016. <span>“<span>tidytext: Text Mining and Analysis Using Tidy Data Principles in R</span>”</span>. <em>The Journal of Open Source Software</em> 1 (3). <a href="https://doi.org/10.21105/joss.00037">https://doi.org/10.21105/joss.00037</a>.
+</div>
+<div id="ref-SteyversGriffiths2006" class="csl-entry" role="listitem">
+Steyvers, Mark, 와/과 Tom Griffiths. 2006. <span>“Probabilistic Topic Models”</span>. In <em>Latent Semantic Analysis: A Road to Meaning</em>, 편집자： T. Landauer, D McNamara, S. Dennis, 와/과 W. Kintsch. <a href="https://cocosci.princeton.edu/tom/papers/SteyversGriffiths.pdf">https://cocosci.princeton.edu/tom/papers/SteyversGriffiths.pdf</a>.
+</div>
+<div id="ref-tidyverse" class="csl-entry" role="listitem">
+Wickham, Hadley, Mara Averick, Jenny Bryan, Winston Chang, Lucy D’Agostino McGowan, Romain François, Garrett Grolemund, 기타. 2019. <span>“<span>Welcome to the Tidyverse</span>”</span>. <em>Journal of Open Source Software</em> 4 (43): 1686. <a href="https://doi.org/10.21105/joss.01686">https://doi.org/10.21105/joss.01686</a>.
+</div>
+</div>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "복사완료!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "복사완료!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/tellingstorieswithdata\.com\/mybook");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./15-mrp_ko.html" class="pagination-link" aria-label="사후 층화 다단계 회귀">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">사후 층화 다단계 회귀</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./17-concluding_ko.html" class="pagination-link" aria-label="17-concluding_ko.html">
+        <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">17-concluding_ko.html</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/RohanAlexander/telling_stories/edit/main/16-text_ko.qmd" class="toc-action"><i class="bi bi-github"></i>편집</a></li></ul></div></div></div></footer></body></html>

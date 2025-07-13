@@ -1,0 +1,9 @@
+```{r}
+#| label: tbl-docvisittable
+#| echo: true
+#| tbl-cap: "1977-1978년 호주 건강 조사를 기반으로 한 지난 2주간의 의사 방문 횟수"
+
+DoctorVisits |> 
+  count(visits) |> 
+  knitr::kable()
+```

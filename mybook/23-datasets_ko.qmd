@@ -1,0 +1,63 @@
+---
+engine: knitr
+---
+
+# 데이터셋 {#sec-datasets}
+
+학생들이 종종 어려움을 겪는 것 중 하나는 데이터셋을 선택하는 것입니다. 일반적으로 Kaggle, UCI 머신러닝 저장소 및 기타 일반적으로 사용되는 옵션의 데이터셋은 피하는 것이 좋습니다. 데이터 과학 관점에서 이러한 출처에서 제공되는 데이터셋을 사용한다는 것은 거의 모든 중요한 결정이 이미 내려졌으며 잠재적으로 문서화되지 않았다는 것을 의미합니다. 그리고 경력 관점에서, 다른 모든 사람들이 이러한 데이터셋을 사용하기 때문에 여러분의 포트폴리오를 돋보이게 하지 못합니다. 몇 가지 대안은 다음과 같습니다:
+
+- [AidData](https://www.aiddata.org/datasets)는 개발 및 해외 원조 연구와 관련된 많은 데이터셋을 제공합니다.
+- [Alex Cookson의 데이터셋](https://github.com/tacookson/data).
+- @andrews2012data는 다양한 데이터셋을 제공하며, [여기](https://www.york.ac.uk/depts/maths/histstat/pml1/r/andrews.htm)에서 확인할 수 있습니다.
+- [*사회 과학자를 위한 API*](https://bookdown.org/paul/apis_for_social_scientists/)는 데이터를 수집하는 데 사용할 수 있는 다양한 API를 제공합니다.
+- @Bombieri2023은 5,000건 이상의 대형 육식 동물 인간 공격에 대한 데이터셋을 제공합니다.
+- 영국 도서관의 [세계 신문 목록](https://bl.iro.bl.uk/concern/datasets/943bd083-6355-44a1-97eb-b8ff898f87d5?locale=en)에는 출판 시작 및 종료 연도, 출판 장소, 변형된 제목 및 판, 출판 언어에 대한 정보가 포함되어 있습니다.
+- BuzzFeed News는 기사를 뒷받침하는 많은 데이터셋에 대한 [접근](https://github.com/BuzzFeedNews/nics-firearm-background-checks)을 제공합니다.
+- [캐나다 지방 선거 데이터베이스](https://dataverse.scholarsportal.info/dataset.xhtml?persistentId=doi:10.5683/SP2/4MZJPQ)에는 캐나다 전역의 지방 자치 단체에 대한 완전한 지방 선거 결과가 포함되어 있습니다 [@CanadianMunicipalElectionsDatabase].
+- [Congressindata](https://www.congressindata.com)는 2005년부터 2015년까지 미국 의회 의원에 대한 데이터셋을 제공합니다.
+- [Congress.gov API](https://blogs.loc.gov/law/2022/09/introducing-the-congress-gov-api/)는 특히 법안 및 기타 텍스트 데이터와 관련하여 미국 의회에 대한 매우 유용한 데이터 소스입니다.
+- [COVerAGE-DB](https://osf.io/mpwjq/)는 COVID-19 사례 및 사망에 대한 전 세계 인구 통계 데이터베이스입니다 [@Riffe2021].
+- `cricketdata` [@cricketdata]는 국제 및 기타 주요 크리켓 경기에 대한 데이터를 다운로드하는 기능을 제공합니다.
+- [데이터 및 스토리 라이브러리](https://dasl.datadescription.com)는 수백 개의 데이터셋에 대한 접근을 제공합니다.
+- [Data Is Plural](https://www.data-is-plural.com)은 2015년까지의 아카이브와 함께 흥미로운 데이터셋에 대한 주간 뉴스레터를 제공합니다.
+- [Data Liberation Project](https://www.data-liberation-project.org)는 FOI 요청을 사용하여 미국 정부 데이터셋을 구축하는 데 중점을 둡니다.
+- [인구 통계 및 건강 조사](https://dhsprogram.com) (DHS) 프로그램은 1984년부터 90개국에 대한 설문조사 데이터를 제공합니다.
+- Duolingo는 연구 논문을 뒷받침하는 데이터셋에 대한 [접근](https://research.duolingo.com)을 제공합니다.
+- The Economist는 기사를 뒷받침하는 많은 데이터셋에 대한 [접근](https://github.com/orgs/TheEconomist/repositories)을 제공합니다.
+- [EH.net](https://eh.net/databases/)은 다양한 흥미로운 역사 경제 데이터셋을 제공합니다.
+- EPA는 [규제되지 않은 오염 물질 모니터링 규칙](https://www.epa.gov/dwucmr/occurrence-data-unregulated-contaminant-monitoring-rule#5)에서 발생 데이터를 제공합니다.
+- [유럽 NUTS-수준 선거 데이터베이스 (EU-NED)](https://eu-ned.com)는 1990년부터 2020년까지의 국가 및 유럽 의회 선거 결과를 제공합니다.
+- 연방 준비 은행 경제 데이터 (FRED)는 미국 경제 데이터를 [제공](https://fred.stlouisfed.org)하며, API에 액세스하기 위한 R 패키지 `fredr` [@fredr]가 있습니다.
+- FiveThirtyEight는 기사를 뒷받침하는 많은 데이터셋에 대한 [접근](https://github.com/fivethirtyeight/data)을 제공합니다.
+- [Goodreads 데이터셋](https://sites.google.com/eng.ucsd.edu/ucsdbookgraph/home)은 2017년에 2백만 권 이상의 책에 대한 메타데이터 및 리뷰를 포함한 공개 데이터를 스크랩한 것입니다 [@goodreadsone; @goodreadstwo].
+- [역사적 사회 갈등 데이터베이스](https://www.unicaen.fr/hiscod/accueil.html)는 주로 유럽에 초점을 맞춘 20,000건 이상의 갈등에 대한 데이터를 제공합니다 [@historicalsocialconflictdatabase].
+- [역사 통계](https://www.historicalstatistics.org/)는 역사 통계에 대한 링크를 제공합니다.
+- [인간 사망률 데이터베이스](https://www.mortality.org)는 다양한 국가에 대한 상세한 사망률 및 인구 데이터를 제공합니다.
+- ICANN의 [중앙 집중식 영역 데이터 서비스](https://czds.icann.org/home)는 며칠이 걸릴 수 있는 신청 및 승인 절차를 거쳐 모든 도메인 이름에 대한 접근을 제공합니다.
+- [IPCC 데이터 배포 센터](https://www.ipcc-data.org).
+- 아일랜드 사회 과학 데이터 아카이브는 다양한 데이터셋을 [제공](https://www.ucd.ie/issda/data/)합니다.
+- J-PAL (압둘 라티프 자밀 빈곤 행동 연구소)은 행정 데이터 [카탈로그](https://www.povertyactionlab.org/catalog-administrative-data-sets)를 유지합니다.
+- [NFL Savant](http://nflsavant.com/index.php)는 2013년 이후의 플레이별 데이터, 1999년 이후의 컴바인 데이터, 날씨 데이터를 포함하여 NFL에 대한 팀별 데이터를 제공합니다.
+- The Markup의 [Show Your Work](https://themarkup.org/series/show-your-work) 시리즈는 종종 기사를 뒷받침하는 데이터가 포함된 GitHub 저장소 링크를 포함합니다. 몇 가지 주목할 만한 예시는 다음과 같습니다: [모기지 승인 알고리즘에 숨겨진 비밀 편향](https://github.com/the-markup/investigation-redlining).
+- 매사추세츠 수자원 관리국은 폐수 COVID-19 추적 데이터를 [여기](https://www.mwra.com/biobot/biobotdata.htm)에서 제공하며, 원시 데이터는 파싱할 수 있는 PDF로 제공됩니다.
+- 뉴욕 현대 미술관 (MoMA)은 [컬렉션](https://github.com/MuseumofModernArt/collection) 및 [전시회](https://github.com/MuseumofModernArt/exhibitions)에 대한 데이터셋을 제공합니다.
+- NASA의 [행성 데이터 시스템](https://pds.nasa.gov).
+- [ProPublica 데이터 스토어](https://www.propublica.org/datastore/)는 미국에 대한 방대한 데이터셋을 제공하며, 일부는 상당히 큽니다. 예를 들어, [Open Payments Data (2016)](https://www.propublica.org/datastore/dataset/cms-open-payments-data-2016)는 6GB입니다.
+- @bhht3의 Notable People [데이터셋](https://medialab.github.io/bhht-datascape/)은 기원전 3500년부터 2018년까지의 주목할 만한 인물에 대한 교차 검증된 데이터베이스를 제공합니다.
+- OECD는 경제 데이터를 [제공](https://data.oecd.org)합니다.
+- ParlEE 데이터셋은 EU 입법부 회의실에서 수백만 건의 연설에 대한 주석이 달린 전문을 포함합니다 [@parlee].
+- Prison Policy Initiative는 미국 교도소 및 구치소에 대한 많은 [데이터셋](https://www.prisonpolicy.org/data/)을 제공합니다.
+- The Pudding은 기사를 뒷받침하는 많은 데이터셋을 [제공](https://github.com/the-pudding/data)합니다. 몇 가지 주목할 만한 예시는 다음과 같습니다: [벌거벗은 진실](https://github.com/the-pudding/data/tree/master/foundation-names), 그리고 [미국 인구 조사의 진화](https://github.com/the-pudding/data/tree/master/census-history).
+- [Pushshift Reddit 데이터셋](https://files.pushshift.io/reddit/)은 2015년 이후의 Reddit 게시물 모음입니다 [@pushshiftreddit].
+- [Refugee Law Lab](https://refugeelab.ca)은 캐나다 대법원 판결의 전문을 JSON 형식으로 제공합니다 [@rehaag].
+- Rijksmuseum은 컬렉션에 대한 다양한 데이터를 [제공](https://data.rijksmuseum.nl)합니다.
+- Socioeconomic High-resolution Rural-Urban Geographic Platform [(SHRUG)](http://devdatalab.org/shrug)은 인도 전역의 600,000개 마을 및 도시에 대한 사회경제적 개발 데이터를 제공하는 오픈 데이터 플랫폼입니다 [@shrugdataset].
+- 톰 카르도소의 [Bias behind bars](https://www.theglobeandmail.com/canada/article-investigation-racial-bias-in-canadian-prison-risk-assessments/)는 캐나다의 흑인 및 원주민 수감자에 대한 데이터를 제공합니다.
+- Tracking (In)Justice는 캐나다에서 경찰 관련 사망을 추적하는 데이터셋입니다 [@alexmclelandagain].
+- 미국 질병 통제 예방 센터 (CDC) 국립 생체 통계 시스템은 [연결된 출생 및 영아 사망 데이터](https://www.cdc.gov/nchs/nvss/linked-birth.htm#Two_Formats)를 포함한 다양한 데이터셋을 제공합니다.
+- 케빈 윌슨이 정리하고 준비한 [미국 형량 위원회 개별 범죄자 데이터셋](https://www.ussc.gov/research/datafiles/commission-datafiles).
+- [무장 반란에 참여하는 여성 활동](https://www.waarproject.com)은 1946-2015년 사이에 반군 조직에 참여한 여성의 측정치에 대한 접근을 제공합니다 [@lokenintroducing].
+- 워싱턴 포스트는 기사를 뒷받침하는 많은 데이터셋에 대한 [접근](https://github.com/washingtonpost)을 제공합니다. 특히 흥미로운 것은 [의회 노예 소유자](https://github.com/washingtonpost/data-congress-slaveowners), [치명적인 무력 사격](https://github.com/washingtonpost/data-police-shootings), [학교 총격](https://github.com/washingtonpost/data-school-shootings), 그리고 [왜 FEMA는 딥 사우스의 흑인 재난 생존자에게 지원을 거부하는가](https://github.com/wpinvestigative/fema_ihp_denials)입니다.
+- [Wordbank 데이터베이스](http://wordbank.stanford.edu)는 어린이 어휘 성장에 대한 공개 데이터베이스입니다. `wordbankr` [@wordbankr]를 사용하여 추가적으로 접근할 수 있으며, [앨리슨 프레스메인즈 힐](https://www.apreshill.com)은 유용한 [배경](https://apreshill.github.io/data-vis-labs-2018/03-colors.html) 및 [정리 코드](https://apreshill.github.io/data-vis-labs-2018/03a-meow-cleaning.html)를 제공합니다.
+- 세계 은행은 광범위한 [글로벌 개발 데이터](https://data.worldbank.org) 및 [마이크로데이터 라이브러리](https://microdata.worldbank.org/index.php/home/)를 제공합니다.
+- 예일 대학교 국제 금융 센터 데이터셋: [역사적 금융 연구 데이터](https://som.yale.edu/centers/international-center-for-finance/data/historical-financial-research-data), 그리고 [주식 시장 신뢰 지수](https://som.yale.edu/centers/international-center-for-finance/data/stock-market-confidence-indices).

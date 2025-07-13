@@ -1,6 +1,5 @@
 project:
   type: book
-  output-dir: ../docs/mybook # Adjusted output directory
 
 book:
   title: "데이터로 이야기하기" # Korean Title
@@ -8,7 +7,7 @@ book:
   author: "Rohan Alexander" # Author remains the same
   date: "2023년 7월 27일" # Date in Korean format - I'll use the original date for now, can be updated
   search: true
-  cover-image: ../figures/tellingstorieswithdatapainting.png # Adjusted path
+  cover-image: /figures/tellingstorieswithdatapainting.png # Adjusted path
   repo-url: https://github.com/RohanAlexander/telling_stories/ # Repo URL can remain same or point to a Korean-specific fork if it exists
   repo-actions: [edit]
   site-url: https://tellingstorieswithdata.com/mybook # Adjusted site URL
@@ -16,7 +15,7 @@ book:
     collapse-level: 3
     pinned: true
   chapters:
-    - index_ko.qmd # Korean version of index
+    - index.qmd # Korean version of index
     - 00-errata_ko.qmd # Korean version
     - part: "기초" # Korean "Foundations"
       chapters:
@@ -26,35 +25,60 @@ book:
     - part: "소통"  # Korean "Communication"
       chapters:
         - 04-writing_research_ko.qmd
-        # Add other Korean chapter files here as they are translated
-        # - 05-graphs_tables_maps_ko.qmd
-    # Add other parts and chapters in Korean as they become available
-    # For now, I will only list the files that were moved.
-    # The user can add more later.
-
-# Appendices can be added later if translated
-#  appendices:
-#    - 20-r_essentials_ko.qmd
+        - 05-graphs_tables_maps_ko.qmd
+    - part: "획득"  
+      chapters: 
+        - 06-farm_ko.qmd
+        - 07-gather_ko.qmd
+        - 08-hunt_ko.qmd
+    - part: "준비"  
+      chapters: 
+        - 09-clean_and_prepare_ko.qmd
+        - 10-store_and_share_ko.qmd
+        - 11-eda_ko.qmd
+    - part: "모델링"
+      chapters: 
+        - 12-ijalm_ko.qmd
+        - 13-ijaglm_ko.qmd
+        - 13-prediction_ko.qmd
+    - part: "적용"
+      chapters: 
+        - 14-causality_from_obs_ko.qmd
+        - 15-mrp_ko.qmd
+        - 16-text_ko.qmd
+        - 17-concluding_ko.qmd
+  appendices:
+    - 20-r_essentials_ko.qmd
+    - 21-python_essentials_ko.qmd
+    - 22-sql_essentials_ko.qmd
+    - 23-datasets_ko.qmd
+    - 24-rmarkdown_ko.qmd
+    - 25-papers_ko.qmd
+    - 26-deploy_ko.qmd
+    - 98-cocktails_ko.qmd
+    - 99-references_ko.qmd
 
 crossref:
-  appendix-title: "온라인 부록" # Korean "Online Appendix"
+  appendix-title: "Online Appendix"
 
-bibliography: ../references.bib # Adjusted path
+bibliography: references.bib
 
 format:
   html:
-    theme:
+    theme: 
       - cosmo
-      - ../custom.scss # Adjusted path
+      - custom.scss
     callout-appearance: simple
-  # PDF settings can be adjusted if a Korean-specific latex setup is available
-  # pdf:
-  #   documentclass: krantz
-  #   include-in-header: ../latex/preamble.tex
-  #   include-before-body: ../latex/before_body.tex
-  #   include-after-body: ../latex/after_body.tex
-  #   keep-tex: true
-  #   callout-appearance: simple
+  pdf:
+    documentclass: krantz
+    include-in-header: latex/preamble.tex
+    include-before-body: latex/before_body.tex
+    include-after-body: latex/after_body.tex
+    keep-tex: true
+    callout-appearance: simple
 
 # Add language setting for Korean
 lang: ko
+
+mainfont: "Noto Serif CJK KR"
+sansfont: "Noto Sans CJK KR"

@@ -5,42 +5,42 @@ engine: knitr
 # 오류 및 업데이트 {.unnumbered}
 
 ::: {.callout-note}
-Chapman and Hall/CRC는 2023년 7월에 이 책을 출판했습니다. [여기](https://www.routledge.com/Telling-Stories-with-Data-With-Applications-in-R/Alexander/p/book/9781032134772)에서 구매할 수 있습니다.
+채프먼 앤 홀/CRC는 이 책을 2023년 7월에 출판했습니다. [여기](https://www.routledge.com/Telling-Stories-with-Data-With-Applications-in-R/Alexander/p/book/9781032134772)에서 구매하실 수 있습니다.
 
-이 온라인 버전에는 인쇄된 내용에 대한 몇 가지 업데이트가 있습니다. 인쇄 버전과 일치하는 온라인 버전은 [여기](https://rohanalexander.github.io/telling_stories-published/)에서 볼 수 있습니다.
+이 온라인 버전은 인쇄된 내용에 일부 업데이트가 있습니다. 인쇄 버전과 일치하는 온라인 버전은 [여기](https://rohanalexander.github.io/telling_stories-published/)에서 확인할 수 있습니다.
 :::
 
-*마지막 업데이트: 2024년 11월 21일.*
+*최종 업데이트: 2024년 11월 21일.*
 
-이 책은 Piotr Fryzlewicz가 *The American Statistician*[@Fryzlewicz2024]에, Nick Cox가 [Amazon](https://www.amazon.com/gp/customer-reviews/R3S602G9RUDOF/ref=cm_cr_dp_d_rvw_ttl?ie=UTF8&ASIN=1032134771)에 리뷰했습니다. 리뷰를 제공하는 데 많은 시간을 할애해 주시고 수정 및 제안을 해주신 점에 대해 감사드립니다.
+이 책은 *The American Statistician*의 Piotr Fryzlewicz [@Fryzlewicz2024]와 [Amazon](https://www.amazon.com/gp/customer-reviews/R3S602G9RUDOF/ref=cm_cr_dp_d_rvw_ttl?ie=UTF8&ASIN=1032134771)의 Nick Cox가 검토했습니다. 그들이 검토뿐만 아니라 수정 및 제안을 제공하기 위해 많은 시간을 할애해 주셔서 감사합니다.
 
-2023년 7월 이 책이 출판된 이후 세상에는 다양한 변화가 있었습니다. 생성형 AI의 등장은 사람들이 코딩하는 방식을 바꾸었고, Quarto 덕분에 Python을 R과 함께 통합하기가 더 쉬워졌으며, 패키지는 계속 업데이트되고 있습니다(새로운 학생들이 이 책을 공부하기 시작했다는 점은 말할 것도 없습니다). 온라인 버전의 장점 중 하나는 개선할 수 있다는 것입니다.
+2023년 7월 이 책이 출판된 이후 세상에는 다양한 변화가 있었습니다. 생성형 AI의 등장은 사람들이 코딩하는 방식을 바꾸었고, Quarto 덕분에 Python이 R과 더 쉽게 통합되었으며, 패키지는 계속 업데이트되고 있습니다(새로운 학생 코호트가 책을 읽기 시작한 것은 말할 것도 없습니다). 온라인 버전의 장점 중 하나는 제가 개선할 수 있다는 것입니다.
 
-다음 분들의 수정과 제안에 감사드립니다:
-Andrew Black,
-Clay Ford,
-Crystal Lewis,
-David Jankoski,
-Donna Mulkern,
-Emi Tanaka,
-Emily Su,
-Inessa De Angelis,
-James Wade,
-Julia Kim,
-Krishiv Jain,
-Seamus Ross,
-Tino Kanngiesser, and
-Zak Varty.
+다음 분들의 수정 및 제안에 감사드립니다:
+앤드류 블랙,
+클레이 포드,
+크리스탈 루이스,
+데이비드 잔코스키,
+도나 멀컨,
+에미 타나카,
+에밀리 수,
+이네사 드 안젤리스,
+제임스 웨이드,
+줄리아 김,
+크리시브 자인,
+시머스 로스,
+티노 칸기서,
+자크 바티.
 
 ## 오류
 
-다음 오류는 인쇄 버전에 있지만 온라인 버전에서는 업데이트되었습니다. 아래에 언급되지 않은 오류를 발견하면 [문제](https://github.com/RohanAlexander/telling_stories/issues)를 제출하거나 rohan.alexander@utoronto.ca로 이메일을 보내주십시오.
+다음 오류는 인쇄 버전에 존재하지만, 온라인 버전에서는 업데이트되었습니다. 아래에 언급되지 않은 오류를 발견하면 [이슈](https://github.com/RohanAlexander/telling_stories/issues)를 제출하거나 rohan.alexander@utoronto.ca로 이메일을 보내주십시오.
 
 
-- p. xxi: 감사의 말에 Alex Hayes를 추가합니다.
-- p. 20: "use the `tidyverse` and `janitor` packages."에 "packages"를 추가합니다.
-- p. 34: `"daily-shelter-overnight-service-occupancy-capacity-2021"`은 `"daily-shelter-overnight-service-occupancy-capacity-2021.csv"`여야 합니다(".csv" 추가됨).
-- p. 34: 첫 번째 코드 청크를 두 번째 코드로 바꿉니다.
+- p. xxi: 감사의 글에 Alex Hayes를 추가하십시오.
+- p. 20: "use the `tidyverse` and `janitor` packages."에 "packages"를 추가하십시오.
+- p. 34: `"daily-shelter-overnight-service-occupancy-capacity-2021"`은 `"daily-shelter-overnight-service-occupancy-capacity-2021.csv"`로 변경되어야 합니다 (".csv"가 추가됨).
+- p. 34: 첫 번째 코드 청크를 두 번째 코드 청크로 대체하십시오:
 
 ```{r}
 #| eval: false
@@ -59,23 +59,23 @@ head(toronto_shelters_clean)
 
 toronto_shelters_clean <-
   clean_names(toronto_shelters) |>
-  mutate(occupancy_date = ymd(occupancy_date)) |>
+  mutate(occupancy_date = ymd(occupancy_date)) |> 
   select(occupancy_date, occupied_beds)
 
 head(toronto_shelters_clean)
 ```
 
-- p. 38: "이 시점에서 2019년 캐나다 연방 선거에서 각 정당이 획득한 의석 수에 대한 멋진 그래프를 만들 수 있습니다."는 2021년 선거를 참조해야 합니다.
-- p. 41: 불필요한 ":::"를 제거합니다.
-- p. 66: "New Project$dots"는 "New Project..."여야 합니다.
-- p. 138: `scale_color_brewer(palette = "Set1")`은 불필요하며 제거해야 합니다.
+- p. 38: "이 시점에서 2019년 캐나다 연방 선거에서 각 정당이 얻은 의석 수에 대한 멋진 그래프를 만들 수 있습니다."는 2021년 선거를 참조해야 합니다.
+- p. 41: 불필요한 ":::"를 제거하십시오.
+- p. 66: "New Project$dots"는 "New Project..."로 변경되어야 합니다.
+- p. 138: `scale_color_brewer(palette = "Set1")`는 불필요하며 제거되어야 합니다.
 - p. 138: 그림 캡션은 실업률이 아닌 인플레이션을 참조해야 합니다.
-- p. 154: Q9는 코드 청크 다음, "if" 앞에 "work"가 빠져 있습니다.
-- p. 188: "Leonhard Euler"는 "Carl Friedrich Gauss"여야 합니다.
-- p. 279: "detonated"는 "denoted"여야 합니다.
+- p. 154: Q9는 코드 청크 뒤와 "if" 앞에 "work"가 누락되었습니다.
+- p. 188: "Leonhard Euler"는 "Carl Friedrich Gauss"로 변경되어야 합니다.
+- p. 279: "detonated"는 "denoted"로 변경되어야 합니다.
 - p. 342: Q5 옵션 b가 옵션 c에 반복됩니다.
-- p. 347: *R for Data Science*의 "탐색적 데이터 분석" 장은 12가 아니라 11입니다.
-- p. 353: "the the"를 수정합니다.
-- p. 355: "...결과는 5,814로 추정되며 둘 다 너무 낮습니다."는 "...결과는 11,197로 추정되며 전자는 너무 낮고 후자는 너무 높습니다."여야 합니다.
+- p. 347: *R for Data Science*의 "탐색적 데이터 분석" 장은 12가 아닌 11입니다.
+- p. 353: "the the"를 수정하십시오.
+- p. 355: "...결과 5,814로 추정되며, 둘 다 너무 낮습니다."는 "...결과 11,197로 추정되며, 전자는 너무 낮고 후자는 너무 높습니다."로 변경되어야 합니다.
 - p. 371: 그림 11.11a를 참조하는 문장이 혼란스러웠으며 그림을 더 명확하게 참조해야 합니다.
-- p. 587: 링크는 https://fivethirtyeight.com/features/police-misconduct-costs-cities-millions-every-year-but-thats-where-the-accountability-ends/ 여야 합니다.
+- p. 587: 링크는 https://fivethirtyeight.com/features/police-misconduct-costs-cities-millions-every-year-but-thats-where-the-accountability-ends/여야 합니다.

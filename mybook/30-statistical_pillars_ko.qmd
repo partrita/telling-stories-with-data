@@ -1,0 +1,71 @@
+---
+engine: knitr
+---
+
+# 통계학의 기둥 {#sec-statisticalpillars}
+
+**공사 중**
+
+**TODO**
+
+
+**선행 조건**
+
+- https://royalsocietypublishing.org/doi/epdf/10.1098/rsta.1922.0009
+
+**핵심 개념 및 기술**
+
+-
+
+**소프트웨어 및 패키지**
+
+-
+
+```{r}
+#| message: false
+#| warning: false
+
+
+```
+
+## 서론
+
+## 호르비츠-톰슨 정리
+
+https://www.jstor.org/stable/2684196
+
+## 제임스-스타인 추정량
+
+https://projecteuclid.org/journals/statistical-science/volume-1/issue-4/A-Conversation-with-Charles-Stein/10.1214/ss/1177013517.full
+
+## 가우스-마르코프 정리
+
+가우스와 덩케르크에서 바르셀로나까지의 프랑스 자오선 호를 가져오기
+
+## 중심 극한 정리
+
+## 대수의 법칙
+
+## 키타가와-블라인더-오악사카 분해
+
+https://doi.org/10.2307/2281213
+
+
+## 연습 문제
+
+### 스케일 {.unnumbered}
+
+1. *(계획)*
+2. *(시뮬레이션)*
+3. *(획득)*
+4. *(탐색)*
+5. *(소통)*
+
+### 질문 {.unnumbered}
+
+- 호주 태즈메이니아의 등대 높이는 [여기](ADD LINK)에서 확인할 수 있습니다. 데이터를 스크랩하고 높이 히스토그램을 만드는 코드를 작성하세요. 분포에 대해 무엇을 알 수 있습니까? 참고 자료와 시뮬레이션의 도움을 받아 세네 단락으로 이러한 현상이 발생하는 이유를 설명하세요. GitHub 저장소 링크를 제출하세요.
+
+
+
+### 튜토리얼 {.unnumbered}
+

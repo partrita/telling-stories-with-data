@@ -1,0 +1,72 @@
+---
+engine: knitr
+---
+
+# 수업 활동 {#sec-activities}
+
+
+
+```{r}
+#| message: false
+library(babynames)
+library(janitor)
+library(palmerpenguins)
+library(readxl)
+library(rstanarm)
+library(tidyverse)
+```
+
+## 데이터로 이야기하기
+
+
+
+## 소방 호스에서 마시기
+
+
+
+## 재현 가능한 워크플로우
+
+
+
+## 연구 글쓰기
+
+
+## 정적 커뮤니케이션
+
+
+
+## 데이터 수집 (Farm data)
+
+
+## 데이터 수집 (Gather data)
+
+
+## 데이터 사냥 (Hunt data)
+
+## 데이터 정리 및 준비
+
+
+## 저장 및 공유
+
+
+
+## 탐색적 데이터 분석
+
+
+## 선형 모델
+
+
+## 일반화 선형 모델
+
+
+## 관찰 데이터에서 인과 관계
+
+## 사후 계층화 다단계 회귀
+
+## 데이터로서의 텍스트
+
+
+
+## 결론
+
+

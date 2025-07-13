@@ -1,11 +1,9 @@
-# Telling Stories with Data
+# 데이터로 이야기하기
 
-[한국어 버전](./README_ko.md)
+이 책은 데이터로 이야기를 전달하는 데 도움을 줄 것입니다. 이 책은 관찰한 데이터를 기반으로 관심 있는 세상의 한 측면에 대한 지식을 구축하고 공유할 수 있는 토대를 마련합니다. 불 주위에 모여 작은 그룹으로 이야기를 나누는 것은 인간과 사회 발전에 중요한 역할을 했습니다(Wiessner 2014). 오늘날 데이터를 기반으로 한 우리의 이야기는 수백만 명에게 영향을 미칠 수 있습니다.
 
-This book will help you tell stories with data. It establishes a foundation on which you can build and share knowledge about an aspect of the world of interest to you based on data that you observe. Telling stories in small groups around a fire played a critical role in the development of humans and society (Wiessner 2014). Today our stories, based on data, can influence millions.
+온라인 버전은 무료로 제공됩니다: https://tellingstorieswithdata.com
 
-The online version is freely available: https://tellingstorieswithdata.com
+인쇄 버전은 CRC Press에서 출판 승인을 받았으며 (바라건대) 2023년에 출시될 예정입니다.
 
-A print version was accepted for publication by CRC Press, and (hopefully) will be available in 2023.
-
-I would appreciate comments, suggestions, or pull requests and can be contacted at rohan.alexander@utoronto.ca.
+의견, 제안 또는 풀 리퀘스트를 환영하며 rohan.alexander@utoronto.ca로 연락할 수 있습니다.

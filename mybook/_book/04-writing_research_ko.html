@@ -1,0 +1,2279 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>4&nbsp; 연구 작성 – 데이터로 이야기하기</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./05-graphs_tables_maps_ko.html" rel="next">
+<link href="./03-workflow_ko.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-b22ef3f334bfc3d7f06e555e13679c65.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "일치 없음",
+    "search-matching-documents-text": "일치된 문서",
+    "search-copy-link-title": "검색 링크 복사",
+    "search-hide-matches-text": "추가 검색 결과 숨기기",
+    "search-more-match-text": "추가 검색결과",
+    "search-more-matches-text": "추가 검색결과",
+    "search-clear-button-title": "제거",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "취소",
+    "search-submit-button-title": "검색",
+    "search-label": "검색"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-writing_research_ko.html">소통</a></li><li class="breadcrumb-item"><a href="./04-writing_research_ko.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">연구 작성</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="검색" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">데이터로 이야기하기</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/RohanAlexander/telling_stories/" title="소스 코드" class="quarto-navigation-tool px-1" aria-label="소스 코드"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="검색"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">서문</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./00-errata_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">오류 및 업데이트</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">기초</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-introduction_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">데이터로 이야기하기</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-drinking_from_a_fire_hose_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">소방 호스에서 마시기</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-workflow_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">재현 가능한 워크플로우</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">소통</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-writing_research_ko.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">연구 작성</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-graphs_tables_maps_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">그래프, 표, 지도</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">획득</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-farm_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">측정, 인구 조사, 표본 추출</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-gather_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">API, 스크래핑, 파싱</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-hunt_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">실험 및 설문 조사</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">준비</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-clean_and_prepare_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">정리, 준비 및 테스트</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-store_and_share_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">저장 및 공유</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-eda_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">탐색적 데이터 분석</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">모델링</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-ijalm_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">선형 모델</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-ijaglm_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">일반화 선형 모델</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-prediction_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">예측</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">적용</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-causality_from_obs_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">관찰 데이터에서 인과 관계</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-mrp_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">사후 층화 다단계 회귀</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-text_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">데이터로서의 텍스트</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./17-concluding_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">17-concluding_ko.html</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text">부록</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20-r_essentials_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">R 필수 사항</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./21-python_essentials_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Python 필수 사항</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./22-sql_essentials_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">SQL 필수</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./23-datasets_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">데이터셋</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./24-rmarkdown_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">R 마크다운</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./25-papers_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">논문</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./26-deploy_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">생산</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./98-cocktails_ko.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">칵테일</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./99-references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">목차</h2>
+   
+  <ul>
+  <li><a href="#서론" id="toc-서론" class="nav-link active" data-scroll-target="#서론"><span class="header-section-number">4.1</span> 서론</a></li>
+  <li><a href="#글쓰기" id="toc-글쓰기" class="nav-link" data-scroll-target="#글쓰기"><span class="header-section-number">4.2</span> 글쓰기</a></li>
+  <li><a href="#질문하기" id="toc-질문하기" class="nav-link" data-scroll-target="#질문하기"><span class="header-section-number">4.3</span> 질문하기</a>
+  <ul class="collapse">
+  <li><a href="#데이터-우선" id="toc-데이터-우선" class="nav-link" data-scroll-target="#데이터-우선"><span class="header-section-number">4.3.1</span> 데이터 우선</a></li>
+  <li><a href="#질문-우선" id="toc-질문-우선" class="nav-link" data-scroll-target="#질문-우선"><span class="header-section-number">4.3.2</span> 질문 우선</a></li>
+  </ul></li>
+  <li><a href="#질문에-답하기" id="toc-질문에-답하기" class="nav-link" data-scroll-target="#질문에-답하기"><span class="header-section-number">4.4</span> 질문에 답하기</a>
+  <ul class="collapse">
+  <li><a href="#반사실과-편향" id="toc-반사실과-편향" class="nav-link" data-scroll-target="#반사실과-편향"><span class="header-section-number">4.4.1</span> 반사실과 편향</a></li>
+  <li><a href="#추정량" id="toc-추정량" class="nav-link" data-scroll-target="#추정량"><span class="header-section-number">4.4.2</span> 추정량</a></li>
+  <li><a href="#방향성-비순환-그래프" id="toc-방향성-비순환-그래프" class="nav-link" data-scroll-target="#방향성-비순환-그래프"><span class="header-section-number">4.4.3</span> 방향성 비순환 그래프</a></li>
+  </ul></li>
+  <li><a href="#논문의-구성-요소" id="toc-논문의-구성-요소" class="nav-link" data-scroll-target="#논문의-구성-요소"><span class="header-section-number">4.5</span> 논문의 구성 요소</a>
+  <ul class="collapse">
+  <li><a href="#제목" id="toc-제목" class="nav-link" data-scroll-target="#제목"><span class="header-section-number">4.5.1</span> 제목</a></li>
+  <li><a href="#초록" id="toc-초록" class="nav-link" data-scroll-target="#초록"><span class="header-section-number">4.5.2</span> 초록</a></li>
+  <li><a href="#서론-1" id="toc-서론-1" class="nav-link" data-scroll-target="#서론-1"><span class="header-section-number">4.5.3</span> 서론</a></li>
+  <li><a href="#데이터" id="toc-데이터" class="nav-link" data-scroll-target="#데이터"><span class="header-section-number">4.5.4</span> 데이터</a></li>
+  <li><a href="#모델" id="toc-모델" class="nav-link" data-scroll-target="#모델"><span class="header-section-number">4.5.5</span> 모델</a></li>
+  <li><a href="#결과" id="toc-결과" class="nav-link" data-scroll-target="#결과"><span class="header-section-number">4.5.6</span> 결과</a></li>
+  <li><a href="#논의" id="toc-논의" class="nav-link" data-scroll-target="#논의"><span class="header-section-number">4.5.7</span> 논의</a></li>
+  <li><a href="#간결성-오타-및-문법" id="toc-간결성-오타-및-문법" class="nav-link" data-scroll-target="#간결성-오타-및-문법"><span class="header-section-number">4.5.8</span> 간결성, 오타 및 문법</a></li>
+  <li><a href="#규칙" id="toc-규칙" class="nav-link" data-scroll-target="#규칙"><span class="header-section-number">4.5.9</span> 규칙</a></li>
+  </ul></li>
+  <li><a href="#연습-문제" id="toc-연습-문제" class="nav-link" data-scroll-target="#연습-문제"><span class="header-section-number">4.6</span> 연습 문제</a>
+  <ul class="collapse">
+  <li><a href="#실습" id="toc-실습" class="nav-link" data-scroll-target="#실습">실습</a></li>
+  <li><a href="#퀴즈" id="toc-퀴즈" class="nav-link" data-scroll-target="#퀴즈">퀴즈</a></li>
+  <li><a href="#수업-활동" id="toc-수업-활동" class="nav-link" data-scroll-target="#수업-활동">수업 활동</a></li>
+  <li><a href="#과제" id="toc-과제" class="nav-link" data-scroll-target="#과제">과제</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/RohanAlexander/telling_stories/edit/main/04-writing_research_ko.qmd" class="toc-action"><i class="bi bi-github"></i>편집</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-writing_research_ko.html">소통</a></li><li class="breadcrumb-item"><a href="./04-writing_research_ko.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">연구 작성</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-on-writing" class="quarto-section-identifier"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">연구 작성</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Chapman and Hall/CRC는 이 책을 2023년 7월에 출판했습니다. <a href="https://www.routledge.com/Telling-Stories-with-Data-With-Applications-in-R/Alexander/p/book/9781032134772">여기</a>에서 구매할 수 있습니다. 이 온라인 버전은 인쇄된 내용에 일부 업데이트가 있습니다.</p>
+</div>
+</div>
+</div>
+<p><strong>선행 조건</strong></p>
+<ul>
+<li><em>By Design: Planning Research on Higher Education</em> 읽기, <span class="citation" data-cites="bydesignplanningresearch">(<a href="#ref-bydesignplanningresearch" role="doc-biblioref">Light, Singer, 와/과 Willett 1990</a>)</span>
+<ul>
+<li>좋은 연구 질문을 개발하기 위한 전략을 제공하는 2장 “당신의 질문은 무엇인가”에 집중하십시오.</li>
+</ul></li>
+<li><em>On Writing Well</em> 읽기 (어떤 판이든 상관없음), <span class="citation" data-cites="zinsser">(<a href="#ref-zinsser" role="doc-biblioref">Zinsser 1976</a>)</span>
+<ul>
+<li>특히 효과적인 글쓰기 스타일에 대한 “방법”을 제공하는 1부 “원칙”과 2부 “방법”에 집중하십시오.</li>
+</ul></li>
+<li><em>Novelist Cormac McCarthy’s tips on how to write a great science paper</em> 읽기, <span class="citation" data-cites="Savage2019">(<a href="#ref-Savage2019" role="doc-biblioref">Savage 와/과 Yeh 2019</a>)</span>
+<ul>
+<li>이 논문은 글쓰기를 개선할 수 있는 구체적인 팁을 제공합니다.</li>
+</ul></li>
+<li><em>Publication, publication</em> 읽기, <span class="citation" data-cites="king2006publication">(<a href="#ref-king2006publication" role="doc-biblioref">G. King 2006</a>)</span>
+<ul>
+<li>이 논문은 복제에서 출판 가능한 학술 논문으로 나아가는 전략을 자세히 설명합니다.</li>
+</ul></li>
+<li><em>Quantitative Editing</em> 시청, <span class="citation" data-cites="bronnerquantediting">(<a href="#ref-bronnerquantediting" role="doc-biblioref">Bronner 2021</a>)</span>
+<ul>
+<li>이 비디오는 FiveThirtyEight의 정량 편집자로서의 경험을 바탕으로 정량 기반 글쓰기 전략을 제공합니다.</li>
+</ul></li>
+<li><em>Smoking and carcinoma of the lung</em> 읽기, <span class="citation" data-cites="doll1950smoking">(<a href="#ref-doll1950smoking" role="doc-biblioref">Doll 와/과 Hill 1950</a>)</span>
+<ul>
+<li>이 논문은 데이터 섹션의 훌륭한 예시를 제공합니다.</li>
+</ul></li>
+<li><em>How to write usefully</em> 읽기 <span class="citation" data-cites="grahamhowtowriteusefully">(<a href="#ref-grahamhowtowriteusefully" role="doc-biblioref">Graham 2020</a>)</span>
+<ul>
+<li>독자가 이미 알지 못하는 진실하고 중요한 것을 쓰는 것에 대한 블로그 게시물입니다.</li>
+</ul></li>
+<li>다음 잘 쓰여진 정량 논문 중 하나를 읽으십시오.
+<ul>
+<li><em>Asset prices in an exchange economy</em>, <span class="citation" data-cites="lucas1978asset">(<a href="#ref-lucas1978asset" role="doc-biblioref">Lucas 1978</a>)</span></li>
+<li><em>Individuals, institutions, and innovation in the debates of the French Revolution</em>, <span class="citation" data-cites="barron2018individuals">(<a href="#ref-barron2018individuals" role="doc-biblioref">Barron 기타 2018</a>)</span></li>
+<li><em>Modeling: optimal marathon performance on the basis of physiological factors</em>, <span class="citation" data-cites="joyner1991modeling">(<a href="#ref-joyner1991modeling" role="doc-biblioref">Joyner 1991</a>)</span></li>
+<li><em>On reproducible econometric research</em>, <span class="citation" data-cites="koenker2009reproducible">(<a href="#ref-koenker2009reproducible" role="doc-biblioref">Koenker 와/과 Zeileis 2009</a>)</span></li>
+<li><em>Prevented mortality and greenhouse gas emissions from historical and projected nuclear power</em>, <span class="citation" data-cites="kharecha2013prevented">(<a href="#ref-kharecha2013prevented" role="doc-biblioref">Kharecha 와/과 Hansen 2013</a>)</span></li>
+<li><em>Seeing like a market</em>, <span class="citation" data-cites="fourcade2017seeing">(<a href="#ref-fourcade2017seeing" role="doc-biblioref">Fourcade 와/과 Healy 2017</a>)</span></li>
+<li><em>Simpson’s paradox and the hot hand in basketball</em>, <span class="citation" data-cites="wardrop1995simpson">(<a href="#ref-wardrop1995simpson" role="doc-biblioref">Wardrop 1995</a>)</span></li>
+<li><em>Some studies in machine learning using the game of checkers</em>, <span class="citation" data-cites="samuel1959some">(<a href="#ref-samuel1959some" role="doc-biblioref">Samuel 1959</a>)</span></li>
+<li><em>Statistical methods for assessing agreement between two methods of clinical measurement</em>, <span class="citation" data-cites="bland1986statistical">(<a href="#ref-bland1986statistical" role="doc-biblioref">Bland 와/과 Altman 1986</a>)</span></li>
+<li><em>Surgical Skill and Complication Rates after Bariatric Surgery</em>, <span class="citation" data-cites="Birkmeyer2013">(<a href="#ref-Birkmeyer2013" role="doc-biblioref">Birkmeyer 기타 2013</a>)</span></li>
+<li><em>The mundanity of excellence: An ethnographic report on stratification and Olympic swimmers</em>, <span class="citation" data-cites="chambliss1989mundanity">(<a href="#ref-chambliss1989mundanity" role="doc-biblioref">Chambliss 1989</a>)</span></li>
+<li><em>The probable error of a mean</em>, <span class="citation" data-cites="student1908probable">(<a href="#ref-student1908probable" role="doc-biblioref">Student 1908</a>)</span></li>
+</ul></li>
+<li>다음 <em>The New Yorker</em> 기사 중 하나를 읽으십시오.
+<ul>
+<li><em>Funny Like a Guy</em>, Tad Friend, 2011년 4월 4일</li>
+<li><em>Going the Distance</em>, David Remnick, 2014년 1월 19일</li>
+<li><em>How the First Gravitational Waves Were Found</em>, Nicola Twilley, 2016년 2월 11일</li>
+<li><em>Happy Feet</em>, Alexandra Jacobs, 2009년 9월 7일</li>
+<li><em>Levels of the Game</em>, John McPhee, 1969년 5월 31일</li>
+<li><em>Reporting from Hiroshima</em>, John Hersey, 1946년 8월 23일</li>
+<li><em>The Catastrophist</em>, Elizabeth Kolbert, 2009년 6월 22일</li>
+<li><em>The Quiet German</em>, George Packer, 2014년 11월 24일</li>
+<li><em>The Pursuit of Beauty</em>, Alec Wilkinson, 2015년 2월 1일</li>
+</ul></li>
+<li>다음 다른 출판물의 기사 중 하나를 읽으십시오.
+<ul>
+<li><em>Blades of Glory</em>, Holly Anderson, Grantland</li>
+<li><em>Born to Run</em>, Walt Harrington, The Washington Post</li>
+<li><em>Dropped</em>, Jason Fagone, Grantland</li>
+<li><em>Federer as Religious Experience</em>, David Foster Wallace, The New York Times Magazine</li>
+<li><em>Generation Why?</em>, Zadie Smith, The New York Review of Books</li>
+<li><em>One hundred years of arm bars</em>, David Samuels, Grantland</li>
+<li><em>Out in the Great Alone</em>, Brian Phillips, ESPN</li>
+<li><em>Pearls Before Breakfast</em>, Gene Weingarten, The Washington Post</li>
+<li><em>Resurrecting The Champ</em>, J.R. Moehringer, Los Angeles Times</li>
+<li><em>The Cult of “Jurassic Park”</em>, Bryan Curtis, Grantland</li>
+<li><em>The House that Hova Built</em>, Zadie Smith, The New York Times</li>
+<li><em>The Re-Education of Chris Copeland</em>, Flinder Boyd, SB Nation</li>
+<li><em>The Sea of Crisis</em>, Brian Phillips, Grantland</li>
+<li><em>The Webb Space Telescope Will Rewrite Cosmic History. If It Works.</em>, Natalie Wolchover, Quanta Magazine</li>
+</ul></li>
+</ul>
+<p><strong>주요 개념 및 기술</strong></p>
+<ul>
+<li>글쓰기는 데이터를 분석하는 데 필요한 모든 기술 중 가장 중요한 기술일 수 있습니다. 글쓰기를 잘하는 유일한 방법은 매일 글을 쓰는 것입니다.</li>
+<li>글을 쓸 때, 이점은 일반적으로 우리 자신에게 돌아오지만, 독자를 위해 글을 써야 합니다. 이는 우리가 전달하고자 하는 하나의 주요 메시지를 가지고, 우리가 어디에 있는지보다는 독자가 어디에 있는지 생각하는 것을 의미합니다.</li>
+<li>가능한 한 빨리 초고를 작성하고 싶습니다. 아무리 형편없더라도 초고가 존재하는 것과 존재하지 않는 것의 차이는 엄청납니다. 그 시점에서 우리는 다시 쓰기 시작합니다. 그렇게 할 때 불필요한 단어를 제거하여 명확성을 극대화하는 것을 목표로 합니다.</li>
+<li>우리는 일반적으로 관심 분야에서 시작하여 연구 질문, 데이터 세트 및 분석을 반복적인 방식으로 개발합니다. 이 과정을 통해 우리가 무엇을 하고 있는지 더 잘 이해하게 됩니다.</li>
+</ul>
+<p><strong>소프트웨어 및 패키지</strong></p>
+<ul>
+<li><code>knitr</code> <span class="citation" data-cites="citeknitr">(<a href="#ref-citeknitr" role="doc-biblioref">Xie 2023</a>)</span></li>
+<li><code>tidyverse</code> <span class="citation" data-cites="tidyverse">(<a href="#ref-tidyverse" role="doc-biblioref">Wickham 기타 2019</a>)</span></li>
+<li><code>tinytable</code> <span class="citation" data-cites="tinytable">(<a href="#ref-tinytable" role="doc-biblioref">Arel-Bundock 2024</a>)</span></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tinytable)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="서론" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="서론"><span class="header-section-number">4.1</span> 서론</h2>
+<blockquote class="blockquote">
+<p>작가가 되고 싶다면, 무엇보다 두 가지를 해야 합니다. 많이 읽고 많이 써야 합니다. 제가 아는 한 이 두 가지를 피할 방법은 없습니다. 지름길은 없습니다.</p>
+<p><span class="citation" data-cites="stephenking">S. King (<a href="#ref-stephenking" role="doc-biblioref">2000</a>, p.&nbsp;145)</span></p>
+</blockquote>
+<p>우리는 주로 데이터를 사용하여 이야기를 글로 전달합니다. 글쓰기는 효율적으로 소통할 수 있게 해줍니다. 또한 우리가 무엇을 믿는지 알아내는 방법이며, 우리의 아이디어에 대한 피드백을 받을 수 있게 해줍니다. 효과적인 논문은 간결하게 작성되고 잘 정리되어 있어 이야기가 잘 흐르도록 합니다. 적절한 문장 구조, 철자, 어휘 및 문법은 주의를 분산시키지 않고 이야기의 각 측면을 명확하게 표현할 수 있도록 해주기 때문에 중요합니다.</p>
+<p>이 장은 글쓰기에 관한 것입니다. 이 장을 마치면, 당신이 원하는 것을 전달하고 독자의 시간을 낭비하지 않는 짧고 상세한 정량 논문을 작성하는 방법에 대해 더 잘 알게 될 것입니다. 우리는 우리 자신을 위해서가 아니라 독자를 위해 글을 씁니다. 특히, 우리는 독자에게 유용하도록 글을 씁니다. 이는 새롭고, 진실하며, 중요한 것을 명확하게 전달하는 것을 의미합니다 <span class="citation" data-cites="grahamhowtowriteusefully">(<a href="#ref-grahamhowtowriteusefully" role="doc-biblioref">Graham 2020</a>)</span>. 그렇다고 해도, 글쓰기의 가장 큰 이점은 종종 작가에게 돌아옵니다. 우리가 독자를 위해 글을 쓸 때도 마찬가지입니다. 이는 글쓰기 과정이 우리가 무엇을 생각하고 어떻게 그것을 믿게 되었는지 알아내는 방법이기 때문입니다.</p>
+<p>이 장의 측면들은 목록처럼 느껴질 수 있습니다. 처음에는 이러한 측면들을 빠르게 훑어보고, 필요할 때 다시 돌아오는 것이 유용할 수 있습니다.</p>
+</section>
+<section id="글쓰기" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="글쓰기"><span class="header-section-number">4.2</span> 글쓰기</h2>
+<blockquote class="blockquote">
+<p>글을 쓰는 방법은 세 번 또는 네 번 반복하는 것이지, 한 번에 끝내는 것이 아닙니다. 저에게 가장 어려운 부분은 먼저, 무엇이든 간에 제 앞에 내놓는 것입니다. 때로는 초조한 광란 속에서 벽에 진흙을 던지듯이 단어를 던지기도 합니다. 무엇이든 간에, 초고로 내뱉고, 쏟아내고, 지껄이십시오.</p>
+<p><span class="citation" data-cites="draftnumberfour">McPhee (<a href="#ref-draftnumberfour" role="doc-biblioref">2017</a>, p.&nbsp;159)</span></p>
+</blockquote>
+<p>글쓰기 과정은 다시 쓰기 과정입니다. 중요한 과제는 가능한 한 빨리 초고를 작성하는 것입니다. 완전한 초고가 존재하기 전까지는 아무리 나빠 보이더라도 작성된 내용을 삭제하거나 수정하지 않는 것이 유용합니다. 그냥 쓰십시오. (이 조언은 경험이 적은 작가에게 해당됩니다. 경험이 쌓이면 접근 방식이 바뀔 수 있습니다.)</p>
+<p>가장 위협적인 단계 중 하나는 빈 페이지이며, 우리는 “서론”, “데이터”, “모델”, “결과”, “논의”와 같은 제목을 즉시 추가하여 이를 처리합니다. 그리고 “제목”, “날짜”, “저자”, “초록”과 같이 필요한 다양한 항목에 대한 필드를 상단 내용에 추가합니다. 이렇게 하면 일반적인 개요가 생성되며, 이는 논문의 <em>mise en place</em> 역할을 할 것입니다. 배경 설명을 하자면, <em>mise en place</em>는 전문 주방에서 재료를 분류하고 준비하여 쉽게 접근할 수 있도록 배열하는 준비 단계입니다. 이는 불필요한 지연 없이 필요한 모든 것을 사용할 수 있도록 보장합니다. 개요를 작성하는 것은 정량 논문을 작성할 때 동일한 역할을 하며, 저녁 식사를 준비하는 데 사용할 재료를 카운터에 놓는 것과 유사합니다 <span class="citation" data-cites="draftnumberfour">(<a href="#ref-draftnumberfour" role="doc-biblioref">McPhee 2017</a>)</span>.</p>
+<p>이 일반적인 개요를 설정한 후, 연구 질문에 대해 깊이 생각함으로써 우리가 탐구하는 것에 대한 이해를 발전시켜야 합니다. 이론적으로는 연구 질문을 개발하고, 답하고, 모든 글쓰기를 수행하지만, 실제로는 거의 그렇게 되지 않습니다 <span class="citation" data-cites="franklin2005exploratory">(<a href="#ref-franklin2005exploratory" role="doc-biblioref">Franklin 2005</a>)</span>. 대신, 우리는 일반적으로 질문과 답변의 형태에 대한 아이디어를 가지고 있으며, 글을 쓰면서 이러한 아이디어가 덜 모호해집니다. 이는 글쓰기 과정을 통해 우리의 사고를 다듬기 때문입니다 <span class="citation" data-cites="stephenking">(<a href="#ref-stephenking" role="doc-biblioref">S. King 2000</a>, p.&nbsp;131)</span>. 연구 질문에 대한 생각을 정리한 후, 각 섹션에 점을 추가하고, 필요에 따라 정보가 담긴 하위 제목으로 하위 섹션을 추가할 수 있습니다. 그런 다음 해당 점들을 단락으로 확장합니다. 이 작업을 수행하는 동안 우리의 사고는 다른 연구자들의 웹뿐만 아니라 우리의 상황과 환경과 같은 다른 측면에도 영향을 받습니다 <span class="citation" data-cites="latour">(<a href="#ref-latour" role="doc-biblioref">Latour 1996</a>)</span>.</p>
+<p>초고를 작성하는 동안 당신이 충분히 잘하지 못하거나 불가능하다는 느낌을 무시해야 합니다. 그냥 쓰십시오. 당신은 종이에 단어가 필요합니다. 아무리 나쁘더라도 말입니다. 그리고 초고는 당신이 이것을 달성하는 때입니다. 주의를 분산시키는 것을 제거하고 글쓰기에 집중하십시오. 완벽주의는 적이며, 제쳐두어야 합니다. 때로는 매우 일찍 일어나 글을 쓰거나, 마감일을 정하거나, 글쓰기 그룹을 형성하여 이를 달성할 수 있습니다. 긴급성을 조성하는 것이 유용할 수 있으며, 한 가지 옵션은 진행하면서 적절한 인용을 추가하는 것에 신경 쓰지 않는 것입니다. 이는 속도를 늦출 수 있으며, 대신 “[TODO: 여기에 R 인용 추가]”와 같은 것을 추가하는 것입니다. 그래프와 표도 마찬가지입니다. 즉, 실제 그래프와 표 대신 “[TODO: 여기에 각 국가의 시간 경과에 따른 그래프 추가]”와 같은 텍스트 설명을 포함하십시오. 아무리 나쁘더라도 내용을 추가하는 데 집중하십시오. 이 모든 것이 완료되면 초고가 존재합니다.</p>
+<p>이 초고는 형편없이 작성되었고 훌륭함과는 거리가 멀 것입니다. 그러나 나쁜 초고를 작성함으로써 좋은 두 번째 초고, 훌륭한 세 번째 초고, 그리고 결국에는 탁월함에 도달할 수 있습니다 <span class="citation" data-cites="birdbybird">(<a href="#ref-birdbybird" role="doc-biblioref">Lamott 1994</a>, p.&nbsp;20)</span>. 그 초고는 너무 길고, 이해가 되지 않을 것이며, 지지할 수 없는 주장과 해서는 안 되는 주장을 포함할 것입니다. 초고에 대해 부끄럽지 않다면, 충분히 빨리 작성하지 않은 것입니다.</p>
+<p>“삭제” 키와 “잘라내기” 및 “붙여넣기”를 광범위하게 사용하여 초고를 두 번째 초고로 바꾸십시오. 초고를 인쇄하고 빨간 펜을 사용하여 단어, 문장 및 전체 단락을 이동하거나 제거하는 것이 특히 도움이 됩니다. 초고에서 두 번째 초고로 넘어가는 과정은 이야기의 흐름과 일관성을 돕기 위해 한 번에 수행하는 것이 가장 좋습니다. 이 첫 번째 다시 쓰기의 한 가지 측면은 우리가 전달하고자 하는 이야기를 향상시키는 것입니다. 또 다른 측면은 이야기가 아닌 모든 것을 제거하는 것입니다 <span class="citation" data-cites="stephenking">(<a href="#ref-stephenking" role="doc-biblioref">S. King 2000</a>, p.&nbsp;57)</span>.</p>
+<p>초고가 되어가는 내용에 잘 맞지 않더라도 좋아 보이는 작업을 제거하는 것은 고통스러울 수 있습니다. 이 고통을 덜어주는 한 가지 방법은 임시 문서, 예를 들어 “debris.qmd”를 만들어 원치 않는 단락을 즉시 삭제하는 대신 저장하는 것입니다. 또 다른 전략은 단락을 주석 처리하는 것입니다. 그렇게 하면 원본 파일을 계속 볼 수 있고 유용할 수 있는 측면을 알아차릴 수 있습니다.</p>
+<p>각 섹션에 작성된 내용을 검토하면서 발전하는 이야기를 뒷받침하는 방식에 특별히 주의를 기울여 의미를 부여하십시오. 이 수정 과정은 글쓰기의 본질입니다 <span class="citation" data-cites="draftnumberfour">(<a href="#ref-draftnumberfour" role="doc-biblioref">McPhee 2017</a>, p.&nbsp;160)</span>. 또한 참조를 수정하고 실제 그래프와 표를 추가해야 합니다. 이 다시 쓰기 과정의 일부로 논문의 핵심 메시지가 발전하고 연구 질문에 대한 답변이 더 명확해지는 경향이 있습니다. 이 시점에서 서론과 같은 측면으로 돌아갈 수 있으며, 마지막으로 초록으로 돌아갈 수 있습니다. 오타 및 기타 문제는 작업의 신뢰성에 영향을 미칩니다. 따라서 두 번째 초고의 일부로 수정해야 합니다.</p>
+<p>이 시점에서 초고는 의미를 갖기 시작합니다. 이제 그것을 훌륭하게 만드는 것이 목표입니다. 인쇄하여 다시 종이로 검토하십시오. 이야기에 기여하지 않는 모든 것을 제거하십시오. 이 단계쯤 되면 논문에 너무 가까워지기 시작할 수 있습니다. 이는 다른 사람에게 의견을 요청할 좋은 기회입니다. 이야기의 약점에 대해 피드백을 요청하십시오. 이를 해결한 후에는 논문을 다시 한 번 읽어보는 것이 도움이 될 수 있습니다. 이번에는 소리 내어 읽으십시오. 논문은 결코 “완료”되지 않으며, 특정 시점에서 시간이 다 떨어지거나 지겨워지는 경우가 더 많습니다.</p>
+</section>
+<section id="질문하기" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="질문하기"><span class="header-section-number">4.3</span> 질문하기</h2>
+<p>질적 접근 방식과 양적 접근 방식 모두 제자리를 찾고 있습니다. 이 책에서는 양적 접근 방식에 중점을 둡니다. 그럼에도 불구하고 질적 연구는 중요하며, 종종 가장 흥미로운 작업은 두 가지 모두를 포함합니다. 양적 분석을 수행할 때 우리는 데이터 품질, 측정 및 관련성과 같은 문제에 직면합니다. 우리는 종종 인과 관계를 파악하려고 노력하는 데 특히 관심이 있습니다. 그럼에도 불구하고 우리는 세상에 대해 무언가를 배우려고 노력합니다. 우리의 연구 질문은 이 모든 것을 고려해야 합니다.</p>
+<p>대략적으로, 그리고 단순화의 위험을 무릅쓰고, 연구를 수행하는 두 가지 방법이 있습니다.</p>
+<ol type="1">
+<li>데이터 우선; 또는</li>
+<li>질문 우선.</li>
+</ol>
+<p>그러나 이는 이진법이 아니며, 종종 연구는 연구 퍼즐을 중심으로 데이터와 질문 사이를 반복적으로 진행됩니다 <span class="citation" data-cites="Gustafsson2017">(<a href="#ref-Gustafsson2017" role="doc-biblioref">Gustafsson 와/과 Hagström 2017</a>)</span>. <span class="citation" data-cites="bydesignplanningresearch">Light, Singer, 와/과 Willett (<a href="#ref-bydesignplanningresearch" role="doc-biblioref">1990</a>, p.&nbsp;39)</span>는 이 접근 방식을 <span class="math inline">\(\mbox{이론}\rightarrow\mbox{데이터}\rightarrow\mbox{이론}\rightarrow\mbox{데이터}\)</span> 등의 나선형으로 설명합니다. 예를 들어, 질문 우선 접근 방식은 이론 중심 또는 데이터 중심일 수 있으며, 데이터 우선 접근 방식도 마찬가지입니다. 대안적인 틀은 귀납적, 즉 특정에서 일반으로의 접근 방식과 연역적, 즉 일반에서 특정으로의 접근 방식을 비교하는 것입니다.</p>
+<p>두 가지 예를 고려해 봅시다.</p>
+<ol type="1">
+<li><span class="citation" data-cites="ahstonanderson은">(<a href="#ref-ahstonanderson은" role="doc-biblioref"><strong>ahstonanderson은?</strong></a>)</span> 100,000명의 Spotify 사용자로부터 80억 개의 고유한 청취 이벤트를 조사하여 사용자가 콘텐츠를 탐색하는 방법을 이해합니다. 그들은 나이와 행동 사이에 명확한 관계가 있음을 발견했습니다. 젊은 사용자는 더 다양한 소비에도 불구하고 나이든 사용자보다 알려지지 않은 콘텐츠를 덜 탐색합니다. 발견 및 탐색에 대한 연구 질문이 이 논문을 이끌고 있다는 것은 분명하지만, 이 데이터 세트에 대한 접근 없이는 불가능했을 것입니다. 궁극적인 일치가 이루어지기 전에 잠재적인 연구 질문과 잠재적인 데이터 세트가 고려되는 반복적인 과정이 있었을 것입니다.</li>
+<li><a href="#sec-fire-hose에서" class="quarto-xref"><span class="quarto-unresolved-ref">sec-fire-hose에서</span></a> 소개된 신생아 사망률(NMR)을 탐색하고 싶다고 생각해 봅시다. 20년 후 사하라 이남 아프리카에서 NMR이 어떻게 보일지 궁금할 수 있습니다. 이것은 질문 우선 접근 방식이 될 것입니다. 그러나 이 안에는 다음과 같은 것들이 있을 수 있습니다. 다른 양과의 생물학적 관계를 기반으로 무엇을 기대하는지와 같은 이론 중심적인 측면; 또는 예측을 하기 위해 가능한 한 많은 데이터를 수집하는 것과 같은 데이터 중심적인 측면. 대안적인, 순전히 데이터 중심적인 접근 방식은 NMR에 접근한 다음 가능한 것을 알아내는 것입니다.</li>
+</ol>
+<section id="데이터-우선" class="level3" data-number="4.3.1">
+<h3 data-number="4.3.1" class="anchored" data-anchor-id="데이터-우선"><span class="header-section-number">4.3.1</span> 데이터 우선</h3>
+<p>데이터 우선일 때, 주요 문제는 사용 가능한 데이터로 합리적으로 답변할 수 있는 질문을 알아내는 것입니다. 이러한 질문을 결정할 때 다음을 고려하는 것이 유용합니다.</p>
+<ol type="1">
+<li>이론: 인과 관계를 합리적으로 결정할 수 있는 기대가 있습니까? 예를 들어, 마크 크리스텐슨은 주식 시장을 차트화하는 질문이라면 <em>오디세이</em>로 돌아가 불 위에서 황소 내장을 읽는 것이 더 나을 수 있다고 농담하곤 했습니다. 적어도 그렇게 하면 하루가 끝날 때 먹을 것이 있을 것이기 때문입니다. 질문은 일반적으로 허위 관계를 피하는 데 도움이 되는 그럴듯한 이론적 근거를 가져야 합니다. 주어진 데이터로 이론을 개발하는 한 가지 방법은 “이것은 무엇의 사례인가?”를 고려하는 것입니다 <span class="citation" data-cites="ofwhatisthisaninstance">(<a href="#ref-ofwhatisthisaninstance" role="doc-biblioref">Rosenau 1999</a>, p.&nbsp;7)</span>. 그 접근 방식을 따르면, 특정 설정을 넘어 일반화하려고 노력합니다. 예를 들어, 특정 내전을 모든 내전의 사례로 생각하는 것입니다. 이것의 이점은 이론 구축에 필요한 일반적인 속성에 주의를 집중시킨다는 것입니다.</li>
+<li>중요성: 답변할 수 있는 사소한 질문은 많지만, 우리의 시간이나 독자의 시간을 낭비하지 않는 것이 중요합니다. 중요한 질문을 갖는 것은 데이터 정리 및 코드 디버깅에 4주 연속으로 시간을 보내는 것과 같은 상황에서 동기 부여에 도움이 될 수 있습니다. 산업에서는 재능 있는 직원과 자금을 유치하는 데 더 쉽게 만들 수도 있습니다. 그렇다고 해도 균형이 필요합니다. 질문은 답변될 가능성이 높아야 합니다. 세대를 정의하는 질문을 공격하는 것은 여러 부분으로 나누는 것이 가장 좋습니다.</li>
+<li>가용성: 미래에 추가 데이터가 제공될 합리적인 기대가 있습니까? 이는 관련 질문에 답변하고 하나의 논문을 연구 의제로 바꿀 수 있게 해줍니다.</li>
+<li>반복: 이것은 여러 번 실행할 수 있는 것입니까, 아니면 일회성 분석입니까? 전자라면 특정 연구 질문에 답변하기 시작하고 반복할 수 있습니다. 그러나 데이터에 한 번만 접근할 수 있다면 더 광범위한 질문에 대해 생각해야 합니다.</li>
+</ol>
+<p>샤오리 멩에게 귀속되는 속담이 있습니다. 모든 통계는 결측 데이터 문제라는 것입니다. 따라서 역설적으로, 데이터 우선 질문을 하는 또 다른 방법은 우리가 가지고 있지 않은 데이터에 대해 생각하는 것입니다. 예를 들어, 이전에 논의된 신생아 및 산모 사망률 예시로 돌아가면 한 가지 문제는 완전한 사망 원인 데이터가 없다는 것입니다. 만약 있다면, 관련 사망자 수를 셀 수 있을 것입니다. (<span class="citation" data-cites="Castro2023은">(<a href="#ref-Castro2023은" role="doc-biblioref"><strong>Castro2023은?</strong></a>)</span> 이 단순한 가설이 실제로는 복잡할 것이라고 상기시킵니다. 왜냐하면 다른 원인과 독립적이지 않은 사망 원인이 때때로 있기 때문입니다.) 결측 데이터 문제가 설정되면 데이터 중심 접근 방식을 취할 수 있습니다. 우리는 우리가 가지고 있는 데이터를 살펴보고, 가상의 데이터 세트를 근사화하는 데 사용할 수 있는 정도를 나타내는 연구 질문을 합니다.</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+거인의 어깨
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>샤오리 멩은 하버드 대학교의 휘플 V. N. 존스 통계학 교수입니다. 1990년 하버드 대학교에서 통계학 박사 학위를 취득한 후 시카고 대학교에서 조교수로 임명되었고 2000년에 교수로 승진했습니다. 2001년 하버드로 옮겨 2004년부터 2012년까지 통계학과장을 역임했습니다. 그는 결측 데이터(<span class="citation" data-cites="meng1994">Meng (<a href="#ref-meng1994" role="doc-biblioref">1994</a>)</span> 및 <span class="citation" data-cites="meng2012">Meng (<a href="#ref-meng2012" role="doc-biblioref">2012</a>)</span>) 및 데이터 품질(<span class="citation" data-cites="meng2018statistical">Meng (<a href="#ref-meng2018statistical" role="doc-biblioref">2018</a>)</span>)을 포함한 광범위한 주제에 대해 출판했습니다. 그는 2001년 COPSS 회장상을 수상했습니다.</p>
+</div>
+</div>
+<p>일부 연구자들이 데이터 우선인 한 가지 방법은 특정 지리적 또는 역사적 상황의 데이터에 대한 특정 전문 지식을 개발하는 것입니다. 예를 들어, 그들은 현재의 영국 또는 19세기 후반의 일본에 대해 특히 잘 알고 있을 수 있습니다. 그런 다음 다른 연구자들이 다른 상황에서 묻는 질문을 살펴보고, 그 질문에 자신의 데이터를 가져옵니다. 예를 들어, 특정 질문이 처음에 미국에 대해 질문되고, 그 다음 많은 연구자들이 영국, 캐나다, 호주 및 기타 여러 국가에 대해 동일한 질문에 답변하는 것을 흔히 볼 수 있습니다.</p>
+<p>데이터 우선 연구에는 특히 불확실성이 크다는 점을 포함하여 여러 가지 단점이 있습니다. 또한 선택 효과에 대한 우려가 항상 있기 때문에 외부 타당성 확보에 어려움을 겪을 수 있습니다.</p>
+<p>데이터 중심 연구의 변형은 모델 중심 연구입니다. 여기서는 연구자가 특정 통계적 접근 방식에 대한 전문가가 된 다음 해당 접근 방식을 적절한 맥락에 적용합니다.</p>
+</section>
+<section id="질문-우선" class="level3" data-number="4.3.2">
+<h3 data-number="4.3.2" class="anchored" data-anchor-id="질문-우선"><span class="header-section-number">4.3.2</span> 질문 우선</h3>
+<p>질문 우선을 시도할 때, 데이터 가용성에 대한 역방향 문제가 있습니다. “FINER 프레임워크”는 의학에서 연구 질문 개발을 안내하는 데 사용됩니다. 이는 다음과 같은 질문을 할 것을 권장합니다: 실현 가능하고(Feasible), 흥미롭고(Interesting), 새롭고(Novel), 윤리적이며(Ethical), 관련성 있는(Relevant) 질문 <span class="citation" data-cites="hulley2007designing">(<a href="#ref-hulley2007designing" role="doc-biblioref">Hulley 기타 2007</a>)</span>. <span class="citation" data-cites="farrugia2010research는">(<a href="#ref-farrugia2010research는" role="doc-biblioref"><strong>farrugia2010research는?</strong></a>)</span> FINER에 PICOT을 추가하여 인구(Population), 개입(Intervention), 비교 그룹(Comparison group), 관심 결과(Outcome of interest), 시간(Time)과 같은 추가 고려 사항을 권장합니다.</p>
+<p>질문을 작성하는 것이 압도적으로 느껴질 수 있습니다. 한 가지 방법은 매우 구체적인 질문을 하는 것입니다. 다른 방법은 기술적, 예측적, 추론적 또는 인과적 분석에 관심이 있는지 결정하는 것입니다. 그러면 이러한 것들은 다른 유형의 질문으로 이어집니다. 예를 들어:</p>
+<ul>
+<li>기술적 분석: “<span class="math inline">\(x\)</span>는 어떻게 생겼습니까?”;</li>
+<li>예측 분석: “<span class="math inline">\(x\)</span>에 무슨 일이 일어날까요?”;</li>
+<li>추론: “<span class="math inline">\(x\)</span>를 어떻게 설명할 수 있습니까?”; 그리고</li>
+<li>인과: “<span class="math inline">\(x\)</span>가 <span class="math inline">\(y\)</span>에 어떤 영향을 미칩니까?”.</li>
+</ul>
+<p>이러한 각각은 역할을 합니다. 신뢰성 혁명 <span class="citation" data-cites="angrist2010credibility">(<a href="#ref-angrist2010credibility" role="doc-biblioref">Angrist 와/과 Pischke 2010</a>)</span> 이후, 특정 접근 방식으로 답변된 인과적 질문이 지배적이었습니다. 이는 일부 이점을 가져왔지만, 비용이 없지는 않았습니다. 기술적 분석은 때로는 더 많은 통찰력을 제공할 수 있으며, 중요합니다 <span class="citation" data-cites="Sen1980">(<a href="#ref-Sen1980" role="doc-biblioref">Sen 1980</a>)</span>. 질문의 본질은 그것에 답변하는 데 진정으로 관심이 있는지 여부보다 덜 중요합니다.</p>
+<p>시간은 종종 제한될 것이며, 흥미로운 방식으로 제한될 수 있으며, 이는 연구 질문의 세부 사항을 안내할 수 있습니다. 유명인의 발표가 주식 시장에 미치는 영향에 관심이 있다면, 발표 전후의 주가를 살펴보면 됩니다. 그러나 암 치료제가 장기적인 결과에 미치는 영향에 관심이 있다면 어떨까요? 효과가 20년이 걸린다면, 우리는 한동안 기다리거나 20년 전에 치료받은 사람들을 살펴봐야 합니다. 그러면 오늘 약을 투여하는 경우와 비교하여 선택 효과와 다른 상황이 발생합니다. 종종 합리적인 유일한 방법은 통계 모델을 구축하는 것이지만, 이는 다른 문제를 야기합니다.</p>
+</section>
+</section>
+<section id="질문에-답하기" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="질문에-답하기"><span class="header-section-number">4.4</span> 질문에 답하기</h2>
+<section id="반사실과-편향" class="level3" data-number="4.4.1">
+<h3 data-number="4.4.1" class="anchored" data-anchor-id="반사실과-편향"><span class="header-section-number">4.4.1</span> 반사실과 편향</h3>
+<p>질문에 답할 때 반사실을 만드는 것이 종종 중요합니다. 반사실은 “만약”이 거짓인 “만약-그러면” 문장입니다. 루이스 캐럴의 <em>거울 나라의 앨리스</em>에 나오는 험프티 덤프티의 예를 생각해 봅시다.</p>
+<blockquote class="blockquote">
+<p>“정말 쉬운 수수께끼를 내는군요!” 험프티 덤프티가 으르렁거렸다. “물론 그렇게 생각하지 않습니다! 만약 제가 떨어졌다면—그럴 리는 없지만—만약 떨어졌다면—” 여기서 그는 입술을 오므리고 너무나 진지하고 위엄 있게 보여 앨리스는 웃음을 참을 수 없었다. “만약 제가 떨어졌다면,” 그가 계속했다. “왕께서 저에게 약속하셨습니다—그의 입으로 직접—”</p>
+<p><span class="citation" data-cites="throughthelookingglass">Carroll (<a href="#ref-throughthelookingglass" role="doc-biblioref">1871</a>)</span></p>
+</blockquote>
+<p>험프티는 자신이 결코 떨어지지 않을 것이라고 확신하면서도, 만약 떨어졌을 때 일어날 일에 만족합니다. 질문에 대한 답을 결정하는 것은 종종 이 비교 그룹입니다. 예를 들어, <a href="#sec-causality-from-observational-data에서는" class="quarto-xref"><span class="quarto-unresolved-ref">sec-causality-from-observational-data에서는</span></a> VO2 max가 사이클 선수의 경주 우승 확률에 미치는 영향을 고려합니다. 일반 인구에 걸쳐 비교하면 중요한 변수입니다. 그러나 잘 훈련된 운동선수에게만 비교하면 선택 때문에 덜 중요합니다.</p>
+<p>연구 질문을 결정할 때 특히 주의해야 할 데이터의 두 가지 측면은 선택 편향과 측정 편향입니다.</p>
+<p>선택 편향은 결과가 표본에 누가 포함되는지에 따라 달라질 때 발생합니다. 선택 편향의 해로운 측면 중 하나는 우리가 그것의 존재를 알아야만 그것에 대해 조치를 취할 수 있다는 것입니다. 그러나 많은 기본 진단은 선택 편향을 식별하지 못합니다. <a href="#sec-hunt-data에서" class="quarto-xref"><span class="quarto-unresolved-ref">sec-hunt-data에서</span></a> 논의하는 A/B 테스트에서 A/A 테스트는 그룹을 만들고 처치를 적용하기 전에 비교하는 약간의 변형입니다 (따라서 A/A 명명법). 그룹이 처음부터 동일한지 확인하려는 이러한 노력은 선택 편향을 식별하는 데 도움이 될 수 있습니다. 더 일반적으로, 연령 그룹, 성별, 교육과 같은 표본의 속성을 모집단의 특성과 비교하는 것도 도움이 될 수 있습니다. 그러나 선택 편향과 관측 데이터의 근본적인 문제는 우리가 데이터가 있는 사람들은 데이터가 없는 사람들과 적어도 한 가지 면에서 다르다는 것을 알고 있다는 것입니다! 그러나 다른 어떤 면에서 다를 수 있는지는 알 수 없습니다.</p>
+<p>선택 편향은 분석의 많은 측면에 스며들 수 있습니다. 처음에는 대표성이 있는 표본도 시간이 지남에 따라 편향될 수 있습니다. 예를 들어, <a href="#sec-farm-data에서" class="quarto-xref"><span class="quarto-unresolved-ref">sec-farm-data에서</span></a> 논의하는 설문조사 패널은 응답하지 않는 사람들이 생기기 때문에 주기적으로 업데이트해야 합니다.</p>
+<p>주의해야 할 또 다른 편향은 측정 편향입니다. 이는 데이터가 수집된 방식에 따라 결과가 영향을 받을 때 발생합니다. 이에 대한 일반적인 예는 응답자에게 소득을 물어보면 온라인 설문조사와 비교하여 직접 대면 설문조사에서 다른 답변을 얻을 수 있다는 것입니다.</p>
+</section>
+<section id="추정량" class="level3" data-number="4.4.2">
+<h3 data-number="4.4.2" class="anchored" data-anchor-id="추정량"><span class="header-section-number">4.4.2</span> 추정량</h3>
+<p>우리는 일반적으로 데이터를 사용하여 질문에 답하는 데 관심이 있으며, 세부 사항에 대해 명확하게 하는 것이 중요합니다. 예를 들어, 흡연이 기대 수명에 미치는 영향에 관심이 있을 수 있습니다. 이 경우, 우리가 결코 알 수 없는 어떤 진정한 효과가 있으며, 그 진정한 효과를 “추정량”이라고 합니다 <span class="citation" data-cites="Little2021">(<a href="#ref-Little2021" role="doc-biblioref">Little 와/과 Lewis 2021</a>)</span>. 논문의 어느 시점에서, 이상적으로는 서론에서 추정량을 정의하는 것이 중요합니다 <span class="citation" data-cites="Lundberg2021">(<a href="#ref-Lundberg2021" role="doc-biblioref">Lundberg, Johnson, 와/과 Stewart 2021</a>)</span>. 이는 분석 계획의 특정 측면을 약간 변경하여 우연히 다른 것을 추정하게 되는 것이 쉽기 때문입니다 <span class="citation" data-cites="becarefulaboutyourestimand">(<a href="#ref-becarefulaboutyourestimand" role="doc-biblioref">Kahan 기타 2022</a>)</span>. 일부 의약품 규제 기관에서는 이를 요구하기 시작했습니다 <span class="citation" data-cites="kahan2024">(<a href="#ref-kahan2024" role="doc-biblioref">Kahan 기타 2024</a>)</span>. 추정량의 경우 효과가 무엇을 나타내는지에 대한 명확한 설명이 필요합니다 <span class="citation" data-cites="Kahan2023">(<a href="#ref-Kahan2023" role="doc-biblioref">Kahan 기타 2023</a>)</span>. “추정기”는 우리가 가지고 있는 데이터를 사용하여 “추정량”의 “추정치”를 생성하는 과정입니다. <span class="citation" data-cites="steinsparadox는">(<a href="#ref-steinsparadox는" role="doc-biblioref"><strong>steinsparadox는?</strong></a>)</span> 추정기 및 관련 문제에 대한 논의를 제공합니다.</p>
+<p><span class="citation" data-cites="de2021thinking">Bueno de Mesquita 와/과 Fowler (<a href="#ref-de2021thinking" role="doc-biblioref">2021</a>, p.&nbsp;94)</span>는 추정치와 추정량 간의 관계를 다음과 같이 설명합니다.</p>
+<p><span class="math display">\[\mbox{추정치 = 추정량 + 편향 + 노이즈}\]</span></p>
+<p>편향은 추정기가 추정량과 다른 추정치를 체계적으로 제공하는 문제를 의미하며, 노이즈는 비체계적인 차이를 의미합니다. 예를 들어, 표준 정규 분포를 고려해 봅시다. 우리는 평균을 이해하는 데 관심이 있을 수 있으며, 이는 우리의 추정량이 될 것입니다. 우리는 (실제 데이터에서는 결코 알 수 없는 방식으로) 추정량이 0이라는 것을 알고 있습니다. 그 분포에서 10번을 추출해 봅시다. 추정치를 생성하는 데 사용할 수 있는 한 가지 추정기는 추출값을 합산하고 추출 횟수로 나누는 것입니다. 다른 하나는 추출값을 정렬하고 중간 관측값을 찾는 것입니다. 더 구체적으로, 이 상황을 시뮬레이션해 보겠습니다 (<a href="#tbl-estimators" class="quarto-xref">표&nbsp;<span class="quarto-unresolved-ref">tbl-estimators</span></a>).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">853</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">num_draws =</span> <span class="fu">c</span>(</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rep</span>(<span class="dv">10</span>, <span class="at">times =</span> <span class="dv">10</span>),</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rep</span>(<span class="dv">100</span>, <span class="at">times =</span> <span class="dv">100</span>),</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rep</span>(<span class="dv">1000</span>, <span class="at">times =</span> <span class="dv">1000</span>),</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rep</span>(<span class="dv">10000</span>, <span class="at">times =</span> <span class="dv">10000</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">draw =</span> <span class="fu">rnorm</span>(</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">length</span>(num_draws),</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> <span class="dv">0</span>,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">estimator_one =</span> <span class="fu">sum</span>(draw) <span class="sc">/</span> <span class="fu">unique</span>(num_draws),</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">estimator_two =</span> <span class="fu">sort</span>(draw)[<span class="fu">round</span>(<span class="fu">unique</span>(num_draws) <span class="sc">/</span> <span class="dv">2</span>, <span class="dv">0</span>)],</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">.by =</span> num_draws</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">style_tt</span>(<span class="at">j =</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">align =</span> <span class="st">"r"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">format_tt</span>(<span class="at">digits =</span> <span class="dv">2</span>, <span class="at">num_mark_big =</span> <span class="st">","</span>, <span class="at">num_fmt =</span> <span class="st">"decimal"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setNames</span>(<span class="fu">c</span>(<span class="st">"추출 횟수"</span>, <span class="st">"추정기 1"</span>, <span class="st">"추정기 2"</span>))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="tbl-estimators" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-estimators-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+표&nbsp;4.1: 추출 횟수 증가에 따른 무작위 추출 평균의 두 가지 추정기 결과 비교
+</figcaption>
+<div aria-describedby="tbl-estimators-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<!-- preamble start -->
+
+    <script>
+
+      function styleCell_zh64jrxoo0w22fy5v6db(i, j, css_id) {
+          var table = document.getElementById("tinytable_zh64jrxoo0w22fy5v6db");
+          var cell = table.querySelector(`[data-row="${i}"][data-col="${j}"]`);
+          if (cell) {
+              console.log(`Styling cell at (${i}, ${j}) with class ${css_id}`);
+              cell.classList.add(css_id);
+          } else {
+              console.warn(`Cell at (${i}, ${j}) not found.`);
+          }
+      }
+      function insertSpanRow(i, colspan, content) {
+        var table = document.getElementById('tinytable_zh64jrxoo0w22fy5v6db');
+        // Find the row with data-row attribute matching i
+        var targetRow = table.querySelector(`tr [data-row="${i}"]`).closest('tr');
+        var newRow = table.insertRow(targetRow.rowIndex);
+        var newCell = newRow.insertCell(0);
+        newCell.setAttribute("colspan", colspan);
+        newCell.setAttribute("data-col", "0");
+        newCell.setAttribute("data-row", i - 1);
+        // newCell.innerText = content;
+        // this may be unsafe, but innerText does not interpret <br>
+        newCell.innerHTML = content;
+      }
+      function spanCell_zh64jrxoo0w22fy5v6db(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_zh64jrxoo0w22fy5v6db");
+        const targetCell = table.querySelector(`[data-row="${i}"][data-col="${j}"]`);
+        if (!targetCell) {
+          console.warn(`Cell at (${i}, ${j}) not found.`);
+        }
+
+        // Get all cells that need to be removed
+        const cellsToRemove = [];
+        for (let r = 0; r < rowspan; r++) {
+          for (let c = 0; c < colspan; c++) {
+            if (r === 0 && c === 0) continue; // Skip the target cell
+            const cell = table.querySelector(`[data-row="${i + r}"][data-col="${j + c}"]`);
+            if (cell) {
+              cellsToRemove.push(cell);
+            }
+          }
+        }
+
+        // Remove all cells
+        cellsToRemove.forEach(cell => cell.remove());
+
+        // Set rowspan and colspan of the target cell if it exists
+        if (targetCell) {
+          targetCell.rowSpan = rowspan;
+          targetCell.colSpan = colspan;
+        }
+      }
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: '4', j: 1 }, { i: '4', j: 2 },  ], css_id: 'tinytable_css_6gaqwdqna1bat5a8iswu',}, 
+          { positions: [ { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '3', j: 2 }, { i: '1', j: 1 }, { i: '1', j: 2 }, { i: '2', j: 2 },  ], css_id: 'tinytable_css_pjr2c7wqb5zpankfpe0w',}, 
+          { positions: [ { i: '0', j: 1 }, { i: '0', j: 2 },  ], css_id: 'tinytable_css_b94998wp39ga68gsjv7k',}, 
+          { positions: [ { i: '4', j: 0 },  ], css_id: 'tinytable_css_2mbyg1gmrtdrsh405dkd',}, 
+          { positions: [ { i: '0', j: 0 },  ], css_id: 'tinytable_css_8wffljbls7dccnz0dsxo',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  styleCell_zh64jrxoo0w22fy5v6db(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <style>
+      /* tinytable css entries after */
+      .table td.tinytable_css_6gaqwdqna1bat5a8iswu, .table th.tinytable_css_6gaqwdqna1bat5a8iswu { text-align: right; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_pjr2c7wqb5zpankfpe0w, .table th.tinytable_css_pjr2c7wqb5zpankfpe0w { text-align: right; }
+      .table td.tinytable_css_b94998wp39ga68gsjv7k, .table th.tinytable_css_b94998wp39ga68gsjv7k { text-align: right; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_2mbyg1gmrtdrsh405dkd, .table th.tinytable_css_2mbyg1gmrtdrsh405dkd { border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_8wffljbls7dccnz0dsxo, .table th.tinytable_css_8wffljbls7dccnz0dsxo { border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+    </style>
+    <div class="container">
+      <table class="table table-borderless" id="tinytable_zh64jrxoo0w22fy5v6db" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        <thead>
+        
+              <tr>
+                <th scope="col" data-row="0" data-col="0">추출 횟수</th>
+                <th scope="col" data-row="0" data-col="1">추정기 1</th>
+                <th scope="col" data-row="0" data-col="2">추정기 2</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td data-row="1" data-col="0">10</td>
+                  <td data-row="1" data-col="1">-0.58</td>
+                  <td data-row="1" data-col="2">-0.82</td>
+                </tr>
+                <tr>
+                  <td data-row="2" data-col="0">100</td>
+                  <td data-row="2" data-col="1">-0.06</td>
+                  <td data-row="2" data-col="2">-0.07</td>
+                </tr>
+                <tr>
+                  <td data-row="3" data-col="0">1,000</td>
+                  <td data-row="3" data-col="1">0.06</td>
+                  <td data-row="3" data-col="2">0.04</td>
+                </tr>
+                <tr>
+                  <td data-row="4" data-col="0">10,000</td>
+                  <td data-row="4" data-col="1">-0.01</td>
+                  <td data-row="4" data-col="2">-0.01</td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>추출 횟수가 증가함에 따라 노이즈의 영향이 제거되고, 우리의 추정치는 추정기의 편향을 보여줍니다. 이 예시에서는 진실이 무엇인지 알지만, 실제 데이터를 고려할 때는 무엇을 해야 할지 알기 더 어려울 수 있습니다. 따라서 추정치를 생성하기 전에 추정량이 무엇인지 명확히 하는 것이 중요합니다.</p>
+</section>
+<section id="방향성-비순환-그래프" class="level3" data-number="4.4.3">
+<h3 data-number="4.4.3" class="anchored" data-anchor-id="방향성-비순환-그래프"><span class="header-section-number">4.4.3</span> 방향성 비순환 그래프</h3>
+<p>질문에 답하는 데 사용할 변수에 대해 생각할 때, 우리가 의미하는 바를 구체적으로 명시하는 것이 도움이 될 수 있습니다. 관측 데이터에 갇혀 스스로를 속이기 쉽습니다. 우리는 열심히 생각하고, 사용 가능한 모든 도구를 사용해야 합니다. 데이터에 대해 열심히 생각하는 데 도움이 될 수 있는 한 가지 프레임워크는 방향성 비순환 그래프(DAG)를 사용하는 것입니다. DAG는 흐름도에 대한 멋진 이름이며, 변수 간의 관계를 나타내기 위해 화살표와 선을 그리는 것을 포함합니다.</p>
+<p>이를 구성하기 위해 Graphviz를 사용합니다. Graphviz는 그래프 시각화를 위한 오픈 소스 패키지이며 Quarto에 내장되어 있습니다. 코드는 “R” 대신 “dot” 청크로 래핑해야 하며, 청크 옵션은 “#|” 대신 “//|”로 설정됩니다. 이를 필요로 하지 않는 대안으로는 <code>DiagrammeR</code> <span class="citation" data-cites="citeDiagrammeR">(<a href="#ref-citeDiagrammeR" role="doc-biblioref">Iannone 2022</a>)</span> 및 <code>ggdag</code> <span class="citation" data-cites="citeggdag">(<a href="#ref-citeggdag" role="doc-biblioref">Barrett 2021</a>)</span> 사용이 있습니다. 첫 번째 DAG에 대한 전체 청크를 제공하지만, 다른 DAG에 대해서는 코드만 제공합니다.</p>
+<div class="cell" data-fig-width="4" data-layout-align="default">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{dot}</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">//| label: fig-dot-firstdag-quarto</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">//| fig-cap: "x가 y에 영향을 미치는 인과 관계를 예상합니다."</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">//| fig-width: 4</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">digraph</span> <span class="va">D</span> <span class="ot">{</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="kw">node</span><span class="co"> </span><span class="ot">[</span><span class="at">shape</span><span class="ot">=</span><span class="va">plaintext</span><span class="co">, </span><span class="at">fontname</span><span class="co"> </span><span class="ot">=</span><span class="co"> </span><span class="st">"helvetica"</span><span class="ot">];</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">  </span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="ot">{</span><span class="at">rank</span><span class="ot">=</span><span class="va">same</span><span class="co"> </span><span class="va">x</span><span class="co"> </span><span class="va">y</span><span class="ot">};</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">  </span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">x</span><span class="co"> </span><span class="ot">-&gt;</span><span class="co"> </span><span class="va">y</span><span class="ot">;</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="ot">}</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-dot-firstdag-quarto" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-dot-firstdag-quarto-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<svg width="384" height="480" viewbox="0.00 0.00 134.00 44.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 40)">
+<title>D</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-40 130,-40 130,4 -4,4"></polygon>
+<!-- x -->
+<g id="node1" class="node">
+<title>x</title>
+<text text-anchor="middle" x="27" y="-13.8" font-family="Helvetica,sans-Serif" font-size="14.00">x</text>
+</g>
+<!-- y -->
+<g id="node2" class="node">
+<title>y</title>
+<text text-anchor="middle" x="99" y="-13.8" font-family="Helvetica,sans-Serif" font-size="14.00">y</text>
+</g>
+<!-- x&#45;&gt;y -->
+<g id="edge1" class="edge">
+<title>x-&gt;y</title>
+<path fill="none" stroke="black" d="M54.28,-18C56.74,-18 59.19,-18 61.65,-18"></path>
+<polygon fill="black" stroke="black" points="61.75,-21.5 71.75,-18 61.75,-14.5 61.75,-21.5"></polygon>
+</g>
+</g>
+</svg>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dot-firstdag-quarto-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+그림&nbsp;4.1: x가 y에 영향을 미치는 인과 관계를 예상합니다.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-dot-firstdag-quarto에서" class="quarto-xref">그림&nbsp;<span class="quarto-unresolved-ref">fig-dot-firstdag-quarto에서</span></a> 우리는 <em>x</em>가 <em>y</em>의 원인이라고 생각합니다.</p>
+<p>상황이 덜 명확한 또 다른 DAG를 만들 수 있습니다. 예시를 더 쉽게 따라갈 수 있도록 소득과 행복 사이의 가상의 관계에 대해 생각하고, 그 관계에 영향을 미칠 수 있는 변수를 고려해 보겠습니다. 이 첫 번째 예시에서는 소득과 행복, 그리고 교육 간의 관계를 고려합니다 (<a href="#fig-dot-educationasconfounder-quarto" class="quarto-xref">그림&nbsp;<span class="quarto-unresolved-ref">fig-dot-educationasconfounder-quarto</span></a>).</p>
+<div class="cell" data-fig-width="4" data-layout-align="default">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode dot code-with-copy"><code class="sourceCode dot"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">digraph</span> <span class="va">D</span> <span class="ot">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">  </span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="kw">node</span><span class="co"> </span><span class="ot">[</span><span class="at">shape</span><span class="ot">=</span><span class="va">plaintext</span><span class="co">, </span><span class="at">fontname</span><span class="co"> </span><span class="ot">=</span><span class="co"> </span><span class="st">"helvetica"</span><span class="ot">];</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">  </span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">a</span><span class="co"> </span><span class="ot">[</span><span class="at">label</span><span class="co"> </span><span class="ot">=</span><span class="co"> </span><span class="st">"소득"</span><span class="ot">];</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">b</span><span class="co"> </span><span class="ot">[</span><span class="at">label</span><span class="co"> </span><span class="ot">=</span><span class="co"> </span><span class="st">"행복"</span><span class="ot">];</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">c</span><span class="co"> </span><span class="ot">[</span><span class="at">label</span><span class="co"> </span><span class="ot">=</span><span class="co"> </span><span class="st">"교육"</span><span class="ot">];</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">  </span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="ot">{</span><span class="co"> </span><span class="at">rank</span><span class="ot">=</span><span class="va">same</span><span class="co"> </span><span class="va">a</span><span class="co"> </span><span class="va">b</span><span class="ot">};</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">  </span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">a</span><span class="ot">-&gt;</span><span class="va">b</span><span class="ot">;</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">c</span><span class="ot">-&gt;{</span><span class="va">a</span><span class="co">, </span><span class="va">b</span><span class="ot">};</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="ot">}</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-dot-educationasconfounder-quarto" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-dot-educationasconfounder-quarto-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<svg width="384" height="480" viewbox="0.00 0.00 134.00 116.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 112)">
+<title>D</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-112 130,-112 130,4 -4,4"></polygon>
+<!-- a -->
+<g id="node1" class="node">
+<title>a</title>
+<text text-anchor="middle" x="27" y="-13.8" font-family="Helvetica,sans-Serif" font-size="14.00">소득</text>
+</g>
+<!-- b -->
+<g id="node2" class="node">
+<title>b</title>
+<text text-anchor="middle" x="99" y="-13.8" font-family="Helvetica,sans-Serif" font-size="14.00">행복</text>
+</g>
+<!-- a&#45;&gt;b -->
+<g id="edge1" class="edge">
+<title>a-&gt;b</title>
+<path fill="none" stroke="black" d="M54.28,-18C56.74,-18 59.19,-18 61.65,-18"></path>
+<polygon fill="black" stroke="black" points="61.75,-21.5 71.75,-18 61.75,-14.5 61.75,-21.5"></polygon>
+</g>
+<!-- c -->
+<g id="node3" class="node">
+<title>c</title>
+<text text-anchor="middle" x="63" y="-85.8" font-family="Helvetica,sans-Serif" font-size="14.00">교육</text>
+</g>
+<!-- c&#45;&gt;a -->
+<g id="edge2" class="edge">
+<title>c-&gt;a</title>
+<path fill="none" stroke="black" d="M54.1,-71.7C50,-63.73 45.05,-54.1 40.51,-45.26"></path>
+<polygon fill="black" stroke="black" points="43.48,-43.4 35.8,-36.1 37.26,-46.6 43.48,-43.4"></polygon>
+</g>
+<!-- c&#45;&gt;b -->
+<g id="edge3" class="edge">
+<title>c-&gt;b</title>
+<path fill="none" stroke="black" d="M71.9,-71.7C76,-63.73 80.95,-54.1 85.49,-45.26"></path>
+<polygon fill="black" stroke="black" points="88.74,-46.6 90.2,-36.1 82.52,-43.4 88.74,-46.6"></polygon>
+</g>
+</g>
+</svg>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dot-educationasconfounder-quarto-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+그림&nbsp;4.2: 교육은 소득과 행복 사이의 관계에 영향을 미치는 교란 변수입니다.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-dot-educationasconfounder-quarto에서" class="quarto-xref">그림&nbsp;<span class="quarto-unresolved-ref">fig-dot-educationasconfounder-quarto에서</span></a> 우리는 소득이 행복을 유발한다고 생각합니다. 그러나 우리는 또한 교육이 행복을 유발하고, 교육이 소득도 유발한다고 생각합니다. 이러한 관계는 “백도어 경로”이며, 회귀 분석에서 교육을 조정하지 않으면 관계의 정도를 과대평가하거나, 심지어 소득과 행복 사이에 허위 관계를 만들 수도 있습니다. 즉, 소득의 변화가 행복의 변화를 유발한다고 생각할 수 있지만, 교육이 둘 다를 변화시키는 것일 수도 있습니다. 이 경우 교육이라는 변수는 “교란 변수”라고 불립니다.</p>
+<p><span class="citation" data-cites="hernanrobins2020">Hernán 와/과 Robins (<a href="#ref-hernanrobins2020" role="doc-biblioref">2023</a>, p.&nbsp;83)</span>은 한 연구자가 한 사람이 하늘을 올려다보는 것이 다른 사람들도 하늘을 올려다보게 하는지 여부에 관심이 있었던 흥미로운 사례를 논의합니다. 두 사람의 반응 사이에는 명확한 관계가 있었습니다. 그러나 하늘에 소음이 있었던 경우도 있었습니다. 두 번째 사람이 첫 번째 사람이 올려다보았기 때문에 올려다보았는지, 아니면 둘 다 소음 때문에 올려다보았는지 불분명했습니다. 실험 데이터를 사용할 때 무작위화는 이러한 우려를 피할 수 있게 해주지만, 관측 데이터에서는 이에 의존할 수 없습니다. 또한 더 큰 데이터가 반드시 이 문제를 해결해 주는 것도 아닙니다. 대신, 상황에 대해 신중하게 생각해야 하며, DAG가 도움이 될 수 있습니다.</p>
+<p>교란 변수가 있지만 여전히 인과 효과에 관심이 있다면, 이를 조정해야 합니다. 한 가지 방법은 회귀 분석에 포함하는 것입니다. 그러나 이것의 유효성은 여러 가정을 필요로 합니다. 특히, <span class="citation" data-cites="gelmanandhill">Gelman 와/과 Hill (<a href="#ref-gelmanandhill" role="doc-biblioref">2007</a>, p.&nbsp;169)</span>은 모든 교란 변수를 포함하고 올바른 모델을 가지고 있는 경우에만 우리의 추정치가 표본의 평균 인과 효과에 해당할 것이라고 경고합니다. 두 번째 요구 사항을 제쳐두고 첫 번째 요구 사항에만 집중하면, 교란 변수를 생각하고 관찰하지 않으면 조정하기 어려울 수 있습니다. 그리고 이는 도메인 전문 지식과 이론이 분석에 상당한 비중을 차지할 수 있는 영역입니다.</p>
+<p><a href="#fig-dot-luxuryasmediator-quarto에서" class="quarto-xref">그림&nbsp;<span class="quarto-unresolved-ref">fig-dot-luxuryasmediator-quarto에서</span></a> 우리는 소득이 행복을 유발한다고 다시 고려합니다. 그러나 소득이 자녀를 유발하고, 자녀도 행복을 유발한다면, 소득이 행복에 미치는 영향을 이해하기 어려운 상황이 됩니다.</p>
+<div class="cell" data-fig-width="4" data-layout-align="default">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode dot code-with-copy"><code class="sourceCode dot"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">digraph</span> <span class="va">D</span> <span class="ot">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="kw">node</span><span class="co"> </span><span class="ot">[</span><span class="at">shape</span><span class="ot">=</span><span class="va">plaintext</span><span class="co">, </span><span class="at">fontname</span><span class="co"> </span><span class="ot">=</span><span class="co"> </span><span class="st">"helvetica"</span><span class="ot">];</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">  </span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">a</span><span class="co"> </span><span class="ot">[</span><span class="at">label</span><span class="co"> </span><span class="ot">=</span><span class="co"> </span><span class="st">"소득"</span><span class="ot">];</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">b</span><span class="co"> </span><span class="ot">[</span><span class="at">label</span><span class="co"> </span><span class="ot">=</span><span class="co"> </span><span class="st">"행복"</span><span class="ot">];</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">c</span><span class="co"> </span><span class="ot">[</span><span class="at">label</span><span class="co"> </span><span class="ot">=</span><span class="co"> </span><span class="st">"자녀"</span><span class="ot">];</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">  </span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="ot">{</span><span class="co"> </span><span class="at">rank</span><span class="ot">=</span><span class="va">same</span><span class="co"> </span><span class="va">a</span><span class="co"> </span><span class="va">b</span><span class="ot">};</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">  </span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">a</span><span class="ot">-&gt;{</span><span class="va">b</span><span class="co">, </span><span class="va">c</span><span class="ot">};</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">c</span><span class="ot">-&gt;</span><span class="va">b</span><span class="ot">;</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="ot">}</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-dot-luxuryasmediator-quarto" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-dot-luxuryasmediator-quarto-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<svg width="384" height="480" viewbox="0.00 0.00 134.00 116.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 112)">
+<title>D</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-112 130,-112 130,4 -4,4"></polygon>
+<!-- a -->
+<g id="node1" class="node">
+<title>a</title>
+<text text-anchor="middle" x="27" y="-85.8" font-family="Helvetica,sans-Serif" font-size="14.00">소득</text>
+</g>
+<!-- b -->
+<g id="node2" class="node">
+<title>b</title>
+<text text-anchor="middle" x="99" y="-85.8" font-family="Helvetica,sans-Serif" font-size="14.00">행복</text>
+</g>
+<!-- a&#45;&gt;b -->
+<g id="edge1" class="edge">
+<title>a-&gt;b</title>
+<path fill="none" stroke="black" d="M54.28,-90C56.74,-90 59.19,-90 61.65,-90"></path>
+<polygon fill="black" stroke="black" points="61.75,-93.5 71.75,-90 61.75,-86.5 61.75,-93.5"></polygon>
+</g>
+<!-- c -->
+<g id="node3" class="node">
+<title>c</title>
+<text text-anchor="middle" x="63" y="-13.8" font-family="Helvetica,sans-Serif" font-size="14.00">자녀</text>
+</g>
+<!-- a&#45;&gt;c -->
+<g id="edge2" class="edge">
+<title>a-&gt;c</title>
+<path fill="none" stroke="black" d="M35.9,-71.7C40,-63.73 44.95,-54.1 49.49,-45.26"></path>
+<polygon fill="black" stroke="black" points="52.74,-46.6 54.2,-36.1 46.52,-43.4 52.74,-46.6"></polygon>
+</g>
+<!-- c&#45;&gt;b -->
+<g id="edge3" class="edge">
+<title>c-&gt;b</title>
+<path fill="none" stroke="black" d="M71.8,-36.1C75.92,-44.13 80.93,-53.87 85.52,-62.8"></path>
+<polygon fill="black" stroke="black" points="82.42,-64.4 90.1,-71.7 88.64,-61.2 82.42,-64.4"></polygon>
+</g>
+</g>
+</svg>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dot-luxuryasmediator-quarto-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+그림&nbsp;4.3: 소득과 행복 사이의 매개 변수로서의 자녀
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-dot-luxuryasmediator-quarto에서" class="quarto-xref">그림&nbsp;<span class="quarto-unresolved-ref">fig-dot-luxuryasmediator-quarto에서</span></a> 자녀는 “매개 변수”라고 불리며, 소득이 행복에 미치는 영향에 관심이 있다면 이를 조정하지 않을 것입니다. 만약 조정한다면, 소득에 귀속되는 것 중 일부는 자녀 때문일 것입니다.</p>
+<p>마지막으로, <a href="#fig-dot-residenceascollider-quarto에서는" class="quarto-xref">그림&nbsp;<span class="quarto-unresolved-ref">fig-dot-residenceascollider-quarto에서는</span></a> 소득이 행복을 유발한다고 생각하는 또 다른 유사한 상황이 있습니다. 그러나 이번에는 소득과 행복 모두 운동을 유발합니다. 예를 들어, 돈이 많으면 운동하기 더 쉬울 수 있지만, 더 행복하면 운동하기 더 쉬울 수도 있습니다.</p>
+<div class="cell" data-fig-width="4" data-layout-align="default">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode dot code-with-copy"><code class="sourceCode dot"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">digraph</span> <span class="va">D</span> <span class="ot">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="kw">node</span><span class="co"> </span><span class="ot">[</span><span class="at">shape</span><span class="ot">=</span><span class="va">plaintext</span><span class="co">, </span><span class="at">fontname</span><span class="co"> </span><span class="ot">=</span><span class="co"> </span><span class="st">"helvetica"</span><span class="ot">];</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">  </span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">a</span><span class="co"> </span><span class="ot">[</span><span class="at">label</span><span class="co"> </span><span class="ot">=</span><span class="co"> </span><span class="st">"소득"</span><span class="ot">];</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">b</span><span class="co"> </span><span class="ot">[</span><span class="at">label</span><span class="co"> </span><span class="ot">=</span><span class="co"> </span><span class="st">"행복"</span><span class="ot">];</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">c</span><span class="co"> </span><span class="ot">[</span><span class="at">label</span><span class="co"> </span><span class="ot">=</span><span class="co"> </span><span class="st">"운동"</span><span class="ot">];</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">  </span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="ot">{</span><span class="co"> </span><span class="at">rank</span><span class="ot">=</span><span class="va">same</span><span class="co"> </span><span class="va">a</span><span class="co"> </span><span class="va">b</span><span class="ot">};</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">  </span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">a</span><span class="ot">-&gt;{</span><span class="va">b</span><span class="co"> </span><span class="va">c</span><span class="ot">};</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">b</span><span class="ot">-&gt;</span><span class="va">c</span><span class="ot">;</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="ot">}</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-dot-residenceascollider-quarto" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-dot-residenceascollider-quarto-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<svg width="384" height="480" viewbox="0.00 0.00 134.00 116.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 112)">
+<title>D</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-112 130,-112 130,4 -4,4"></polygon>
+<!-- a -->
+<g id="node1" class="node">
+<title>a</title>
+<text text-anchor="middle" x="27" y="-85.8" font-family="Helvetica,sans-Serif" font-size="14.00">소득</text>
+</g>
+<!-- b -->
+<g id="node2" class="node">
+<title>b</title>
+<text text-anchor="middle" x="99" y="-85.8" font-family="Helvetica,sans-Serif" font-size="14.00">행복</text>
+</g>
+<!-- a&#45;&gt;b -->
+<g id="edge1" class="edge">
+<title>a-&gt;b</title>
+<path fill="none" stroke="black" d="M54.28,-90C56.74,-90 59.19,-90 61.65,-90"></path>
+<polygon fill="black" stroke="black" points="61.75,-93.5 71.75,-90 61.75,-86.5 61.75,-93.5"></polygon>
+</g>
+<!-- c -->
+<g id="node3" class="node">
+<title>c</title>
+<text text-anchor="middle" x="63" y="-13.8" font-family="Helvetica,sans-Serif" font-size="14.00">운동</text>
+</g>
+<!-- a&#45;&gt;c -->
+<g id="edge2" class="edge">
+<title>a-&gt;c</title>
+<path fill="none" stroke="black" d="M35.9,-71.7C40,-63.73 44.95,-54.1 49.49,-45.26"></path>
+<polygon fill="black" stroke="black" points="52.74,-46.6 54.2,-36.1 46.52,-43.4 52.74,-46.6"></polygon>
+</g>
+<!-- b&#45;&gt;c -->
+<g id="edge3" class="edge">
+<title>b-&gt;c</title>
+<path fill="none" stroke="black" d="M90.1,-71.7C86,-63.73 81.05,-54.1 76.51,-45.26"></path>
+<polygon fill="black" stroke="black" points="79.48,-43.4 71.8,-36.1 73.26,-46.6 79.48,-43.4"></polygon>
+</g>
+</g>
+</svg>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dot-residenceascollider-quarto-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+그림&nbsp;4.4: 소득과 행복 사이의 관계에 영향을 미치는 충돌 변수로서의 운동
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>이 경우 운동은 “충돌 변수”라고 불리며, 이를 조건화하면 오해의 소지가 있는 관계를 만들 수 있습니다. 소득은 운동에 영향을 미치지만, 사람의 행복도 이에 영향을 미칩니다. 운동은 예측 변수와 관심 결과 변수 모두가 영향을 미치기 때문에 충돌 변수입니다.</p>
+<p>우리는 이것에 대해 명확히 할 것입니다. 우리는 모델을 직접 구성하는 것과 마찬가지로 DAG를 직접 만들어야 합니다. 우리를 위해 그것을 만들어 줄 것은 아무것도 없습니다. 이는 상황에 대해 신중하게 생각해야 함을 의미합니다. DAG에서 무언가를 보고 그것에 대해 조치를 취하는 것은 한 가지 일이지만, 그것이 거기에 있다는 것을 알지 못하는 것은 또 다른 일입니다. <span class="citation" data-cites="citemcelreath">McElreath (<a href="#ref-citemcelreath" role="doc-biblioref">[2015년] 2020</a>, p.&nbsp;180)</span>은 이를 유령 DAG라고 설명합니다. DAG는 도움이 되지만, 상황에 대해 깊이 생각하는 데 도움이 되는 도구일 뿐입니다.</p>
+<p>모델을 구축할 때 가능한 한 많은 예측 변수를 포함하고 싶은 유혹을 느낄 수 있습니다. DAG는 왜 우리가 더 신중해야 하는지 명확하게 보여줍니다. 예를 들어, 변수가 교란 변수라면 조정하고 싶을 것이고, 변수가 충돌 변수라면 조정하지 않을 것입니다. 우리는 진실을 결코 알 수 없으며, 이론, 관심사, 연구 설계, 데이터의 한계 또는 연구자로서의 우리 자신의 한계와 같은 측면에 의해 정보를 얻습니다. 한계를 아는 것은 모델을 보고하는 것만큼이나 중요합니다. 결함이 있는 데이터와 모델도 그 결함을 인정한다면 여전히 유용합니다. 상황에 대해 생각하는 작업은 결코 끝나지 않으며, 다른 사람에게 의존합니다. 이것이 우리가 모든 작업을 가능한 한 재현 가능하게 만들어야 하는 이유입니다.</p>
+</section>
+</section>
+<section id="논문의-구성-요소" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="논문의-구성-요소"><span class="header-section-number">4.5</span> 논문의 구성 요소</h2>
+<blockquote class="blockquote">
+<p>나는 <em>교수</em>를 시작하기 전에는 아무것도 출판하지 않았지만, 거의 작성하자마자 파괴된 많은 조잡한 노력 속에서, 한때 화려하고 장황한 구성에 가졌을지도 모르는 취향을 극복하고, 평범하고 소박한 것을 선호하게 되었다.</p>
+<p><em>교수</em> <span class="citation" data-cites="theprofessor">(<a href="#ref-theprofessor" role="doc-biblioref">Brontë 1857</a>)</span></p>
+</blockquote>
+<p>제목, 초록, 서론, 데이터, 결과, 논의, 그림, 표, 방정식 및 기술 용어와 같은 구성 요소를 논의합니다.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> 논문 전체에서 가능한 한 간결하고 구체적으로 작성하십시오. 대부분의 독자는 제목을 넘어서지 못할 것입니다. 초록 이상을 읽는 사람은 거의 없을 것입니다. 섹션 및 하위 섹션 제목, 그리고 그래프 및 표 캡션은 주변 텍스트 없이도 자체적으로 작동해야 합니다. 왜냐하면 많은 사람들이 논문을 읽는 방식이 그러한 훑어보기이기 때문입니다 <span class="citation" data-cites="Keshav2007">(<a href="#ref-Keshav2007" role="doc-biblioref">Keshav 2007</a>)</span>.</p>
+<section id="제목" class="level3" data-number="4.5.1">
+<h3 data-number="4.5.1" class="anchored" data-anchor-id="제목"><span class="header-section-number">4.5.1</span> 제목</h3>
+<p>제목은 독자를 우리의 이야기에 참여시킬 수 있는 첫 번째 기회입니다. 이상적으로는 우리가 발견한 것을 독자에게 정확히 알려줄 수 있어야 합니다. 효과적인 제목은 중요합니다. 그렇지 않으면 독자들이 논문을 무시할 수 있기 때문입니다. 제목이 “귀엽다”고 할 필요는 없지만, 의미가 있어야 합니다. 즉, 이야기를 명확하게 해야 합니다.</p>
+<p>충분히 좋은 제목의 한 가지 예는 “2016년 브렉시트 국민투표에 대하여”입니다. 이 제목은 독자가 논문이 무엇에 관한 것인지 알 수 있기 때문에 유용합니다. 그러나 특히 정보가 많거나 흥미를 끄는 것은 아닙니다. 약간 더 나은 제목은 “2016년 브렉시트 국민투표에서 Vote Leave 결과에 대하여”일 수 있습니다. 이 변형은 정보가 담긴 구체성을 추가합니다. 우리는 가장 좋은 제목은 “2016년 브렉시트 국민투표에서 농촌 지역에서 Vote Leave가 더 나은 성과를 보였습니다: 베이즈 계층 모델의 증거”와 같은 것이라고 주장합니다. 여기에서 독자는 논문의 접근 방식과 주요 요점을 알 수 있습니다.</p>
+<p>특히 효과적인 제목의 몇 가지 예를 살펴보겠습니다. <span class="citation" data-cites="hug2019national은">(<a href="#ref-hug2019national은" role="doc-biblioref"><strong>hug2019national은?</strong></a>)</span> “1990년에서 2017년 사이 신생아 사망률의 국가, 지역 및 전 세계 수준 및 추세, 2030년까지 시나리오 기반 예측: 체계적인 분석”을 사용합니다. 여기에서 논문이 무엇에 관한 것인지, 사용된 방법이 무엇인지 명확합니다. <span class="citation" data-cites="Alexander2020은">(<a href="#ref-Alexander2020은" role="doc-biblioref"><strong>Alexander2020은?</strong></a>)</span> “1901년에서 2018년 사이 호주 연방 의회에서 논의된 주제에 대한 선거 및 총리 변화의 증가된 효과”를 사용합니다. 주요 발견은 논문의 내용에 대한 많은 정보와 함께 제목에서 명확합니다. <span class="citation" data-cites="alexander2018trends는">(<a href="#ref-alexander2018trends는" role="doc-biblioref"><strong>alexander2018trends는?</strong></a>)</span> “1979-2015년 미국 흑인 및 백인 아편 사망률 추세”를 사용합니다. <span class="citation" data-cites="Frei2022는">(<a href="#ref-Frei2022는" role="doc-biblioref"><strong>Frei2022는?</strong></a>)</span> “미국 세금 허점 폐쇄가 투자자 포트폴리오에 미치는 영향”을 사용합니다. 아마도 역대 최고의 제목 중 하나는 <span class="citation" data-cites="bickel1975sex의">(<a href="#ref-bickel1975sex의" role="doc-biblioref"><strong>bickel1975sex의?</strong></a>)</span> “대학원 입학에서의 성별 편향: 버클리 데이터: 편향 측정은 일반적으로 가정하는 것보다 어렵고, 증거는 때때로 예상과 다릅니다”이며, 이는 <a href="#sec-causality-from-observational-data에서" class="quarto-xref"><span class="quarto-unresolved-ref">sec-causality-from-observational-data에서</span></a> 다시 다룹니다.</p>
+<p>제목은 종종 논문의 마지막 측면 중 하나입니다. 초고를 작성하는 동안에는 일반적으로 작업을 완료하는 데 도움이 되는 작업 제목을 사용합니다. 그런 다음 다시 작성하는 과정에서 다듬습니다. 제목은 논문의 최종 이야기를 반영해야 하며, 이는 일반적으로 시작할 때 알 수 있는 것이 아닙니다. 독자가 논문을 읽을 만큼 충분히 흥미를 느끼게 하는 것과 유용하도록 충분한 내용을 전달하는 것 사이에서 균형을 맞춰야 합니다 <span class="citation" data-cites="hayotacademicstyle">(<a href="#ref-hayotacademicstyle" role="doc-biblioref">Hayot 2014</a>)</span>. 두 가지 훌륭한 예시는 토마스 바빙턴 매콜리의 <em>제임스 2세 즉위 이후의 영국사</em>와 윈스턴 처칠의 <em>영어를 사용하는 민족의 역사</em>입니다. 둘 다 내용이 무엇인지 명확하며, 대상 독자에게 흥미를 유발합니다.</p>
+<p>한 가지 특정 접근 방식은 “흥미로운 내용: 구체적인 내용” 형식입니다. 예를 들어, “뿌리로 돌아가기: 2016년 브렉시트 국민투표에서 Vote Leave의 성과 검토”와 같습니다. <span class="citation" data-cites="kennedy2020know는">(<a href="#ref-kennedy2020know는" role="doc-biblioref"><strong>kennedy2020know는?</strong></a>)</span> “인구를 알고 모델을 알라: 모델 기반 회귀 및 사후 계층화를 사용하여 관측된 표본을 넘어 결과를 일반화하기”라는 이 접근 방식의 특히 좋은 예시를 제공하며, <span class="citation" data-cites="craiu2019hiring도">(<a href="#ref-craiu2019hiring도" role="doc-biblioref"><strong>craiu2019hiring도?</strong></a>)</span> “고용 갬빗: 투퍼 데이터 과학자를 찾아서”와 같이 좋은 예시를 제공합니다. 이와 유사한 변형은 “질문? 그리고 접근 방식”입니다. 예를 들어, <span class="citation" data-cites="cahill2020increase는">(<a href="#ref-cahill2020increase는" role="doc-biblioref"><strong>cahill2020increase는?</strong></a>)</span> “2030년까지 75%의 수요를 충족시키기 위해 FP2020 국가에서 현대 피임약 사용을 얼마나 늘려야 하는가? 가속화된 전환 방법 및 가족 계획 추정 모델을 사용한 평가”와 같습니다. 이 변형에 익숙해지면, <span class="citation" data-cites="briggs2021does의">(<a href="#ref-briggs2021does의" role="doc-biblioref"><strong>briggs2021does의?</strong></a>)</span> “왜 원조는 가장 가난한 사람들을 대상으로 하지 않는가?”와 같이 답변 부분을 생략하면서도 효과적인 상태를 유지하는 것이 적절한 시기를 알 수 있게 됩니다. 또 다른 특정 접근 방식은 “구체적인 내용 다음 광범위한 내용” 또는 그 반대입니다. 예를 들어, “2016년 브렉시트 국민투표에서 농촌성, 엘리트 및 Vote Leave 지지” 또는 “2016년 브렉시트 국민투표에서 Vote Leave 지지, 농촌성 및 엘리트”와 같습니다. 이 접근 방식은 <span class="citation" data-cites="tolley2021gender가">(<a href="#ref-tolley2021gender가" role="doc-biblioref"><strong>tolley2021gender가?</strong></a>)</span> “성별, 지방 정당 정치 및 몬트리올의 첫 여성 시장”에서 사용합니다.</p>
+<p>때로는 부제목을 포함할 수 있습니다. 이 경우, 이를 활용하는 좋은 방법은 발견한 주요 정량적 결과의 일부 세부 정보를 포함하는 것입니다. 해당 결과에 대한 적절한 수준의 세부 정보와 추상화를 얻는 것은 어렵고, 다시 작성하고 다른 사람의 의견을 구해야 할 것입니다.</p>
+</section>
+<section id="초록" class="level3" data-number="4.5.2">
+<h3 data-number="4.5.2" class="anchored" data-anchor-id="초록"><span class="header-section-number">4.5.2</span> 초록</h3>
+<p>10~15페이지 분량의 논문의 경우, 좋은 초록은 3~5문장으로 된 단락입니다. 더 긴 논문의 경우 초록이 약간 더 길어질 수 있습니다. 초록은 논문의 이야기를 명시해야 합니다. 또한 무엇이 수행되었고 왜 중요한지 전달해야 합니다. 이를 위해 초록은 일반적으로 작업의 맥락, 목표, 접근 방식 및 발견에 대해 다룹니다.</p>
+<p>더 구체적으로, 초록을 위한 좋은 레시피는 다음과 같습니다. 첫 번째 문장: 논문의 일반적인 영역을 명시하고 독자를 격려합니다. 두 번째 문장: 데이터 세트와 방법을 일반적인 수준에서 명시합니다. 세 번째 문장: 주요 결과를 명시합니다. 그리고 네 번째 문장: 함의에 대해 설명합니다.</p>
+<p>우리는 다양한 초록에서 이 패턴을 볼 수 있습니다. 예를 들어, <span class="citation" data-cites="tolley2021gender는">(<a href="#ref-tolley2021gender는" role="doc-biblioref"><strong>tolley2021gender는?</strong></a>)</span> 첫 문장에서 400년 만에 첫 여성 시장이 선출된 것을 언급하여 독자를 끌어들입니다. 두 번째 문장은 논문에서 무엇이 수행되었는지 명확하게 설명합니다. 세 번째 문장은 설문조사와 같은 방법으로 어떻게 수행되었는지 알려주고, 네 번째 문장은 일부 세부 정보를 추가합니다. 다섯 번째이자 마지막 문장은 주요 요점을 명확하게 합니다.</p>
+<blockquote class="blockquote">
+<p>2017년 몬트리올은 400년 역사상 첫 여성 시장인 발레리 플랑트를 선출했습니다. 이 선거를 사례 연구로 사용하여, 우리는 성별이 결과에 어떻게 영향을 미쳤는지, 그리고 영향을 미치지 않았는지 보여줍니다. 몬트리올 유권자들을 대상으로 한 설문조사는 성별이 투표 선택에 중요한 요소가 아니었음을 시사합니다. 성별이 유권자에게는 크게 중요하지 않았지만, 캠페인과 정당의 조직에는 영향을 미쳤습니다. 우리는 플랑트의 승리가 덜 지도자 중심적인 정당과 정치적 리더십 위치에 대한 여성의 부적합성에 대한 고정관념을 상쇄하는 데 도움이 된 탈성별화된 캠페인을 보여주는 전략에 부분적으로 설명될 수 있다고 주장합니다.</p>
+</blockquote>
+<p>마찬가지로, <span class="citation" data-cites="beauregard2021antiwomen은">(<a href="#ref-beauregard2021antiwomen은" role="doc-biblioref"><strong>beauregard2021antiwomen은?</strong></a>)</span> 첫 두 문장에서 더 넓은 환경을 명확히 하고, 해당 환경에 대한 이 논문의 구체적인 기여를 명확히 합니다. 세 번째와 네 번째 문장은 데이터 출처와 주요 발견을 명확히 합니다. 다섯 번째와 여섯 번째 문장은 이 초록의 잠재적 독자, 즉 학술 정치 과학자들에게 흥미로울 구체성을 추가합니다. 마지막 문장에서는 저자의 입장이 명확해집니다.</p>
+<blockquote class="blockquote">
+<p>성별 할당량 지지에 대한 이전 연구는 성 평등 및 정부 개입에 대한 태도를 설명으로 집중합니다. 우리는 정치에서 여성의 존재를 늘리는 것을 목표로 하는 정책에 대한 이해에 있어 여성에 대한 태도의 역할이 양면적이라고 주장합니다. 즉, 적대적이고 자비로운 형태의 성차별주의 모두 지지를 이해하는 데 기여하지만, 다른 방식으로 기여합니다. 호주 응답자들의 확률 기반 표본에 대해 수행된 설문조사에서 얻은 원본 데이터를 사용하여, 우리의 발견은 적대적인 성차별주의자들이 성별 할당량 채택을 통해 정치에서 여성의 존재를 늘리는 것에 더 반대할 가능성이 높다는 것을 보여줍니다. 반면에 자비로운 성차별주의자들은 낮은 수준의 자비로운 성차별주의를 보이는 응답자들보다 이러한 정책을 더 지지할 가능성이 높습니다. 우리는 이것이 자비로운 성차별주의가 여성이 순수하고 보호가 필요하다고 주장하기 때문이라고 주장합니다. 그들은 할당량의 도움 없이는 정치에서 성공하는 데 필요한 것을 가지고 있지 않습니다. 마지막으로, 우리는 여성이 할당량을 더 지지할 가능성이 높지만, 양면적인 성차별주의는 여성과 남성 모두에게 지지와 동일한 관계를 가지고 있음을 보여줍니다. 이러한 발견은 성별 할당량에 대한 대중의 총체적인 지지 수준이 일반적으로 성 평등에 대한 더 큰 수용을 반드시 나타내지는 않는다는 것을 시사합니다.</p>
+</blockquote>
+<p>초록의 또 다른 훌륭한 예시는 <span class="citation" data-cites="sidesvavreckwarshaw입니다">(<a href="#ref-sidesvavreckwarshaw입니다" role="doc-biblioref"><strong>sidesvavreckwarshaw입니다?</strong></a>)</span>. 단 다섯 문장으로, 그들은 무엇을 하는지, 어떻게 하는지, 무엇을 발견하는지, 그리고 왜 중요한지 명확하게 설명합니다.</p>
+<blockquote class="blockquote">
+<p>우리는 2000년부터 2018년까지 미국 선거 결과에 대한 텔레비전 광고의 영향에 대한 포괄적인 평가를 제공합니다. 우리는 대통령, 상원, 하원, 주지사, 법무장관 및 주 재무장관 선거를 포함하고, 광고의 인과 효과를 식별하는 데 도움이 되는 차이-차이 및 경계-불연속성 연구 설계를 모두 사용하여 이전 연구를 확장합니다. 우리는 텔레비전 방송 캠페인 광고가 투표 전반에 걸쳐 중요하지만, 대통령 선거보다 하위 투표 선거에서 훨씬 더 큰 영향을 미친다는 것을 발견합니다. 여러 선거 주기의 설문조사 및 유권자 등록 데이터를 사용하여, 우리는 광고 효과의 주요 메커니즘이 당파의 동원이 아니라 설득임을 보여줍니다. 우리의 결과는 캠페인 및 선거 연구뿐만 아니라 유권자 의사 결정 및 정보 처리에도 영향을 미칩니다.</p>
+</blockquote>
+<p>최고의 초록은 내용 대 단어 비율이 너무 높아서 약간 간결하게 느껴질 수도 있습니다. 예를 들어, <span class="citation" data-cites="touvron의">(<a href="#ref-touvron의" role="doc-biblioref"><strong>touvron의?</strong></a>)</span> 초록에는 낭비되는 단어가 하나도 없으며, 단 네 문장으로 많은 양의 정보를 전달합니다.</p>
+<blockquote class="blockquote">
+<p>우리는 7B에서 65B 매개변수에 이르는 기초 언어 모델 컬렉션인 LLaMA를 소개합니다. 우리는 수조 개의 토큰으로 모델을 훈련했으며, 독점적이고 접근 불가능한 데이터 세트에 의존하지 않고 공개적으로 사용 가능한 데이터 세트만 사용하여 최첨단 모델을 훈련하는 것이 가능함을 보여줍니다. 특히, LLaMA-13B는 대부분의 벤치마크에서 GPT-3 (175B)를 능가하며, LLaMA-65B는 최고의 모델인 Chinchilla-70B 및 PaLM-540B와 경쟁합니다. 우리는 모든 모델을 연구 커뮤니티에 공개합니다.</p>
+</blockquote>
+<p><span class="citation" data-cites="kasymatching은">(<a href="#ref-kasymatching은" role="doc-biblioref"><strong>kasymatching은?</strong></a>)</span> 더 통계적인 초록의 훌륭한 예시를 제공합니다. 그들은 무엇을 하는지, 왜 중요한지 명확하게 식별합니다.</p>
+<blockquote class="blockquote">
+<p>우리는 자원을 참가자에게 매칭하는 것을 반복적으로 선택해야 하고, 개별적으로 선택된 매칭의 수익은 알 수 없지만 학습할 수 있는 실험 설정을 고려합니다. 우리의 설정은 난민 재정착, 사회 주택 할당 및 위탁 양육과 같이 (잠재적으로 복잡한) 용량 제약이 있는 양면 및 단면 매칭을 다룹니다. 우리는 이러한 적응형 조합 할당 문제를 해결하기 위해 톰슨 샘플링 알고리즘의 변형을 제안합니다. 우리는 이 알고리즘에 대한 엄격하고 사전 독립적인 유한 표본 기대 후회 경계를 제공합니다. 할당 수가 매칭 수에서 기하급수적으로 증가하지만, 우리의 경계는 그렇지 않습니다. 베이즈 계층 모델을 사용한 난민 재정착 데이터를 기반으로 한 시뮬레이션에서, 우리는 이 알고리즘이 고용 확률에 대한 완벽한 지식을 기반으로 한 최적의 매칭에서 얻을 수 있는 고용 증가의 절반을 달성한다는 것을 발견합니다.</p>
+</blockquote>
+<p>마지막으로, <span class="citation" data-cites="briggs2021does는">(<a href="#ref-briggs2021does는" role="doc-biblioref"><strong>briggs2021does는?</strong></a>)</span> 의심할 여지 없이 사실처럼 보이는 주장으로 시작합니다. 두 번째 문장에서 그는 그것이 거짓이라고 말합니다! 세 번째 문장은 이 주장의 범위를 명시하고, 네 번째 문장은 더 자세한 내용을 제공하기 전에 그가 이 입장에 도달한 방법을 자세히 설명합니다. 마지막 두 문장은 더 넓은 함의와 중요성을 언급합니다.</p>
+<blockquote class="blockquote">
+<p>해외 원조 프로젝트는 일반적으로 지역적 영향을 미치므로, 빈곤을 줄이려면 빈곤층에 가까이 배치되어야 합니다. 저는 지역 인구 수준을 조건으로 할 때, 세계은행(WB) 프로젝트 원조가 국가의 더 부유한 지역을 대상으로 한다는 것을 보여줍니다. 이러한 관계는 시간과 전 세계 지역에 걸쳐 유지됩니다. 저는 WB 태스크 팀 리더(TTL)에 대한 사전 등록된 결합 실험을 사용하여 친부유층 대상에 대한 다섯 가지 기부자 측 설명을 테스트합니다. TTL은 원조를 받는 정부가 원조를 정치적으로 대상으로 하고 구현을 통제하는 데 가장 관심이 있다고 인식합니다. 그들은 또한 원조가 더 가난하거나 더 외딴 지역에서 더 잘 작동하지만, 이러한 지역에서의 구현은 유일하게 어렵다고 믿습니다. 이러한 결과는 분배 정치, 원조에 대한 국제 협상, 국제 기구의 본인-대리인 문제에 대한 논쟁을 시사합니다. 또한 이러한 결과는 프로젝트 구현의 용이성을 덜 중요하게 만들기 위해 WB 인센티브 구조를 조정하면 원조가 국가의 더 가난한 지역으로 흐르도록 장려할 수 있음을 시사합니다.</p>
+</blockquote>
+<p>과학 저널인 <em>Nature</em>는 초록 구성에 대한 가이드를 제공합니다. 그들은 6개 부분으로 구성되고 약 200단어에 달하는 초록 구조를 권장합니다.</p>
+<ol type="1">
+<li>광범위한 독자가 이해할 수 있는 서론 문장.</li>
+<li>잠재적 독자에게 관련성 있는 더 자세한 배경 문장.</li>
+<li>일반적인 문제를 진술하는 문장.</li>
+<li>주요 결과를 요약하고 설명하는 문장.</li>
+<li>일반적인 맥락에 대한 문장.</li>
+<li>마지막으로, 더 넓은 관점에 대한 문장.</li>
+</ol>
+<p>초록의 첫 문장은 공허해서는 안 됩니다. 독자가 제목을 지나 계속 읽었다고 가정하면, 이 첫 문장은 우리가 논문을 계속 읽도록 독자를 설득할 수 있는 다음 기회입니다. 그리고 초록의 두 번째 문장 등도 마찬가지입니다. 초록이 너무 좋아서 그것만 읽어도 괜찮을 정도로 작업하고 다시 작업하십시오. 왜냐하면 종종 그렇게 될 것이기 때문입니다.</p>
+</section>
+<section id="서론-1" class="level3" data-number="4.5.3">
+<h3 data-number="4.5.3" class="anchored" data-anchor-id="서론-1"><span class="header-section-number">4.5.3</span> 서론</h3>
+<p>서론은 자체 포함되어야 하며 독자가 알아야 할 모든 것을 전달해야 합니다. 우리는 미스터리 소설을 쓰는 것이 아닙니다. 대신, 서론에서 가장 중요한 요점을 알려주고 싶습니다. 10~15페이지 분량의 논문의 경우, 서론은 두세 단락의 주요 내용으로 구성될 수 있습니다. <span class="citation" data-cites="hayotacademicstyle">Hayot (<a href="#ref-hayotacademicstyle" role="doc-biblioref">2014</a>, p.&nbsp;90)</span>은 서론의 목표는 독자를 참여시키고, 특정 분야와 배경에 위치시키고, 논문의 나머지 부분에서 무엇이 일어나는지 알려주는 것이라고 말합니다. 이는 전적으로 독자 중심이어야 합니다.</p>
+<p>서론은 배경을 설정하고 독자에게 배경 지식을 제공해야 합니다. 예를 들어, 우리는 일반적으로 조금 더 넓게 시작합니다. 이는 논문에 대한 일부 맥락을 제공합니다. 그런 다음 논문이 그 맥락에 어떻게 들어맞는지 설명하고, 이야기의 주요 부분인 하나의 핵심 결과에 특히 초점을 맞춰 일부 높은 수준의 결과를 제공합니다. 우리는 초록에서 제공한 것보다 더 자세한 내용을 제공하지만, 전체 범위는 아닙니다. 그리고 한두 문장으로 다음 단계를 광범위하게 논의합니다. 마지막으로, 논문의 구조를 강조하는 추가적인 짧은 마지막 단락으로 서론을 마무리합니다.</p>
+<p>예시 (가상의 세부 정보 포함):</p>
+<blockquote class="blockquote">
+<p>영국 보수당은 항상 농촌 선거구에서 좋은 성과를 거두었습니다. 그리고 2016년 브렉시트 투표도 농촌과 도시 지역 간의 지지율에 상당한 차이가 있었던 점에서 다르지 않았습니다. 그러나 보수적인 문제에 대한 농촌 지지라는 기준에서도 “Vote Leave”에 대한 지지는 이례적으로 강했습니다. “Vote Leave”는 이스트 미들랜드와 잉글랜드 동부에서 가장 강력한 지지를 받았고, “잔류”에 대한 가장 강력한 지지는 그레이터 런던에서였습니다.</p>
+<p>이 논문에서 우리는 2016년 브렉시트 국민투표에서 “Vote Leave”의 성과가 농촌성과 그렇게 상관 관계가 있었던 이유를 살펴봅니다. 우리는 투표 지역 수준에서 “Vote Leave”에 대한 지지가 해당 지역의 농장 수, 평균 인터넷 연결성 및 중간 연령으로 설명되는 모델을 구축합니다. 우리는 지역의 중간 연령이 증가함에 따라 해당 지역이 “Vote Leave”를 지지할 가능성이 14% 포인트 감소한다는 것을 발견합니다. 향후 연구에서는 보수당 의원의 영향을 살펴봄으로써 이러한 효과에 대한 더 미묘한 이해를 가능하게 할 수 있습니다.</p>
+<p>이 논문의 나머지 부분은 다음과 같이 구성됩니다: 2절은 데이터를 논의하고, 3절은 모델을 논의하며, 4절은 결과를 제시하고, 마지막으로 5절은 우리의 발견과 일부 약점을 논의합니다.</p>
+</blockquote>
+<p>서론은 자체 포함되어야 하며 독자에게 필요한 거의 모든 것을 알려주어야 합니다. 독자는 서론만 읽고도 전체 논문의 모든 주요 측면에 대한 정확한 그림을 가질 수 있어야 합니다. 서론에 그래프나 표를 포함하는 경우는 드뭅니다. 서론은 논문의 구조를 암시하며 마무리되어야 합니다.</p>
+</section>
+<section id="데이터" class="level3" data-number="4.5.4">
+<h3 data-number="4.5.4" class="anchored" data-anchor-id="데이터"><span class="header-section-number">4.5.4</span> 데이터</h3>
+<p>린든 존슨의 전기 작가인 로버트 카로는 전기를 쓸 때 “장소 감각”을 전달하는 것의 중요성을 설명합니다 <span class="citation" data-cites="caroonworking">(<a href="#ref-caroonworking" role="doc-biblioref">Caro 2019</a>, p.&nbsp;141)</span>. 그는 이를 “책의 행동이 일어나는 물리적 환경: 충분히 명확하게, 충분한 세부 사항으로 볼 수 있어서, 행동이 일어나는 동안 마치 자신이 그곳에 있는 것처럼 느끼게 하는 것”이라고 정의합니다. 그는 다음 예를 제공합니다.</p>
+<blockquote class="blockquote">
+<p>레베카가 그 작은 집의 현관문을 나섰을 때, 아무것도 없었습니다—아마도 부리에서 길고 축축한 무언가를 매달고 바위 뒤를 빠르게 지나가는 로드러너나, 흰 꼬리의 번쩍임만 보일 정도로 빠르게 덤불 뒤로 사라지는 토끼 외에는 아무것도 없었습니다. 흩어져 있는 나무들의 잎사귀가 흔들리는 것 외에는 움직임이 없었고, 끊임없이 속삭이는 바람 소리 외에는 아무 소리도 없었습니다<span class="math inline">\(\dots\)</span> 레베카가 거의 절망적으로 집 뒤 언덕을 올랐을 때, 그 정상에서 그녀가 본 것은 더 많은 언덕, 끝없이 펼쳐진 언덕, 단 하나의 집도 보이지 않는 언덕<span class="math inline">\(\dots\)</span> 아무것도 움직이지 않는 텅 빈 언덕, 그 위에는 텅 빈 하늘; 조용히 머리 위를 맴도는 매는 사건이었습니다. 그러나 무엇보다도 인간적인 것은 아무것도 없었고, 이야기할 사람도 없었습니다.</p>
+<p><span class="citation" data-cites="caroonworking">Caro (<a href="#ref-caroonworking" role="doc-biblioref">2019</a>, p.&nbsp;146)</span></p>
+</blockquote>
+<p>존슨의 어머니인 레베카 베인즈 존슨의 상황을 얼마나 철저하게 상상할 수 있습니까? 논문을 작성할 때, 우리는 카로가 힐 카운티에 대해 제공하는 것과 같은 장소 감각을 우리의 데이터에 대해 달성해야 합니다. 우리는 가능한 한 명확하게 함으로써 이를 수행합니다. 우리는 일반적으로 그것에 대한 전체 섹션을 가지고 있으며, 이는 독자에게 우리의 이야기를 뒷받침하는 실제 데이터를 가능한 한 가깝게 보여주기 위해 고안되었습니다.</p>
+<p>데이터 섹션을 작성할 때 우리는 우리의 주장에 대한 중요한 질문에 대한 답변을 시작합니다. 즉, 이것을 어떻게 알 수 있는가? <span class="citation" data-cites="draftnumberfour">(<a href="#ref-draftnumberfour" role="doc-biblioref">McPhee 2017</a>, p.&nbsp;78)</span>. 데이터 섹션의 훌륭한 예시는 <span class="citation" data-cites="doll1950smoking에서">(<a href="#ref-doll1950smoking에서" role="doc-biblioref"><strong>doll1950smoking에서?</strong></a>)</span> 제공합니다. 그들은 통제 그룹과 치료 그룹 간의 흡연 효과에 관심이 있습니다. 데이터 세트를 명확하게 설명한 후 관련 교차표를 표시하기 위해 표를 사용하고 그룹을 대조하기 위해 그래프를 사용합니다.</p>
+<p>데이터 섹션에서는 우리가 사용하는 데이터 세트의 변수를 철저히 논의해야 합니다. 사용될 수 있었지만 사용되지 않은 다른 데이터 세트가 있다면 언급하고 선택을 정당화해야 합니다. 변수가 구성되거나 결합되었다면 이 과정과 동기를 설명해야 합니다.</p>
+<p>우리는 독자가 결과의 기반이 되는 데이터가 어떻게 생겼는지 이해하기를 원합니다. 이는 분석에 사용된 데이터를 그래프로 나타내거나 가능한 한 가깝게 나타내야 함을 의미합니다. 그리고 요약 통계 표도 포함해야 합니다. 데이터 세트가 다른 출처에서 생성되었다면 해당 원본 출처의 예시를 포함하는 것도 도움이 될 수 있습니다. 예를 들어, 데이터 세트가 설문조사 응답에서 생성되었다면 기본 설문조사 질문을 부록에 포함해야 합니다.</p>
+<p>데이터 섹션의 그림과 표에 관해서는 어느 정도 판단이 필요합니다. 독자는 세부 사항을 이해할 기회를 가져야 하지만, 일부는 부록에 더 적절하게 배치될 수 있습니다. 그림과 표는 사람들에게 이야기를 설득하는 데 중요한 측면입니다. 그래프에서는 데이터를 보여주고 독자가 스스로 결정하도록 할 수 있습니다. 그리고 표를 사용하여 데이터 세트를 요약할 수 있습니다. 최소한 모든 변수는 그래프로 표시되고 표로 요약되어야 합니다. 너무 많다면 일부는 부록으로 강등될 수 있으며, 중요한 관계는 본문에 표시됩니다. 그림과 표는 번호가 매겨지고 텍스트에서 상호 참조되어야 합니다. 예를 들어, “그림 1은 <span class="math inline">\(\dots\)</span>을 보여줍니다”, “표 1은 <span class="math inline">\(\dots\)</span>을 설명합니다”. 모든 그래프와 표에는 주요 측면을 설명하고 추가 세부 정보를 추가하는 텍스트가 함께 제공되어야 합니다.</p>
+<p><a href="#sec-static-communication에서" class="quarto-xref"><span class="quarto-unresolved-ref">sec-static-communication에서</span></a> 제목과 레이블을 포함한 그래프와 표의 구성 요소를 논의합니다. 그러나 여기서는 텍스트와 그래프 또는 표 사이에 있는 캡션에 대해 논의할 것입니다. 캡션은 정보가 풍부하고 자체 포함되어야 합니다. <span class="citation" data-cites="borkin2015beyond는">(<a href="#ref-borkin2015beyond는" role="doc-biblioref"><strong>borkin2015beyond는?</strong></a>)</span> 시선 추적을 사용하여 시각화가 어떻게 인식되고 회상되는지 이해합니다. 그들은 캡션이 그림의 핵심 메시지를 명확하게 해야 하며, 중복이 있어야 한다고 말합니다. <span class="citation" data-cites="elementsofgraphingdata">Cleveland (<a href="#ref-elementsofgraphingdata" role="doc-biblioref">[1985년] 1994</a>, p.&nbsp;57)</span>가 말했듯이, “그래프, 캡션 및 텍스트 간의 상호 작용은 섬세한 것입니다.” 그러나 독자는 캡션만 읽고도 그래프나 표가 무엇을 보여주는지 이해할 수 있어야 합니다. 두 줄 길이의 캡션이 반드시 부적절한 것은 아닙니다. 그리고 그래프나 표의 모든 측면이 설명되어야 합니다. 예를 들어, <span class="citation" data-cites="bowley">Bowley (<a href="#ref-bowley" role="doc-biblioref">1901</a>, p.&nbsp;151)</span>의 <a href="#fig-bowleygraphisnice와" class="quarto-xref">그림&nbsp;<span class="quarto-unresolved-ref">fig-bowleygraphisnice와</span></a> <a href="#fig-bowleytableisnice를" class="quarto-xref">그림&nbsp;<span class="quarto-unresolved-ref">fig-bowleytableisnice를</span></a> 고려해 보십시오. 둘 다 명확하고 자체 포함되어 있습니다.</p>
+<div id="fig-oldstuffsogood" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-oldstuffsogood-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-oldstuffsogood" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-bowleygraphisnice" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-bowleygraphisnice-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/HANDIRIS3.png" class="img-fluid figure-img" data-ref-parent="fig-oldstuffsogood">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-bowleygraphisnice-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) 잘 캡션된 그림의 예시
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-oldstuffsogood" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-bowleytableisnice" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-bowleytableisnice-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/HANDIRIS1.png" class="img-fluid figure-img" data-ref-parent="fig-oldstuffsogood">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-bowleytableisnice-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) 잘 캡션된 표의 예시
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-oldstuffsogood-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+그림&nbsp;4.5: <span class="citation" data-cites="bowley의">(<a href="#ref-bowley의" role="doc-biblioref"><strong>bowley의?</strong></a>)</span> 그래프 및 표 예시
+</figcaption>
+</figure>
+</div>
+<p>표와 그래프 사이의 선택은 전달할 정보의 양에 따라 달라집니다. 일반적으로 요약 통계와 같이 고려해야 할 특정 정보가 있다면 표가 좋은 선택입니다. 독자가 비교하고 추세를 이해하는 데 관심이 있다면 그래프가 좋은 선택입니다 <span class="citation" data-cites="gelman2002let">(<a href="#ref-gelman2002let" role="doc-biblioref">Gelman, Pasarica, 와/과 Dodhia 2002</a>)</span>.</p>
+</section>
+<section id="모델" class="level3" data-number="4.5.5">
+<h3 data-number="4.5.5" class="anchored" data-anchor-id="모델"><span class="header-section-number">4.5.5</span> 모델</h3>
+<p>우리는 종종 데이터를 탐색하는 데 사용할 통계 모델을 구축하며, 이에 대한 특정 섹션을 갖는 것이 일반적입니다. 최소한 사용되는 모델을 설명하는 방정식을 지정하고 일반 언어와 상호 참조를 사용하여 구성 요소를 설명해야 합니다.</p>
+<p>모델 섹션은 일반적으로 모델이 작성되고 설명되며 정당화되는 것으로 시작됩니다. 예상 독자에 따라 일부 배경 지식이 필요할 수 있습니다. 적절한 수학적 표기법으로 모델을 지정하고 상호 참조한 후, 모델의 구성 요소를 정의하고 설명해야 합니다. 표기법의 각 측면을 정의하려고 노력하십시오. 이는 독자에게 모델이 잘 선택되었음을 확신시키고 논문의 신뢰성을 높이는 데 도움이 됩니다. 모델의 변수는 데이터 섹션에서 논의된 변수와 일치해야 하며, 두 섹션 간에 명확한 연결을 만들어야 합니다.</p>
+<p>특징이 모델에 어떻게 들어가는지, 그리고 그 이유에 대한 논의가 있어야 합니다. 몇 가지 예시는 다음과 같습니다.</p>
+<ul>
+<li>연령 그룹 대신 연령을 사용하는 이유는 무엇입니까?</li>
+<li>주/도가 수준 효과를 갖는 이유는 무엇입니까?</li>
+<li>성별이 범주형 변수인 이유는 무엇입니까? 일반적으로 우리는 이것이 상황에 적합한 모델이라는 느낌을 전달하려고 합니다. 우리는 독자가 데이터 섹션에서 논의된 측면이 모델링 결정에 어떻게 나타나는지 이해하기를 원합니다.</li>
+</ul>
+<p>모델 섹션은 모델을 뒷받침하는 가정에 대한 논의로 마무리되어야 합니다. 또한 대체 모델 또는 변형에 대한 간략한 논의도 있어야 합니다. 강점과 약점이 명확하고 독자가 이 특정 모델이 선택된 이유를 알기를 원합니다.</p>
+<p>이 섹션의 어느 시점에서는 일반적으로 모델을 실행하는 데 사용된 소프트웨어를 지정하고, 모델이 적절하지 않을 수 있는 상황에 대한 생각을 증명하는 것이 적절합니다. 두 번째 요점은 일반적으로 논의 섹션에서 확장될 것입니다. 그리고 모델 검증 및 확인, 모델 수렴 및/또는 진단 문제에 대한 증거가 있어야 합니다. 다시 말하지만, 여기에는 균형이 필요하며, 이 내용 중 일부는 부록에 더 적절하게 배치될 수 있습니다.</p>
+<p>기술 용어가 사용될 때는 익숙하지 않은 독자를 위해 일반 언어로 간략하게 설명해야 합니다. 예를 들어, <span class="citation" data-cites="monicababynames는">(<a href="#ref-monicababynames는" role="doc-biblioref"><strong>monicababynames는?</strong></a>)</span> 지니 계수에 대한 설명을 통합하여 독자를 이해시킵니다.</p>
+<blockquote class="blockquote">
+<p>아기 이름의 집중도를 살펴보려면 각 국가, 성별 및 연도에 대한 지니 계수를 계산해 봅시다. 지니 계수는 빈도 분포 값 간의 분산 또는 불평등을 측정합니다. 0에서 1 사이의 값을 가질 수 있습니다. 소득 분포의 경우, 지니 계수가 1이면 한 사람이 모든 소득을 가지고 있음을 의미합니다. 이 경우, 지니 계수가 1이면 모든 아기가 같은 이름을 가지고 있음을 의미합니다. 반대로, 지니 계수가 0이면 이름이 모든 아기에게 고르게 분포됨을 의미합니다.</p>
+</blockquote>
+<p>통계 모델을 포함하지 않는 논문도 있을 수 있습니다. 이 경우 이 “모델” 섹션은 더 넓은 “방법론” 섹션으로 대체되어야 합니다. 수행된 시뮬레이션을 설명하거나 접근 방식에 대한 더 일반적인 세부 정보를 포함할 수 있습니다.</p>
+</section>
+<section id="결과" class="level3" data-number="4.5.6">
+<h3 data-number="4.5.6" class="anchored" data-anchor-id="결과"><span class="header-section-number">4.5.6</span> 결과</h3>
+<p>결과 섹션의 두 가지 훌륭한 예시는 <span class="citation" data-cites="kharecha2013prevented">Kharecha 와/과 Hansen (<a href="#ref-kharecha2013prevented" role="doc-biblioref">2013</a>)</span> 및 <span class="citation" data-cites="kiang2021racial에서">(<a href="#ref-kiang2021racial에서" role="doc-biblioref"><strong>kiang2021racial에서?</strong></a>)</span> 제공합니다. 결과 섹션에서는 분석 결과를 명확하게 전달하고 함의에 대한 논의에 너무 집중하지 않기를 원합니다. 결과 섹션에는 요약 통계, 표 및 그래프가 필요할 것입니다. 이러한 각 측면은 상호 참조되어야 하며, 각 그림에서 보이는 내용을 자세히 설명하는 텍스트가 함께 제공되어야 합니다. 이 섹션은 결과를 전달해야 합니다. 즉, 결과가 무엇을 의미하는지보다는 결과가 무엇인지에 관심이 있습니다.</p>
+<p>이 섹션에는 모델링을 기반으로 한 계수 추정치 그래프 표도 일반적으로 포함될 것입니다. 추정치의 다양한 특징을 논의하고, 모델 간의 차이를 설명해야 합니다. 데이터의 다른 하위 집합을 별도로 고려할 수도 있습니다. 다시 말하지만, 모든 그래프와 표에는 일반 언어로 된 텍스트가 함께 제공되어야 합니다. 대략적인 지침은 텍스트의 양이 표와 그래프가 차지하는 공간의 양과 같거나 그 이상이어야 한다는 것입니다. 예를 들어, 계수 추정치 표를 표시하는 데 전체 페이지가 사용된다면, 해당 표에 대한 전체 페이지 분량의 텍스트가 함께 제공되어야 합니다.</p>
+</section>
+<section id="논의" class="level3" data-number="4.5.7">
+<h3 data-number="4.5.7" class="anchored" data-anchor-id="논의"><span class="header-section-number">4.5.7</span> 논의</h3>
+<p>논의 섹션은 논문의 마지막 섹션이 될 수 있으며, 일반적으로 네다섯 개의 하위 섹션으로 구성됩니다.</p>
+<p>논의 섹션은 일반적으로 논문에서 수행된 작업에 대한 간략한 요약을 포함하는 하위 섹션으로 시작됩니다. 그 다음에는 이 논문에서 세상에 대해 배우는 핵심 사항에 전념하는 두세 개의 하위 섹션이 이어집니다. 이러한 하위 섹션은 논문에서 이야기되는 이야기의 함의를 정당화하거나 자세히 설명할 주요 기회입니다. 일반적으로 이러한 하위 섹션에는 새로 도입된 그래프나 표가 없으며, 대신 이전 섹션에서 도입된 것들로부터 배우는 것에 중점을 둡니다. 일부 결과는 다른 사람들이 발견한 것과 관련하여 논의될 수 있으며, 차이점은 여기에서 조정될 수 있습니다.</p>
+<p>세상에 대해 배우는 이러한 하위 섹션 다음에는 일반적으로 수행된 작업의 일부 약점에 초점을 맞춘 하위 섹션이 있습니다. 이는 사용된 데이터, 접근 방식 및 모델과 같은 측면에 관련될 수 있습니다. 모델의 경우 우리는 특히 발견에 영향을 미칠 수 있는 측면에 관심이 있습니다. 이는 기계 학습 모델의 경우 특히 어려울 수 있으며, <span class="citation" data-cites="realml은">(<a href="#ref-realml은" role="doc-biblioref"><strong>realml은?</strong></a>)</span> 고려해야 할 측면에 대한 지침을 제공합니다. 그리고 마지막 하위 섹션은 일반적으로 배울 점과 향후 작업이 어떻게 진행될 수 있는지 명시하는 몇 단락입니다.</p>
+<p>일반적으로 이 섹션은 전체 논문의 최소 25%를 차지할 것으로 예상됩니다. 즉, 8페이지 논문에서는 최소 2페이지의 논의가 필요합니다.</p>
+</section>
+<section id="간결성-오타-및-문법" class="level3" data-number="4.5.8">
+<h3 data-number="4.5.8" class="anchored" data-anchor-id="간결성-오타-및-문법"><span class="header-section-number">4.5.8</span> 간결성, 오타 및 문법</h3>
+<p>간결성은 중요합니다. 이는 부분적으로 우리가 독자를 위해 글을 쓰고, 독자는 다른 우선 순위를 가지고 있기 때문입니다. 그러나 또한 작가로서 가장 중요한 요점이 무엇인지, 어떻게 가장 잘 뒷받침할 수 있는지, 그리고 주장이 가장 약한 부분이 어디인지 고려하도록 강요하기 때문입니다. 장 크레티앙은 전 캐나다 총리입니다. <span class="citation" data-cites="jeanchretien">Chrétien (<a href="#ref-jeanchretien" role="doc-biblioref">2007</a>, p.&nbsp;105)</span>에서 그는 “<span class="math inline">\(\dots\)</span>공무원들에게 문서를 두세 페이지로 요약하고 나머지 자료를 배경 정보로 첨부하도록 요청하곤 했습니다. 저는 곧 이것이 실제로 무엇을 말하는지 모르는 사람들에게만 문제라는 것을 발견했습니다.”라고 썼습니다.</p>
+<p>이러한 경험은 캐나다에만 국한된 것이 아니며 새로운 것도 아닙니다. <span class="citation" data-cites="institueforgovernment에서">(<a href="#ref-institueforgovernment에서" role="doc-biblioref"><strong>institueforgovernment에서?</strong></a>)</span> 전 영국 내각 의원인 올리버 렛윈은 “일부 부서에서 엄청나게 길고 끔찍한 헛소리가 쏟아져 나온다”고 설명하며, “길이를 4분의 1로 줄여달라”고 요청했다고 말합니다. 그는 부서들이 중요한 것을 잃지 않고 이 요청을 수용할 수 있었다는 것을 발견했습니다. 윈스턴 처칠은 제2차 세계 대전 중 “실제 요점을 간결하게 제시하는 훈련은 더 명확한 사고에 도움이 될 것”이라고 말하며 간결성을 요구했습니다. 맨해튼 프로젝트의 촉매제가 된 실라르드와 아인슈타인의 FDR에게 보낸 편지는 단 두 페이지였습니다!</p>
+<p><span class="citation" data-cites="zinsser는">(<a href="#ref-zinsser는" role="doc-biblioref"><strong>zinsser는?</strong></a>)</span> 더 나아가 “좋은 글쓰기의 비결”은 “모든 문장을 가장 깔끔한 구성 요소로 벗겨내는 것”이라고 설명합니다. 모든 문장은 본질로 단순화되어야 합니다. 그리고 기여하지 않는 모든 단어는 제거되어야 합니다.</p>
+<p>불필요한 단어, 오타 및 문법 오류는 논문에서 제거되어야 합니다. 이러한 실수는 주장의 신뢰성에 영향을 미칩니다. 독자가 당신이 맞춤법 검사기를 사용하는 것을 신뢰할 수 없다면, 왜 로지스틱 회귀를 사용하는 것을 신뢰해야 합니까? RStudio에는 맞춤법 검사기가 내장되어 있지만, Microsoft Word 및 Google Docs는 유용한 추가 검사 도구입니다. Quarto 문서에서 복사하여 Word에 붙여넣은 다음 빨간색 및 녹색 줄을 찾아 Quarto 문서에서 수정하십시오.</p>
+<p>우리는 문법 내용의 n차원에 대해 걱정하지 않습니다. 대신, 우리는 대화 언어 사용에서 발생하는 문법과 문장 구조에 관심이 있습니다 <span class="citation" data-cites="stephenking">(<a href="#ref-stephenking" role="doc-biblioref">S. King 2000</a>, p.&nbsp;118)</span>. 편안함을 개발하는 방법은 광범위하게 읽고 다른 사람들에게도 당신의 작업을 읽어달라고 요청하는 것입니다. 또 다른 유용한 전술은 당신의 글을 소리 내어 읽는 것입니다. 이는 소리를 기반으로 이상한 문장을 감지하는 데 유용할 수 있습니다. 정기적으로 나타날 작은 측면 중 하나는 1에서 10까지의 숫자는 단어로 작성해야 하고, 11 이상은 숫자로 작성해야 한다는 것입니다.</p>
+</section>
+<section id="규칙" class="level3" data-number="4.5.9">
+<h3 data-number="4.5.9" class="anchored" data-anchor-id="규칙"><span class="header-section-number">4.5.9</span> 규칙</h3>
+<p>다양한 저자들이 글쓰기 규칙을 정립했습니다. 여기에는 <span class="citation" data-cites="politicsandtheenglishlanguage의">(<a href="#ref-politicsandtheenglishlanguage의" role="doc-biblioref"><strong>politicsandtheenglishlanguage의?</strong></a>)</span> 규칙이 포함되며, 이는 <span class="citation" data-cites="johnsontheeconomist에">(<a href="#ref-johnsontheeconomist에" role="doc-biblioref"><strong>johnsontheeconomist에?</strong></a>)</span> 의해 재해석되었습니다. 데이터로 이야기를 전달하는 데 초점을 맞춘 글쓰기 규칙의 추가적인 재해석은 다음과 같습니다.</p>
+<ul>
+<li>독자와 그들의 필요에 집중하십시오. 다른 모든 것은 부차적입니다.</li>
+<li>구조를 설정하고, 그것에 의존하여 이야기를 전달하십시오.</li>
+<li>가능한 한 빨리 초고를 작성하십시오.</li>
+<li>그 초고를 광범위하게 다시 작성하십시오.</li>
+<li>간결하고 직접적으로 작성하십시오. 가능한 한 많은 단어를 제거하십시오.</li>
+<li>단어를 정확하게 사용하십시오. 예를 들어, 주가는 개선되거나 악화되는 것이 아니라 오르거나 내립니다.</li>
+<li>가능한 한 짧은 문장을 사용하십시오.</li>
+<li>전문 용어를 피하십시오.</li>
+<li>당신의 작품이 신문 1면에 실릴 것처럼 작성하십시오.</li>
+<li>참신함이나 “X를 연구한 최초의 사람”이라고 주장하지 마십시오. 항상 먼저 그곳에 도달한 다른 사람이 있습니다.</li>
+</ul>
+<p><span class="citation" data-cites="fiske2021words는">(<a href="#ref-fiske2021words는" role="doc-biblioref"><strong>fiske2021words는?</strong></a>)</span> 과학 논문에 대한 규칙 목록을 가지고 있으며, <span class="citation" data-cites="pineau2021improving의">(<a href="#ref-pineau2021improving의" role="doc-biblioref"><strong>pineau2021improving의?</strong></a>)</span> 부록은 기계 학습 논문에 대한 체크리스트를 제공합니다. 그러나 아마도 마지막 말은 <span class="citation" data-cites="Savage2019의">(<a href="#ref-Savage2019의" role="doc-biblioref"><strong>Savage2019의?</strong></a>)</span> 것이어야 할 것입니다.</p>
+<blockquote class="blockquote">
+<p>[당신이 좋아하는] 논문의 최고의 버전을 쓰려고 노력하십시오. 익명의 독자를 만족시킬 수는 없지만, 자신을 만족시킬 수는 있어야 합니다. 당신의 논문은—바라건대—후세를 위한 것입니다.</p>
+<p><span class="citation" data-cites="Savage2019">Savage 와/과 Yeh (<a href="#ref-Savage2019" role="doc-biblioref">2019</a>, p.&nbsp;442)</span></p>
+</blockquote>
+</section>
+</section>
+<section id="연습-문제" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="연습-문제"><span class="header-section-number">4.6</span> 연습 문제</h2>
+<section id="실습" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="실습">실습</h3>
+<ol type="1">
+<li><em>(계획)</em> 다음 시나리오를 고려하십시오: <em>어린이와 부모가 아파트 창문에서 전차를 지켜봅니다. 매시간, 8시간 동안, 지나가는 전차의 수를 기록합니다.</em> 데이터 세트가 어떻게 생겼을지 스케치하고, 모든 관측치를 보여주기 위해 만들 수 있는 그래프를 스케치하십시오.</li>
+<li><em>(시뮬레이션)</em> 설명된 시나리오를 더 자세히 고려하고 상황을 시뮬레이션하십시오. 그런 다음 시뮬레이션된 데이터를 기반으로 다섯 가지 테스트를 작성하십시오.</li>
+<li><em>(획득)</em> 관심 있는 도시의 대중교통 측면에 대한 실제 데이터 소스를 지정하십시오.</li>
+<li><em>(탐색)</em> 시뮬레이션된 데이터를 사용하여 그래프와 표를 만드십시오.</li>
+<li><em>(공유)</em> 그래프와 표에 대한 텍스트를 작성하십시오. 실제 상황을 반영한 것처럼 작성하십시오. 단락에 포함된 정확한 세부 정보는 사실일 필요는 없지만 합리적이어야 합니다 (즉, 실제로 데이터를 얻거나 그래프를 만들 필요는 없습니다). 코드를 <code>R</code> 파일과 Quarto 문서로 적절하게 분리하십시오. README가 있는 GitHub 저장소 링크를 제출하십시오.</li>
+</ol>
+</section>
+<section id="퀴즈" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="퀴즈">퀴즈</h3>
+<ol type="1">
+<li>좋은 연구 질문의 세 가지 특징은 무엇입니까 (한두 단락으로 작성)?</li>
+<li><span class="citation" data-cites="bydesignplanningresearch는">(<a href="#ref-bydesignplanningresearch는" role="doc-biblioref"><strong>bydesignplanningresearch는?</strong></a>)</span> 광범위한 주제에서 연구를 자세히 계획하는 방법으로 무엇을 권장합니까 (하나 선택)?
+<ol type="a">
+<li>전문가와 대화.</li>
+<li>사용 가능한 데이터 식별.</li>
+<li>구체적인 연구 질문 세트 명확화.</li>
+</ol></li>
+<li><span class="citation" data-cites="bydesignplanningresearch는">(<a href="#ref-bydesignplanningresearch는" role="doc-biblioref"><strong>bydesignplanningresearch는?</strong></a>)</span> 연구 질문이 왜 그렇게 중요하다고 믿습니까 (모두 선택)?
+<ol type="a">
+<li>합리적인 계획 결정을 내리는 유일한 근거입니다.</li>
+<li>표본을 추출할 대상 인구를 식별합니다.</li>
+<li>적절한 집계 수준을 결정합니다.</li>
+<li>결과 변수를 식별합니다.</li>
+<li>주요 예측 변수를 식별합니다.</li>
+<li>측정 및 데이터 수집에 대한 과제를 제기합니다.</li>
+</ol></li>
+<li><span class="citation" data-cites="bydesignplanningresearch에">(<a href="#ref-bydesignplanningresearch에" role="doc-biblioref"><strong>bydesignplanningresearch에?</strong></a>)</span> 따르면, 연구에서 “이론과 데이터의 나선”의 목적은 무엇입니까 (하나 선택)?
+<ol type="a">
+<li>이론을 개발하기 전에 데이터를 수집하기 위해.</li>
+<li>이론과 데이터 사이를 오가며 반복적으로 다듬기 위해.</li>
+<li>이론적 분석 전에 데이터 수집이 완료되도록 보장하기 위해.</li>
+<li>데이터 없이 이론적 틀에만 집중하기 위해.</li>
+</ol></li>
+<li>연구 접근 방식의 맥락에서 데이터 우선은 무엇을 의미합니까 (하나 선택)?
+<ol type="a">
+<li>데이터 가용성을 고려하지 않고 연구 질문을 개발하는 것.</li>
+<li>미리 정의된 질문에 답하기 위해 특별히 설계된 새로운 데이터를 수집하는 것.</li>
+<li>경험적 증거보다 이론적 틀을 우선시하는 것.</li>
+<li>사용 가능한 데이터로 시작하여 답변할 수 있는 질문을 결정하는 것.</li>
+</ol></li>
+<li>데이터 우선 접근 방식의 장점은 무엇입니까 (하나 선택)?
+<ol type="a">
+<li>이론적 틀의 필요성을 없앱니다.</li>
+<li>연구자가 사용 가능한 데이터를 기반으로 질문을 공식화할 수 있도록 합니다.</li>
+<li>인과 관계를 설정할 수 있음을 보장합니다.</li>
+<li>연구에서 어떤 형태의 편향도 방지합니다.</li>
+</ol></li>
+<li>데이터 우선 접근 방식의 단점은 무엇입니까 (하나 선택)?
+<ol type="a">
+<li>“가로등 아래에서 검색”하는 것에 대한 우려.</li>
+<li>이론에 기여할 수 있는 능력에 대한 우려.</li>
+<li>인과 관계를 파악하기 어려울 것이라는 우려.</li>
+<li>외부 타당성에 대한 우려.</li>
+</ol></li>
+<li>반사실은 무엇입니까 (예시 및 참조를 포함하고 최소 세 단락으로 작성)?</li>
+<li>반사실은 무엇입니까 (하나 선택)?
+<ol type="a">
+<li>주 이론과 모순되는 대안 가설.</li>
+<li>만약이 거짓인 만약-그러면 문장.</li>
+<li>논문의 주요 주장에 반대되는 사실.</li>
+<li>교란 변수를 조정하는 데 사용되는 통계 방법.</li>
+</ol></li>
+<li>“FINER” 프레임워크는 무엇을 의미합니까 (하나 선택)?
+<ol type="a">
+<li>유연하고, 혁신적이며, 중립적이고, 경험적이며, 복제 가능합니다.</li>
+<li>공식적이고, 해석적이며, 새롭고, 실험적이며, 견고합니다.</li>
+<li>집중적이고, 통합적이며, 자연적이고, 효율적이며, 신뢰할 수 있습니다.</li>
+<li>실현 가능하고, 흥미롭고, 새롭고, 윤리적이며, 관련성 있습니다.</li>
+</ol></li>
+<li>추정량은 무엇입니까 (하나 선택)?
+<ol type="a">
+<li>오류로 측정되는 변수.</li>
+<li>편향된 추정기.</li>
+<li>추정치를 계산하기 위해 데이터를 사용하는 과정.</li>
+<li>우리가 추정하고자 하는 진정한 효과 또는 관심량.</li>
+</ol></li>
+<li>추정량은 무엇입니까 (하나 선택)?
+<ol type="a">
+<li>관측된 데이터를 기반으로 주어진 양의 추정치를 계산하는 규칙.</li>
+<li>탐구 대상.</li>
+<li>특정 데이터 세트와 접근 방식이 주어졌을 때의 결과.</li>
+</ol></li>
+<li>추정기는 무엇입니까 (하나 선택)?
+<ol type="a">
+<li>관측된 데이터를 기반으로 주어진 양의 추정치를 계산하는 규칙.</li>
+<li>탐구 대상.</li>
+<li>특정 데이터 세트와 접근 방식이 주어졌을 때의 결과.</li>
+</ol></li>
+<li>추정기의 역할은 무엇입니까 (하나 선택)?
+<ol type="a">
+<li>우리가 추정하고자 하는 진정한 효과입니다.</li>
+<li>데이터에서 추정치를 계산하기 위한 규칙 또는 방법입니다.</li>
+<li>데이터 세트와 방법이 주어졌을 때 계산된 값입니다.</li>
+<li>통계 모델의 오차 항입니다.</li>
+</ol></li>
+<li>추정치는 무엇입니까 (하나 선택)?
+<ol type="a">
+<li>관측된 데이터를 기반으로 주어진 양의 추정치를 계산하는 규칙.</li>
+<li>탐구 대상.</li>
+<li>특정 데이터 세트와 접근 방식이 주어졌을 때의 결과.</li>
+</ol></li>
+<li>선택 편향은 무엇입니까 (하나 선택)?
+<ol type="a">
+<li>참가자가 시간이 지남에 따라 연구에서 이탈할 때.</li>
+<li>데이터가 측정되는 방식에 따라 결과가 영향을 받을 때.</li>
+<li>표본이 모집단을 대표하지 않을 때.</li>
+<li>실험에서 변수가 제대로 통제되지 않을 때.</li>
+</ol></li>
+<li>측정 편향은 무엇입니까 (하나 선택)?
+<ol type="a">
+<li>장비 고장으로 인해 데이터가 부정확하게 기록될 때.</li>
+<li>데이터 수집 방법이 체계적으로 실제 값을 과대평가하거나 과소평가할 때.</li>
+<li>측정 과정이 결과에 영향을 미칠 때.</li>
+<li>결론을 내리기에 표본 크기가 너무 작을 때.</li>
+</ol></li>
+<li>방향성 비순환 그래프(DAG)의 목적은 무엇입니까 (하나 선택)?
+<ol type="a">
+<li>복잡한 모집단에서 무작위 표본을 생성하기 위해.</li>
+<li>비선형 데이터에 대한 통계 테스트를 수행하기 위해.</li>
+<li>통계 모델을 자동으로 생성하기 위해.</li>
+<li>변수 간의 인과 관계를 시각적으로 나타내기 위해.</li>
+</ol></li>
+<li>DAG를 구축하는 이점은 무엇입니까 (하나 선택)?
+<ol type="a">
+<li>데이터에서 인과 관계를 자동으로 식별합니다.</li>
+<li>통계 분석의 필요성을 없앱니다.</li>
+<li>연구자가 변수 관계에 대해 신중하게 생각하도록 돕습니다.</li>
+<li>인과 효과에 대한 정확한 추정치를 제공합니다.</li>
+</ol></li>
+<li>교란 변수는 무엇입니까 (하나 선택)?
+<ol type="a">
+<li>예측 변수와 결과 변수 모두에 의해 영향을 받는 변수.</li>
+<li>예측 변수와 결과 변수 모두에 영향을 미치는 변수.</li>
+<li>예측 변수에 의해 영향을 받고 결과 변수에 영향을 미치는 변수.</li>
+</ol></li>
+<li>매개 변수는 무엇입니까 (하나 선택)?
+<ol type="a">
+<li>예측 변수와 결과 변수 모두에 의해 영향을 받는 변수.</li>
+<li>예측 변수와 결과 변수 모두에 영향을 미치는 변수.</li>
+<li>예측 변수에 의해 영향을 받고 결과 변수에 영향을 미치는 변수.</li>
+</ol></li>
+<li>충돌 변수는 무엇입니까 (하나 선택)?
+<ol type="a">
+<li>예측 변수와 결과 변수 모두에 의해 영향을 받는 변수.</li>
+<li>예측 변수와 결과 변수 모두에 영향을 미치는 변수.</li>
+<li>예측 변수에 의해 영향을 받고 결과 변수에 영향을 미치는 변수.</li>
+</ol></li>
+<li><span class="citation" data-cites="zinsser의">(<a href="#ref-zinsser의" role="doc-biblioref"><strong>zinsser의?</strong></a>)</span> 2장에 따르면, 좋은 글쓰기의 비결은 무엇입니까 (하나 선택)?
+<ol type="a">
+<li>올바른 문장 구조와 문법.</li>
+<li>긴 단어, 부사, 수동태 사용.</li>
+<li>모든 문장을 가장 깔끔한 구성 요소로 벗겨내는 것.</li>
+<li>철저한 계획.</li>
+</ol></li>
+<li><span class="citation" data-cites="zinsser의">(<a href="#ref-zinsser의" role="doc-biblioref"><strong>zinsser의?</strong></a>)</span> 2장에 따르면, 작가는 끊임없이 무엇을 물어야 합니까 (하나 선택)?
+<ol type="a">
+<li>누구를 위해 글을 쓰고 있는가?</li>
+<li>무엇을 말하려고 하는가?</li>
+<li>이것을 어떻게 다시 쓸 수 있는가?</li>
+<li>이것이 왜 중요한가?</li>
+</ol></li>
+<li>논문 작성 과정에서 중요한 과제 중 하나는 무엇입니까 (하나 선택)?
+<ol type="a">
+<li>글쓰기를 시작하기 전에 가능한 한 많은 데이터를 수집하는 것.</li>
+<li>초고에서 각 문장을 완벽하게 만드는 데 많은 시간을 할애하는 것.</li>
+<li>가능한 한 빨리 초고를 작성하는 것.</li>
+<li>글쓰기 전에 상세한 그래프와 표를 만드는 데 집중하는 것.</li>
+</ol></li>
+<li>초고를 빨리 작성하는 것이 왜 중요합니까 (하나 선택)?
+<ol type="a">
+<li>초기 초고에서 실수가 발생하지 않도록 보장합니다.</li>
+<li>수정하고 개선할 수 있는 완전한 버전을 제공합니다.</li>
+<li>작가가 진행하면서 각 문장을 완벽하게 만들 수 있도록 합니다.</li>
+<li>글쓰기에 소요되는 전체 시간을 줄입니다.</li>
+</ol></li>
+<li>“사랑하는 것을 죽여라”는 무엇을 의미합니까 (하나 선택)?
+<ol type="a">
+<li>논란이 되는 주제에 대해 글을 쓰는 것을 피하기 위해.</li>
+<li>작업을 개선하기 위해 가혹한 비판을 사용하기 위해.</li>
+<li>좋아하지만 주요 이야기에 도움이 되지 않는 불필요한 내용을 제거하기 위해.</li>
+<li>전체 초고를 처음부터 다시 작성하기 위해.</li>
+</ol></li>
+<li>독자에게 초점을 맞출 때도 작가에게 글쓰기의 주요 이점 중 하나는 무엇입니까 (하나 선택)?
+<ol type="a">
+<li>작가가 논문을 다시 작성하는 것을 피할 수 있도록 합니다.</li>
+<li>작가가 자신이 무엇을 믿고 어떻게 그것을 믿게 되었는지 알아내는 데 도움이 됩니다.</li>
+<li>동료로부터 필요한 피드백 양을 줄입니다.</li>
+<li>작가의 작품이 출판되도록 보장합니다.</li>
+</ol></li>
+<li>예를 들어 3장에서 <span class="citation" data-cites="zinsser의">(<a href="#ref-zinsser의" role="doc-biblioref"><strong>zinsser의?</strong></a>)</span> 조언을 특징짓는 두 개의 반복되는 단어는 무엇입니까 (하나 선택)?
+<ol type="a">
+<li>다시 쓰기, 다시 쓰기.</li>
+<li>단순화, 단순화.</li>
+<li>제거, 제거.</li>
+<li>적게, 적게.</li>
+</ol></li>
+<li>논문에서 불필요한 단어, 오타 및 문법 오류를 제거하는 주된 이유는 무엇입니까 (하나 선택)?
+<ol type="a">
+<li>단어 수 제한을 충족하기 위해.</li>
+<li>고급 어휘로 검토자를 감동시키기 위해.</li>
+<li>논문을 더 길게 만들기 위해.</li>
+<li>주장의 신뢰성을 높이기 위해.</li>
+</ol></li>
+<li>다음 중 가장 좋은 제목은 무엇입니까 (하나 선택)?
+<ol type="a">
+<li>“작은 표본에서 추정치의 표준 오차”</li>
+<li>“표준 오차”</li>
+<li>“문제 세트 2”</li>
+</ol></li>
+<li>제목을 작성하는 한 가지 전략은 무엇입니까 (하나 선택)?
+<ol type="a">
+<li>전문 용어를 사용하여 전문가 독자를 감동시키기 위해.</li>
+<li>일반적인 주제와 주요 발견에 대한 구체적인 정보를 모두 포함합니다.</li>
+<li>한두 단어만 사용하여 가능한 한 짧게 만듭니다.</li>
+<li>독자를 참여시키기 위해 질문 형식으로 제목을 제시합니다.</li>
+</ol></li>
+<li><span class="citation" data-cites="fourcade2017seeing에">(<a href="#ref-fourcade2017seeing에" role="doc-biblioref"><strong>fourcade2017seeing에?</strong></a>)</span> 대한 새 제목을 작성하십시오.</li>
+<li>다음 중 초록을 작성할 때 권장되지 않는 것은 무엇입니까 (하나 선택)?
+<ol type="a">
+<li>핵심 요점을 설명하기 위해 그림이나 표를 추가하는 것.</li>
+<li>주요 결과 및 함의를 포함하는 것.</li>
+<li>정확하고 간결한 언어를 사용하는 것.</li>
+<li>초록을 자체 포함되도록 만드는 것.</li>
+</ol></li>
+<li>초록을 작성하는 일반적인 구조는 무엇입니까 (하나 선택)?
+<ol type="a">
+<li>함의로 시작하여 방법, 그리고 맥락으로 끝납니다.</li>
+<li>일반적인 영역에 대한 첫 문장, 방법에 대한 두 번째 문장, 주요 결과에 대한 세 번째 문장, 함의에 대한 네 번째 문장.</li>
+<li>한계로 시작하여 데이터 출처, 그리고 결과로 이어집니다.</li>
+<li>논문이 답변할 일련의 질문.</li>
+</ol></li>
+<li><a href="https://xkcd.com/simplewriter/">XKCD Simple Writer</a>에 따르면, 영어에서 가장 많이 사용되는 1,000개의 단어만 사용하여 <span class="citation" data-cites="chambliss1989mundanity의">(<a href="#ref-chambliss1989mundanity의" role="doc-biblioref"><strong>chambliss1989mundanity의?</strong></a>)</span> 초록을 원래 의미를 유지하면서 다시 작성하십시오.</li>
+<li><span class="citation" data-cites="king2006publication에">(<a href="#ref-king2006publication에" role="doc-biblioref"><strong>king2006publication에?</strong></a>)</span> 따르면, 소제목의 핵심 과제는 무엇입니까 (하나 선택)?
+<ol type="a">
+<li>논문을 문헌에 통합하기 위해 약어를 사용합니다.</li>
+<li>독자가 논문의 중요성에 감동하도록 광범위하고 포괄적으로 작성합니다.</li>
+<li>무작위로 잠들었지만 계속 페이지를 넘기는 독자가 자신이 어디에 있는지 알 수 있도록 합니다.</li>
+</ol></li>
+<li>데이터 섹션에서 무엇을 달성하고 싶습니까 (하나 선택)?
+<ol type="a">
+<li>독자를 감동시키기 위해 데이터의 복잡성을 보여주기 위해.</li>
+<li>데이터를 철저히 설명하여 장소 감각을 만들기 위해.</li>
+<li>가능한 한 많은 그래프와 표를 포함하기 위해.</li>
+<li>데이터의 약점을 숨기기 위해.</li>
+</ol></li>
+<li>연구 논문에서 데이터 섹션의 주요 목표는 무엇입니까 (하나 선택)?
+<ol type="a">
+<li>가능한 한 많은 표와 그래프를 제시하기 위해.</li>
+<li>독자가 결과의 기반을 이해할 수 있도록 데이터를 철저히 설명하기 위해.</li>
+<li>분석의 복잡성을 독자에게 설득하기 위해.</li>
+<li>사용되지 않은 데이터 소스까지 모든 가능한 데이터 소스를 논의하기 위해.</li>
+</ol></li>
+<li><span class="citation" data-cites="king2006publication에">(<a href="#ref-king2006publication에" role="doc-biblioref"><strong>king2006publication에?</strong></a>)</span> 따르면, 표준 오차가 0.05라면 계수에 대한 다음 구체성 중 어떤 것이 어리석을까요 (모두 선택)?
+<ol type="a">
+<li>2.7182818</li>
+<li>2.718282</li>
+<li>2.71828</li>
+<li>2.7183</li>
+<li>2.718</li>
+<li>2.72</li>
+<li>2.7</li>
+<li>3</li>
+</ol></li>
+<li>좋은 그림 또는 표 캡션은 무엇을 달성해야 합니까 (하나 선택)?
+<ol type="a">
+<li>가능한 한 간결하게, 이상적으로는 한 줄로.</li>
+<li>자체 포함되어 주요 요점을 설명합니다.</li>
+<li>전문 지식을 보여주기 위해 복잡한 전문 용어를 포함합니다.</li>
+<li>독자가 텍스트를 읽도록 장려하기 위해 최소한의 정보만 제공합니다.</li>
+</ol></li>
+<li>모델 섹션에는 무엇이 있어야 합니까 (하나 선택)?
+<ol type="a">
+<li>문헌에서 사용된 다른 모델 요약.</li>
+<li>방정식 없이 최종 결과만.</li>
+<li>수학적 표기법 없는 일반적인 설명.</li>
+<li>모든 구성 요소의 방정식, 설명 및 정의.</li>
+</ol></li>
+<li>모델 섹션에서 대체 모델 또는 변형을 논의하는 것이 왜 중요합니까 (하나 선택)?
+<ol type="a">
+<li>철저한 고려를 보여주고 선택한 모델을 정당화하기 위해.</li>
+<li>다른 모델이 열등하다는 것을 보여주기 위해.</li>
+<li>여러 옵션으로 독자를 혼란시키기 위해.</li>
+<li>논문의 길이를 늘리기 위해.</li>
+</ol></li>
+<li>결과 섹션의 목적은 무엇입니까 (하나 선택)?
+<ol type="a">
+<li>결과를 해석하고 그 함의를 논의하는 것.</li>
+<li>다른 연구자들의 발견을 비판하는 것.</li>
+<li>미래 연구 방향을 제안하는 것.</li>
+<li>광범위한 해석 없이 분석 결과를 명확하게 제시하는 것.</li>
+</ol></li>
+<li>결과 섹션에서 그래프와 표는 어떻게 통합되어야 합니까 (하나 선택)?
+<ol type="a">
+<li>함께 제공되는 텍스트 없이 독립적으로 존재해야 합니다.</li>
+<li>혼란을 피하기 위해 최소화되어야 합니다.</li>
+<li>상호 참조되어 텍스트에서 논의되어야 합니다.</li>
+<li>흐름을 방해하지 않기 위해 부록에 배치되어야 합니다.</li>
+</ol></li>
+<li>논의 섹션의 목적은 무엇입니까 (하나 선택)?
+<ol type="a">
+<li>결과를 더 자세히 반복하기 위해.</li>
+<li>상세한 방법론을 제공하기 위해.</li>
+<li>결과를 해석하고, 함의를 논의하고, 약점을 인정하기 위해.</li>
+<li>해결책을 제시하지 않고 연구의 모든 한계를 나열하기 위해.</li>
+</ol></li>
+<li><span class="citation" data-cites="Savage2019는">(<a href="#ref-Savage2019는" role="doc-biblioref"><strong>Savage2019는?</strong></a>)</span> 해당 구두점, 단어, 문장, 단락 또는 섹션 없이 원래 메시지를 보존할 수 있는지 스스로에게 물어보라고 권장하는 이유는 무엇입니까 (하나 선택)?
+<ol type="a">
+<li>오류 가능성을 줄이기 위해.</li>
+<li>명확성을 달성하기 위해.</li>
+<li>논문을 짧게 유지하기 위해.</li>
+<li><ol start="48" type="1">
+<li>다시 작성 과정의 핵심 측면은 무엇입니까 (모두 선택)?</li>
+</ol></li>
+<li>불필요한 단어를 제거하기 위해 빨간 펜으로 검토하는 것.</li>
+<li>논문을 인쇄하고 실제 사본을 읽는 것.</li>
+<li>흐름을 향상시키기 위해 잘라내고 붙여넣는 것.</li>
+<li>소리 내어 읽는 것.</li>
+<li>다른 사람과 교환하는 것.</li>
+</ol></li>
+<li>문법 오류와 오타가 논문의 신뢰성에 영향을 미치는 이유는 무엇입니까 (하나 선택)?
+<ol type="a">
+<li>논문의 캐주얼한 어조를 향상시킵니다.</li>
+<li>논문을 더 짧게 만듭니다.</li>
+<li>세부 사항에 대한 주의 부족을 나타냅니다.</li>
+<li>내용이 좋다면 허용됩니다.</li>
+</ol></li>
+</ol>
+</section>
+<section id="수업-활동" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="수업-활동">수업 활동</h3>
+<ul>
+<li>연구에 대한 선호하는 접근 방식(데이터 우선/질문 우선/기타)과 그 이유를 논의하십시오.</li>
+<li>예시를 참조하여 추정량, 추정기 및 추정치가 무엇인지 설명하십시오.</li>
+<li>“선택 편향”을 고려하고, <span class="citation" data-cites="monicababynames가">(<a href="#ref-monicababynames가" role="doc-biblioref"><strong>monicababynames가?</strong></a>)</span> 지니 계수에 대해 설명한 것과 같은 방식으로 한 문장으로 정의를 포함하십시오.</li>
+<li>ChatGPT 또는 동등한 LLM을 사용하여 “선택 효과는 무엇입니까?”라는 질문에 답하는 프롬프트를 만드십시오. 파트너와 함께 컨텍스트, 참조를 추가하고 (필요한 경우) 사실로 만들어 응답을 개선하십시오. 세 가지 측면을 논의하십시오: 1) 프롬프트, 2) 원본 답변, 3) 개선된 답변.</li>
+<li>잘 쓰여진 정량 논문 중 하나를 선택하십시오.
+<ul>
+<li>원본 제목을 작성하십시오. 무엇이 좋고, 무엇이 좋지 않습니까? 대체 제목을 작성하십시오.</li>
+<li>초록을 작성하십시오. 무엇이 좋고, 무엇이 좋지 않습니까?</li>
+<li>ChatGPT 또는 동등한 LLM에게 대체 초록을 만들도록 프롬프트하십시오 (논의할 수 있도록 프롬프트를 복사하십시오).</li>
+<li>이 모든 것을 바탕으로 개선된 초록을 작성한 다음 모든 것을 논의하십시오.</li>
+</ul></li>
+<li><span class="citation" data-cites="king2006publication을">(<a href="#ref-king2006publication을" role="doc-biblioref"><strong>king2006publication을?</strong></a>)</span> 기반으로 이 수업이 끝날 때까지 의미 있는 논문을 작성하기 위한 계획을 세우십시오. (박사 과정 학생의 경우: 제출할 세 개의 저널/학술 대회를 순서대로 자세히 설명하고, 각 저널/학술 대회에 논문이 적합한 이유를 설명하십시오.)</li>
+<li><em>논문 검토:</em> <span class="citation" data-cites="Gerring2012를">(<a href="#ref-Gerring2012를" role="doc-biblioref"><strong>Gerring2012를?</strong></a>)</span> 읽고 한 페이지 분량의 검토를 작성하십시오.</li>
+</ul>
+</section>
+<section id="과제" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="과제">과제</h3>
+<p><span class="citation" data-cites="caroonworking">Caro (<a href="#ref-caroonworking" role="doc-biblioref">2019</a>, p.&nbsp;xii)</span>은 거의 매일 최소 1,000단어를 씁니다. 이 과제의 목적은 당신에게도 그렇게 할 기회를 주는 것입니다. 선행 조건에 명시된 논문 중 하나를 선택하고 다음 작업을 완료하십시오.</p>
+<ul>
+<li>1일차: 모든 단어를 직접 작성하여 전체 서론을 필사하십시오.</li>
+<li>2일차: 서론을 5줄 (또는 10%, 더 적은 쪽) 더 짧게 다시 작성하십시오.</li>
+<li>3일차: 모든 단어를 직접 작성하여 초록을 필사하십시오.</li>
+<li>4일차: 논문에 대한 새로운 네 문장짜리 초록을 다시 작성하십시오.</li>
+<li>5일차: <a href="https://xkcd.com/simplewriter/">여기</a>에 정의된 영어에서 가장 많이 사용되는 1,000개의 단어만 사용하여 새 초록의 두 번째 버전을 작성하십시오.</li>
+<li>6일차: 논문이 작성된 방식 중 마음에 드는 세 가지 점을 자세히 설명하십시오.</li>
+<li>7일차: 논문이 작성된 방식 중 마음에 들지 않는 한 가지 점을 자세히 설명하십시오.</li>
+</ul>
+<p>Quarto를 사용하여 일주일 동안 단일 PDF를 만드십시오. 매일 작업 후 정보가 담긴 커밋 메시지와 함께 작업을 커밋하고 푸시하십시오.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-angrist2010credibility" class="csl-entry" role="listitem">
+Angrist, Joshua, 와/과 Jörn-Steffen Pischke. 2010. <span>“The credibility revolution in empirical economics: How better research design is taking the con out of econometrics”</span>. <em>Journal of Economic Perspectives</em> 24 (2): 3–30. <a href="https://doi.org/10.1257/jep.24.2.3">https://doi.org/10.1257/jep.24.2.3</a>.
+</div>
+<div id="ref-tinytable" class="csl-entry" role="listitem">
+Arel-Bundock, Vincent. 2024. <em><span>tinytable: Simple and Configurable Tables in <span>“HTML”</span>, <span>“LaTeX”</span>, <span>“Markdown”</span>, <span>“Word”</span>, <span>“PNG”</span>, <span>“PDF”</span>, and <span>“Typst”</span> Formats</span></em>. <a href="https://vincentarelbundock.github.io/tinytable/">https://vincentarelbundock.github.io/tinytable/</a>.
+</div>
+<div id="ref-citeggdag" class="csl-entry" role="listitem">
+Barrett, Malcolm. 2021. <em><span>ggdag: Analyze and Create Elegant Directed Acyclic Graphs</span></em>. <a href="https://CRAN.R-project.org/package=ggdag">https://CRAN.R-project.org/package=ggdag</a>.
+</div>
+<div id="ref-barron2018individuals" class="csl-entry" role="listitem">
+Barron, Alexander, Jenny Huang, Rebecca Spang, 와/과 Simon DeDeo. 2018. <span>“Individuals, institutions, and innovation in the debates of the French Revolution”</span>. <em>Proceedings of the National Academy of Sciences</em> 115 (18): 4607–12. <a href="https://doi.org/10.1073/pnas.1717729115">https://doi.org/10.1073/pnas.1717729115</a>.
+</div>
+<div id="ref-Birkmeyer2013" class="csl-entry" role="listitem">
+Birkmeyer, John, Jonathan Finks, Amanda O’Reilly, Mary Oerline, Arthur Carlin, Andre Nunn, Justin Dimick, Mousumi Banerjee, 와/과 Nancy Birkmeyer. 2013. <span>“Surgical Skill and Complication Rates after Bariatric Surgery”</span>. <em>New England Journal of Medicine</em> 369 (15): 1434–42. <a href="https://doi.org/10.1056/nejmsa1300625">https://doi.org/10.1056/nejmsa1300625</a>.
+</div>
+<div id="ref-bland1986statistical" class="csl-entry" role="listitem">
+Bland, Martin, 와/과 Douglas Altman. 1986. <span>“Statistical methods for assessing agreement between two methods of clinical measurement”</span>. <em>The Lancet</em> 327 (8476): 307–10. <a href="https://doi.org/10.1016/S0140-6736(86)90837-8">https://doi.org/10.1016/S0140-6736(86)90837-8</a>.
+</div>
+<div id="ref-bowley" class="csl-entry" role="listitem">
+Bowley, Arthur Lyon. 1901. <em>Elements of Statistics</em>. London: P. S. King.
+</div>
+<div id="ref-bronnerquantediting" class="csl-entry" role="listitem">
+Bronner, Laura. 2021. <span>“Quantitative Editing”</span>. <em>YouTube</em>, 6월. <a href="https://youtu.be/LI5m9RzJgWc">https://youtu.be/LI5m9RzJgWc</a>.
+</div>
+<div id="ref-theprofessor" class="csl-entry" role="listitem">
+Brontë, Charlotte. 1857. <em>The Professor</em>. <a href="https://www.gutenberg.org/files/1028/1028-h/1028-h.htm">https://www.gutenberg.org/files/1028/1028-h/1028-h.htm</a>.
+</div>
+<div id="ref-de2021thinking" class="csl-entry" role="listitem">
+Bueno de Mesquita, Ethan, 와/과 Anthony Fowler. 2021. <em>Thinking clearly with data: A guide to quantitative reasoning and analysis</em>. New Jersey: Princeton University Press.
+</div>
+<div id="ref-caroonworking" class="csl-entry" role="listitem">
+Caro, Robert. 2019. <em>Working</em>. 1st ed. New York: Knopf.
+</div>
+<div id="ref-throughthelookingglass" class="csl-entry" role="listitem">
+Carroll, Lewis. 1871. <em>Through the Looking-Glass</em>. Macmillan. <a href="https://www.gutenberg.org/files/12/12-h/12-h.htm">https://www.gutenberg.org/files/12/12-h/12-h.htm</a>.
+</div>
+<div id="ref-chambliss1989mundanity" class="csl-entry" role="listitem">
+Chambliss, Daniel. 1989. <span>“The Mundanity of Excellence: An Ethnographic Report on Stratification and Olympic Swimmers”</span>. <em>Sociological Theory</em> 7 (1): 70–86. <a href="https://doi.org/10.2307/202063">https://doi.org/10.2307/202063</a>.
+</div>
+<div id="ref-jeanchretien" class="csl-entry" role="listitem">
+Chrétien, Jean. 2007. <em>My Years as Prime Minister</em>. 1st ed. Toronto: Knopf Canada.
+</div>
+<div id="ref-elementsofgraphingdata" class="csl-entry" role="listitem">
+Cleveland, William. (1985년) 1994. <em>The Elements of Graphing Data</em>. 2nd ed. New Jersey: Hobart Press.
+</div>
+<div id="ref-doll1950smoking" class="csl-entry" role="listitem">
+Doll, Richard, 와/과 Bradford Hill. 1950. <span>“Smoking and Carcinoma of the Lung”</span>. <em>British Medical Journal</em> 2 (4682): 739–48. <a href="https://doi.org/10.1136/bmj.2.4682.739">https://doi.org/10.1136/bmj.2.4682.739</a>.
+</div>
+<div id="ref-fourcade2017seeing" class="csl-entry" role="listitem">
+Fourcade, Marion, 와/과 Kieran Healy. 2017. <span>“Seeing like a market”</span>. <em>Socio-Economic Review</em> 15 (1): 9–29. <a href="https://doi.org/10.1093/ser/mww033">https://doi.org/10.1093/ser/mww033</a>.
+</div>
+<div id="ref-franklin2005exploratory" class="csl-entry" role="listitem">
+Franklin, Laura. 2005. <span>“Exploratory experiments”</span>. <em>Philosophy of Science</em> 72 (5): 888–99. <a href="https://doi.org/10.1086/508117">https://doi.org/10.1086/508117</a>.
+</div>
+<div id="ref-gelmanandhill" class="csl-entry" role="listitem">
+Gelman, Andrew, 와/과 Jennifer Hill. 2007. <em>Data Analysis Using Regression and Multilevel/Hierarchical Models</em>. 1st ed. Cambridge University Press.
+</div>
+<div id="ref-gelman2002let" class="csl-entry" role="listitem">
+Gelman, Andrew, Cristian Pasarica, 와/과 Rahul Dodhia. 2002. <span>“Let’s Practice What We Preach: Turning Tables into Graphs”</span>. <em>The American Statistician</em> 56 (2): 121–30. <a href="https://doi.org/10.1198/000313002317572790">https://doi.org/10.1198/000313002317572790</a>.
+</div>
+<div id="ref-grahamhowtowriteusefully" class="csl-entry" role="listitem">
+Graham, Paul. 2020. <span>“How to write usefully”</span>, 2월. <a href="http://paulgraham.com/useful.html">http://paulgraham.com/useful.html</a>.
+</div>
+<div id="ref-Gustafsson2017" class="csl-entry" role="listitem">
+Gustafsson, Karl, 와/과 Linus Hagström. 2017. <span>“what is the point? teaching graduate students how to construct political science research puzzles”</span>. <em>European Political Science</em> 17 (4): 634–48. <a href="https://doi.org/10.1057/s41304-017-0130-y">https://doi.org/10.1057/s41304-017-0130-y</a>.
+</div>
+<div id="ref-hayotacademicstyle" class="csl-entry" role="listitem">
+Hayot, Eric. 2014. <em>The Elements of Academic Style</em>. New York: Columbia University Press.
+</div>
+<div id="ref-hernanrobins2020" class="csl-entry" role="listitem">
+Hernán, Miguel, 와/과 James Robins. 2023. <em>What If</em>. 1st ed. Boca Raton: Chapman &amp; Hall/CRC. <a href="https://www.hsph.harvard.edu/miguel-hernan/causal-inference-book/">https://www.hsph.harvard.edu/miguel-hernan/causal-inference-book/</a>.
+</div>
+<div id="ref-hulley2007designing" class="csl-entry" role="listitem">
+Hulley, Stephen, Steven Cummings, Warren Browner, Deborah Grady, 와/과 Thomas Newman. 2007. <em>Designing clinical research</em>. 3rd ed. Lippincott Williams &amp; Wilkins.
+</div>
+<div id="ref-citeDiagrammeR" class="csl-entry" role="listitem">
+Iannone, Richard. 2022. <em><span>DiagrammeR: Graph/Network Visualization</span></em>. <a href="https://CRAN.R-project.org/package=DiagrammeR">https://CRAN.R-project.org/package=DiagrammeR</a>.
+</div>
+<div id="ref-joyner1991modeling" class="csl-entry" role="listitem">
+Joyner, Michael. 1991. <span>“Modeling: optimal marathon performance on the basis of physiological factors”</span>. <em>Journal of Applied Physiology</em> 70 (2): 683–87. <a href="https://doi.org/10.1152/jappl.1991.70.2.683">https://doi.org/10.1152/jappl.1991.70.2.683</a>.
+</div>
+<div id="ref-Kahan2023" class="csl-entry" role="listitem">
+Kahan, Brennan, Suzie Cro, Fan Li, 와/과 Michael Harhay. 2023. <span>“Eliminating ambiguous treatment effects using estimands”</span>. <em>American Journal of Epidemiology</em>, 2월. <a href="https://doi.org/10.1093/aje/kwad036">https://doi.org/10.1093/aje/kwad036</a>.
+</div>
+<div id="ref-kahan2024" class="csl-entry" role="listitem">
+Kahan, Brennan, Joanna Hindley, Mark Edwards, Suzie Cro, 와/과 Tim Morris. 2024. <span>“<span>The estimands framework: a primer on the ICH E9(R1) addendum</span>”</span>. <em>BMJ</em>, 1월, e076316. <a href="https://doi.org/10.1136/bmj-2023-076316">https://doi.org/10.1136/bmj-2023-076316</a>.
+</div>
+<div id="ref-becarefulaboutyourestimand" class="csl-entry" role="listitem">
+Kahan, Brennan, Fan Li, Andrew Copas, 와/과 Michael Harhay. 2022. <span>“Estimands in cluster-randomized trials: choosing analyses that answer the right question”</span>. <em>International Journal of Epidemiology</em>, 7월. <a href="https://doi.org/10.1093/ije/dyac131">https://doi.org/10.1093/ije/dyac131</a>.
+</div>
+<div id="ref-Keshav2007" class="csl-entry" role="listitem">
+Keshav, Srinivasan. 2007. <span>“How to read a paper”</span>. <em><span>ACM</span> <span>SIGCOMM</span> Computer Communication Review</em> 37 (3): 83–84. <a href="https://doi.org/10.1145/1273445.1273458">https://doi.org/10.1145/1273445.1273458</a>.
+</div>
+<div id="ref-kharecha2013prevented" class="csl-entry" role="listitem">
+Kharecha, Pushker, 와/과 James Hansen. 2013. <span>“Prevented Mortality and Greenhouse Gas Emissions from Historical and Projected Nuclear Power”</span>. <em>Environmental Science &amp; Technology</em> 47 (9): 4889–95. <a href="https://doi.org/10.1021/es3051197">https://doi.org/10.1021/es3051197</a>.
+</div>
+<div id="ref-king2006publication" class="csl-entry" role="listitem">
+King, Gary. 2006. <span>“Publication, Publication”</span>. <em>PS: Political Science &amp; Politics</em> 39 (1): 119–25. <a href="https://doi.org/10.1017/S1049096506060252">https://doi.org/10.1017/S1049096506060252</a>.
+</div>
+<div id="ref-stephenking" class="csl-entry" role="listitem">
+King, Stephen. 2000. <em>On Writing: A Memoir of the Craft</em>. 1st ed. Scribner.
+</div>
+<div id="ref-koenker2009reproducible" class="csl-entry" role="listitem">
+Koenker, Roger, 와/과 Achim Zeileis. 2009. <span>“On reproducible econometric research”</span>. <em>Journal of Applied Econometrics</em> 24 (5): 833–47. <a href="https://doi.org/10.1002/jae.1083">https://doi.org/10.1002/jae.1083</a>.
+</div>
+<div id="ref-birdbybird" class="csl-entry" role="listitem">
+Lamott, Anne. 1994. <em>Bird by Bird: Some instructions on writing and life</em>. Anchor Books.
+</div>
+<div id="ref-latour" class="csl-entry" role="listitem">
+Latour, Bruno. 1996. <span>“On actor-network theory: A few clarifications”</span>. <em>Soziale Welt</em> 47 (4): 369–81. <a href="http://www.jstor.org/stable/40878163">http://www.jstor.org/stable/40878163</a>.
+</div>
+<div id="ref-bydesignplanningresearch" class="csl-entry" role="listitem">
+Light, Richard, Judith Singer, 와/과 John Willett. 1990. <em><span>By Design: Planning Research on Higher Education</span></em>. 1st ed. Cambridge: Harvard University Press.
+</div>
+<div id="ref-Little2021" class="csl-entry" role="listitem">
+Little, Roderick, 와/과 Roger Lewis. 2021. <span>“Estimands, Estimators, and Estimates”</span>. <em><span>JAMA</span></em> 326 (10): 967. <a href="https://doi.org/10.1001/jama.2021.2886">https://doi.org/10.1001/jama.2021.2886</a>.
+</div>
+<div id="ref-lucas1978asset" class="csl-entry" role="listitem">
+Lucas, Robert. 1978. <span>“Asset prices in an exchange economy”</span>. <em>Econometrica</em> 46 (6): 1429–45. <a href="https://doi.org/10.2307/1913837">https://doi.org/10.2307/1913837</a>.
+</div>
+<div id="ref-Lundberg2021" class="csl-entry" role="listitem">
+Lundberg, Ian, Rebecca Johnson, 와/과 Brandon Stewart. 2021. <span>“What Is Your Estimand? Defining the Target Quantity Connects Statistical Evidence to Theory”</span>. <em>American Sociological Review</em> 86 (3): 532–65. <a href="https://doi.org/10.1177/00031224211004187">https://doi.org/10.1177/00031224211004187</a>.
+</div>
+<div id="ref-citemcelreath" class="csl-entry" role="listitem">
+McElreath, Richard. (2015년) 2020. <em><span>Statistical Rethinking: A Bayesian Course with Examples in R and Stan</span></em>. 2nd ed. Chapman; Hall/CRC.
+</div>
+<div id="ref-draftnumberfour" class="csl-entry" role="listitem">
+McPhee, John. 2017. <em>Draft No. 4</em>. 1st ed. Farrar, Straus; Giroux.
+</div>
+<div id="ref-meng1994" class="csl-entry" role="listitem">
+Meng, Xiao-Li. 1994. <span>“Multiple-Imputation Inferences with Uncongenial Sources of Input”</span>. <em>Statistical Science</em> 9 (4): 538–58. <a href="https://doi.org/10.1214/ss/1177010269">https://doi.org/10.1214/ss/1177010269</a>.
+</div>
+<div id="ref-meng2012" class="csl-entry" role="listitem">
+———. 2012. <span>“You Want Me to Analyze Data I Don’t Have? Are You Insane?”</span> <em>Shanghai Archives of Psychiatry</em> 24 (5): 297–301. <a href="https://doi.org/10.3969/j.issn.1002-0829.2012.05.011">https://doi.org/10.3969/j.issn.1002-0829.2012.05.011</a>.
+</div>
+<div id="ref-meng2018statistical" class="csl-entry" role="listitem">
+———. 2018. <span>“Statistical paradises and paradoxes in big data (I): Law of large populations, big data paradox, and the 2016 US presidential election”</span>. <em>The Annals of Applied Statistics</em> 12 (2): 685–726. <a href="https://doi.org/10.1214/18-AOAS1161SF">https://doi.org/10.1214/18-AOAS1161SF</a>.
+</div>
+<div id="ref-ofwhatisthisaninstance" class="csl-entry" role="listitem">
+Rosenau, James N. 1999. <span>“A Transformed Observer In A Transforming World”</span>. <em>Studia Diplomatica</em> 52 (1/2): 5–14. <a href="http://www.jstor.org/stable/44838096">http://www.jstor.org/stable/44838096</a>.
+</div>
+<div id="ref-samuel1959some" class="csl-entry" role="listitem">
+Samuel, Arthur. 1959. <span>“Some studies in machine learning using the game of checkers”</span>. <em>IBM Journal of research and development</em> 3 (3): 210–29. <a href="https://doi.org/10.1147/rd.33.0210">https://doi.org/10.1147/rd.33.0210</a>.
+</div>
+<div id="ref-Savage2019" class="csl-entry" role="listitem">
+Savage, Van, 와/과 Pamela Yeh. 2019. <span>“Novelist Cormac <span>McCarthy</span>’s tips on how to write a great science paper”</span>. <em>Nature</em> 574 (7778): 441–42. <a href="https://doi.org/10.1038/d41586-019-02918-5">https://doi.org/10.1038/d41586-019-02918-5</a>.
+</div>
+<div id="ref-Sen1980" class="csl-entry" role="listitem">
+Sen, Amartya. 1980. <span>“<span>Description as Choice</span>”</span>. <em>Oxford Economic Papers</em> 32 (3): 353–69. <a href="https://doi.org/10.1093/oxfordjournals.oep.a041484">https://doi.org/10.1093/oxfordjournals.oep.a041484</a>.
+</div>
+<div id="ref-student1908probable" class="csl-entry" role="listitem">
+Student. 1908. <span>“The probable error of a mean”</span>. <em>Biometrika</em> 6 (1): 1–25. <a href="https://doi.org/10.2307/2331554">https://doi.org/10.2307/2331554</a>.
+</div>
+<div id="ref-wardrop1995simpson" class="csl-entry" role="listitem">
+Wardrop, Robert. 1995. <span>“Simpson’s paradox and the hot hand in basketball”</span>. <em>The American Statistician</em> 49 (1): 24–28. <a href="https://doi.org/10.2307/2684806">https://doi.org/10.2307/2684806</a>.
+</div>
+<div id="ref-tidyverse" class="csl-entry" role="listitem">
+Wickham, Hadley, Mara Averick, Jenny Bryan, Winston Chang, Lucy D’Agostino McGowan, Romain François, Garrett Grolemund, 기타. 2019. <span>“<span>Welcome to the Tidyverse</span>”</span>. <em>Journal of Open Source Software</em> 4 (43): 1686. <a href="https://doi.org/10.21105/joss.01686">https://doi.org/10.21105/joss.01686</a>.
+</div>
+<div id="ref-citeknitr" class="csl-entry" role="listitem">
+Xie, Yihui. 2023. <em><span>knitr: A General-Purpose Package for Dynamic Report Generation in R</span></em>. <a href="https://yihui.org/knitr/">https://yihui.org/knitr/</a>.
+</div>
+<div id="ref-zinsser" class="csl-entry" role="listitem">
+Zinsser, William. 1976. <em>On Writing Well</em>. New York: HarperCollins.
+</div>
+</div>
+</section>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>때로는 별도의 문헌 검토 섹션이 필요할 수 있지만, 또 다른 접근 방식은 적절하게 논문 전체에 관련 문헌을 논의하는 것입니다. 예를 들어, 데이터와 관련된 문헌이 있다면 이 섹션에서 논의해야 하며, 모델, 결과 또는 논의와 관련된 문헌은 해당 섹션에서 적절하게 언급해야 합니다.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "복사완료!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "복사완료!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/tellingstorieswithdata\.com\/mybook");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./03-workflow_ko.html" class="pagination-link" aria-label="재현 가능한 워크플로우">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">재현 가능한 워크플로우</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./05-graphs_tables_maps_ko.html" class="pagination-link" aria-label="그래프, 표, 지도">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">그래프, 표, 지도</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/RohanAlexander/telling_stories/edit/main/04-writing_research_ko.qmd" class="toc-action"><i class="bi bi-github"></i>편집</a></li></ul></div></div></div></footer></body></html>

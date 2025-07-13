@@ -1,0 +1,2005 @@
+---
+engine: knitr
+---
+
+# 그래프, 표, 지도 {#sec-static-communication}
+
+::: {.callout-note}
+Chapman and Hall/CRC는 이 책을 2023년 7월에 출판했습니다. [여기](https://www.routledge.com/Telling-Stories-with-Data-With-Applications-in-R/Alexander/p/book/9781032134772)에서 구매할 수 있습니다. 이 온라인 버전은 인쇄된 내용에 일부 업데이트가 있습니다.
+:::
+
+**선행 조건**
+
+- *R for Data Science* 읽기, [@r4ds]
+  - `ggplot2`에 대한 개요를 제공하는 1장 "데이터 시각화"에 집중하십시오.
+- *Data Visualization: A Practical Introduction* 읽기, [@healyviz]
+  - 다른 강조점을 가진 `ggplot2`에 대한 개요를 제공하는 3장 "플롯 만들기"에 집중하십시오.
+- *The Glamour of Graphics* 시청, [@chase2020]
+  - 이 비디오는 `ggplot2`로 만든 플롯을 개선하는 방법에 대한 아이디어를 자세히 설명합니다.
+- *Testing Statistical Charts: What Makes a Good Graph?* 읽기, [@vanderplas2020testing]
+  - 이 기사는 그래프를 만드는 모범 사례를 자세히 설명합니다.
+- *Data Feminism* 읽기, [@datafeminism2020]
+  - 데이터가 맥락 내에서 고려되어야 하는 이유에 대한 예시를 제공하는 3장 "신화적이고, 상상적이며, 불가능한 관점에서 본 합리적이고, 과학적이며, 객관적인 관점"에 집중하십시오.
+- *Historical development of the graphical representation of statistical data* 읽기, [@funkhouser1937historical]
+  - 이 기사는 그래프가 어떻게 발전했는지 논의하는 2장 "그래픽 방법의 기원"에 집중하십시오.
+- *Remove the legend to become one* 읽기, [@removethelegend]
+  - 그래프를 점진적으로 개선하는 과정을 설명합니다. 모든 것이 흥미롭지만, 그래프 측면은 "이것이 선 그래프와 무슨 관련이 있습니까?"로 시작합니다.
+- *Geocomputation with R*, 2장 "R의 지리 데이터" 읽기, [@lovelace2019geocomputation]
+  - 이 장은 `R`에서 매핑에 대한 개요를 제공합니다.
+- *Mastering Shiny*, 1장 "첫 번째 Shiny 앱" 읽기, [@wickham2021mastering]
+  - 이 장은 Shiny 앱의 자체 포함된 예시를 제공합니다.
+
+**주요 개념 및 기술**
+
+- 시각화는 데이터를 이해하고 독자에게 전달하는 한 가지 방법입니다. 데이터 세트의 관측치를 플로팅하는 것이 중요합니다.
+- 막대 차트, 산점도, 선 플롯 및 히스토그램을 포함한 다양한 그래프 유형에 익숙해야 합니다. 지오코딩된 데이터가 있는 경우 지도를 일종의 그래프로 간주할 수도 있습니다.
+- 표를 사용하여 데이터를 요약해야 합니다. 일반적인 사용 사례에는 데이터 세트의 일부, 요약 통계 및 회귀 결과 표시가 포함됩니다.
+
+**소프트웨어 및 패키지**
+
+- `babynames` [@citebabynames]
+- Base R [@citeR]
+- `carData` [@carData]
+- `datasauRus` [@citedatasauRus]
+- `ggmap` [@KahleWickham2013]
+- `janitor` [@janitor]
+- `knitr` [@citeknitr]
+- `leaflet` [@ChengKarambelkarXie2017]
+- `mapdeck` [@citemapdeck]
+- `maps` [@citemaps]
+- `mapproj` [@mapproj]
+- `modelsummary` [@citemodelsummary]
+- `opendatatoronto` [@citeSharla]
+- `patchwork` [@citepatchwork]
+- `shiny` [@citeshiny]
+- `tidygeocoder` [@tidygeocoder]
+- `tidyverse` [@tidyverse]
+- `tinytable` [@tinytable]
+- `troopdata` [@troopdata]
+- `usethis` [@usethis]
+- `WDI` [@WDI]
+
+```{r}
+#| message: false
+#| warning: false
+
+library(babynames)
+library(carData)
+library(datasauRus)
+library(ggmap)
+library(janitor)
+library(knitr)
+library(leaflet)
+library(mapdeck)
+library(maps)
+library(mapproj)
+library(modelsummary)
+library(opendatatoronto)
+library(patchwork)
+library(tidygeocoder)
+library(tidyverse)
+library(tinytable)
+library(troopdata)
+library(shiny)
+library(usethis)
+library(WDI)
+```
+
+
+## 서론
+
+데이터로 이야기를 전달할 때, 우리는 데이터가 독자를 설득하는 데 많은 역할을 하기를 바랍니다. 논문은 매개체이고, 데이터는 메시지입니다. 이를 위해 우리는 독자에게 우리가 이야기를 이해하게 된 기반이 된 데이터를 보여주고 싶습니다. 이를 달성하기 위해 그래프, 표, 지도를 사용합니다.
+
+분석의 기반이 되는 관측치를 보여주려고 노력하십시오. 예를 들어, 데이터 세트가 2,500개의 설문조사 응답으로 구성되어 있다면, 논문의 어느 시점에서는 관심 있는 모든 변수에 대해 2,500개의 관측치 각각을 포함하는 플롯이 있어야 합니다. 이를 위해 우리는 `ggplot2`를 사용하여 그래프를 만듭니다. `ggplot2`는 핵심 `tidyverse`의 일부이므로 별도로 설치하거나 로드할 필요가 없습니다. 이 장에서는 막대 차트, 산점도, 선 플롯 및 히스토그램을 포함한 다양한 옵션을 살펴봅니다.
+
+각 관측치를 보여주는 그래프의 역할과 달리, 표의 역할은 일반적으로 데이터 세트의 일부를 보여주거나 다양한 요약 통계 또는 회귀 결과를 전달하는 것입니다. 우리는 주로 `knitr`를 사용하여 표를 만들 것입니다. 나중에 `modelsummary`를 사용하여 회귀 출력과 관련된 표를 만들 것입니다.
+
+마지막으로, 특정 유형의 데이터를 보여주는 데 사용되는 그래프의 변형인 지도를 다룹니다. `tidygeocoder`를 사용하여 지오코딩된 데이터를 얻은 후 `ggmap`을 사용하여 정적 지도를 만들 것입니다.
+
+## 그래프
+
+> 더 건전하고 풍요로운 문명으로 나아가는 세상은 차트로 나아가는 세상이 될 것입니다.
+>
+> @karsetn [p. 684]
+
+그래프\index{그래프}는 설득력 있는 데이터 스토리의 중요한 측면입니다. 그래프는 넓은 패턴과 세부 사항을 모두 볼 수 있게 해줍니다 [@elementsofgraphingdata, p. 5]. 그래프는 다른 어떤 방법으로도 얻기 어려운 데이터에 대한 친숙함을 가능하게 합니다. 관심 있는 모든 변수는 그래프로 나타내야 합니다.
+
+그래프의 가장 중요한 목표는 실제 데이터와 그 맥락을 가능한 한 많이 전달하는 것입니다. 어떤 면에서 그래프는 정보 인코딩 과정이며, 우리는 청중에게 정보를 전달하기 위해 의도적인 표현을 구성합니다. 청중은 그 표현을 디코딩해야 합니다. 우리 그래프의 성공은 이 과정에서 얼마나 많은 정보가 손실되는지에 달려 있으므로 디코딩은 중요한 측면입니다 [@elementsofgraphingdata, p. 221]. 이는 우리가 특정 청중에 적합한 효과적인 그래프를 만드는 데 집중해야 함을 의미합니다.
+
+그래프가 왜 중요한지\index{그래프!중요성} 이해하기 위해 `datasauRus`를 설치하고 로드한 후 `datasaurus_dozen` 데이터 세트를 고려해 보십시오.
+
+```{r}
+datasaurus_dozen
+```
+
+데이터 세트는 "x"와 "y" 값을 포함하며, 각각 x축과 y축에 플로팅되어야 합니다. "dataset" 변수에는 "dino", "star", "away", "bullseye"를 포함하여 13가지 다른 값이 있습니다. 우리는 이 네 가지에 초점을 맞추고 각각에 대한 요약 통계를 생성합니다 (@tbl-datasaurussummarystats).
+
+```{r}
+#| label: tbl-datasaurussummarystats
+#| tbl-cap: "네 가지 datasauRus 데이터 세트에 대한 평균 및 표준 편차"
+
+# Based on: https://juliasilge.com/blog/datasaurus-multiclass/
+datasaurus_dozen |>
+  filter(dataset %in% c("dino", "star", "away", "bullseye")) |>
+  summarise(across(c(x, y), list(mean = mean, sd = sd)),
+            .by = dataset) |>
+  tt() |>
+  style_tt(j = 2:5, align = "r") |>
+  format_tt(digits = 1, num_fmt = "decimal") |>
+  setNames(c("데이터 세트", "x 평균", "x 표준 편차", "y 평균", "y 표준 편차"))
+```
+
+요약 통계가 유사하다는 점에 유의하십시오 (@tbl-datasaurussummarystats). 그럼에도 불구하고 다른 데이터 세트는 실제로는 매우 다른 특성을 가지고 있습니다. 이는 데이터를 플로팅할 때 명확해집니다 (@fig-datasaurusgraph).
+
+```{r}
+#| eval: true
+#| fig-cap: "네 가지 datasauRus 데이터 세트의 그래프"
+#| label: fig-datasaurusgraph
+#| warning: false
+#| echo: true
+
+datasaurus_dozen |>
+  filter(dataset %in% c("dino", "star", "away", "bullseye")) |>
+  ggplot(aes(x = x, y = y, colour = dataset)) +
+  geom_point() +
+  theme_minimal() +
+  facet_wrap(vars(dataset), nrow = 2, ncol = 2) +
+  labs(color = "데이터 세트")
+```
+
+우리는 20세기 통계학자 프랭크 앤스콤이 만든 "앤스콤의 콰르텟"에서 유사한 교훈을 얻습니다. 즉, 요약 통계에만 의존하지 않고 실제 데이터를 플로팅하는 것이 중요합니다.\index{그래프!요약 통계에 의존하지 않기}
+
+```{r}
+head(anscombe)
+```
+
+::: {.content-visible when-format="pdf"}
+앤스콤의 콰르텟은 4개의 다른 데이터 세트에 대한 11개의 관측치로 구성되며, 각 관측치에 대한 x 및 y 값이 있습니다. ["R 필수 사항" 온라인 부록](https://tellingstorieswithdata.com/20-r_essentials.html)에서 논의된 "정돈된" 형식으로 만들기 위해 `pivot_longer()`를 사용하여 이 데이터 세트를 조작해야 합니다.
+:::
+
+::: {.content-visible unless-format="pdf"}
+앤스콤의 콰르텟은 4개의 다른 데이터 세트에 대한 11개의 관측치로 구성되며, 각 관측치에 대한 x 및 y 값이 있습니다. [온라인 부록 -@sec-r-essentials]에서 논의된 "정돈된" 형식으로 만들기 위해 `pivot_longer()`를 사용하여 이 데이터 세트를 조작해야 합니다.
+:::
+
+
+```{r}
+# From: https://www.njtierney.com/post/2020/06/01/tidy-anscombe/
+# And the pivot_longer() vignette.
+
+tidy_anscombe <-
+  anscombe |>
+  pivot_longer(
+    everything(),
+    names_to = c(".value", "set"),
+    names_pattern = "(.)(.)"
+  )
+```
+
+먼저 요약 통계를 생성한 다음 (@tbl-anscombesummarystats) 데이터를 플로팅할 수 있습니다 (@fig-anscombegraph). 이는 요약 통계에만 의존하지 않고 실제 데이터를 그래프로 나타내는 것의 중요성을 다시 한번 보여줍니다.
+
+```{r}
+#| label: tbl-anscombesummarystats
+#| message: false
+#| tbl-cap: "앤스콤의 콰르텟에 대한 평균 및 표준 편차"
+
+tidy_anscombe |>
+  summarise(
+    across(c(x, y), list(mean = mean, sd = sd)),
+    .by = set
+    ) |>
+  tt() |>
+  style_tt(j = 2:5, align = "r") |>
+  format_tt(digits = 1, num_fmt = "decimal") |>
+  setNames(c("데이터 세트", "x 평균", "x 표준 편차", "y 평균", "y 표준 편차"))
+```
+
+
+```{r}
+#| eval: true
+#| fig-cap: "앤스콤의 콰르텟 재현"
+#| label: fig-anscombegraph
+#| warning: false
+#| echo: true
+
+tidy_anscombe |>
+  ggplot(aes(x = x, y = y, colour = set)) +
+  geom_point() +
+  geom_smooth(method = lm, se = FALSE) +
+  theme_minimal() +
+  facet_wrap(vars(set), nrow = 2, ncol = 2) +
+  labs(colour = "데이터 세트") +
+  theme(legend.position = "bottom")
+```
+
+### 막대 차트
+
+우리는 일반적으로 집중하고 싶은 범주형 변수가 있을 때 막대 차트\index{그래프!막대 차트}를 사용합니다. @sec-fire-hose에서 점유된 침대 수를 그래프로 만들 때 이 예시를 보았습니다. 우리가 주로 사용하는 기하학적 객체("geom")는 `geom_bar()`이지만, 특정 상황에 맞는 많은 변형이 있습니다. 막대 차트 사용법을 설명하기 위해 `carData`를 설치하고 로드한 후 @fox2006effect가 수집하고 `BEPS`를 통해 제공한 1997-2001년 영국 선거 패널 연구 데이터 세트를 사용합니다.\index{성별!영국 선거 패널 연구}\index{영국 선거 패널 연구}
+
+```{r}
+beps <-
+  BEPS |>
+  as_tibble() |>
+  clean_names() |>
+  select(age, vote, gender, political_knowledge)
+```
+
+데이터 세트는 응답자가 지지하는 정당과 다양한 인구 통계학적, 경제적, 정치적 변수로 구성됩니다. 특히, 응답자의 연령 정보가 있습니다. 먼저 연령에서 연령 그룹을 만들고 `geom_bar()`를 사용하여 각 연령 그룹의 빈도를 보여주는 막대 차트를 만듭니다 (@fig-bepfitst-1).
+
+```{r}
+beps <-
+  beps |>
+  mutate(
+    age_group =
+      case_when(
+        age < 35 ~ "<35",
+        age < 50 ~ "35-49",
+        age < 65 ~ "50-64",
+        age < 80 ~ "65-79",
+        age < 100 ~ "80-99"
+      ),
+    age_group =
+      factor(age_group, levels = c("<35", "35-49", "50-64", "65-79", "80-99"))
+  )
+```
+
+```{r}
+#| label: fig-bepfitst
+#| eval: true
+#| fig-cap: "1997-2001년 영국 선거 패널 연구의 연령 그룹 분포"
+#| echo: true
+#| fig-subcap: ["`geom_bar()` 사용", "`count()` 및 `geom_col()` 사용"]
+#| layout-ncol: 2
+
+beps |>
+  ggplot(mapping = aes(x = age_group)) +
+  geom_bar() +
+  theme_minimal() +
+  labs(x = "연령 그룹", y = "관측치 수")
+
+beps |>
+  count(age_group) |>
+  ggplot(mapping = aes(x = age_group, y = n)) +
+  geom_col() +
+  theme_minimal() +
+  labs(x = "연령 그룹", y = "관측치 수")
+```
+
+`ggplot2`에서 사용하는 기본 축 레이블은 관련 변수의 이름이므로, 더 자세한 내용을 추가하는 것이 종종 유용합니다. 우리는 `labs()`를 사용하여 변수와 이름을 지정하여 이를 수행합니다. @fig-bepfitst-1의 경우 x축과 y축에 대한 레이블을 지정했습니다.
+
+기본적으로 `geom_bar()`는 각 연령 그룹이 데이터 세트에 나타나는 횟수를 계산합니다. `geom_bar()`의 기본 통계 변환("stat")이 "count"이기 때문에 이렇게 합니다. 이는 우리가 직접 통계를 만들 필요가 없도록 해줍니다. 그러나 이미 카운트를 구성했다면 (예: `beps |> count(age_group)`), y축에 대한 변수를 지정하고 `geom_col()`을 사용할 수 있습니다 (@fig-bepfitst-2).
+
+다른 통찰력을 얻기 위해 데이터를 다양한 그룹으로 나누어 고려할 수도 있습니다. 예를 들어, 색상을 사용하여 연령 그룹별로 응답자가 지지하는 정당을 살펴볼 수 있습니다 (@fig-bepsecond-1).
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-cap: "1997-2001년 영국 선거 패널 연구의 연령 그룹 및 투표 선호도 분포"
+#| label: fig-bepsecond
+#| fig-subcap: ["`geom_bar()` 사용", "`geom_bar()`와 dodge2 사용"]
+#| layout-ncol: 2
+
+beps |>
+  ggplot(mapping = aes(x = age_group, fill = vote)) +
+  geom_bar() +
+  labs(x = "연령 그룹", y = "관측치 수", fill = "투표") +
+  theme(legend.position = "bottom")
+
+beps |>
+  ggplot(mapping = aes(x = age_group, fill = vote)) +
+  geom_bar(position = "dodge2") +
+  labs(x = "연령 그룹", y = "관측치 수", fill = "투표") +
+  theme(legend.position = "bottom")
+```
+
+기본적으로 이러한 다른 그룹은 쌓여 있지만, `position = "dodge2"`를 사용하여 나란히 배치할 수 있습니다 (@fig-bepsecond-2). ("dodge" 대신 "dodge2"를 사용하면 막대 사이에 약간의 공간이 추가됩니다.)
+
+#### 테마
+
+이 시점에서 그래프의 전반적인 모양을 다루고 싶을 수 있습니다. `ggplot2`에는 다양한 테마가 내장되어 있습니다. 여기에는 `theme_bw()`, `theme_classic()`, `theme_dark()`, `theme_minimal()`가 포함됩니다. 전체 목록은 `ggplot2` [치트 시트](https://github.com/rstudio/cheatsheets/blob/main/data-visualization.pdf)에서 확인할 수 있습니다. 이러한 테마는 레이어로 추가하여 사용할 수 있습니다 (@fig-bepthemes). `ggthemes` [@ggthemes] 및 `hrbrthemes` [@hrbrthemes]를 포함한 다른 패키지에서 더 많은 테마를 설치할 수도 있습니다. 심지어 우리만의 테마를 만들 수도 있습니다!
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-cap: "1997-2001년 영국 선거 패널 연구의 연령 그룹 및 투표 선호도 분포, 다양한 테마 및 `patchwork` 사용법 설명"
+#| label: fig-bepthemes
+#| warning: false
+
+theme_bw <-
+  beps |>
+  ggplot(mapping = aes(x = age_group)) +
+  geom_bar(position = "dodge") +
+  theme_bw()
+
+theme_classic <-
+  beps |>
+  ggplot(mapping = aes(x = age_group)) +
+  geom_bar(position = "dodge") +
+  theme_classic()
+
+theme_dark <-
+  beps |>
+  ggplot(mapping = aes(x = age_group)) +
+  geom_bar(position = "dodge") +
+  theme_dark()
+
+theme_minimal <-
+  beps |>
+  ggplot(mapping = aes(x = age_group)) +
+  geom_bar(position = "dodge") +
+  theme_minimal()
+
+(theme_bw + theme_classic) / (theme_dark + theme_minimal)
+```
+
+@fig-bepthemes에서 우리는 `patchwork`를 사용하여 여러 그래프를 함께 가져옵니다. 이를 위해 패키지를 설치하고 로드한 후 그래프를 변수에 할당합니다. 그런 다음 "+"를 사용하여 서로 옆에 있어야 할 것을 나타내고, "/"를 사용하여 위에 있어야 할 것을 나타내며, 괄호를 사용하여 우선 순위를 나타냅니다.
+
+#### 패싯
+
+우리는 하나 이상의 변수를 기반으로 변화를 보여주기 위해 패싯\index{그래프!패싯}을 사용합니다 [@grammarofgraphics, p. 219]. 패싯은 다른 변수의 변화를 강조하기 위해 이미 색상을 사용했을 때 특히 유용합니다. 예를 들어, 연령과 성별에 따른 투표를 설명하는 데 관심이 있을 수 있습니다 (@fig-facets). 겹침을 피하기 위해 `guides(x = guide_axis(angle = 90))`로 x축을 회전합니다. 또한 `theme(legend.position = "bottom")`으로 범례의 위치를 변경합니다.
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-cap: "1997-2001년 영국 선거 패널 연구의 성별 연령 그룹 및 투표 선호도 분포"
+#| label: fig-facets
+#| warning: false
+
+beps |>
+  ggplot(mapping = aes(x = age_group, fill = gender)) +
+  geom_bar() +
+  theme_minimal() +
+  labs(
+    x = "응답자 연령 그룹",
+    y = "응답자 수",
+    fill = "성별"
+  ) +
+  facet_wrap(vars(vote)) +
+  guides(x = guide_axis(angle = 90)) +
+  theme(legend.position = "bottom")
+```
+
+`facet_wrap()`을 `dir = "v"`로 변경하여 수평 대신 수직으로 래핑할 수 있습니다. 또는 `nrow = 2`와 같이 몇 줄을 지정하거나 `ncol = 2`와 같이 열 수를 지정할 수 있습니다.
+
+기본적으로 두 패싯 모두 동일한 x축과 y축을 가집니다. `scales = "free"`를 사용하여 두 패싯 모두 다른 스케일을 갖도록 하거나, `scales = "free_x"`를 사용하여 x축만, 또는 `scales = "free_y"`를 사용하여 y축만 갖도록 할 수 있습니다 (@fig-facetsfancy).
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-cap: "1997-2001년 영국 선거 패널 연구의 성별 연령 그룹 및 투표 선호도 분포"
+#| label: fig-facetsfancy
+#| warning: false
+
+beps |>
+  ggplot(mapping = aes(x = age_group, fill = gender)) +
+  geom_bar() +
+  theme_minimal() +
+  labs(
+    x = "응답자 연령 그룹",
+    y = "응답자 수",
+    fill = "성별"
+  ) +
+  facet_wrap(vars(vote), scales = "free") +
+  guides(x = guide_axis(angle = 90)) +
+  theme(legend.position = "bottom")
+```
+
+마지막으로, `labeller()`를 사용하여 패싯의 레이블을 변경할 수 있습니다 (@fig-facetsfancylabels).
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-cap: "1997-2001년 영국 선거 패널 연구의 정치 지식별 연령 그룹 및 투표 선호도 분포"
+#| label: fig-facetsfancylabels
+#| warning: false
+
+new_labels <-
+  c("0" = "지식 없음", "1" = "낮은 지식",
+    "2" = "보통 지식", "3" = "높은 지식")
+
+beps |>
+  ggplot(mapping = aes(x = age_group, fill = vote)) +
+  geom_bar() +
+  theme_minimal() +
+  labs(
+    x = "응답자 연령 그룹",
+    y = "응답자 수",
+    fill = "투표"
+  ) +
+  facet_wrap(
+    vars(political_knowledge),
+    scales = "free",
+    labeller = labeller(political_knowledge = new_labels)
+  ) +
+  guides(x = guide_axis(angle = 90)) +
+  theme(legend.position = "bottom")
+```
+
+이제 여러 그래프를 결합하는 세 가지 방법이 있습니다. 하위 그림, 패싯, 그리고 `patchwork`입니다. 이들은 다른 상황에서 유용합니다.
+
+- 하위 그림 - @sec-reproducible-workflows에서 다루었습니다 - 다른 변수를 고려할 때;
+- 패싯 - 범주형 변수를 고려할 때; 그리고
+- `patchwork` - 완전히 다른 그래프를 함께 가져오는 데 관심이 있을 때.
+
+#### 색상
+
+이제 그래프에 사용된 색상\index{그래프!색상}으로 넘어갑니다. 색상을 변경하는 다양한 방법이 있습니다. `RColorBrewer` [@RColorBrewer]에서 사용할 수 있는 많은 팔레트는 `scale_fill_brewer()`를 사용하여 지정할 수 있습니다. `viridis` [@viridis]의 경우 `scale_fill_viridis_d()`를 사용하여 팔레트를 지정할 수 있습니다. 또한 `viridis`는 색맹 팔레트에 특히 중점을 둡니다 (@fig-usecolor). `RColorBrewer`와 `viridis`는 `tidyverse`의 일부인 `ggplot2`가 우리를 위해 처리하기 때문에 명시적으로 설치하거나 로드할 필요가 없습니다.
+
+::: callout-note
+## 거인의 어깨
+
+"brewer" 팔레트의 이름은 신디 브루어\index{브루어, 신디} [@brewerisarealperson]를 의미합니다. 1991년 미시간 주립 대학교에서 지리학 박사 학위를 취득한 후 샌디에이고 주립 대학교에서 조교수로 근무했으며, 1994년 펜실베이니아 주립 대학교로 옮겨 2007년 정교수로 승진했습니다. 그녀의 가장 잘 알려진 책 중 하나는 *Designing Better Maps: A Guide for GIS Users* [@brewerbook]입니다. 2019년 그녀는 1968년 설립된 O. M. 밀러 지도학 메달\index{O. M. 밀러 지도학 메달}을 수상한 아홉 번째 인물이 되었습니다.
+:::
+
+```{r}
+#| echo: true
+#| eval: true
+#| message: false
+#| warning: false
+#| fig-cap: "1997-2001년 영국 선거 패널 연구의 연령 그룹 및 투표 선호도 분포, 다양한 색상 설명"
+#| label: fig-usecolor
+#| fig-subcap: ["Brewer 팔레트 'Blues'", "Brewer 팔레트 'Set1'", "Viridis 팔레트 기본값", "Viridis 팔레트 'magma'"]
+#| layout-ncol: 2
+
+# Panel (a)
+beps |>
+  ggplot(mapping = aes(x = age_group, fill = vote)) +
+  geom_bar() +
+  theme_minimal() +
+  labs(x = "연령 그룹", y = "수", fill = "투표") +
+  theme(legend.position = "bottom") +
+  scale_fill_brewer(palette = "Blues")
+
+# Panel (b)
+beps |>
+  ggplot(mapping = aes(x = age_group, fill = vote)) +
+  geom_bar() +
+  theme_minimal() +
+  labs(x = "연령 그룹", y = "수", fill = "투표") +
+  theme(legend.position = "bottom") +
+  scale_fill_brewer(palette = "Set1")
+
+# Panel (c)
+beps |>
+  ggplot(mapping = aes(x = age_group, fill = vote)) +
+  geom_bar() +
+  theme_minimal() +
+  labs(x = "연령 그룹", y = "수", fill = "투표") +
+  theme(legend.position = "bottom") +
+  scale_fill_viridis_d()
+
+# Panel (d)
+beps |>
+  ggplot(mapping = aes(x = age_group, fill = vote)) +
+  geom_bar() +
+  theme_minimal() +
+  labs(x = "연령 그룹", y = "수", fill = "투표") +
+  theme(legend.position = "bottom") +
+  scale_fill_viridis_d(option = "magma")
+```
+
+미리 만들어진 팔레트를 사용하는 것 외에도 우리만의 팔레트를 만들 수 있습니다. 그렇다고 해도 색상은 신중하게 고려해야 할 사항입니다. 색상은 전달되는 정보의 양을 늘리는 데 사용되어야 합니다 [@elementsofgraphingdata]. 색상은 불필요하게 그래프에 추가되어서는 안 됩니다. 즉, 어떤 역할을 해야 합니다. 일반적으로 그 역할은 다른 그룹을 구별하는 것이며, 이는 색상을 서로 다르게 만드는 것을 의미합니다. 색상과 변수 사이에 어떤 관계가 있다면 색상도 적절할 수 있습니다.
+예를 들어, 망고와 라즈베리의 가격 그래프를 만들 때, 색상이 각각 노란색과 빨간색이라면 독자가 정보를 해독하는 데 도움이 될 수 있습니다 [@franconeri2021science, p. 121].
+
+
+### 산점도
+
+우리는 종종 두 개의 숫자 또는 연속 변수 간의 관계에 관심이 있습니다. 이를 보여주기 위해 산점도\index{그래프!산점도}를 사용할 수 있습니다. 산점도가 항상 최선의 선택은 아닐 수 있지만, 나쁜 선택인 경우는 거의 없습니다 [@weissgerber2015beyond]. 일부는 산점도를 가장 다재다능하고 유용한 그래프 옵션으로 간주합니다 [@historyofdataviz, p. 121]. 산점도를 설명하기 위해 `WDI`를 설치하고 로드한 다음 이를 사용하여 세계은행\index{세계은행!경제 데이터}에서 일부 경제 지표를 다운로드합니다. 특히, `WDIsearch()`를 사용하여 다운로드를 용이하게 하기 위해 `WDI()`에 전달해야 하는 고유 키를 찾습니다.
+
+:::{
+.callout-note}
+## 아, 우리가 그 데이터에 대한 좋은 데이터를 가지고 있다고 생각하는군요!
+
+@EssentialMacroAggregates [p. 15]에 따르면 국내총생산(GDP)은 "주어진 기간 동안 주어진 국가의 모든 기업, 비영리 기관, 정부 기관 및 가구가 생산하는 모든 생산량(또는 생산)을 이중 계산 없이 단일 수치로 결합하며, 생산되는 재화 및 서비스의 유형에 관계없이 생산이 해당 국가의 경제 영토 내에서 이루어지는 경우"입니다. \index{국내총생산(GDP)} 현대적 개념은 20세기 경제학자 사이먼 쿠즈네츠에 의해 개발되었으며 널리 사용되고 보고됩니다. 국가의 경제 활동만큼 복잡한 것을 설명하는 데 명확하고 구체적인 단일 숫자를 갖는 것은 어느 정도 편안함을 줍니다. 이러한 요약 통계를 갖는 것은 유용하고 유익합니다. 그러나 모든 요약 통계와 마찬가지로 그 강점은 또한 약점입니다. 단일 숫자는 구성 요소에 대한 정보를 필연적으로 잃게 되며, 분해된 차이가 중요할 수 있습니다 [@Moyer2020Measuring]. 이는 장기적인 개선보다 단기적인 경제 발전을 강조합니다. 그리고 "추정치의 정량적 명확성은 불완전한 데이터에 대한 의존성과 그 결과로 발생하는 총계 및 구성 요소 모두에 적용될 수 있는 광범위한 오류 마진을 쉽게 잊게 만듭니다" [@NationalIncomeAndItsComposition, p. xxvi]. 경제 성과의 요약 측정은 국가 경제의 한 측면만을 보여줍니다. 많은 강점이 있지만 GDP가 약한 잘 알려진 영역도 있습니다.
+:::
+
+```{r}
+#| echo: true
+#| eval: false
+
+WDIsearch("gdp growth")
+WDIsearch("inflation")
+WDIsearch("population, total")
+WDIsearch("Unemployment, total")
+```
+
+```{r}
+#| echo: true
+#| eval: false
+
+world_bank_data <-
+  WDI(
+    indicator =
+      c("FP.CPI.TOTL.ZG", "NY.GDP.MKTP.KD.ZG", "SP.POP.TOTL","SL.UEM.TOTL.NE.ZS"),
+    country = c("AU", "ET", "IN", "US")
+  )
+```
+
+```{r}
+#| echo: false
+#| eval: false
+
+# INTERNAL
+write_csv(world_bank_data, "inputs/data/world_bank_data.csv")
+```
+
+```{r}
+#| eval: true
+#| warning: false
+#| echo: false
+
+# INTERNAL
+
+world_bank_data <-
+  read_csv(
+    "inputs/data/world_bank_data.csv",
+    show_col_types = FALSE
+  )
+```
+
+변수 이름을 더 의미 있게 변경하고 필요한 변수만 유지할 수 있습니다.
+
+```{r}
+#| echo: true
+#| eval: true
+
+world_bank_data <-
+  world_bank_data |>
+  rename(
+    inflation = FP.CPI.TOTL.ZG,
+    gdp_growth = NY.GDP.MKTP.KD.ZG,
+    population = SP.POP.TOTL,
+    unem_rate = SL.UEM.TOTL.NE.ZS
+  ) |>
+  select(country, year, inflation, gdp_growth, population, unem_rate)
+
+head(world_bank_data)
+```
+
+시작하려면 `geom_point()`를 사용하여 국가별 GDP 성장률과 인플레이션을 보여주는 산점도를 만들 수 있습니다 (@fig-scattorplot-1).
+
+```{r}
+#| warning: false
+#| label: fig-scattorplot
+#| fig-cap: "호주, 에티오피아, 인도, 미국의 인플레이션과 GDP 성장률 간의 관계"
+#| fig-subcap: ["기본 설정", "테마 및 레이블 추가", "표준 오차 포함"]
+#| layout-ncol: 2
+
+# Panel (a)
+world_bank_data |>
+  ggplot(mapping = aes(x = gdp_growth, y = inflation, color = country)) +
+  geom_point()
+
+# Panel (b)
+world_bank_data |>
+  ggplot(mapping = aes(x = gdp_growth, y = inflation, color = country)) +
+  geom_point() +
+  theme_minimal() +
+  labs(x = "GDP 성장률", y = "인플레이션", color = "국가")
+```
+
+막대 차트와 마찬가지로 테마를 변경하고 레이블을 업데이트할 수 있습니다 (@fig-scattorplot-2).
+
+산점도의 경우 막대 차트에서 사용했던 "fill" 대신 "color"를 사용합니다. 점을 사용하기 때문입니다. 이는 팔레트를 변경하는 방식에도 약간 영향을 미칩니다 (@fig-scatterplotnicercolor). 그렇다고 해도 `shape = 21`과 같은 특정 유형의 점에서는 `fill`과 `color` 미학을 모두 가질 수 있습니다.
+
+```{r}
+#| echo: true
+#| eval: true
+#| message: false
+#| warning: false
+#| label: fig-scatterplotnicercolor
+#| fig-cap: "호주, 에티오피아, 인도, 미국의 인플레이션과 GDP 성장률 간의 관계"
+#| fig-subcap: ["Brewer 팔레트 'Blues'", "Brewer 팔레트 'Set1'", "Viridis 팔레트 기본값", "Viridis 팔레트 'magma'"]
+#| layout-ncol: 2
+
+# Panel (a)
+world_bank_data |>
+  ggplot(aes(x = gdp_growth, y = inflation, color = country)) +
+  geom_point() +
+  theme_minimal() +
+  labs(x = "GDP 성장률", y = "인플레이션", color = "국가") +
+  theme(legend.position = "bottom") +
+  scale_color_brewer(palette = "Blues")
+
+# Panel (b)
+world_bank_data |>
+  ggplot(aes(x = gdp_growth, y = inflation, color = country)) +
+  geom_point() +
+  theme_minimal() +
+  labs(x = "GDP 성장률",  y = "인플레이션", color = "국가") +
+  theme(legend.position = "bottom") +
+  scale_color_brewer(palette = "Set1")
+
+# Panel (c)
+world_bank_data |>
+  ggplot(aes(x = gdp_growth, y = inflation, color = country)) +
+  geom_point() +
+  theme_minimal() +
+  labs(x = "GDP 성장률",  y = "인플레이션", color = "국가") +
+  theme(legend.position = "bottom") +
+  scale_colour_viridis_d()
+
+# Panel (d)
+world_bank_data |>
+  ggplot(aes(x = gdp_growth, y = inflation, color = country)) +
+  geom_point() +
+  theme_minimal() +
+  labs(x = "GDP 성장률",  y = "인플레이션", color = "국가") +
+  theme(legend.position = "bottom") +
+  scale_colour_viridis_d(option = "magma")
+```
+
+산점도의 점들이 때때로 겹칩니다. 이 상황은 다양한 방법으로 해결할 수 있습니다 (@fig-alphajitter).
+
+1) "alpha"를 사용하여 점에 투명도\index{그래프!투명도}를 추가합니다 (@fig-alphajitter-1).\index{그래프!알파} "alpha" 값은 완전히 투명한 0에서 완전히 불투명한 1까지 다양할 수 있습니다.
+2) `geom_jitter()`를 사용하여 약간의 노이즈를 추가하여 점을 약간 이동시킵니다 (@fig-alphajitter-2).\index{그래프!지터} 기본적으로 이동은 양방향으로 균일하지만, "width" 또는 "height"를 사용하여 이동 방향을 지정할 수 있습니다. 이 두 옵션 간의 결정은 정확성이 얼마나 중요한지, 그리고 점의 수에 따라 달라집니다. 점의 상대적 밀도를 강조하고 개별 점의 정확한 값을 반드시 강조하지 않을 때 `geom_jitter()`를 사용하는 것이 종종 유용합니다. `geom_jitter()`를 사용할 때는 @sec-fire-hose에서 소개된 재현성을 위해 시드를 설정하는 것이 좋습니다.
+
+```{r}
+#| fig-cap: "호주, 에티오피아, 인도, 미국의 인플레이션과 GDP 성장률 간의 관계"
+#| label: fig-alphajitter
+#| warning: false
+#| fig-subcap: ["알파 설정 변경", "지터 사용"]
+#| layout-ncol: 2
+
+set.seed(853)
+
+# Panel (a)
+world_bank_data |>
+  ggplot(aes(x = gdp_growth, y = inflation, color = country )) +
+  geom_point(alpha = 0.5) +
+  theme_minimal() +
+  labs(x = "GDP 성장률", y = "인플레이션", color = "국가")
+
+# Panel (b)
+world_bank_data |>
+  ggplot(aes(x = gdp_growth, y = inflation, color = country)) +
+  geom_jitter(width = 1, height = 1) +
+  theme_minimal() +
+  labs(x = "GDP 성장률", y = "인플레이션", color = "국가")
+```
+
+우리는 종종 산점도를 사용하여 두 연속 변수 간의 관계를 설명합니다.\index{그래프!연속 변수} `geom_smooth()`를 사용하여 "요약" 선을 추가하는 것이 유용할 수 있습니다 (@fig-scattorplottwo).\index{그래프!최적 적합} "method"를 사용하여 관계를 지정하고, "color"로 색상을 변경하고, "se"로 표준 오차를 추가하거나 제거할 수 있습니다. 
+일반적으로 사용되는 "method"는 `lm`이며, 이는 `lm()` 함수를 사용하는 것과 유사하게 단순 선형 회귀선을 계산하고 플로팅합니다. `geom_smooth()`를 사용하면 그래프에 레이어가 추가되므로 `ggplot()`에서 미학을 상속합니다. 예를 들어, @fig-scattorplottwo-1 및 @fig-scattorplottwo-2에서 각 국가에 대해 하나의 선이 있는 이유입니다. 특정 색상을 지정하여 이를 덮어쓸 수 있습니다 (@fig-scattorplottwo-3). 스플라인과 같은 다른 유형의 적합선이 선호되는 상황도 있습니다.
+
+```{r}
+#| message: false
+#| warning: false
+#| fig-cap: "호주, 에티오피아, 인도, 미국의 인플레이션과 GDP 성장률 간의 관계"
+#| label: fig-scattorplottwo
+#| fig-subcap: ["기본 최적 적합선", "선형 관계 지정", "하나의 색상만 지정"]
+#| layout-ncol: 2
+
+# Panel (a)
+world_bank_data |>
+  ggplot(aes(x = gdp_growth, y = inflation, color = country)) +
+  geom_jitter() +
+  geom_smooth() +
+  theme_minimal() +
+  labs(x = "GDP 성장률", y = "인플레이션", color = "국가")
+
+# Panel (b)
+world_bank_data |>
+  ggplot(aes(x = gdp_growth, y = inflation, color = country)) +
+  geom_jitter() +
+  geom_smooth(method = lm, se = FALSE) +
+  theme_minimal() +
+  labs(x = "GDP 성장률", y = "인플레이션", color = "국가")
+
+# Panel (c)
+world_bank_data |>
+  ggplot(aes(x = gdp_growth, y = inflation, color = country)) +
+  geom_jitter() +
+  geom_smooth(method = lm, color = "black", se = FALSE) +
+  theme_minimal() +
+  labs(x = "GDP 성장률", y = "인플레이션", color = "국가")
+```
+
+
+### 선 플롯
+
+경제 시계열과 같이 함께 연결되어야 하는 변수가 있을 때 선 플롯\index{그래프!선 플롯}을 사용할 수 있습니다. 세계은행\index{세계은행} 데이터 세트를 계속 사용하고 `geom_line()`을 사용하여 미국\index{미국!국내총생산}\index{국내총생산!미국}의 GDP\index{국내총생산!미국} 성장에 초점을 맞춥니다 (@fig-lineplot-1). 데이터 출처는 `labs()` 내의 "caption"을 사용하여 그래프에 추가할 수 있습니다.
+
+```{r}
+#| fig-cap: "미국 GDP 성장률 (1961-2020)"
+#| label: fig-lineplot
+#| warning: false
+#| layout-ncol: 2
+#| fig-subcap: ["선 플롯 사용", "계단식 선 플롯 사용"]
+
+# Panel (a)
+world_bank_data |>
+  filter(country == "United States") |>
+  ggplot(mapping = aes(x = year, y = gdp_growth)) +
+  geom_line() +
+  theme_minimal() +
+  labs(x = "연도", y = "GDP 성장률", caption = "데이터 출처: 세계은행.")
+
+# Panel (b)
+world_bank_data |>
+  filter(country == "United States") |>
+  ggplot(mapping = aes(x = year, y = gdp_growth)) +
+  geom_step() +
+  theme_minimal() +
+  labs(x = "연도",y = "GDP 성장률", caption = "데이터 출처: 세계은행.")
+```
+
+`geom_line()`의 약간 변형된 `geom_step()`를 사용하여 연도별 변화에 집중할 수 있습니다 (@fig-lineplot-2).
+
+필립스 곡선\index{필립스 곡선}은 시간 경과에 따른 실업률과 인플레이션 간의 관계를 나타내는 플롯의 이름입니다. 때때로 데이터에서 역관계가 발견되기도 합니다. 예를 들어, 1861년에서 1957년 사이의 영국에서 그러했습니다 [@phillips1958relation]. 우리는 데이터에서 이 관계를 조사하는 다양한 방법을 가지고 있습니다.
+
+::: {.content-visible when-format="pdf"}
+1) 그래프에 두 번째 선을 추가합니다. 예를 들어, 인플레이션을 추가할 수 있습니다 (@fig-notphillips-1). 이를 위해서는 데이터가 정돈된 형식인지 확인하기 위해 ["R 필수 사항" 온라인 부록](https://tellingstorieswithdata.com/20-r_essentials.html)에서 논의된 `pivot_longer()`를 사용해야 합니다.
+2) `geom_path()`를 사용하여 데이터 세트에 나타나는 순서대로 값을 연결합니다. @fig-notphillips-2에서는 1960년에서 2020년 사이의 미국에 대한 필립스 곡선을 보여줍니다. @fig-notphillips-2는 실업률과 인플레이션 사이에 명확한 관계를 보여주지 않는 것 같습니다.
+:::
+
+::: {.content-visible unless-format="pdf"}
+1) 그래프에 두 번째 선을 추가합니다. 예를 들어, 인플레이션을 추가할 수 있습니다 (@fig-notphillips-1). 이를 위해서는 데이터가 정돈된 형식인지 확인하기 위해 [온라인 부록 -@sec-r-essentials]에서 논의된 `pivot_longer()`를 사용해야 합니다.
+2) `geom_path()`를 사용하여 데이터 세트에 나타나는 순서대로 값을 연결합니다. @fig-notphillips-2에서는 1960년에서 2020년 사이의 미국에 대한 필립스 곡선을 보여줍니다. @fig-notphillips-2는 실업률과 인플레이션 사이에 명확한 관계를 보여주지 않는 것 같습니다.
+:::
+
+```{r}
+#| fig-cap: "미국의 실업률과 인플레이션 (1960-2020)"
+#| label: fig-notphillips
+#| layout-ncol: 2
+#| fig-subcap: ["두 시계열을 시간에 따라 비교", "두 시계열을 서로 플로팅"]
+#| warning: false
+
+world_bank_data |>
+  filter(country == "United States") |>
+  select(-population, -gdp_growth) |>
+  pivot_longer(
+    cols = c("inflation", "unem_rate"),
+    names_to = "series",
+    values_to = "value"
+  ) |>
+  ggplot(mapping = aes(x = year, y = value, color = series)) +
+  geom_line() +
+  theme_minimal() +
+  labs(
+    x = "연도", y = "값", color = "경제 지표",
+    caption = "데이터 출처: 세계은행."
+  ) +
+  scale_color_brewer(palette = "Set1", labels = c("인플레이션", "실업률")) +
+  theme(legend.position = "bottom")
+
+world_bank_data |>
+  filter(country == "United States") |>
+  ggplot(mapping = aes(x = unem_rate, y = inflation)) +
+  geom_path() +
+  theme_minimal() +
+  labs(
+    x = "실업률", y = "인플레이션",
+    caption = "데이터 출처: 세계은행."
+  )
+```
+
+### 히스토그램
+
+히스토그램\index{그래프!히스토그램}은 연속 변수의 분포 모양을 보여주는 데 유용합니다. 데이터 값의 전체 범위는 "빈"이라고 불리는 간격으로 나뉘며, 히스토그램은 각 빈에 몇 개의 관측치가 속하는지 계산합니다. @fig-hisogramone에서는 에티오피아의 GDP 분포를 살펴봅니다.
+
+```{r}
+#| fig-cap: "에티오피아의 GDP 성장률 분포 (1960-2020)"
+#| label: fig-hisogramone
+#| message: false
+#| warning: false
+
+world_bank_data |>
+  filter(country == "Ethiopia") |>
+  ggplot(aes(x = gdp_growth)) +
+  geom_histogram() +
+  theme_minimal() +
+  labs(
+    x = "GDP 성장률",
+    y = "발생 횟수",
+    caption = "데이터 출처: 세계은행."
+  )
+```
+
+히스토그램의 모양을 결정하는 핵심 구성 요소는 빈의 수입니다. 이는 두 가지 방법으로 지정할 수 있습니다 (@fig-hisogrambins).
+
+1) 포함할 "빈"의 수를 지정하거나;
+2) "빈 너비"를 지정합니다.
+
+```{r}
+#| message: false
+#| warning: false
+#| fig-cap: "에티오피아의 GDP 성장률 분포 (1960-2020)"
+#| label: fig-hisogrambins
+#| fig-subcap: ["5개 빈", "20개 빈", "빈 너비 2", "빈 너비 5"]
+#| layout-ncol: 2
+
+# Panel (a)
+world_bank_data |>
+  filter(country == "Ethiopia") |>
+  ggplot(aes(x = gdp_growth)) +
+  geom_histogram(bins = 5) +
+  theme_minimal() +
+  labs(
+    x = "GDP 성장률",
+    y = "발생 횟수"
+  )
+
+# Panel (b)
+world_bank_data |>
+  filter(country == "Ethiopia") |>
+  ggplot(aes(x = gdp_growth)) +
+  geom_histogram(bins = 20) +
+  theme_minimal() +
+  labs(
+    x = "GDP 성장률",
+    y = "발생 횟수"
+  )
+
+# Panel (c)
+world_bank_data |>
+  filter(country == "Ethiopia") |>
+  ggplot(aes(x = gdp_growth)) +
+  geom_histogram(binwidth = 2) +
+  theme_minimal() +
+  labs(
+    x = "GDP 성장률",
+    y = "발생 횟수"
+  )
+
+# Panel (d)
+world_bank_data |>
+  filter(country == "Ethiopia") |>
+  ggplot(aes(x = gdp_growth)) +
+  geom_histogram(binwidth = 5) +
+  theme_minimal() +
+  labs(
+    x = "GDP 성장률",
+    y = "발생 횟수"
+  )
+```
+
+히스토그램\index{그래프!히스토그램}은 데이터를 국소적으로 평균화하는 것으로 생각할 수 있으며, 빈의 수는 이러한 현상이 얼마나 발생하는지에 영향을 미칩니다. 빈이 두 개뿐인 경우 상당한 평활화가 발생하지만, 정확성을 많이 잃게 됩니다. 빈이 너무 적으면 편향이 더 커지고, 빈이 너무 많으면 분산이 더 커집니다 [@wasserman, p. 303]. 빈의 수 또는 너비에 대한 우리의 결정은 편향과 분산의 균형을 맞추는 것과 관련이 있습니다. 이는 주제와 목표를 포함한 다양한 고려 사항에 따라 달라집니다 [@elementsofgraphingdata, p. 135]. 이것이 @Denby2009가 히스토그램을 탐색 도구로서 특히 가치 있다고 간주하는 이유 중 하나입니다.
+
+마지막으로, "fill"을 사용하여 다른 유형의 관측치를 구별할 수 있지만, 상당히 지저분해질 수 있습니다. 일반적으로 다음이 더 좋습니다.
+
+1. `geom_freqpoly()`로 분포의 윤곽을 그립니다 (@fig-different-obs-1).
+2. `geom_dotplot()`로 점 스택을 만듭니다 (@fig-different-obs-2).
+3. 투명도를 추가합니다. 특히 차이가 더 뚜렷한 경우 (@fig-different-obs-3).
+
+```{r}
+#| fig-cap: "다양한 국가의 GDP 성장률 분포 (1960-2020)"
+#| label: fig-different-obs
+#| message: false
+#| warning: false
+#| layout-ncol: 2
+#| fig-subcap: ["윤곽선 그리기", "점 사용", "투명도 추가"]
+
+# Panel (a)
+world_bank_data |>
+  ggplot(aes(x = gdp_growth, color = country)) +
+  geom_freqpoly() +
+  theme_minimal() +
+  labs(
+    x = "GDP 성장률", y = "발생 횟수",
+    color = "국가",
+    caption = "데이터 출처: 세계은행."
+  ) +
+  scale_color_brewer(palette = "Set1")
+
+# Panel (b)
+world_bank_data |>
+  ggplot(aes(x = gdp_growth, group = country, fill = country)) +
+  geom_dotplot(method = "histodot") +
+  theme_minimal() +
+  labs(
+    x = "GDP 성장률", y = "발생 횟수",
+    fill = "국가",
+    caption = "데이터 출처: 세계은행."
+  ) +
+  scale_color_brewer(palette = "Set1")
+
+# Panel (c)
+world_bank_data |>
+  filter(country %in% c("India", "United States")) |>
+  ggplot(mapping = aes(x = gdp_growth, fill = country)) +
+  geom_histogram(alpha = 0.5, position = "identity") +
+  theme_minimal() +
+  labs(
+    x = "GDP 성장률", y = "발생 횟수",
+    fill = "국가",
+    caption = "데이터 출처: 세계은행."
+  ) +
+  scale_color_brewer(palette = "Set1")
+```
+
+히스토그램의 흥미로운 대안은 경험적 누적 분포 함수(ECDF)입니다.\index{그래프!ECDF} 이와 히스토그램 사이의 선택은 청중에 따라 달라지는 경향이 있습니다. 덜 정교한 청중에게는 적절하지 않을 수 있지만, 청중이 정량적으로 편안하다면 히스토그램보다 평활화가 덜하기 때문에 훌륭한 선택이 될 수 있습니다. `stat_ecdf()`를 사용하여 ECDF를 만들 수 있습니다. 예를 들어, @fig-ecdfismyfavohidonthavefavs는 @fig-hisogramone과 동일한 ECDF를 보여줍니다.
+
+```{r}
+#| fig-cap: "네 개 국가의 GDP 성장률 분포 (1960-2020)"
+#| label: fig-ecdfismyfavohidonthavefavs
+#| warning: false
+
+world_bank_data |>
+  ggplot(mapping = aes(x = gdp_growth, color = country)) +
+  stat_ecdf(geom = "point") +
+  theme_minimal() +
+  labs(
+    x = "GDP 성장률", y = "비율", color = "국가",
+    caption = "데이터 출처: 세계은행."
+  ) +
+  theme(legend.position = "bottom")
+```
+
+### 상자 그림
+
+상자 그림\index{그래프!상자 그림}은 일반적으로 다섯 가지 측면을 보여줍니다. 1) 중앙값, 2) 25번째 백분위수, 3) 75번째 백분위수. 네 번째와 다섯 번째 요소는 세부 사항에 따라 다릅니다. 한 가지 옵션은 최소값과 최대값입니다. 다른 옵션은 75번째 백분위수와 25번째 백분위수 사이의 차이인 사분위수 범위(IQR)를 결정하는 것입니다. 네 번째와 다섯 번째 요소는 25번째 및 75번째 백분위수에서 $1.5\times\mbox{IQR}$ 이내의 극단적인 관측치입니다. 후자의 접근 방식은 `ggplot2`의 `geom_boxplot`에서 기본적으로 사용됩니다. @chartingstatistics [p. 166]는 범위와 중앙값 및 범위와 같은 다양한 요약 통계에 초점을 맞춘 차트 개념을 도입했으며, @tukeyeda는 어떤 요약 통계에 초점을 맞추고 이를 대중화했습니다 [@anotherhadleyreferencelol].
+
+그래프를 사용하는 한 가지 이유는 데이터가 얼마나 복잡한지 이해하고 받아들이는 데 도움이 되기 때문입니다. 데이터를 숨기거나 평활화하려고 노력하는 대신 말입니다 [@armstrongembracecomplexity]. 상자 그림의 적절한 사용 사례는 @Bethlehem2022에서와 같이 많은 변수의 요약 통계를 한 번에 비교하는 것입니다. 그러나 상자 그림만으로는 데이터 분포를 보여주기보다는 숨기기 때문에 최선의 선택인 경우는 거의 없습니다. 동일한 상자 그림이 매우 다른 분포에 적용될 수 있습니다. 이를 이해하기 위해 두 가지 유형의 베타 분포에서 시뮬레이션된 데이터를 고려해 보십시오.\index{시뮬레이션!베타 분포} 첫 번째는 두 개의 베타 분포에서 추출한 것입니다.\index{분포!베타} 하나는 오른쪽으로 치우쳐 있고 다른 하나는 왼쪽으로 치우쳐 있습니다. 두 번째는 왜곡이 없는 베타 분포에서 추출한 것입니다. $\mbox{Beta}(1, 1)$은 $\mbox{Uniform}(0, 1)$과 동일합니다.
+
+```{r}
+set.seed(853)
+
+number_of_draws <- 10000
+
+both_left_and_right_skew <-
+  c(
+    rbeta(number_of_draws / 2, 5, 2),
+    rbeta(number_of_draws / 2, 2, 5)
+  )
+
+no_skew <-
+  rbeta(number_of_draws, 1, 1)
+
+beta_distributions <-
+  tibble(
+    observation = c(both_left_and_right_skew, no_skew),
+    source = c(
+      rep("왼쪽 및 오른쪽 왜곡", number_of_draws),
+      rep("왜곡 없음", number_of_draws)
+    )
+  )
+```
+
+먼저 두 시리즈의 상자 그림을 비교할 수 있습니다 (@fig-boxplotfirst-1). 그러나 실제 데이터를 플로팅하면 얼마나 다른지 알 수 있습니다 (@fig-boxplotfirst-2).
+
+```{r}
+#| label: fig-boxplotfirst
+#| message: false
+#| warning: false
+#| layout-ncol: 2
+#| fig-cap: "다른 매개변수를 가진 베타 분포에서 추출한 데이터"
+#| fig-subcap: ["상자 그림으로 설명", "실제 데이터"]
+
+beta_distributions |>
+  ggplot(aes(x = source, y = observation)) +
+  geom_boxplot() +
+  theme_classic()
+
+beta_distributions |>
+  ggplot(aes(x = observation, color = source)) +
+  geom_freqpoly(binwidth = 0.05) +
+  theme_classic() +
+  theme(legend.position = "bottom")
+```
+
+상자 그림을 사용해야 한다면, 한 가지 방법은 상자 그림 위에 실제 데이터를 레이어로 포함하는 것입니다.\index{그래프!상자 그림} 예를 들어, @fig-bloxplotandoverlay에서는 네 개 국가의 인플레이션 분포를 보여줍니다. 이것이 잘 작동하는 이유는 실제 관측치와 요약 통계를 모두 보여주기 때문입니다.
+
+```{r}
+#| fig-cap: "네 개 국가의 인플레이션 데이터 분포 (1960-2020)"
+#| label: fig-bloxplotandoverlay
+#| message: false
+#| warning: false
+
+world_bank_data |>
+  ggplot(mapping = aes(x = country, y = inflation)) +
+  geom_boxplot() +
+  geom_jitter(alpha = 0.3, width = 0.15, height = 0) +
+  theme_minimal() +
+  labs(
+    x = "국가",
+    y = "인플레이션",
+    caption = "데이터 출처: 세계은행."
+  )
+```
+
+
+
+### 대화형 그래프
+
+`shiny` [@citeshiny]는 R을 사용하여 대화형 웹 애플리케이션을 만드는 방법입니다. 재미있지만 약간 까다로울 수 있습니다. 여기서는 `shiny`를 활용하는 한 가지 방법을 단계별로 설명합니다. 즉, 그래프에 빠르게 상호 작용 기능을 추가하는 것입니다. 이는 작은 일처럼 들리지만, 왜 그렇게 강력한지에 대한 훌륭한 예시는 @theeconomistforecasts에서 제공합니다. 그들은 2022년 프랑스 대통령 선거 예측이 시간이 지남에 따라 어떻게 변했는지 보여줍니다.
+
+`babynames` [@citebabynames]의 "babynames" 데이터 세트를 기반으로 대화형 그래프를 만들 것입니다. 먼저 정적 버전을 만들 것입니다 (@fig-babynames).
+
+```{r}
+#| fig-cap: "인기 있는 아기 이름"
+#| label: fig-babynames
+#| message: false
+#| warning: false
+
+top_five_names_by_year <-
+  babynames |>
+  arrange(desc(n)) |>
+  slice_head(n = 5, by = c(year, sex))
+
+top_five_names_by_year |>
+  ggplot(aes(x = n, fill = sex)) +
+  geom_histogram(position = "dodge") +
+  theme_minimal() +
+  scale_fill_brewer(palette = "Set1") +
+  labs(
+    x = "그 이름을 가진 아기",
+    y = "발생 횟수",
+    fill = "성별"
+  )
+```
+
+우리가 관심 있을 수 있는 한 가지는 "bins" 매개변수의 효과가 우리가 보는 것에 어떻게 영향을 미치는지입니다. 우리는 상호 작용을 사용하여 다른 값을 탐색하고 싶을 수 있습니다.
+
+시작하려면 새 `shiny` 앱을 만드십시오 ("파일" -> "새 파일" -> "Shiny 웹 앱"). "not_my_first_shiny"와 같은 이름을 지정하고 다른 모든 옵션은 기본값으로 두십시오. 새 파일 "app.R"이 열리고 "앱 실행"을 클릭하여 어떻게 보이는지 확인합니다.
+
+이제 해당 파일 "app.R"의 내용을 아래 내용으로 바꾼 다음 다시 "앱 실행"을 클릭하십시오.
+
+```{r}
+#| eval: false
+
+library(shiny)
+
+# Define UI for application that draws a histogram
+ui <- fluidPage(
+  # Application title
+  titlePanel("매년 가장 인기 있는 다섯 가지 이름에 대한 이름 수."),
+
+  # Sidebar with a slider input for number of bins
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput(
+        inputId = "number_of_bins",
+        label = "빈의 수:",
+        min = 1,
+        max = 50,
+        value = 30
+      )
+    ),
+
+    # Show a plot of the generated distribution
+    mainPanel(plotOutput("distPlot"))
+  )
+)
+
+# Define server logic required to draw a histogram
+server <- function(input, output) {
+  output$distPlot <- renderPlot({
+    # Draw the histogram with the specified number of bins
+    top_five_names_by_year |>
+      ggplot(aes(x = n, fill = sex)) +
+      geom_histogram(position = "dodge", bins = input$number_of_bins) +
+      theme_minimal() +
+      scale_fill_brewer(palette = "Set1") +
+      labs(
+        x = "그 이름을 가진 아기",
+        y = "발생 횟수",
+        fill = "성별"
+      )
+  })
+}
+
+# Run the application
+shinyApp(ui = ui, server = server)
+```
+
+빈의 수를 변경할 수 있는 대화형 그래프를 만들었습니다. @fig-shinyone과 같아야 합니다.
+
+![사용자가 빈의 수를 제어하는 Shiny 앱 예시](figures/22-shiny_one.png){#fig-shinyone width=90% fig-align="center"}
+
+
+
+
+
+## 표
+
+표\index{표}는 설득력 있는 이야기를 전달하는 데 중요한 부분입니다. 표는 그래프보다 적은 정보를 전달할 수 있지만, 높은 충실도로 전달합니다. 특히 몇 가지 특정 값을 강조하는 데 유용합니다 [@andersen2021presenting]. 이 책에서는 주로 세 가지 방식으로 표를 사용합니다.
+
+1. 데이터 세트의 일부를 보여주기 위해.
+2. 요약 통계를 전달하기 위해.
+3. 회귀 결과를 표시하기 위해.
+
+### 데이터 세트의 일부 표시
+
+`tinytable`의 `tt()`를 사용하여 데이터 세트의 일부를 표시하는 방법을 설명합니다. 이전에 다운로드한 세계은행\index{세계은행} 데이터 세트를 사용하고 인플레이션, GDP 성장률 및 인구에 초점을 맞춥니다. 실업률 데이터는 모든 국가의 모든 연도에 대해 사용할 수 없기 때문입니다.\index{표!kable()}
+
+```{r}
+world_bank_data <-
+  world_bank_data |>
+  select(-unem_rate)
+```
+
+시작하려면 `tinytable`을 설치하고 로드한 후 기본 `tt()` 설정으로 처음 10개 행을 표시할 수 있습니다.
+
+```{r}
+world_bank_data |>
+  slice(1:10) |>
+  tt()
+```
+
+텍스트에서 표를 상호 참조하려면 @sec-reproducible-workflows의 @sec-quartocrossreferences에 표시된 대로 R 청크에 표 캡션과 레이블을 추가해야 합니다. `setNames`를 사용하여 열 이름을 더 의미 있게 만들고 표시할 자릿수를 지정할 수도 있습니다 (@tbl-gdpfirst).
+
+```{r}
+#| echo: fenced
+#| label: tbl-gdpfirst
+#| message: false
+#| tbl-cap: "네 개 국가의 경제 지표 데이터 세트"
+
+world_bank_data |>
+  slice(1:10) |>
+  tt() |>
+  style_tt(j = 2:5, align = "r") |>
+  format_tt(digits = 1, num_mark_big = ",", num_fmt = "decimal") |>
+  setNames(c("국가", "연도", "인플레이션", "GDP 성장률", "인구"))
+```
+
+### 서식 개선
+
+`style_tt()`와 "l" (왼쪽), "c" (가운데), "r" (오른쪽) 문자 벡터를 사용하여 열의 정렬을 지정할 수 있습니다 (@tbl-gdpalign).\index{표!정렬} `j`를 사용하여 적용할 열을 지정하고 열 번호를 지정합니다. 또한 서식을 변경할 수 있습니다. 예를 들어, `num_mark_big = ","`를 사용하여 1,000 이상의 숫자에 대한 그룹화를 지정할 수 있습니다.
+
+```{r}
+#| label: tbl-gdpalign
+#| message: false
+#| tbl-cap: "호주, 에티오피아, 인도, 미국의 경제 지표 데이터 세트의 처음 10개 행"
+
+world_bank_data |>
+  slice(1:10) |>
+  mutate(year = as.factor(year)) |>
+  tt() |>
+  style_tt(j = 1:5, align = "lccrr") |>
+  format_tt(digits = 1, num_mark_big = ",", num_fmt = "decimal") |>
+  setNames(c("국가", "연도", "인플레이션", "GDP 성장률", "인구"))
+```
+
+
+### 요약 통계 전달
+
+`modelsummary`를 설치하고 로드한 후 `datasummary_skim()`을 사용하여 데이터 세트에서 요약 통계 표를 만들 수 있습니다.\index{표!요약 통계}
+
+이를 사용하여 @tbl-testdatasummarynormal과 같은 표를 얻을 수 있습니다. 이는 @sec-exploratory-data-analysis에서 다루는 탐색적 데이터 분석에 유용할 수 있습니다. (여기서는 공간 절약을 위해 인구를 제거하고 각 변수의 히스토그램을 포함하지 않습니다.)
+
+```{r}
+#| message: false
+#| warning: false
+#| label: tbl-testdatasummarynormal
+#| tbl-cap: "네 개 국가의 경제 지표 변수 요약"
+
+world_bank_data |>
+  select(-population) |>
+  datasummary_skim(histogram = FALSE)
+```
+
+기본적으로 `datasummary_skim()`은 숫자 변수를 요약하지만, 범주형 변수를 요청할 수 있습니다 (@tbl-testdatasummary). 또한 `kable()`과 동일한 방식으로 상호 참조를 추가할 수 있습니다. 즉, "tbl-cap" 항목을 포함한 다음 R 청크의 이름을 상호 참조합니다.
+
+```{r}
+#| label: tbl-testdatasummary
+#| tbl-cap: "네 개 국가의 범주형 경제 지표 변수 요약"
+
+world_bank_data |>
+  datasummary_skim(type = "categorical")
+```
+
+`datasummary_correlation()`을 사용하여 변수 간의 상관 관계\index{표!상관 관계}를 보여주는 표를 만들 수 있습니다 (@tbl-correlationtable).
+
+```{r}
+#| label: tbl-correlationtable
+#| tbl-cap: "네 개 국가(호주, 에티오피아, 인도, 미국)의 경제 지표 변수 간 상관 관계"
+
+world_bank_data |>
+  datasummary_correlation()
+```
+
+우리는 일반적으로 논문에 추가할 수 있는 기술 통계 표\index{표!기술 통계}가 필요합니다 (@tbl-descriptivestats). 이는 논문의 주요 섹션에 포함되지 않을 @tbl-testdatasummary와 대조되며, 데이터를 이해하는 데 더 도움이 됩니다. `notes`를 사용하여 데이터 출처에 대한 메모를 추가할 수 있습니다.
+
+```{r}
+#| label: tbl-descriptivestats
+#| warning: false
+#| tbl-cap: "인플레이션 및 GDP 데이터 세트에 대한 기술 통계"
+
+datasummary_balance(
+  formula = ~country,
+  data = world_bank_data |>
+    filter(country %in% c("Australia", "Ethiopia")),
+  dinm = FALSE,
+  notes = "데이터 출처: 세계은행."
+)
+```
+
+
+
+### 회귀 결과 표시
+
+`modelsummary`의 `modelsummary()`를 사용하여 회귀 결과\index{표!회귀 결과}를 보고할 수 있습니다. 예를 들어, 몇 가지 다른 모델의 추정치를 표시할 수 있습니다 (@tbl-twomodels).
+
+```{r}
+#| label: tbl-twomodels
+#| tbl-cap: "인플레이션의 함수로서 GDP 설명"
+
+first_model <- lm(
+  formula = gdp_growth ~ inflation,
+  data = world_bank_data
+)
+
+second_model <- lm(
+  formula = gdp_growth ~ inflation + country,
+  data = world_bank_data
+)
+
+third_model <- lm(
+  formula = gdp_growth ~ inflation + country + population,
+  data = world_bank_data
+)
+
+modelsummary(list(first_model, second_model, third_model))
+```
+
+유효 자릿수는 "fmt"로 조정할 수 있습니다 (@tbl-twomodelstwo). 신뢰성을 확립하는 데 도움이 되도록 가능한 한 많은 유효 자릿수를 추가해서는 안 됩니다 [@howes2022representing]. 대신, 데이터 생성 프로세스에 대해 신중하게 생각하고 그에 따라 조정해야 합니다.
+
+```{r}
+#| label: tbl-twomodelstwo
+#| tbl-cap: "인플레이션의 함수로서 GDP의 세 가지 모델"
+
+modelsummary(
+  list(first_model, second_model, third_model),
+  fmt = 1
+)
+```
+
+## 지도
+
+여러 면에서 지도는 x축이 위도, y축이 경도이고, 어떤 윤곽선이나 배경 이미지가 있는 또 다른 유형의 그래프로 생각할 수 있습니다.\index{표!지도}\index{지도} 지도는 가장 오래되고 가장 잘 이해되는 차트 유형일 수 있습니다 [@karsetn, p. 1]. 우리는 지도를 간단한 방식으로 생성할 수 있습니다. 그렇다고 해서 가볍게 여겨서는 안 됩니다. 상황이 빠르게 복잡해집니다!
+
+첫 번째 단계는 데이터를 얻는 것입니다.\index{지도!데이터} `ggplot2`에는 `map_data()`로 접근할 수 있는 일부 지리 데이터가 내장되어 있습니다. `maps`의 `world.cities` 데이터 세트에는 추가 변수가 있습니다.
+
+```{r}
+#| message: false
+#| warning: false
+
+france <- map_data(map = "france")
+
+head(france)
+
+french_cities <-
+  world.cities |>
+  filter(country.etc == "France")
+
+head(french_cities)
+```
+
+그 정보를 사용하여 가장 큰 도시를 보여주는 프랑스 지도\index{프랑스!도시}를 만들 수 있습니다 (@fig-heyitsfrance).\index{지도!프랑스} `ggplot2`의 `geom_polygon()`을 사용하여 그룹 내의 점을 연결하여 모양을 그립니다. 그리고 `coord_map()`은 3D 세계를 나타내기 위해 2D 지도를 만드는 사실을 조정합니다.
+
+```{r}
+#| label: fig-heyitsfrance
+#| fig-cap: "가장 큰 도시를 보여주는 프랑스 지도"
+#| message: false
+#| warning: false
+
+ggplot() +
+  geom_polygon(
+    data = france,
+    aes(x = long, y = lat, group = group),
+    fill = "white",
+    colour = "grey"
+  ) +
+  coord_map() +
+  geom_point(
+    aes(x = french_cities$long, y = french_cities$lat),
+    alpha = 0.3,
+    color = "black"
+  ) +
+  theme_minimal() +
+  labs(x = "경도", y = "위도")
+```
+
+R의 경우와 마찬가지로 정적 지도를 만드는 다양한 방법이 있습니다. `ggplot2`만 사용하여 지도를 만드는 방법을 보았지만, `ggmap`은 추가 기능을 제공합니다.
+
+지도에는 두 가지 필수 구성 요소가 있습니다.
+
+1) 테두리 또는 배경 이미지 (때로는 타일이라고도 함); 그리고
+2) 해당 테두리 내 또는 해당 타일 위에 있는 관심 대상.
+
+`ggmap`에서는 타일로 오픈 소스 옵션인 Stamen Maps를 사용합니다.\index{지도!Stamen Maps} 그리고 위도와 경도를 기반으로 점을 플로팅합니다.
+
+
+### 정적 지도
+
+#### 호주 투표소
+
+호주에서는\index{호주!선거} 사람들이 투표하기 위해 "부스"로 가야 합니다. 부스에는 좌표(위도 및 경도)가 있으므로 플로팅할 수 있습니다. 그렇게 하고 싶은 한 가지 이유는 공간 투표 패턴을 파악하기 위함입니다.
+
+시작하려면 타일을 얻어야 합니다.\index{지도!타일} `ggmap`을 사용하여 Stamen Maps에서 타일을 얻을 것입니다. Stamen Maps는 [OpenStreetMap](openstreetmap.org)을 기반으로 합니다. 이 함수의 주요 인수는 경계 상자를 지정하는 것입니다.\index{지도!경계 상자} 경계 상자는 관심 있는 가장자리의 좌표입니다.
+두 개의 위도와 두 개의 경도가 필요합니다.
+
+Google 지도\index{지도!Google 지도} 또는 기타 매핑 플랫폼을 사용하여 필요한 좌표 값을 찾는 것이 유용할 수 있습니다. 이 경우 호주의 수도 캔버라\index{호주!캔버라}를 중심으로 하는 좌표를 제공했습니다.
+
+```{r}
+#| warning: false
+#| message: false
+
+bbox <- c(left = 148.95, bottom = -35.5, right = 149.3, top = -35.1)
+```
+
+무료이지만, 지도를 얻으려면 등록해야 합니다. 이를 위해 https://client.stadiamaps.com/signup/으로 이동하여 계정을 만드십시오. 그런 다음 새 속성을 만들고 "API 키 추가"를 클릭하십시오. 키를 복사하고 (PUT-KEY-HERE를 키로 대체하여) `register_stadiamaps(key = "PUT-KEY-HERE", write = TRUE)`를 실행하십시오. 그런 다음 경계 상자를 정의하면 `get_stadiamap()` 함수가 해당 지역의 타일을 가져옵니다 (@fig-heyitscanberra).\index{지도!타일} 필요한 타일 수는 확대/축소에 따라 달라지며, 가져오는 타일 유형은 지도 유형에 따라 달라집니다. 우리는 흑백인 "toner-lite"를 사용했지만, "terrain", "toner", "toner-lines"와 같은 다른 유형도 있습니다. 타일을 `ggmap()`에 전달하면 플로팅됩니다. `get_stadiamap()`이 타일을 다운로드하므로 인터넷 연결이 필요합니다.\index{인터넷!지도 타일}
+
+```{r}
+#| label: fig-heyitscanberra
+#| fig-cap: "호주 캔버라 지도"
+#| warning: false
+#| message: false
+#| eval: false
+
+canberra_stamen_map <- get_stadiamap(bbox, zoom = 11, maptype = "stamen_toner_lite")
+
+ggmap(canberra_stamen_map)
+```
+
+지도를 얻으면 `ggmap()`를 사용하여 플로팅할 수 있습니다. 이제 타일 위에 플로팅할 데이터를 얻고 싶습니다. "division"을 기반으로 투표소 위치를 플로팅할 것입니다. 이는 [호주 선거 관리 위원회(AEC)](https://results.aec.gov.au/20499/Website/Downloads/HouseTppByPollingPlaceDownload-20499.csv)에서 사용할 수 있습니다.\index{호주!호주 선거 관리 위원회}
+
+::: {.content-visible when-format="pdf"}
+```{r}
+#| warning: false
+#| message: false
+#| echo: true
+#| eval: false
+
+booths <-
+  read_csv(
+    paste0(
+      "https://results.aec.gov.au/24310/Website/Downloads/",
+      "GeneralPollingPlacesDownload-24310.csv"
+    ),
+    skip = 1,
+    guess_max = 10000
+  )
+```
+:::
+
+::: {.content-visible unless-format="pdf"}
+```{r}
+#| warning: false
+#| message: false
+#| echo: true
+#| eval: false
+
+booths <-
+  read_csv(
+    "https://results.aec.gov.au/24310/Website/Downloads/GeneralPollingPlacesDownload-24310.csv",
+    skip = 1,
+    guess_max = 10000
+  )
+```
+:::
+
+```{r}
+#| echo: false
+#| eval: false
+
+# INTERNAL
+
+write_csv(booths, "inputs/data/booths.csv")
+```
+
+```{r}
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+
+booths <-
+  read_csv(
+    file = "inputs/data/booths.csv",
+    guess_max = 10000
+  )
+```
+
+이 데이터 세트는 호주 전체에 대한 것이지만, 캔버라 주변 지역만 플로팅하므로 캔버라에 가까운 지리적 위치를 가진 부스만 필터링할 것입니다.\index{호주!캔버라}
+
+```{r}
+#| warning: false
+#| message: false
+#| eval: false
+booths_reduced <-
+  booths |>
+  filter(State == "ACT") |>
+  select(PollingPlaceID, DivisionNm, Latitude, Longitude) |>
+  filter(!is.na(Longitude)) |> # 지리 정보가 없는 행 제거
+  filter(Longitude < 165) # 노퍽 섬 제거
+```
+
+이제 이전과 동일한 방식으로 `ggmap`을 사용하여 기본 타일을 플로팅한 다음 `geom_point()`를 사용하여 관심 지점을 추가할 수 있습니다.\index{지도!위치 플로팅}
+
+```{r}
+#| label: fig-heyitscanberrapolling
+#| fig-cap: "투표소가 있는 호주 캔버라 지도"
+#| warning: false
+#| message: false
+#| eval: false
+
+ggmap(canberra_stamen_map, extent = "normal", maprange = FALSE) +
+  geom_point(data = booths_reduced,
+             aes(x = Longitude, y = Latitude, colour = DivisionNm),
+             alpha = 0.7) +
+  scale_color_brewer(name = "2019년 디비전", palette = "Set1") +
+  coord_map(
+    projection = "mercator",
+    xlim = c(attr(map, "bb")$ll.lon, attr(map, "bb")$ur.lon),
+    ylim = c(attr(map, "bb")$ll.lat, attr(map, "bb")$ur.lat)
+  ) +
+  labs(x = "경도",
+       y = "위도") +
+  theme_minimal() +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank())
+```
+
+지도를 저장하여 매번 만들 필요가 없도록 할 수 있으며, `ggsave()`를 사용하여 다른 그래프와 동일한 방식으로 저장할 수 있습니다.
+
+```{r}
+#| eval: false
+
+ggsave("map.pdf", width = 20, height = 10, units = "cm")
+```
+
+마지막으로, Stamen Maps와 OpenStreetMap을 사용한 이유는 오픈 소스이기 때문이지만, Google 지도\index{지도!Google 지도}도 사용할 수 있었습니다. 이를 위해서는 먼저 Google에 신용 카드를 등록하고 키를 지정해야 하지만, 사용량이 적으면 서비스는 무료여야 합니다. `ggmap` 내에서 `get_googlemap()`을 사용하여 Google 지도를 사용하면 `get_stadiamap()`보다 몇 가지 장점이 있습니다. 예를 들어, 경계 상자를 지정할 필요 없이 장소 이름을 찾으려고 시도합니다.
+
+#### 미국 군사 기지
+
+정적 지도의 또 다른 예시를 보기 위해 `troopdata`를 설치하고 로드한 후 일부 미국 군사 기지를 플로팅할 것입니다.\index{지도!미국 군사 기지} `get_basedata()`를 사용하여 냉전 시작 이후의 미국 해외 군사 기지에 대한 데이터에 접근할 수 있습니다.
+
+```{r}
+bases <- get_basedata()
+
+head(bases)
+```
+
+독일\index{독일!미국 군사 기지}, 일본\index{일본!미국 군사 기지}, 호주\index{호주!미국 군사 기지}에 있는 미국 군사 기지의 위치를 살펴볼 것입니다. `troopdata` 데이터 세트에는 이미 각 기지의 위도와 경도가 있으며, 이를 관심 항목으로 사용할 것입니다. 첫 번째 단계는 각 국가에 대한 경계 상자를 정의하는 것입니다.\index{지도!경계 상자}
+
+```{r}
+#| message: false
+#| warning: false
+#| eval: false
+# 사용: https://data.humdata.org/dataset/bounding-boxes-for-countries
+bbox_germany <- c(left = 5.867, bottom = 45.967, right = 15.033, top = 55.133)
+
+bbox_japan <- c(left = 127, bottom = 30, right = 146, top = 45)
+
+bbox_australia <- c(left = 112.467, bottom = -45, right = 155, top = -9.133)
+```
+
+그런 다음 `ggmap`의 `get_stadiamap()`을 사용하여 타일을 가져와야 합니다.\index{지도!타일}
+
+```{r}
+#| message: false
+#| warning: false
+#| eval: false
+
+german_stamen_map <- get_stadiamap(bbox_germany, zoom = 6, maptype = "stamen_toner_lite")
+
+japan_stamen_map <- get_stadiamap(bbox_japan, zoom = 6, maptype = "stamen_toner_lite")
+
+aus_stamen_map <- get_stadiamap(bbox_australia, zoom = 5, maptype = "stamen_toner_lite")
+```
+
+마지막으로, 독일 (@fig-mapbasesin-1), 일본 (@fig-mapbasesin-2), 호주 (@fig-mapbasesin-3)에 있는 미국 군사 기지를 보여주는 지도를 모두 함께 가져올 수 있습니다.\index{지도!위치 플로팅}
+
+```{r}
+#| fig-cap: "세계 여러 지역의 미국 군사 기지 지도"
+#| label: fig-mapbasesin
+#| message: false
+#| warning: false
+#| fig-subcap: ["독일", "일본", "호주"]
+#| layout-ncol: 2
+#| eval: false
+ggmap(german_stamen_map) +
+  geom_point(data = bases, aes(x = lon, y = lat)) +
+  labs(x = "경도",
+       y = "위도") +
+  theme_minimal()
+
+ggmap(japan_stamen_map) +
+  geom_point(data = bases, aes(x = lon, y = lat)) +
+  labs(x = "경도",
+       y = "위도") +
+  theme_minimal()
+
+ggmap(aus_stamen_map) +
+  geom_point(data = bases, aes(x = lon, y = lat)) +
+  labs(x = "경도",
+       y = "위도") +
+  theme_minimal()
+```
+
+### 지오코딩
+
+지금까지 우리는 이미 지오코딩된 데이터를 가지고 있다고 가정했습니다. 즉, 각 장소에 대한 위도 및 경도 좌표가 있다는 의미입니다. 그러나 때로는 "시드니, 호주", "토론토, 캐나다", "아크라, 가나", "과야킬, 에콰도르"와 같은 장소 이름만 가지고 있는 경우가 있습니다. 플로팅하기 전에 각 경우에 대한 위도 및 경도 좌표를 얻어야 합니다. 이름을 좌표로 변환하는 과정을 지오코딩이라고 합니다.\index{지도!지오코딩}
+
+:::{
+.callout-note}
+## 아, 우리가 그 데이터에 대한 좋은 데이터를 가지고 있다고 생각하는군요!
+
+당신이 어디에 사는지 거의 확실히 알고 있겠지만, 많은 장소의 경계를 구체적으로 정의하는 것은 놀랍도록 어려울 수 있습니다.\index{지도!경계} 그리고 다른 수준의 정부가 다른 정의를 가지고 있을 때 특히 더 어려워집니다. @bronnerquantediting은 조지아주 애틀랜타의 경우\index{미국!조지아} 세 가지 이상의 공식적인 정의가 있다고 설명합니다.
+
+1) 대도시 통계 지역;
+2) 도시화 지역; 그리고
+3) 인구 조사 장소.
+
+어떤 정의를 사용하느냐에 따라 분석, 심지어 사용 가능한 데이터에도 상당한 영향을 미칠 수 있습니다. 비록 모두 "애틀랜타"라고 불리더라도 말입니다.
+:::
+
+R에서 데이터를 지오코딩하는 다양한 옵션이 있지만, `tidygeocoder`는 특히 유용합니다. 먼저 위치 데이터프레임이 필요합니다.
+
+```{r}
+place_names <-
+  tibble(
+    city = c("시드니", "토론토", "아크라", "과야킬"),
+    country = c("호주", "캐나다", "가나", "에콰도르")
+  )
+
+place_names
+```
+
+```{r}
+#| message: false
+#| warning: false
+
+place_names <-
+  geo(
+    city = place_names$city,
+    country = place_names$country,
+    method = "osm"
+  )
+
+place_names
+```
+
+이제 이 도시들을 플로팅하고 레이블을 지정할 수 있습니다 (@fig-mynicemap).
+
+```{r}
+#| fig-cap: "위치를 얻기 위해 지오코딩 후 아크라, 시드니, 토론토, 과야킬 지도"
+#| label: fig-mynicemap
+#| message: false
+#| warning: false
+
+world <- map_data(map = "world")
+
+ggplot() +
+  geom_polygon(
+    data = world,
+    aes(x = long, y = lat, group = group),
+    fill = "white",
+    colour = "grey"
+  ) +
+  geom_point(
+    aes(x = place_names$long, y = place_names$lat),
+    color = "black") +
+  geom_text(
+    aes(x = place_names$long, y = place_names$lat, label = place_names$city),
+    nudge_y = -5) +
+  theme_minimal() +
+  labs(x = "경도",
+       y = "위도")
+```
+
+
+
+### 대화형 지도
+
+대화형 지도의 좋은 점은 사용자가 관심 있는 것을 결정할 수 있도록 한다는 것입니다. 예를 들어, 지도의 경우 어떤 사람들은 토론토에 관심이 있을 수 있고, 다른 사람들은 첸나이나 오클랜드에 관심이 있을 수 있습니다. 그러나 이 모든 것에 초점을 맞춘 지도를 제시하는 것은 어려울 것이므로, 대화형 지도는 사용자가 원하는 것에 초점을 맞출 수 있도록 하는 방법입니다.
+
+그렇다고 해도, 지도를 만들 때, 그리고 더 넓게는 우리 자신의 지도를 만들 수 있도록 대규모로 무엇이 이루어지고 있는지 인식해야 합니다. 예를 들어, Google과 관련하여 @mcquire2019one은 다음과 같이 말합니다.
+
+> Google은 1998년 인터넷의 방대한 데이터를 정리하는 데 전념하는 회사로 시작했습니다. 그러나 지난 20년 동안 그 야망은 중요한 방식으로 변화했습니다. 이제 물리적 세계에서 단어와 숫자와 같은 데이터를 추출하는 것은 물리적 세계를 데이터로 파악하고 정리하는 과정의 디딤돌에 불과합니다. 아마도 이러한 변화는 인간의 정체성을 (유전적) '코드'의 형태로 이해하는 것이 가능해진 시점에서 놀라운 일이 아닐 것입니다. 그러나 현재 설정에서 세계를 데이터로 파악하고 정리하는 것은 현대 기술이 '자연'을 생산적인 자원으로 틀에 박아 넣었던 하이데거의 '대기 자원'을 훨씬 넘어설 가능성이 높습니다. 21세기에는 유전학에서 신체적 외모, 이동성, 몸짓, 언어 및 행동에 이르기까지 인간 생활 자체의 요소가 지속적으로 수확될 뿐만 아니라 시간이 지남에 따라 변조될 수 있는 생산적인 자원으로 점진적으로 변환되고 있습니다.
+
+이것이 우리가 대화형 지도를 사용하거나 만들어서는 안 된다는 의미일까요? 물론 아닙니다. 그러나 이것이 최전선이며, 적절한 사용의 경계가 여전히 결정되고 있다는 사실을 인식하는 것이 중요합니다. 실제로 지도 자체의 문자적 경계는 지속적으로 결정되고 업데이트되고 있습니다. 물리적으로 인쇄된 지도와 비교하여 디지털 지도로의 전환은 다른 사용자에게 다른 현실이 제시될 수 있음을 의미합니다. 예를 들어, "...Google은 국경 분쟁에서 일상적으로 편을 듭니다. 예를 들어, 우크라이나와 러시아 간의 국경 표현을 생각해 보십시오. 러시아에서는 크림 반도가 러시아가 통제하는 것으로 실선으로 표시되는 반면, 우크라이나인과 다른 사람들은 점선으로 표시된 국경을 봅니다. 전략적으로 중요한 반도는 양국 모두가 주장하며, 2014년 러시아에 의해 폭력적으로 점령되었습니다. 이는 통제권을 둘러싼 많은 충돌 중 하나입니다" [@washingtonpostmaps].
+
+
+#### 리플릿
+
+`leaflet` [@ChengKarambelkarXie2017]을 사용하여 대화형 지도를 만들 수 있습니다. 필수 사항은 `ggmap` [@KahleWickham2013]과 유사하지만, 그 외에도 많은 추가 측면이 있습니다. `troopdata` [@troopdata]를 사용했던 @sec-static-communication의 미국 군사 배치 지도를 다시 만들 수 있습니다. 대화형 지도의 장점은 모든 기지를 플로팅하고 사용자가 관심 있는 지역에 집중할 수 있도록 한다는 것입니다. @sec-static-communication에서는 몇몇 특정 국가만 선택했습니다. 이것이 왜 유용할 수 있는지에 대한 훌륭한 예시는 @theeconomistmaps에서 제공합니다. 그들은 2022년 프랑스 대통령 선거 결과를 코뮌별로 전국적으로 보여줄 수 있습니다.
+
+`ggplot2`의 그래프가 `ggplot()`으로 시작하는 것과 마찬가지로 `leaflet`의 지도는 `leaflet()`으로 시작합니다. 여기에서 데이터와 너비 및 높이와 같은 다른 옵션을 지정할 수 있습니다. 그런 다음 `ggplot2`에서 추가했던 것과 동일한 방식으로 "레이어"를 추가합니다. 우리가 추가하는 첫 번째 레이어는 `addTiles()`를 사용하는 타일입니다. 이 경우 기본값은 OpenStreetMap에서 가져옵니다. 그 다음 `addMarkers()`를 사용하여 각 기지의 위치를 보여주는 마커를 추가합니다 (@fig-canhasbase).
+
+```{r}
+#| fig-cap: "미국 기지 대화형 지도"
+#| label: fig-canhasbase
+#| message: false
+#| warning: false
+
+bases <- get_basedata()
+
+# 일부 기지에는 예상치 못한 문자가 포함되어 있어 처리해야 합니다.
+Encoding(bases$basename) <- "latin1"
+
+leaflet(data = bases) |>
+  addTiles() |> # 기본 OpenStreetMap 지도 타일 추가
+  addMarkers(
+    lng = bases$lon,
+    lat = bases$lat,
+    popup = bases$basename,
+    label = bases$countryname
+  )
+```
+
+`ggmap`과 비교하여 두 가지 새로운 인수가 있습니다. 첫 번째는 "popup"으로, 사용자가 마커를 클릭할 때 발생하는 동작입니다. 이 경우 기지 이름이 제공됩니다. 두 번째는 "label"로, 사용자가 마커 위에 마우스를 올릴 때 발생하는 동작입니다. 이 경우 국가 이름입니다.
+
+이번에는 기지 건설에 사용된 금액에 대한 또 다른 예시를 시도해 보겠습니다. 여기서는 다른 유형의 마커인 원을 도입할 것입니다. 이를 통해 각 유형의 결과에 다른 색상을 사용할 수 있습니다. 가능한 결과는 네 가지입니다. "1억 달러 이상", "1천만 달러 이상", "1백만 달러 이상", "1백만 달러 이하" [@fig-canhasbaseandmoney].
+
+```{r}
+#| fig-cap: "색상 원으로 지출을 나타내는 미국 기지 대화형 지도"
+#| label: fig-canhasbaseandmoney
+#| message: false
+#| warning: false
+
+build <-
+  get_builddata(startyear = 2008, endyear = 2019) |>
+  filter(!is.na(lon)) |>
+  mutate(
+    cost = case_when(
+      spend_construction > 100000 ~ "1억 달러 이상",
+      spend_construction > 10000 ~ "1천만 달러 이상",
+      spend_construction > 1000 ~ "1백만 달러 이상",
+      TRUE ~ "1백만 달러 이하"
+    )
+  )
+
+pal <-
+  colorFactor("Dark2", domain = build$cost |> unique())
+
+leaflet() |>
+  addTiles() |> # 기본 OpenStreetMap 지도 타일 추가
+  addCircleMarkers(
+    data = build,
+    lng = build$lon,
+    lat = build$lat,
+    color = pal(build$cost),
+    popup = paste(
+      "<b>위치:</b>",
+      as.character(build$location),
+      "<br>",
+      "<b>금액:</b>",
+      as.character(build$spend_construction),
+      "<br>"
+    )
+  ) |>
+  addLegend(
+    "bottomright",
+    pal = pal,
+    values = build$cost |> unique(),
+    title = "유형",
+    opacity = 1
+  )
+```
+
+
+
+#### 맵덱
+
+`mapdeck` [@citemapdeck]은 WebGL을 기반으로 합니다. 이는 웹 브라우저가 우리를 위해 많은 작업을 수행한다는 것을 의미합니다. 이를 통해 `mapdeck`는 `leaflet`이 어려워하는 더 큰 데이터 세트와 같은 작업을 수행할 수 있습니다.
+
+이 시점까지 우리는 기본 타일로 "stamen maps"를 사용했지만, `mapdeck`는 [Mapbox](https://www.mapbox.com/)를 사용합니다. 이를 위해서는 계정을 등록하고 토큰을 얻어야 합니다. 이는 무료이며 한 번만 수행하면 됩니다. 토큰을 얻으면 `edit_r_environ()`을 실행하여 R 환경에 추가합니다 (이 프로세스의 세부 사항은 @sec-gather-data에서 다룹니다). 그러면 텍스트 파일이 열리고, 여기에 Mapbox 비밀 토큰을 추가해야 합니다.
+
+```{r}
+#| eval: false
+
+MAPBOX_TOKEN <- "여기에 Mapbox 비밀 키를 입력하세요"
+```
+
+그런 다음 이 ".Renviron" 파일을 저장하고 R을 다시 시작합니다 ("세션" -> "R 다시 시작").
+
+토큰을 얻었으므로 이전의 기지 지출 데이터에 대한 플롯을 만들 수 있습니다 (@fig-canhasbaseandmoneymapdeck).
+
+```{r}
+#| fig-cap: "Mapdeck을 사용한 미국 기지 대화형 지도"
+#| label: fig-canhasbaseandmoneymapdeck
+#| message: false
+#| warning: false
+
+mapdeck(style = mapdeck_style("light")) |>
+  add_scatterplot(
+    data = build,
+    lat = "lat",
+    lon = "lon",
+    layer_id = "scatter_layer",
+    radius = 10,
+    radius_min_pixels = 5,
+    radius_max_pixels = 100,
+    tooltip = "location"
+  )
+```
+
+
+
+
+## 결론
+
+이 장에서는 데이터를 전달하는 다양한 방법을 고려했습니다. 우리는 그래프에 상당한 시간을 할애했습니다. 그래프는 많은 양의 정보를 효율적인 방식으로 전달할 수 있기 때문입니다. 그런 다음 표로 넘어갔습니다. 표는 정보를 구체적으로 전달할 수 있기 때문입니다. 마지막으로, 지리 정보를 표시할 수 있는 지도를 논의했습니다. 가장 중요한 작업은 가능한 한 최대한 관측치를 보여주는 것입니다.
+
+## 연습 문제
+
+### 실습 {.unnumbered}
+
+1. *(계획)* 다음 시나리오를 고려하십시오: *세 친구(에드워드, 휴고, 루시)는 각각 친구 20명의 키를 측정합니다. 세 친구는 각각 측정에 약간 다른 접근 방식을 사용하므로 약간 다른 오류가 발생합니다.* 데이터 세트가 어떻게 생겼을지 스케치하고, 모든 관측치를 보여주기 위해 만들 수 있는 그래프를 스케치하십시오.
+2. *(시뮬레이션)* 설명된 시나리오를 더 자세히 고려하고 모든 변수가 서로 독립적인 상황을 시뮬레이션하십시오. 시뮬레이션된 데이터를 기반으로 세 가지 테스트를 포함하십시오.
+3. *(획득)* 관심 있는 사람의 키에 대한 실제 데이터 소스를 지정하십시오.
+4. *(탐색)* 시뮬레이션된 데이터를 사용하여 그래프와 표를 만드십시오.
+5. *(소통)* 그래프와 표에 대한 텍스트를 작성하십시오. 실제 상황을 반영한 것처럼 작성하십시오. 단락에 포함된 정확한 세부 정보는 사실일 필요는 없지만 합리적이어야 합니다 (즉, 실제로 데이터를 얻거나 그래프를 만들 필요는 없습니다). 코드를 `R` 파일과 Quarto 문서로 적절하게 분리하십시오. README가 있는 GitHub 저장소 링크를 제출하십시오.
+
+### 퀴즈 {.unnumbered}
+
+1. 데이터를 항상 플로팅하는 주된 이유는 무엇입니까 (하나 선택)?
+    a.  데이터를 더 잘 이해하기 위해.
+    b. 데이터가 정규 분포를 따르는지 확인하기 위해.
+    c. 결측값을 확인하기 위해.
+2. @r4ds에 따르면, 정돈된 데이터(tidy data)를 가장 잘 설명하는 것은 무엇입니까 (하나 선택)?
+    a.  각 변수는 자체 열에 있고, 각 관측치는 자체 행에 있습니다.
+    b. 모든 데이터가 단일 행에 있습니다.
+    c. 셀당 여러 값.
+    d. 데이터가 하나의 셀에 저장됩니다.
+3. @healyviz에 따르면, `ggplot()`은 첫 번째 인수로 무엇을 요구합니까 (하나 선택)?
+    a.  데이터프레임.
+    b. geom 함수.
+    c. 범례.
+    d. 미학적 매핑.
+4. @healyviz에 따르면, `ggplot2`에서 `+` 연산자는 무엇을 합니까 (하나 선택)?
+    a. 플롯을 저장합니다.
+    b. 플롯에 데이터를 추가합니다.
+    c.  플롯의 레이어를 결합합니다.
+    d. 플롯에서 요소를 제거합니다.
+5. @r4ds에 따르면, `ggplot2`의 맥락에서 "미학"은 무엇입니까 (하나 선택)?
+    a. 사용된 차트 유형.
+    b. 축 레이블.
+    c. 플롯의 색상.
+    d.  데이터 세트의 변수가 시각적 속성에 매핑되는 방식.
+6. @r4ds에 따르면, `ggplot2`에서 "geom"은 무엇입니까 (하나 선택)?
+    a. 데이터 변환 함수.
+    b.  플롯이 데이터를 나타내는 데 사용하는 기하학적 객체.
+    c. 플롯 제목.
+    d. 통계 변환.
+7. 산점도를 만들려면 어떤 geom을 사용해야 합니까 (하나 선택)?
+    a. `geom_dotplot()`
+    b. `geom_bar()`
+    c. `geom_smooth()`
+    d.  `geom_point()`
+8. 막대 차트를 만들려면 (이미 카운트를 계산한 경우) 무엇을 사용해야 합니까 (하나 선택)?
+    a. `geom_line()`
+    b. `geom_bar()`
+    c. `geom_histogram()`
+    d.  `geom_col()`
+9. 히스토그램을 만들려면 어떤 `ggplot2` geom을 사용하시겠습니까 (하나 선택)?
+    a. `geom_col()`
+    b. `geom_bar()`
+    c. `geom_density()`
+    d.  `geom_histogram()`
+10. `tidyverse`와 `datasauRus`가 설치되고 로드되었다고 가정합니다. 다음 코드의 결과는 무엇입니까 (하나 선택)?
+    a. 두 개의 수직선.
+    b. 세 개의 수직선.
+    c.  네 개의 수직선.
+    d. 다섯 개의 수직선.
+
+```{r}
+#| eval: false
+#| echo: true
+
+datasaurus_dozen |>
+  filter(dataset == "v_lines") |>
+  ggplot(aes(x=x, y=y)) +
+  geom_point()
+```
+
+11. @r4ds에 따르면, `ggplot2`에서 변수를 `color` 미학에 매핑하면 어떤 일이 발생합니까 (모두 선택)?
+    a.  변수에 따라 점의 색상이 달라집니다.
+    b.  범례가 자동으로 생성됩니다.
+    c. 변수에 따라 점의 크기가 변경됩니다.
+12. @healyviz에 따르면, `ggplot2`에서 `color`와 `fill` 미학의 주요 차이점은 무엇입니까 (하나 선택)?
+    a. 두 용어는 서로 바꿔 사용할 수 있습니다.
+    b.  `color`는 점과 선에 적용되고, `fill`은 영역 요소에 적용됩니다.
+    c. `color`는 글꼴 색상을 제어하고, `fill`은 플롯 제목을 제어합니다.
+    d. `color`는 배경에 적용되고, `fill`은 텍스트에 적용됩니다.
+13. `geom_point()`를 사용할 때 점에 투명도를 추가하려면 어떻게 합니까 (하나 선택)?
+    a.  `alpha`를 0에서 1 사이의 값으로 설정하여.
+    b. 플롯에서 `geom_point()`를 제거하여.
+    c. `aes()`에서 `color = NULL`을 사용하여.
+14. `ggplot2`에서 `labs()`는 무엇을 합니까 (하나 선택)?
+    a. 플롯의 배경색을 변경합니다.
+    b.  범례 및 축 레이블과 같은 레이블을 추가합니다.
+    c. 최적 적합선을 추가합니다.
+    d. 플롯 레이아웃을 수정합니다.
+15. 아래 코드에서 범례의 텍스트를 변경하려면 `labs()`에 무엇을 추가해야 합니까 (하나 선택)?
+    a. `scale = "투표"`
+    b. `legend = "투표"`
+    c. `color = "투표"`
+    d.  `fill = "투표"`
+
+```{r}
+#| eval: false
+#| echo: true
+
+beps |>
+  ggplot(mapping = aes(x = age, fill = vote)) +
+  geom_bar() +
+  theme_minimal() +
+  labs(x = "응답자 연령", y = "응답자 수")
+```
+
+16. `scale_colour_brewer()`의 도움말 파일에 따르면 어떤 팔레트가 발산합니까 (하나 선택)?
+    a. "GnBu"
+    b. "Set1"
+    c. "Accent"
+    d.  "RdBu"
+17. x축과 y축을 따라 실선이 없는 테마는 무엇입니까 (하나 선택)?
+    a.  `theme_minimal()`
+    b. `theme_classic()`
+    c. `theme_bw()`
+18. 막대를 서로 겹치지 않고 나란히 배치하려면 `geom_bar()`에 `position` 인수에 무엇을 추가해야 합니까 (하나 선택)?
+    a. `position = "adjacent"`
+    b. `position = "side_by_side"`
+    c. `position = "closest"`
+    d.  `position = "dodge2"`
+
+```{r}
+#| eval: false
+#| echo: true
+
+beps |>
+  ggplot(mapping = aes(x = age, fill = vote)) +
+  geom_bar()
+```
+
+19. @vanderplas2020testing에 따르면, 그래프를 만들 때 고려해야 할 인지 원칙은 무엇입니까 (하나 선택)?
+    a.  근접성.
+    b. 부피 추정.
+    c. 상대 운동.
+    d. 축 위치.
+20. @vanderplas2020testing에 따르면, 색상은 무엇에 사용될 수 있습니까 (하나 선택)?
+    a. 차트 디자인 미학 개선.
+    b.  범주형 및 연속형 변수를 인코딩하고 플롯 요소를 그룹화합니다.
+    c. 크기 식별.
+21. 다음 중 가장 많은 빈을 생성하는 것은 무엇입니까 (하나 선택)?
+    a.  `geom_histogram(binwidth = 2)`
+    b. `geom_histogram(binwidth = 5)`
+22. 세 가지 다른 종에서 각각 100마리의 새의 키를 포함하는 데이터 세트가 있다고 가정합니다. 이 키의 분포를 이해하는 데 관심이 있다면, 한두 단락으로 어떤 유형의 그래프를 사용해야 하는지, 그리고 그 이유는 무엇인지 설명하십시오.
+23. 라이브러리가 로드되고 데이터 세트와 열이 존재한다고 가정할 때, 이 코드 `data |> ggplot(aes(x = col_one)) |> geom_point()`가 작동할까요 (하나 선택)?
+    a.  아니요.
+    b. 예.
+24. `ggplot2`에서 플롯에 패싯을 사용하는 목적은 무엇입니까 (하나 선택)?
+    a. 점의 투명도를 조정하기 위해.
+    b. 데이터 포인트에 레이블을 추가하기 위해.
+    c.  하나 이상의 변수 값으로 분할된 여러 플롯을 만들기 위해.
+    d. 플롯의 색상 구성표를 변경하기 위해.
+25. `ggplot2`로 막대 차트를 만들 때, 막대를 다른 색상으로 채우기 위해 범주형 변수에 일반적으로 매핑되는 미학은 무엇입니까 (하나 선택)?
+    a.  `fill`
+    b. `x`
+    c. `y`
+    d. `size`
+26. `ggplot2`에서 `geom_bar()`에 `position = "dodge"` 또는 `position = "dodge2"`를 추가하는 효과는 무엇입니까 (하나 선택)?
+    a. 막대에 투명도를 추가합니다.
+    b.  각 그룹에 대해 막대를 나란히 배치합니다.
+    c. 막대를 서로 쌓습니다.
+    d. 막대 색상을 회색조로 변경합니다.
+27. `ggplot2`의 맥락에서 `geom_point()`와 `geom_jitter()`의 주요 차이점은 무엇입니까 (하나 선택)?
+    a.  `geom_jitter()`는 과도한 플로팅을 줄이기 위해 점에 무작위 노이즈를 추가합니다.
+    b. `geom_jitter()`는 연속형 데이터에 사용되고, `geom_point()`는 범주형 데이터에 사용됩니다.
+    c. `geom_point()`는 투명도를 추가하고, `geom_jitter()`는 추가하지 않습니다.
+    d. `geom_point()`는 점을 플로팅하고, `geom_jitter()`는 선을 플로팅합니다.
+28. 산점도에 최적 적합선을 추가하려면 어떤 `ggplot2` geom을 사용하시겠습니까 (하나 선택)?
+    a. `geom_histogram()`
+    b.  `geom_smooth()`
+    c. `geom_bar()`
+    d. `geom_line()`
+29. 표준 오차 없이 선형 모델을 지정하려면 `geom_smooth()`에서 어떤 인수를 사용하시겠습니까 (하나 선택)?
+    a. `fit = lm, show_se = FALSE`
+    b. `type = "linear", ci = FALSE`
+    c. `model = linear, error = FALSE`
+    d.  `method = lm, se = FALSE`
+30. 히스토그램의 빈 수를 조정하거나 빈 너비를 변경하는 것은 무엇에 영향을 미칩니까 (하나 선택)?
+    a. x축의 레이블.
+    b. 데이터 포인트의 크기.
+    c. 플롯에 사용된 색상.
+    d.  분포가 얼마나 부드럽게 나타날지.
+31. 상자 그림을 사용하는 한 가지 단점은 무엇입니까 (하나 선택)?
+    a. 이상치를 보여줄 수 없습니다.
+    b. 계산하는 데 너무 오래 걸립니다.
+    c.  데이터의 기본 분포를 숨깁니다.
+    d. 너무 화려합니다.
+32. 그 단점을 어떻게 해결할 수 있습니까 (하나 선택)?
+    a. 상자 그림에서 수염을 제거합니다.
+    b. 각 범주에 색상을 추가합니다.
+    c.  `geom_jitter()`를 사용하여 실제 데이터 포인트를 오버레이합니다.
+    d. 상자 너비를 늘립니다.
+33. `stat_ecdf()`는 무엇을 계산합니까 (하나 선택)?
+    a.  누적 분포 함수.
+    b. 오차 막대가 있는 산점도.
+    c. 상자 그림.
+    d. 히스토그램.
+34. 기술 통계 표를 만들려면 `modelsummary`의 어떤 함수를 사용할 수 있습니까 (하나 선택)?
+    a.  `datasummary_balance()`
+    b. `datasummary_skim()`
+    c. `datasummary_descriptive()`
+    d. `datasummary_crosstab()`
+35. 지오코딩은 무엇입니까 (하나 선택)?
+    a. 위도와 경도를 장소 이름으로 변환하는 것.
+    b. 지도 경계 그리기.
+    c. 지도 투영 선택.
+    d.  장소 이름을 위도와 경도로 변환하는 것.
+36. @lovelace2019geocomputation에 따르면, 지리 데이터의 맥락에서 벡터 데이터와 래스터 데이터의 차이점은 무엇인지 한두 단락으로 설명하십시오.
+37. 마커를 클릭한 후 발생하는 동작을 지정하는 데 `addMarkers()`의 어떤 인수가 사용됩니까 (하나 선택)?
+    a. `layerId`
+    b. `icon`
+    c.  `popup`
+    d. `label`
+
+
+### 수업 활동 {.unnumbered}
+
+- [시작 폴더](https://github.com/RohanAlexander/starter_folder)를 사용하여 새 저장소를 만드십시오. 수업의 공유 Google 문서에 GitHub 저장소 링크를 추가하십시오. 다음 모든 작업을 `paper.qmd`에서 수행하십시오.
+- 다음은 1875년에서 1972년 사이 휴런 호수의 수위(피트)를 보여주는 산점도를 생성합니다. 개선하십시오.
+```{r}
+#| eval: false
+
+tibble(year = 1875:1972,
+       level = as.numeric(datasets::LakeHuron)) |>
+  ggplot(aes(x = year, y = level)) +
+  geom_point()
+```
+- 다음은 31그루의 검은 체리 나무의 높이를 보여주는 막대 차트를 생성합니다. 개선하십시오.
+```{r}
+#| eval: false
+
+datasets::trees |>
+  as_tibble() |>
+  ggplot(aes(x = Height)) +
+  geom_bar()
+```
+
+- 다음은 병아리의 체중(그램)을 일령별로 보여주는 선 플롯을 생성합니다. 개선하십시오.
+```{r}
+#| eval: false
+
+datasets::ChickWeight |>
+  as_tibble() |>
+  ggplot(aes(x = Time, y = weight, group = Chick)) +
+  geom_line()
+```
+```{r}
+#| echo: false
+#| eval: false
+
+# The best I've managed (based on stealing the best bits of past student work) is:
+datasets::ChickWeight |>
+  group_by(Diet, Time) |>
+  summarize(average_weight = mean(weight)) |>
+  ggplot(aes(x = Time,
+             y = average_weight,
+             color = Diet)) +
+  geom_line(linewidth = 1.5) +
+  geom_point(data = datasets::ChickWeight,
+             aes(x = Time, y = weight),
+             alpha = 0.5) +
+  geom_line(data = datasets::ChickWeight,
+            aes(x = Time, y = weight, group = Chick),
+            alpha = 0.1) +
+  labs(x = "출생 후 일수",
+       y = "평균 체중 (그램)",
+       color = "식단") +
+  theme_classic() +
+  scale_color_brewer(palette = "Set1") +
+  scale_y_continuous(breaks = seq(0, 400, 50))
+```
+
+- 다음은 1700년에서 1988년 사이의 연간 흑점 수를 보여주는 히스토그램을 생성합니다. 개선하십시오.
+```{r}
+#| eval: false
+
+tibble(year = 1700:1988,
+       sunspots = as.numeric(datasets::sunspot.year) |> round(0)) |>
+  ggplot(aes(x = sunspots)) +
+  geom_histogram()
+```
+
+- Saloni Dattani의 [이 코드](https://github.com/saloni-nd/misc/blob/main/Mortality%20rates%20by%20age%20-%20HMD.R)를 따라 관심 있는 두 국가에 대한 그래프를 만드십시오.
+- `palmerpenguins` [비네트](https://allisonhorst.github.io/palmerpenguins/articles/examples.html)에서 가져온 다음 코드는 아름다운 그래프를 생성합니다. 가능한 한 가장 못생긴 그래프를 만들도록 수정하십시오.^[이 연습의 아이디어는 Liza Bolton에게서 나왔습니다.]
+```{r}
+#| eval: false
+#| warning: false
+
+ggplot(data = penguins,
+       aes(x = flipper_length_mm,
+```

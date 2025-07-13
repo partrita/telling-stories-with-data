@@ -1,0 +1,551 @@
+---
+engine: knitr
+---
+
+# 논문 {#sec-papers}
+
+```{r}
+#| include: false
+#| eval: true
+#| warning: false
+#| message: false
+
+library(tidyverse)
+library(tinytable)
+
+rubric <- read_csv(here::here("inputs/rubric.csv"))
+```
+
+자료를 이해하는 한 가지 방법은 자료를 사용하는 것입니다. 이 논문들의 목적은 여러분이 배운 것을 실제 환경에서 구현할 기회를 제공하는 것입니다. 논문을 완성하는 것은 또한 취업 지원을 위한 포트폴리오를 구축하는 관점에서도 중요합니다.
+
+기대치는 매년 바뀌므로 "이전 예시"를 템플릿이 아닌 예시로 취급하십시오.
+
+
+## *도널드슨* 논문 {#sec-paper-one} 
+
+### 과제
+
+- **개별적으로** 그리고 완전히 재현 가능한 방식으로 [Open Data Toronto](https://open.toronto.ca)에서 관심 있는 데이터셋을 찾아 데이터에 대한 이야기를 담은 짧은 논문을 작성하십시오.
+  - 적절한 하위 폴더가 있는 잘 정리된 폴더를 만들고 GitHub에 추가하십시오. 이 [시작 폴더](https://github.com/RohanAlexander/starter_folder)를 사용해야 합니다.
+  - [Open Data Toronto](https://open.toronto.ca)에서 관심 있는 데이터셋을 찾으십시오. (금지된 것은 아니지만, 팬데믹에 대한 데이터셋은 사용하지 마십시오.)
+    - 관심 있는 데이터셋을 시뮬레이션하고 일부 테스트를 개발하는 R 스크립트 "scripts/00-simulate_data.R"을 작성하십시오. GitHub에 푸시하고 유익한 커밋 메시지를 포함하십시오.
+    - `opendatatoronto` [@citeSharla]를 사용하여 재현 가능한 방식으로 실제 데이터를 다운로드하는 R 스크립트 "scripts/01-download_data.R"을 작성하십시오. 데이터를 "data/raw_data/unedited_data.csv"로 저장하십시오 (의미 있는 이름과 적절한 파일 형식을 사용하십시오). GitHub에 푸시하고 유익한 커밋 메시지를 포함하십시오.
+  - Quarto "paper/paper.qmd"를 사용하여 제목, 저자, 날짜, 초록, 서론, 데이터, 참고 문헌 섹션이 있는 PDF를 준비하십시오.
+    - 제목은 설명적이고 유익하며 구체적이어야 합니다.
+    - 날짜는 모호하지 않은 형식이어야 합니다. 감사의 글에 GitHub 저장소 링크를 추가하십시오.
+    - 초록은 세네 문장이어야 합니다. 초록은 독자에게 최상위 발견을 알려야 합니다. 이 논문 때문에 세상에 대해 배우는 한 가지는 무엇입니까?
+    - 서론은 두세 단락의 내용이어야 합니다. 그리고 논문의 나머지 부분을 설명하는 추가적인 마지막 단락이 있어야 합니다.
+    - 데이터 섹션은 데이터의 출처와 데이터가 발생한 더 넓은 맥락(윤리적, 통계적 등)을 철저하고 정확하게 논의해야 합니다. 텍스트, 그래프, 표를 사용하여 데이터를 포괄적으로 설명하고 요약하십시오. 그래프는 `ggplot2` [@citeggplot]로 만들어야 하며 표는 `tinytable` [@tinytable]로 만들어야 합니다. 그래프는 요약 통계가 아닌 실제 데이터 또는 가능한 한 실제 데이터에 가깝게 표시해야 합니다. 그래프와 표는 텍스트에서 상호 참조되어야 합니다 (예: "표 1은 ...을 보여줍니다.").
+    - 참고 문헌은 BibTeX를 사용하여 추가해야 합니다. R과 사용하는 모든 R 패키지, 그리고 데이터셋을 참조해야 합니다. 강력한 제출물은 관련 문헌을 활용하고 이를 참조할 것입니다.
+    - 논문은 잘 작성되어야 하며, 관련 문헌을 활용하고 모든 기술 개념을 설명해야 합니다. 교육을 받았지만 비전문가인 독자를 대상으로 하십시오.
+    - 지원 자료이지만 중요하지 않은 자료는 부록을 사용하십시오.
+    - GitHub에 푸시하고 유익한 커밋 메시지를 포함하십시오.
+- GitHub 저장소 링크를 제출하십시오. 마감일 이후에는 저장소를 업데이트하지 마십시오.
+- 이것이 수업 과제라는 증거가 없어야 합니다.
+
+### 확인 사항
+
+- 최종 PDF에는 R 코드나 원시 R 출력이 없어야 합니다.
+- LLM 사용에 대한 README의 예시 문구는 다음과 같습니다: "LLM 사용에 대한 진술: 코드의 일부는 자동 완성 도구인 Codriver의 도움을 받아 작성되었습니다. 초록과 서론은 ChatHorse의 도움을 받아 작성되었으며 전체 채팅 기록은 `other/llm/usage.txt`에서 확인할 수 있습니다."
+- 논문은 PDF로 직접 렌더링되어야 합니다. 즉, "PDF로 렌더링"을 사용하십시오.
+- 그래프, 표, 텍스트는 명확해야 하며, 파이낸셜 타임즈와 비슷한 품질이어야 합니다.
+- 날짜는 최신이고 모호하지 않아야 합니다 (예: 2/3/2024는 모호하지만, 2024년 3월 2일은 그렇지 않습니다).
+- 전체 워크플로우는 완전히 재현 가능해야 합니다.
+- 오타가 없어야 합니다.
+- 이것이 학교 논문이라는 흔적이 없어야 합니다.
+- 각주를 사용하여 논문의 GitHub 저장소 링크가 있어야 합니다.
+- GitHub 저장소는 잘 정리되어 있어야 하며, 유익한 README를 포함해야 합니다.
+- 논문은 잘 작성되어야 하며, 예를 들어 파이낸셜 타임즈의 일반 독자가 이해할 수 있어야 합니다. 이는 수학적 표기법을 사용할 수 있지만, 모든 것을 평이한 언어로 설명해야 함을 의미합니다. 모든 통계 개념과 용어는 설명되어야 합니다. 독자는 대학 교육을 받았지만, p-값이 무엇인지 반드시 이해하는 사람은 아닙니다.
+- 초록은 "간결하게" 작성되어야 하며, 거의 간결해야 합니다. 불필요한 단어를 제거하십시오. 네 문장 이상 포함하지 마십시오. (경험이 쌓이면 이 규칙을 어길 수 있습니다.)
+- 서론에는 단락이 필요합니다 (Quarto 문서에서 줄 사이에 공백을 두십시오).
+- 서론에서 논문의 나머지 부분을 미리 알려주십시오: "섹션 2..., 섹션 3....". (경험이 쌓이면 이 규칙을 어길 수 있습니다.)
+- 서버에서 Quarto 문서로 데이터를 직접 읽어들이지 말고, 저장된 버전을 읽어들이십시오. 이렇게 하는 제출물은 전체 점수 0점을 받습니다.
+- 서론에서 발견 사항에 대해 더 구체적으로 설명하십시오.
+- 데이터 섹션은 데이터 정리와 관련된 것이 아니라 데이터에 관한 것입니다. 데이터 정리는 부록에 넣으십시오. 중요한 것이 아니라면 데이터 섹션에서 데이터 정리를 논의하지 마십시오.
+- 시뮬레이션에는 시드가 필요합니다.
+- 저장소 이름을 "Paper 1" 등으로 지정하지 마십시오.
+- "그래프" 또는 "표"와 같은 섹션을 만들지 마십시오.
+- `usethis::git_vaccinate()`를 사용하여 더 나은 .gitignore 파일을 얻고, 특히 `DS_Store`를 무시하십시오.
+- 사용하는 데이터셋과 `opendatatoronto`를 모두 인용하는 것을 잊지 마십시오. 이들은 별개의 것입니다.
+
+### FAQ
+
+- Kaggle에서 데이터셋을 사용할 수 있습니까? 아니요, 그들은 이미 여러분을 위해 어려운 작업을 수행했기 때문입니다.
+- 코드를 사용하여 데이터셋을 다운로드할 수 없습니다. 수동으로 다운로드할 수 있습니까? 아니요, 전체 워크플로우가 재현 가능해야 하기 때문입니다. 다운로드 문제를 해결하거나 다른 데이터셋을 선택하십시오.
+- 얼마나 작성해야 합니까? 대부분의 학생들은 2~6페이지 범위의 내용을 제출하지만, 이는 여러분에게 달려 있습니다. 정확하고 철저하게 작성하십시오.
+- 제 데이터는 아파트 블록/NBA/리그 오브 레전드에 관한 것이므로 더 넓은 맥락이 없습니다. 어떻게 해야 합니까? 편향과 윤리를 더 잘 이해하기 위해 관련 장과 자료를 다시 읽으십시오. 정말로 생각할 수 없다면 다른 데이터셋을 선택하는 것이 좋습니다.
+- Python을 사용할 수 있습니까? 아니요. 이미 Python을 알고 있다면 다른 언어를 배우는 것이 나쁘지 않습니다.
+- Word를 인용할 필요가 없는데 왜 R을 인용해야 합니까? R은 학술적 기원을 가진 무료 통계 프로그래밍 언어이므로 다른 사람들의 작업을 인정하는 것이 적절합니다. 또한 재현성에도 중요합니다.
+- 어떤 참고 문헌 스타일을 사용해야 합니까? 어떤 주요 참고 문헌 스타일이든 괜찮습니다 (APA, Harvard, Chicago 등). 익숙한 것을 선택하십시오.
+- 시작 폴더의 논문에는 모델 섹션이 있는데, 모델을 만들어야 합니까? 아니요. 시작 폴더는 모든 논문에 적용할 수 있도록 설계되었으므로 필요 없는 부분은 삭제하십시오.
+- 시작 폴더의 논문에는 데이터 시트 부록이 있는데, 데이터 시트를 만들어야 합니까? 아니요. 시작 폴더는 모든 논문에 적용할 수 있도록 설계되었으므로 필요 없는 부분은 삭제하십시오.
+- "실제 데이터를 그래프로 나타낸다"는 것은 무엇을 의미합니까? 예를 들어 데이터셋에 5,000개의 관측치와 세 개의 변수가 있다면, 모든 변수에 대해 점의 경우 5,000개의 점이 있는 그래프가 있어야 하며, 막대 차트와 히스토그램의 경우 5,000개로 합산되어야 합니다.
+
+
+### 루브릭
+
+```{r}
+#| eval: true
+#| warning: false
+#| message: false
+#| echo: false
+
+rubric |>
+  filter(!Component %in% c("Data cited", "Class paper", "Estimand", "Replication", "Model", "Results", "Discussion", "Enhancements", "Idealized methodology", "Idealized survey", "Pollster review", "Datasheet", "Parquet", "Surveys, sampling, and observational data")) |>
+  tt()
+```
+
+### 이전 예시
+
+- 2024 (가을):
+[줄리아 리](https://github.com/JuliaJLee/Toronto_Paramedic_Services/blob/main/paper/paper.pdf),
+[스티븐 리](https://github.com/stevenli-uoft/Toronto_BikeShare_Development/blob/main/paper/paper.pdf), 그리고
+[지헝 중](https://github.com/iJustinn/Toronto_Cycling_Network/blob/main/paper/paper.pdf).
+- 2024 (겨울):
+[아바스 슬레이만](inputs/pdfs/paper1-2024-SleimanAbbass.pdf),
+[베니 로크버그](inputs/pdfs/paper1-2024-RochwergBenny.pdf),
+[칼리 펜로즈](inputs/pdfs/paper-1-2024-CarlyPenrose.pdf) (이 논문을 기반으로 한 기사가 나중에 CBC 뉴스에 게재됨 [@carlyfirearticle]),
+[하디 아흐마드](inputs/pdfs/paper-1-2024-HadiAhmad.pdf),
+[루카 카네기](inputs/pdfs/paper-1-2024-LucaCarnegie.pdf),
+[사미 엘 사브리](inputs/pdfs/paper-1-2024-SamiElSabri.pdf),
+[토마스 폭스](inputs/pdfs/paper-1-2024-ThomasFox.pdf), 그리고
+[티모티우스 프라조기](inputs/pdfs/paper-1-2024-TimothiusPrajogi.pdf).
+- 2023:
+[크리스티나 웨이](inputs/pdfs/paper-1-2023-Christina_Wei.pdf), 그리고
+[이네사 드 안젤리스](inputs/pdfs/paper-1-2023-InessaDeAngelis.pdf).
+- 2022:
+[아담 라바스](inputs/pdfs/paper_one-2022-adam_labas.pdf),
+[알리시아 양](inputs/pdfs/paper_one-2022-alicia_yang.pdf),
+[알리사 슐라이퍼](inputs/pdfs/paper_one-2022-alyssa_schleifer.pdf),
+[이든 샌섬](inputs/pdfs/paper_one-2022-ethan_sansom.pdf),
+[허드슨 위엔](inputs/pdfs/paper_one-2022-hudson_yuen.pdf),
+[잭 맥케이](inputs/pdfs/paper_one-2022-jack_mckay.pdf),
+[로이 찬](inputs/pdfs/paper_one-2022-roy_chan.pdf),
+[토마스 도노프리오](inputs/pdfs/paper_one-2022-thomas_donofrio.pdf), 그리고
+[윌리엄 게레케](inputs/pdfs/paper_one-2022-william_gerecke.pdf).
+- 2021:
+[에이미 패로우](inputs/pdfs/paper_one-2021-Amy_Farrow.pdf),
+[모르가인 웨스틴](inputs/pdfs/paper_one-2021-Morgaine_Westin.pdf), 그리고
+[레이첼 램](inputs/pdfs/paper_one-2021-Rachael_Lam.pdf).
+
+
+
+
+
+
+
+## *모슨* 논문 {#sec-paper-two}
+
+### 과제
+
+- 1~3명으로 구성된 팀의 일원으로, 다음에서 코드와 데이터를 사용할 수 있는 관심 있는 논문을 선택하십시오:
+
+    1. 2019년 이후에 출판된 미국 경제학회 [저널](https://www.aeaweb.org/journals)의 논문. 이 저널들은 다음과 같습니다: "American Economic Review", "AER: Insights", "AEJ: Applied Economics", "AEJ: Economic Policy", "AEJ: Macroeconomics", "AEJ: Microeconomics", "Journal of Economic Literature", "Journal of Economic Perspectives", "AEA Papers & Proceedings".
+    2. [여기](https://i4replication.org/reports.html)에서 "Looking for replicator" 상태인 Institute for Replication 목록의 모든 논문.
+    3. [길라드 펠드만](https://mgto.org/check-me-replicate-me/)의 논문 중 하나.^[길라드는 이 목록에 포함되는 것에 대한 명시적인 허가와 격려를 주었습니다.]
+
+- [*사회 과학에서 계산 재현성 가속화를 위한 가이드*](https://bitss.github.io/ACRE/)에 따라, [사회 과학 재현 플랫폼](https://www.socialsciencereproduction.org)을 사용하여 해당 논문의 최소 세 개의 그래프, 표 또는 조합의 **복제**^[이 용어는 @barba2018terminologies 를 따르지만, BITSS에서 사용되는 용어와는 반대입니다.]를 완료하십시오. 복제의 DOI를 기록하십시오.
+- 완전히 재현 가능한 방식으로 작업한 다음, 논문의 두세 가지 측면을 기반으로 **재현**을 수행하고, 이에 대한 짧은 논문을 작성하십시오.
+  - 적절한 하위 폴더가 있는 잘 정리된 폴더를 만들고 GitHub에 추가한 다음, Quarto를 사용하여 제목, 저자, 날짜, 초록, 서론, 데이터, 결과, 토론, 참고 문헌 섹션이 있는 PDF를 준비하십시오 (이 [시작 폴더](https://github.com/RohanAlexander/starter_folder)를 사용해야 합니다).
+  - 논문에서 중점을 두는 측면은 복제한 측면과 동일할 수 있지만, 그럴 필요는 없습니다. 논문의 방향을 따르되, 자신만의 것으로 만드십시오. 즉, 약간 다른 질문을 하거나, 동일한 질문에 약간 다른 방식으로 답하되, 동일한 데이터셋을 사용해야 합니다.
+  - 논문에 복제의 DOI와 논문을 뒷받침하는 GitHub 저장소 링크를 포함하십시오.
+  - 결과 섹션은 발견 사항을 전달해야 합니다.
+  - 토론은 각각 흥미로운 점에 초점을 맞춘 세네 개의 하위 섹션과 논문의 약점에 대한 또 다른 하위 섹션, 그리고 잠재적인 다음 단계에 대한 또 다른 하위 섹션을 포함해야 합니다.
+  - 토론 섹션 및 기타 관련 섹션에서는 관련 문헌을 참조하여 윤리 및 편향을 논의해야 합니다.
+  - 논문은 잘 작성되어야 하며, 관련 문헌을 활용하고 모든 기술 개념을 설명해야 합니다. 교육을 받았지만 비전문가인 독자를 대상으로 하십시오.
+  - 지원 자료이지만 중요하지 않은 자료는 부록을 사용하십시오.
+  - 코드는 완전히 재현 가능하고, 잘 문서화되어 있으며, 읽기 쉬워야 합니다.
+- GitHub 저장소 링크를 제출하십시오. 마감일 이후에는 저장소를 업데이트하지 마십시오.
+- 이것이 수업 과제라는 증거가 없어야 합니다.
+
+
+### 확인 사항
+
+- 논문은 원본 논문의 코드를 단순히 복사/붙여넣기하는 것이 아니라, 이를 기반으로 작업해야 합니다.
+- 논문에는 관련 GitHub 저장소 링크와 수행한 사회 과학 재현 플랫폼 복제의 DOI가 있어야 합니다.
+- R을 포함하여 모든 것을 참조했는지 확인하십시오. 강력한 제출물은 토론(및 기타 섹션)에서 관련 문헌을 활용하고 이를 참조할 것입니다. 참고 문헌 스타일은 일관적이라면 중요하지 않습니다.
+
+
+### FAQ
+
+- 얼마나 작성해야 합니까? 대부분의 학생들은 10~15페이지 범위의 내용을 제출하지만, 이는 여러분에게 달려 있습니다. 정확하고 철저하게 작성하십시오.
+- 모델 결과에 중점을 두어야 합니까? 아니요, 이 시점에서는 그것을 피하고 요약 또는 설명 통계의 표나 그래프에 중점을 두는 것이 가장 좋습니다.
+- 선택한 논문이 R 이외의 언어로 되어 있다면 어떻게 해야 합니까? 복제 및 재현 코드 모두 R로 작성되어야 합니다. 따라서 복제를 위해 코드를 R로 번역해야 합니다. 그리고 재현은 여러분 자신의 작업이어야 하므로, 그것도 R로 작성되어야 합니다. 일반적인 언어는 Stata이며, @lost2022 는 R, Python, Stata에 대한 일종의 "로제타 스톤"으로 유용할 수 있습니다. 또는 LLM의 도움을 받을 수도 있습니다.
+- 혼자 작업할 수 있습니까? 예.
+- 그래프/표가 원본과 동일하게 보여야 합니까? 아니요, 재현의 일부로 더 좋게 보이도록 만들 수 있습니다. 그리고 복제의 일부로도 동일할 필요는 없으며, 충분히 유사하면 됩니다.
+- 제 그래프 중 하나에 네 개의 패널이 있는데, 이것이 하나의 요소로 간주되려면 모든 패널을 만들어야 합니까? 아니요, 이 논문의 목적상 모든 패널은 별도의 요소로 간주되므로 세 개의 패널만 만들면 충분합니다.
+- 데이터가 로그인 뒤에 있다면 어떻게 자동으로 다운로드할 수 있습니까? 데이터가 로그인 뒤에 있다면, 코드 대신 `download_data.R` R 파일에 다운로드 방법을 설명하는 주석을 추가하십시오.
+- 원본, 편집되지 않은 데이터가 너무 크다면 GitHub에 커밋해야 합니까? 아니요, 너무 크다면 원본, 편집되지 않은 데이터를 GitHub에 커밋할 필요는 없습니다. README에 상황과 데이터를 얻는 방법을 설명하는 메모를 추가하십시오.
+- 초록과 서론은 무엇에 관한 것이어야 합니까? 초록과 서론은 원본 논문의 내용이 아닌 여러분 자신의 작업과 발견 사항을 반영해야 합니다 (비록 그것들이 여전히 어떤 역할을 할지라도). 여러분은 (거의 확실히) 전체 논문을 복제하는 것이 아니므로 초록은 달라야 합니다. 지침은 예시를 참조하십시오.
+
+### 루브릭
+
+```{r}
+#| eval: true 
+#| warning: false
+#| message: false
+#| echo: false
+
+rubric |>
+  filter(!Component %in% c("Model", "Enhancements", "Idealized methodology", "Idealized survey", "Pollster review", "Datasheet", "Parquet", "Surveys, sampling, and observational data")) |>
+  tt()
+```
+
+### 이전 예시
+
+- 2024:
+[베니 로크버그](inputs/pdfs/2024-paper2-BennyRochwerg.pdf);
+[크리시브 자인, 줄리아 김, 아바스 슬레이만](inputs/pdfs/2024-paper2-KrishivJain_JuliaKim_AbbassSleiman.pdf);
+[사미 엘 사브리, 리반 티미르](inputs/pdfs/2024-paper2-SamiElSabri_LibanTimir.pdf);
+[토마스 폭스](inputs/pdfs/2024-paper2-ThomasFox.pdf); 그리고
+[위안이 (레오) 리우, 치 얼 (엠마) 텅](inputs/pdfs/2024-paper2-YuanyiLiu_QiErTeng.pdf).
+- 2023: [제이든 정, 핀 코롤, 소피아 셀리토](inputs/pdfs/paper-2-2023-Jayden_Jung_Finn_Korol_Sofia_Sellitto.pdf).
+- 2022: [알리사 슐라이퍼, 허드슨 위엔, 탐센 야우](inputs/pdfs/paper_two-2022-Alyssa_Schleifer_Hudson_Yuen_Tamsen_Yau.pdf); [올라에도 오크파레케, 아르쉬 라칸팔, 스와르나딥 차토파디아이](inputs/pdfs/paper_two-2022-Olaedo_Okpareke_Arsh_Lakhanpal_Swarnadeep_Chattopadhyay.pdf); 그리고 [킴린 친](inputs/pdfs/paper_two-2022-Kimlin_Chin.pdf).
+
+
+
+
+
+
+
+
+
+
+## *하우라* 논문 {#sec-paper-three}
+
+### 과제
+
+- 1~3명으로 구성된 팀의 일원으로, 완전히 재현 가능한 방식으로 [미국 일반 사회 조사](https://gss.norc.org/Get-The-Data)에서 데이터를 얻으십시오.^[미국 GSS는 개인 수준 데이터가 공개적으로 사용 가능하고 데이터셋이 잘 문서화되어 있기 때문에 여기에 권장됩니다. 그러나 특정 국가의 대학생들은 일반에 공개되지 않는 개인 수준 데이터에 접근할 수 있는 경우가 많으며, 이 경우 대신 해당 데이터를 사용해도 좋습니다. 호주 대학생들은 호주 일반 사회 조사의 개인 수준 데이터에 접근할 수 있을 것이며, 이를 사용할 수 있습니다. 캐나다 대학생들은 캐나다 일반 사회 조사의 개인 수준 데이터에 접근할 수 있을 것이며, 이를 사용하고 싶을 수 있습니다.] (다른 정부 운영 설문조사를 사용해도 좋지만, 시작하기 전에 허가를 받으십시오.)
+- 데이터를 얻고, 설문조사의 한 측면에 초점을 맞춘 다음, 이를 사용하여 이야기를 전달하십시오.
+  - 적절한 하위 폴더가 있는 잘 정리된 폴더를 만들고 GitHub에 추가한 다음, Quarto를 사용하여 제목, 저자, 날짜, 초록, 서론, 데이터, 결과, 토론, 최소한 설문조사를 포함하는 부록, 참고 문헌 섹션이 있는 PDF를 준비하십시오 (이 [시작 폴더](https://github.com/RohanAlexander/starter_folder)를 사용해야 합니다).
+  - 관심 있는 데이터셋에 대한 감각을 전달하는 것 외에도, 데이터 섹션에는 다음이 포함되어야 하지만 이에 국한되지 않습니다:
+      - 설문조사 방법론 및 주요 특징, 강점, 약점에 대한 논의. 예를 들어: 모집단, 프레임, 표본은 무엇이며; 표본은 어떻게 모집되며; 어떤 샘플링 접근 방식이 취해지고, 이의 장단점은 무엇이며; 무응답은 어떻게 처리되는가.
+      - 설문지 논의: 무엇이 좋고 나쁜가?
+      - 너무 자세해지면, 지원 자료이지만 필수적이지 않은 측면은 부록을 사용하십시오.
+  - 부록에, 논문이 중점을 두는 일반 사회 조사를 보완하는 데 사용할 수 있는 보충 설문조사를 작성하십시오. 보충 설문조사의 목적은 일반 사회 조사에서 수집된 것 외에 논문의 초점인 주제에 대한 추가 정보를 얻는 것입니다. 설문조사는 일반 사회 조사와 동일한 방식으로 배포되지만 독립적으로 존재해야 합니다. 보충 설문조사는 설문조사 플랫폼을 사용하여 작성되어야 합니다. 이에 대한 링크는 부록에 포함되어야 합니다. 또한 설문조사 사본도 부록에 포함되어야 합니다.
+  - 관련 문헌을 참조하여 윤리 및 편향을 논의해야 합니다.
+  - 코드는 완전히 재현 가능하고, 잘 문서화되어 있으며, 읽기 쉬워야 합니다.
+- GitHub 저장소 링크를 제출하십시오. 마감일 이후에는 저장소를 업데이트하지 마십시오.
+- 논문은 잘 작성되어야 하며, 관련 문헌을 활용하고 모든 기술 개념을 설명해야 합니다. 대학 교육을 받았지만 비전문가인 독자를 대상으로 하십시오. 설문조사, 샘플링, 통계 용어를 사용하되, 반드시 설명해야 합니다. 논문은 흐름이 자연스럽고 이해하기 쉬워야 합니다.
+- 이것이 수업 논문이라는 증거가 없어야 합니다.
+
+
+### 확인 사항
+
+- 부록에는 보충 설문조사 링크와 질문을 포함한 세부 정보가 모두 포함되어야 합니다 (링크가 실패할 경우를 대비하고 논문을 자체 포함하기 위함).
+
+### FAQ
+
+- 무엇에 중점을 두어야 합니까? 관심 있는 일반 사회 조사의 초점과 제약을 고려하여 합리적인 연도, 측면 또는 지리에 중점을 둘 수 있습니다. 일부 설문조사는 특정 연도에 특정 주제에 중점을 두므로 관심 있는 연도와 주제를 함께 고려하십시오.
+- 원시 GSS 데이터를 저장소에 포함해야 합니까? 대부분의 일반 사회 조사의 경우 GSS 데이터를 공유할 권한이 없을 것입니다. 이 경우 README에 데이터를 얻는 방법을 설명하는 명확한 세부 정보를 추가해야 합니다.
+- 그래프는 몇 개가 필요합니까? 일반적으로 변수 수만큼의 그래프가 필요합니다. 모든 변수에 대한 모든 관측치를 보여주어야 하기 때문입니다. 그러나 몇 개를 결합할 수도 있습니다. 또는 그 반대로, 다른 측면이나 관계를 살펴보는 데 관심이 있을 수도 있습니다.
+
+### 루브릭
+
+```{r}
+#| eval: true
+#| warning: false
+#| message: false
+#| echo: false
+
+rubric |>
+  filter(!Component %in% c("Replication", "Enhancements", "Model", "Idealized methodology", "Datasheet", "Parquet", "Surveys, sampling, and observational data")) |>
+  tt()
+```
+
+### 이전 예시
+
+- 2023: [크리스티나 웨이, 미카엘라 드루일라드](inputs/pdfs/paper-3-2023-Christina_Wei_Michaela_Drouillard.pdf); 그리고
+[이네사 드 안젤리스](inputs/pdfs/paper-3-2023-InessaDeAngelis.pdf).
+- 2022: [안나 리, 모하마드 사르다르 셰이크](inputs/pdfs/paper3-2022-Li_Sheikh.pdf);
+[차이나 후이, 마르코 차우](inputs/pdfs/paper3-2022-hui_chau.pdf);
+[이든 샌섬](inputs/pdfs/paper3-2022-Ethan_Sansom.pdf);
+[럭키나 로랑, 사미타 프라바사바트, 조이 소](inputs/pdfs/paper3-2022-LuckynaLaurent_SamitaPrabhasavat_ZoieSo.pdf);
+[파스칼 리 슬루, 윤경 박](inputs/pdfs/paper3-2022-Pascal_Lee_Slew_Yunkyung_Park.pdf); 그리고
+[레이 웬, 이스판디아르 비라니, 레이한 왈리아](inputs/pdfs/paper3-2022-Ray_Wen_Isfandyar_Virani_Rayhan_Walia.pdf).
+
+
+
+
+
+ 
+## *다이사트* 논문 {#sec-paper-four}
+
+### 과제
+
+- 1~3명으로 구성된 팀의 일원으로, 완전히 재현 가능한 방식으로 다음에서 사용 가능한 DHS 프로그램 "최종 보고서" 중 1980년대 또는 1990년대의 최소 한 페이지 전체 표를 사용 가능한 데이터셋으로 변환한 다음, 데이터를 사용하여 이야기를 담은 짧은 논문을 작성하십시오.
+[여기](https://dhsprogram.com/search/index.cfm?_srchd=1&bydoctype=publication&bypubtype=26%2C5%2C39%2C30%2C21%2C100&byyear=1999&byyear=1998&byyear=1997&byyear=1996&byyear=1995&byyear=1994&byyear=1993&byyear=1992&byyear=1991&byyear=1990&byyear=1989&byyear=1988&byyear=1987&bylanguage=2)
+- 적절한 하위 폴더가 있는 잘 정리된 폴더를 만들고 GitHub에 추가하십시오. 이 [시작 폴더](https://github.com/RohanAlexander/starter_folder)를 사용해야 합니다.
+- 데이터셋을 생성하고 문서화하십시오:
+  - PDF를 "inputs"에 저장하십시오.
+  - 사용 가능한 데이터셋에 대한 계획 시뮬레이션을 작성하고 스크립트를 "scripts/00-simulation.R"에 저장하십시오.
+  - 적절하게 PDF를 OCR하거나 파싱하는 R 코드를 작성하고 "scripts/01-gather_data.R"로 저장한 다음, 출력을 "outputs/data/first_parse.csv"에 저장하십시오.
+  - "first_parse.csv"를 기반으로 데이터셋을 정리하고 준비하는 R 코드를 작성하고 "scripts/02-clean_and_prepare_data.R"로 저장하십시오. `pointblank`를 사용하여 데이터셋이 통과하는 테스트를 작성하십시오 (최소한 모든 변수에 대해 클래스 테스트와 내용 테스트가 있어야 합니다). 데이터셋을 "outputs/data/cleaned_data.parquet"에 저장하십시오.
+  - @gebru2021datasheets 에 따라 작성한 데이터셋에 대한 데이터 시트를 작성하십시오 (논문의 부록에 넣으십시오). 시작 폴더의 템플릿 "inputs/data/datasheet_template.qmd"에서 시작해도 좋지만, 다시 말하지만, 독립적인 문서가 아닌 논문의 부록에 추가해야 합니다.
+- Quarto를 사용하여 제목, 저자, 날짜, 초록, 서론, 데이터, 결과, 토론, 최소한 데이터셋에 대한 데이터 시트를 포함하는 부록, 참고 문헌 섹션이 있는 PDF를 준비하여 데이터로 이야기를 전달하십시오.
+  - 관심 있는 데이터셋에 대한 감각을 전달하는 것 외에도, 데이터 섹션에는 사용한 DHS의 방법론 및 주요 특징, 강점, 약점에 대한 세부 정보가 포함되어야 합니다.
+- GitHub 저장소 링크를 제출하십시오. 마감일 이후에는 저장소를 업데이트하지 마십시오.
+- 이것이 수업 논문이라는 증거가 없어야 합니다.
+
+
+### 확인 사항
+
+- 최소한 몇 번의 커밋을 하고 설명적인 커밋 메시지를 사용하여 GitHub를 잘 활용하십시오.
+
+<!-- - 부록에는 보충 설문조사 링크와 질문을 포함한 세부 정보가 모두 포함되어야 합니다 (링크가 실패할 경우를 대비하고 논문을 자체 포함하기 위함). -->
+ 
+
+### FAQ
+
+<!-- - 무엇에 중점을 두어야 합니까? 관심 있는 일반 사회 조사의 초점과 제약을 고려하여 합리적인 연도, 측면 또는 지리에 중점을 둘 수 있습니다. 일부 설문조사는 특정 연도에 특정 주제에 중점을 두므로 관심 있는 연도와 주제를 함께 고려하십시오. -->
+<!-- - 원시 GSS 데이터를 저장소에 포함해야 합니까? 대부분의 일반 사회 조사의 경우 GSS 데이터를 공유할 권한이 없을 것입니다. 이 경우 README에 데이터를 얻는 방법을 설명하는 명확한 세부 정보를 추가해야 합니다. -->
+<!-- - 캐나다 GSS는 도서관을 통해 토론토 대학교 학생들에게 제공됩니다. 이를 사용하려면 데이터를 정리하고 준비해야 합니다. 한 해 동안 이를 수행하는 코드는 이 문제 세트와 함께 배포되며 강의에서 논의되었습니다. -->
+<!-- - 이 코드를 그대로 사용해도 좋지만, 해당 연도의 주제가 여러분의 초점을 제한할 것입니다. 물론 코드를 다른 연도에 맞게 조정할 수 있습니다. 코드를 그대로 사용한다면 인용해야 합니다. 코드를 조정한다면 MIT 라이선스이므로 인용할 필요는 없지만, 조정 정도에 따라 최소한 언급하고 인정하는 것이 적절할 것입니다. -->
+
+
+### 루브릭
+
+```{r}
+#| eval: true
+#| warning: false
+#| message: false
+#| echo: false
+
+rubric |>
+  filter(!Component %in% c("Replication", "Enhancements", "Model", "Idealized methodology", "Idealized survey", "Pollster review", "Surveys, sampling, and observational data")) |>
+  tt()
+```
+
+
+### 이전 예시
+
+- 2022: [빌랄 하크, 릿빅 푸리](inputs/pdfs/paper-4-2022-BilalHaq_RitvikPuri.pdf);
+[찰스 루, 마하크 자인, 위준 지아오](inputs/pdfs/paper-4-2022-CharlesLu_MahakJain_YujunJiao.pdf);
+[제이콥 요크 홍 시](inputs/pdfs/paper-4-2022-jacob_yoke_hong_si.pdf); 그리고
+[파스칼 리 슬루, 윤경 박](inputs/pdfs/paper-4-2022-PascalLeeSlew_YunkyungPark.pdf).
+
+
+
+
+
+
+
+
+
+## *스파디나* 논문 {#sec-spadina}
+
+### 과제
+
+- 1~3명으로 구성된 팀의 일원으로, 완전히 재현 가능한 방식으로 선형 또는 일반화 선형 모델을 구축한 다음, 이야기를 담은 짧은 논문을 작성하십시오. 다룰 수 있는 측면에 대한 아이디어는 다음과 같습니다:
+    - @sec-paper-one 에서 사용한 데이터셋을 다시 방문하십시오. 변수 중 하나에 대한 선형 모델을 구축하고 결과를 고려하십시오.
+    - @sec-its-just-a-generalized-linear-model 의 예시 중 하나를 선택하고 상황을 약간 변경한 다음, 일반화 선형 모델을 구축하십시오.
+- 이 [시작 폴더](https://github.com/RohanAlexander/starter_folder)를 사용해야 합니다.
+- GitHub 저장소 링크를 제출하십시오. 마감일 이후에는 저장소를 업데이트하지 마십시오.
+- 이것이 수업 논문이라는 증거가 없어야 합니다.
+
+
+### 확인 사항
+
+- 모델을 철저히 설명하도록 주의하십시오. 또한 모델의 가정과 유효성에 대한 위협도 고려하십시오.
+
+### FAQ
+
+- "상황을 약간 변경한다"는 것은 무엇을 의미합니까? 동일하거나 유사한 데이터를 사용해도 좋지만, 다른 측면을 고려하십시오. 예를 들어:
+    - 미국 정치 지지에 대한 로지스틱 회귀 예시에서, 다른 연도의 CES를 사용하거나 약간 다른 설명 변수를 사용할 수 있습니다.
+    - *제인 에어*에 사용된 문자의 포아송 회귀 예시에서, 다른 소설을 고려할 수 있습니다.
+    - 앨버타 사망률의 음이항 회귀에서, 다른 지리적 영역을 고려할 수 있습니다.
+- 앨버타 사망률 데이터를 사용할 수 있습니까? 아니요.
+
+### 루브릭
+
+```{r}
+#| eval: true
+#| warning: false
+#| message: false
+#| echo: false
+
+rubric |>
+  filter(!Component %in% c("Replication", "Enhancements", "Idealized methodology", "Idealized survey", "Pollster review", "Surveys, sampling, and observational data")) |>
+  tt()
+```
+
+
+### 이전 예시
+
+- 2024:
+[알라이나 후](inputs/pdfs/2024-spadina-alaina_hu.pdf);
+[아이린 후인](inputs/pdfs/2024-spadina-irene_huynh.pdf);
+[얀센 마이어 람보, 티모티우스 프라조기](inputs/pdfs/2024-spadina-Rambaud_Prajogi.pdf); 그리고
+[치 얼 (엠마) 텅, 원타오 선, 양 청](inputs/pdfs/2024-spadina-teng_sun_cheng.pdf).
+
+<!-- ### 과제 -->
+
+<!-- - 인과 추론에 대한 논문. -->
+
+
+<!-- - DAG를 포함해야 합니다 (아마도 모델 섹션에). -->
+
+
+
+
+## *세인트 조지* 논문 {#sec-st-george-paper}
+
+### 과제
+
+- 1~3명으로 구성된 팀의 일원으로, 완전히 재현 가능한 방식으로 "여론조사 종합" [@Blumenthal2014; @Pasek2015]을 사용하여 다가오는 미국 대통령 선거의 승자를 예측하는 선형 또는 일반화 선형 모델을 구축한 다음, 이야기를 담은 짧은 논문을 작성하십시오.
+- 이 [시작 폴더](https://github.com/RohanAlexander/starter_folder)를 사용해야 합니다.
+- R, Python 또는 조합을 사용해도 좋습니다.
+- [여기](https://projects.fivethirtyeight.com/polls/president-general/2024/national/)에서 여론조사 결과 데이터를 얻을 수 있습니다 ("Download the data"를 검색한 다음, Presidential general election polls (current cycle)를 선택한 다음, "Download"를 선택하십시오).
+- 표본에서 한 여론조사 기관을 선택하고, 논문의 부록에서 그들의 방법론을 심층적으로 분석하십시오. 특히, 관심 있는 여론조사 기관에 대한 감각을 전달하는 것 외에도, 이 부록에는 설문조사 방법론 및 주요 특징, 강점, 약점에 대한 논의가 포함되어야 합니다. 예를 들어:
+  - 모집단, 프레임, 표본은 무엇이며;
+  - 표본은 어떻게 모집되며;
+  - 어떤 샘플링 접근 방식이 취해지고, 이의 장단점은 무엇이며;
+  - 무응답은 어떻게 처리되는가;
+  - 설문지는 무엇이 좋고 나쁜가.
+- 다른 부록에, 10만 달러의 예산과 미국 대통령 선거를 예측하는 임무가 있다면 실행할 이상적인 방법론과 설문조사를 작성하십시오. 사용할 샘플링 접근 방식, 응답자 모집 방법, 데이터 유효성 검사 및 기타 관련 측면을 자세히 설명해야 합니다. 또한 여론조사 집계 또는 방법론의 다른 특징을 신중하게 다루십시오. Google Forms와 같은 설문조사 플랫폼을 사용하여 설문조사를 실제로 구현해야 합니다. 이에 대한 링크는 부록에 포함되어야 합니다. 또한 설문조사 사본도 부록에 포함되어야 합니다.
+- GitHub 저장소 링크를 제출하십시오. 마감일 이후에는 저장소를 업데이트하지 마십시오.
+- 이것이 수업 논문이라는 증거가 없어야 합니다.
+
+
+### 확인 사항
+
+- 필요한 두 가지 부록이 모두 있는지 확인하십시오.
+
+### FAQ
+
+- 데이터셋의 모든 예측 변수를 사용해야 합니까? 아니요, 사용하는 예측 변수에 대해 신중하고 사려 깊게 선택해야 합니다.
+- 선거인단은 어떻습니까? 미국 대통령 선거는 선거인단에 따라 승패가 결정됩니다. 단순히 일반 투표에만 집중해도 괜찮습니다. 그러나 뛰어난 제출물은 주별 일반 투표를 고려하고, 불확실성을 전파하는 데 주의하면서 선거인단 추정치를 구성할 것입니다.
+
+
+### 루브릭
+
+```{r}
+#| eval: true
+#| warning: false
+#| message: false
+#| echo: false
+
+rubric |>
+  filter(!Component %in% c("Replication", "Enhancements", "Datasheet", "Surveys, sampling, and observational data")) |>
+  tt()
+```
+
+
+### 이전 예시
+
+- 2024:
+[탈리아 파브레가스, 알리자 미트와니, 파티마 유누사](https://github.com/taliafabs/USPresidentialPollingForecast2024/blob/main/paper/USPresidentialPollingForecast2024.pdf);
+[소피아 브라더스, 데이 콩, 라얀 아와드 알림](https://github.com/eeeee-cmd/US_Election/blob/main/paper/paper.pdf);
+[콜린 시한 양, 렉순 유, 시다르트 고다](https://github.com/yulexun/2024uselectionprediction/blob/main/paper/paper.qmd); 그리고
+[위안이 (레오) 리우, 더전 첸, 지위안 션](https://github.com/leoyliu/Forecasting-the-2024-US-Presidential-Election/blob/main/paper/paper.pdf).
+
+
+
+
+
+## *스포포스* 논문 {#sec-paper-five}
+
+### 과제
+
+- 1~3명으로 구성된 팀의 일원으로, 사후 계층화 다단계 회귀를 사용하여 다가오는 미국 선거의 일반 투표를 예측한 다음, 이야기를 담은 짧은 논문을 작성하십시오.
+- 이것은 개인 수준 설문조사 데이터, 사후 계층화 데이터, 그리고 이들을 결합하는 모델을 필요로 합니다. 이러한 데이터를 수집하는 데 드는 비용과 이에 접근할 수 있는 특권을 고려하여, 사용하는 모든 데이터셋을 적절하게 인용해야 합니다.
+- 다음을 수행해야 합니다:
+    - 개인 수준 설문조사 데이터셋에 접근하십시오.
+    - 사후 계층화 데이터셋에 접근하십시오.
+    - 이 두 데이터셋을 함께 사용할 수 있도록 정리하고 준비하십시오.
+    - 설문조사 데이터셋을 사용하여 모델을 추정하십시오.
+    - 훈련된 모델을 사후 계층화 데이터셋에 적용하여 선거 결과를 예측하십시오.
+- 이 [시작 폴더](https://github.com/RohanAlexander/starter_folder)를 사용해야 합니다.
+- GitHub 저장소 링크를 제출하십시오. 마감일 이후에는 저장소를 업데이트하지 마십시오.
+- 이것이 수업 논문이라는 증거가 없어야 합니다.
+
+
+
+### FAQ
+
+- 얼마나 작성해야 합니까? 대부분의 학생들은 10~15페이지 범위의 내용을 제출하지만, 이는 여러분에게 달려 있습니다. 정확하고 철저하게 작성하십시오.
+
+
+### 루브릭
+
+```{r}
+#| eval: true
+#| warning: false
+#| message: false
+#| echo: false
+
+rubric |>
+  filter(!Component %in% c("Replication", "Enhancements", "Idealized methodology", "Idealized survey", "Pollster review", "Datasheet", "Surveys, sampling, and observational data")) |>
+  tt()
+```
+
+### 이전 예시
+
+- 2024:
+[정우 김, 지원 최](inputs/pdfs/kim_choi.pdf);
+[탈리아 파브레가스, 파티마 유누사, 아미시 순딥 아바르세카르](inputs/pdfs/fabregas_yunusa_avarsekar.pdf).
+- 2020: [알렌 미트로프스키, 샤오얀 양, 매튜 완키에비치](inputs/pdfs/paper_five_2020-Mitrovski_Yang_Wankiewicz.pdf) (이 논문은 ASA 2020년 12월 학부 통계 연구 프로젝트 대회에서 "우수 언급"을 받았습니다.)
+
+
+
+## 최종 논문 {#sec-final-paper}
+
+### 과제
+
+- **개별적으로** 그리고 완전히 재현 가능한 방식으로 원본 작업을 포함하여 데이터로 이야기를 전달하는 논문을 작성하십시오.
+- 관심 있는 연구 질문을 개발한 다음, 관련 데이터셋을 얻거나 생성하고 이를 답변하는 논문을 작성하십시오.
+- 이 [시작 폴더](https://github.com/RohanAlexander/starter_folder)를 사용해야 합니다.
+- R, Python 또는 조합을 사용해도 좋습니다.
+- 논문과 관련된 설문조사, 샘플링 또는 관찰 데이터의 측면에 초점을 맞춘 부록을 포함하십시오. 이는 논문 2의 "이상적인 방법론/설문조사/여론조사 기관 방법론" 섹션과 유사하게 심층적인 탐색이어야 하며, 시뮬레이션, 문헌 링크, 탐색 및 비교와 같은 측면을 포함할 수 있습니다.
+- 데이터셋 아이디어:
+  - 제이콥 필립의 식료품 데이터셋 [여기](https://jacobfilipp.com/hammer/).
+  - IJF 데이터셋 [여기](https://theijf.org/) (그러면 IJF 최우수 논문상 자격이 주어집니다).
+  - Open Data Toronto 데이터셋 재방문 (그러면 Open Data Toronto 최우수 논문상 자격이 주어집니다).
+  - @sec-datasets 의 데이터셋.
+- 이전 논문의 모든 지침과 기대치는 이 논문에도 적용됩니다.
+- GitHub 저장소 링크를 제출하십시오. 마감일 이후에는 저장소를 업데이트하지 마십시오.
+- 이것이 수업 논문이라는 증거가 없어야 합니다.
+
+### 확인 사항
+
+- Kaggle, UCI 또는 Statistica의 데이터셋을 사용하지 마십시오. 주로 다른 모든 사람들이 이러한 데이터셋을 사용하므로 고용주에게 눈에 띄는 데 도움이 되지 않지만, 데이터가 오래되었거나 출처를 알 수 없다는 우려도 있습니다.
+
+### FAQ
+
+- 팀의 일원으로 작업할 수 있습니까? 아니요. 완전히 자신만의 작업이 있어야 합니다. 취업 지원 등을 위해 자신만의 작업이 정말 필요합니다.
+- 얼마나 작성해야 합니까? 대부분의 학생들은 10~20페이지의 본문 내용과 추가 페이지를 부록에 할애하지만, 이는 여러분에게 달려 있습니다. 간결하지만 철저하게 작성하십시오.
+- 어떤 모델이든 사용할 수 있습니까? 어떤 모델이든 사용할 수 있지만, 철저히 설명해야 하며 복잡한 모델의 경우 어려울 수 있습니다. 작게 시작하십시오. 한두 개의 예측 변수를 선택하십시오. 그것이 작동하면 복잡하게 만드십시오. 모든 예측 변수와 결과 변수는 데이터 섹션에서 그래프로 표시되고 설명되어야 함을 기억하십시오.
+
+### 루브릭
+
+```{r}
+#| echo: false
+#| eval: true
+#| message: false
+#| warning: false
+
+rubric |>
+  filter(!Component %in% c("Replication", "Idealized methodology", "Idealized survey", "Pollster review", "Datasheet")) |>
+  tt()
+```
+
+### 이전 예시
+
+- 2024: [메리 청](https://github.com/marycx/us_poverty_analysis_2019/blob/main/paper/US_Poverty_Analysis_2019.pdf);
+[카비야 칼라니](https://github.com/kaavyakalani26/himalayan-expeditions-analysis/blob/main/paper/paper.pdf);
+[줄리아 김](https://github.com/julia-ve-kim/US_Climate_Change_Biodiversity/blob/main/paper/paper.pdf);
+[윈자오 리](https://github.com/yunzhaol/aerial_bomb_priority/blob/main/paper/paper.pdf);
+[티모티우스 프라조기](https://github.com/prajogt/canadian_salmon_spawn/blob/main/output/paper.pdf);
+[베니 로크버그](https://github.com/bennyrochwerg/profiling/blob/main/paper/paper.pdf);
+[아바스 슬레이만](https://github.com/AbbassSleiman/US_Incarceration/blob/main/paper/paper.pdf);
+[에밀리 수](https://github.com/moonsdust/top-songs/blob/main/paper/paper.pdf); 그리고
+[한나 유](https://github.com/hannahyu07/Fox-News/blob/main/paper/Fake_News_vs_Fox_News.pdf).
+- 2023: [알리야 막신 라모스](inputs/pdfs/final-2023-aliyah_maxine_ramos.pdf);
+[클로이 티어스타인](inputs/pdfs/final-2023-chloe_thierstein.pdf);
+[제이슨 응오](inputs/pdfs/final-2023-jason_ngo.pdf);
+[제니 션](inputs/pdfs/final-2023-jenny_shen.pdf);
+[로라 리-추](inputs/pdfs/final-2023-laura_lee-chu.pdf); 그리고
+[세바스찬 로드리게스](inputs/pdfs/final-2023-sebastian_rodriguez.pdf).
+- 2022: [알리시아 양](inputs/pdfs/final_paper-2022-alicia_yang.pdf); [이든 샌섬](inputs/pdfs/final_paper-2022-ethan_sansom.pdf); [이반 리](inputs/pdfs/final_paper-2022-ivan_li.pdf); [잭 맥케이](inputs/pdfs/final_paper-2022-jack_mckay.pdf); [올라에도 오크파레케](inputs/pdfs/final_paper-2022-olaedo_okpareke.pdf); 그리고 [티안 이 장](inputs/pdfs/final_paper-2022-tian_yi_zhang.pdf).
+- 2021: [에이미 패로우](inputs/pdfs/final_paper-2021-amy_farrow.pdf); [지아 지아 지](inputs/pdfs/final_paper-2021-jia_jia_ji.pdf); [로라 클라인](inputs/pdfs/final_paper-2021-laura_cline.pdf); [로레나 알마라즈 데 라 가르자](inputs/pdfs/final_paper-2021-lorena_almaraz_de_la_garza.pdf); 그리고 [레이첼 램](inputs/pdfs/final_paper-2021-rachael_lam.pdf).
+- 2020: [애니 콜린스](inputs/pdfs/final_paper-2020-annie_collins.pdf).

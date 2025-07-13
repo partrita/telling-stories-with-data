@@ -1,0 +1,15 @@
+```{r}
+#| label: fig-uniquename
+#| fig-cap: 1977-1978년 호주 건강 조사를 기반으로 한 지난 2주간의 질병 수
+#| echo: true
+#| warning: false
+
+library(tidyverse)
+library(AER)
+
+data("DoctorVisits", package = "AER")
+
+DoctorVisits |>
+  ggplot(aes(x = illness)) +
+  geom_histogram(stat = "count")
+```

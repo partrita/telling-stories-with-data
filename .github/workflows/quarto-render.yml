@@ -4,63 +4,78 @@ on:
   push:
     branches:
       - main # Or your default branch
-    paths:
-      - 'translated_korean_files/**.qmd'
   workflow_dispatch: # Allows manual triggering
 
 jobs:
-  render_and_release:
+  build-quarto-book:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write # Needed to create a release
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Quarto
-        uses: quarto-dev/quarto-cli-action@v2
-
-      - name: Render QMD files to PDF
+      - name: Install Noto CJK Fonts and set locale
         run: |
-          mkdir -p release_pdfs
-          for file in translated_korean_files/*_ko.qmd; do
-            if [ -f "$file" ]; then
-              # Ensure output filename is valid and doesn't contain problematic characters
-              filename=$(basename "${file%.qmd}")
-              sanitized_filename=$(echo "$filename" | sed 's/[^a-zA-Z0-9_-]/_/g')
-              quarto render "$file" --to pdf -o "release_pdfs/${sanitized_filename}.pdf"
-              echo "Rendered $file to release_pdfs/${sanitized_filename}.pdf"
-            else
-              echo "File $file not found."
-            fi
-          done
-          echo "Listing contents of release_pdfs:"
-          ls -l release_pdfs/
-          
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          sudo apt-get update
+          sudo apt-get install -y a--no-install-recommends fonts-noto-cjk fontconfig locales
+          sudo rm -rf /var/lib/apt/lists/*
+
+      - name: Setup Pixi
+        uses: prefix-dev/setup-pixi@v0.8.10
         with:
-          tag_name: v${{ github.run_number }}-${{ github.sha }} # More unique tag name
-          release_name: Release ${{ github.run_number }} (Korean PDFs)
-          draft: false
-          prerelease: false
+          cache: true
+          cache-write: ${{ github.event_name == 'push' && github.ref_name == 'main' }}
 
-      - name: Upload PDF assets to Release
-        if: ${{ success() && steps.create_release.outputs.upload_url != '' }}
+      - name: Add Quarto and Font packages to Pixi environment
+        timeout-minutes: 180 # 예: 3시간 (기본값은 360분, 즉 6시간)
         run: |
-          echo "Uploading PDFs from release_pdfs directory..."
-          ls -l release_pdfs/
-          for pdf_file in release_pdfs/*.pdf; do
-            if [ -f "$pdf_file" ]; then
-              echo "Uploading $pdf_file"
-              gh release upload v${{ github.run_number }}-${{ github.sha }} "$pdf_file" --clobber
-            else
-              echo "PDF file $pdf_file not found for upload."
-            fi
-          done
+          pixi install
+          pixi run install-r-packages
+          pixi run install-r-github-packages
+
+      - name: Install TinyTeX via Quarto
+        run: |
+          pixi run quarto install tool tinytex
+
+      - name: Update TinyTeX font cache
+        run: |
+          sudo fc-cache -fv
+
+      - name: Render Quarto book to PDF
+        run: |
+          cd mybook
+          pixi run quarto render --to pdf
+
+      - name: Upload PDF artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: quarto-pdf-book
+          path: mybook/_book/데이터로-이야기하기.pdf
+
+  create-release:
+    needs: build-quarto-book
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download PDF artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: quarto-pdf-book
+          path: .
+
+      - name: Get current date for release tag
+        id: date
+        run: echo "date=$(date +'%Y.%m.%d-%H%M')" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}-v${{ github.run_number }}-${{ steps.date.outputs.date }}
+          name: Release ${{ github.ref_name }} v${{ github.run_number }} (${{ steps.date.outputs.date }})
+          body: Automated release of Quarto PDF book for commit ${{ github.sha }}.
+          files: 데이터로-이야기하기.pdf
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
