@@ -1,0 +1,55 @@
+name: Deploy Quarto Book to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Noto CJK Fonts and set locale
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk fontconfig locales
+          sudo fc-cache -fv
+
+      - name: Setup Pixi
+        uses: prefix-dev/setup-pixi@v0.8.10
+        with:
+          cache: true
+          cache-write: ${{ github.event_name == 'push' && github.ref_name == 'main' }}
+
+      - name: Install dependencies
+        run: |
+          pixi install
+          pixi run install-r-packages
+          pixi run install-r-github-packages
+
+      - name: Render Quarto book to HTML
+        run: |
+          cd mybook
+          pixi run quarto render --to html
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: mybook/_book
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

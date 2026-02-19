@@ -8,9 +8,7 @@ book:
   date: "2023년 7월 27일" # Date in Korean format - I'll use the original date for now, can be updated
   search: true
   cover-image: /figures/tellingstorieswithdatapainting.png # Adjusted path
-  repo-url: https://github.com/RohanAlexander/telling_stories/ # Repo URL can remain same or point to a Korean-specific fork if it exists
   repo-actions: [edit]
-  site-url: https://tellingstorieswithdata.com/mybook # Adjusted site URL
   sidebar:
     collapse-level: 3
     pinned: true
