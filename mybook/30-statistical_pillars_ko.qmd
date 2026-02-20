@@ -8,7 +8,6 @@ engine: knitr
 
 **TODO**
 
-
 **선행 조건**
 
 - https://royalsocietypublishing.org/doi/epdf/10.1098/rsta.1922.0009
@@ -24,7 +23,6 @@ engine: knitr
 ```{r}
 #| message: false
 #| warning: false
-
 
 ```
 
@@ -50,7 +48,6 @@ https://projecteuclid.org/journals/statistical-science/volume-1/issue-4/A-Conver
 
 https://doi.org/10.2307/2281213
 
-
 ## 연습 문제
 
 ### 스케일 {.unnumbered}
@@ -64,8 +61,6 @@ https://doi.org/10.2307/2281213
 ### 질문 {.unnumbered}
 
 - 호주 태즈메이니아의 등대 높이는 [여기](ADD LINK)에서 확인할 수 있습니다. 데이터를 스크랩하고 높이 히스토그램을 만드는 코드를 작성하세요. 분포에 대해 무엇을 알 수 있습니까? 참고 자료와 시뮬레이션의 도움을 받아 세네 단락으로 이러한 현상이 발생하는 이유를 설명하세요. GitHub 저장소 링크를 제출하세요.
-
-
 
 ### 튜토리얼 {.unnumbered}
 

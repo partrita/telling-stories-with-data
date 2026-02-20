@@ -5,7 +5,9 @@ engine: knitr
 # Drinking from a fire hose {#sec-fire-hose}
 
 :::{.callout-note}
+
 Chapman and Hall/CRC published this book in July 2023. You can purchase that [here](https://www.routledge.com/Telling-Stories-with-Data-With-Applications-in-R/Alexander/p/book/9781032134772). This online version has some updates to what was printed.
+
 :::
 
 **Prerequisites**
@@ -46,6 +48,7 @@ library(lubridate)
 library(opendatatoronto)
 library(tidyverse)
 library(tinytable)
+
 ```
 
 ## Hello, World!
@@ -70,17 +73,18 @@ The first step of the workflow is to plan. We do this because we need to establi
 To get started, go to [Posit Cloud](https://posit.cloud)\index{Posit Cloud} and create an account; the free version is fine for now. We use that initially, rather than the desktop, so that getting started is the same for everyone, but to avoid having to pay you should change to a local installation later. Once you have an account and log in, it should look something like @fig-02-rstudio_cloud-1.
 
 :::{#fig-openrstudio layout-ncol="2" layout-valign="bottom"}
+
 ![Opening Posit Cloud for the first time](figures/02-posit_cloud-1.png){#fig-02-rstudio_cloud-1}
 
 ![Opening a new RStudio project](figures/02-posit_cloud-2.png){#fig-02-rstudio_cloud-2}
 
 Getting started with Posit Cloud and a new project
+
 :::
 
 You will be in "Your Projects". From here you should start a new project: "New Project" $\rightarrow$ "New RStudio Project" (@fig-02-rstudio_cloud-2). You can give the project a name by clicking on "Untitled Project" and replacing it.
 
 We will now go through three worked examples: Australian elections, Toronto shelter usage, and neonatal mortality. These examples build increasing complexity, but from the first one, we will be telling a story with data. While we briefly explain many aspects here, almost everything is explained in much more detail in the rest of the book.
-
 
 ## Australian elections
 
@@ -93,11 +97,13 @@ For this example, we need to plan two aspects. The first is what the dataset tha
 The basic requirement for the dataset is that it has the name of the seat (sometimes called a "division" in Australia) and the party of the person elected. A quick sketch of the dataset that we would need is @fig-australiaexample-data.
 
 :::{#fig-australiaexample layout-ncol="2" layout-valign="bottom"}
+
 ![Quick sketch of a dataset that could be useful for analyzing Australian elections](figures/02-divisiontable.png){#fig-australiaexample-data width="45%"}
 
 ![Quick sketch of a possible graph of the number of seats won by each party](figures/02-divisiongraph.png){#fig-australiaexample-graph width="45%"}
 
 Sketches of a potential dataset and graph related to an Australian election
+
 :::
 
 We also need to plan the graph that we are interested in. Given we want to display the number of seats that each party won, a quick sketch of what we might aim for is @fig-australiaexample-graph.
@@ -123,8 +129,8 @@ To get started, within Posit Cloud\index{Posit Cloud}, make a new Quarto\index{Q
 ![Highlighting the render button](figures/02-posit_cloud-8.png){#fig-quarto-australian-elections-6}
 
 Getting started with a Quarto document
-:::
 
+:::
 
 You may get a notification along the lines of "Package rmarkdown required$\dots$." (@fig-quarto-australian-elections-wtfquarto). If that happens, click "Install". For this example, we will put everything into this one Quarto document. You should save it as "australian_elections.qmd": "File" $\rightarrow$ "Save As$\dots$".
 
@@ -146,6 +152,7 @@ Remove almost all the default content, and then beneath the heading material cre
 # Email: rohan.alexander@utoronto.ca
 # Date: 1 January 2023
 # Prerequisites: Know where to get Australian elections data.
+
 ```
 
 In R, lines that start with "\#" are comments. This means that they are not run as code by R, but are instead designed to be read by humans. Each line of this preamble should start with a "\#". Also make it clear that this is the preamble section by surrounding that with "\####". The result should look like @fig-quarto-australian-elections-3.
@@ -153,9 +160,11 @@ In R, lines that start with "\#" are comments. This means that they are not run 
 After this we need to setup the workspace. This involves installing\index{packages!install} and loading any packages that will be needed. A package only needs to be installed once for each computer, but needs to be loaded each time it is to be used. In this case we are going to use the `tidyverse` and `janitor` packages. They will need to be installed because this is the first time they are being used, and then each will need to be loaded.
 
 :::{.callout-note}
+
 ## Shoulders of giants
 
 Hadley Wickham\index{Wickham, Hadley} is Chief Scientist at RStudio. After earning a PhD in Statistics from Iowa State University in 2008 he was appointed as an assistant professor at Rice University, and became Chief Scientist at RStudio, now Posit, in 2013.\index{statistics} He developed the `tidyverse` collection of packages, and has published many books including *R for Data Science* [@r4ds] and *Advanced R* [@advancedr]. He was awarded the COPSS Presidents' Award in 2019.\index{COPSS Presidents' Award}
+
 :::
 
 An example of installing the packages follows.\index{packages!install} Run this code by clicking the small green arrow associated with the R code chunk (@fig-quarto-australian-elections-4).
@@ -167,6 +176,7 @@ An example of installing the packages follows.\index{packages!install} Run this 
 #### Workspace setup ####
 install.packages("tidyverse")
 install.packages("janitor")
+
 ```
 
 Now that the packages are installed, they need to be loaded. As that package installation step only needs to be done once per computer, that code should be commented out so that it is not accidentally run, or even just removed. Additionally, we can remove the message that printed when we installed the packages (@fig-quarto-australian-elections-5).
@@ -183,6 +193,7 @@ Now that the packages are installed, they need to be loaded. As that package ins
 
 library(tidyverse)
 library(janitor)
+
 ```
 
 We can render the entire document by clicking "Render" (@fig-quarto-australian-elections-6). When you do this, you may be asked to install some packages. If that happens, then you should agree to this. This will result in a HTML document.\index{Quarto!render HTML}
@@ -210,11 +221,13 @@ simulated_data <-
   )
 
 simulated_data
+
 ```
 
 At a certain point, your code will not run and you will want to ask others for help.\index{help!asking for} Do not take a screenshot of a small snippet of the code and expect that someone will be able to help based on that. They, almost surely, cannot. Instead, you need to provide them with your whole script in a way that they can run. We will explain what GitHub\index{GitHub} is more completely in @sec-reproducible-workflows, but for now, if you need help, then you should naively create a GitHub Gist which will enable you to share your code in a way that is more helpful than taking a screenshot. The first step is to create a free account on [GitHub](https://github.com) (@fig-githubone). Thinking about an appropriate username is important because this will become part of your professional profile. It would make sense to have a username that is professional, independent of any course, and ideally related to your real name. Then look for a "+" in the top right, and select "New gist" (@fig-githubgistone).
 
 :::{#fig-githubgist layout-ncol="2" layout-nrow="2" layout-valign="bottom"}
+
 ![GitHub sign-up screen](figures/github_1.png){#fig-githubone}
 
 ![New GitHub Gist](figures/githubgistone.png){#fig-githubgistone}
@@ -222,6 +235,7 @@ At a certain point, your code will not run and you will want to ask others for h
 ![Create a public GitHub Gist to share code](figures/githubgisttwo.png){#fig-githubgisttwo}
 
 Creating a Gist to share code when asking for help
+
 :::
 
 From here you should add all the code to that Gist, not just the final bit that is giving an error. And give it a meaningful filename that includes ".R" at the end, for instance, "australian_elections.R". In @fig-githubgisttwo it will turn out that we have incorrect capitalization, `library(Tidyverse)` instead of `library(tidyverse)`.
@@ -233,6 +247,7 @@ Click "Create public gist". We can then share the URL to this Gist with whoever 
 Now we want to get the actual data. The data we need is from the Australian Electoral Commission (AEC)\index{Australia!Australian Electoral Commission}, which is the non-partisan agency that organizes Australian federal elections. We can pass a page of their website to `read_csv()` from `readr`. We do not need to explicitly load `readr` because it is part of the `tidyverse`. The `<-` or "assignment operator" allocates the output of `read_csv()` to an object called "raw_elections_data".
 
 :::{.content-visible when-format="pdf"}
+
 ```{r}
 #| eval: false
 #| echo: true
@@ -252,10 +267,12 @@ write_csv(
   x = raw_elections_data,
   file = "australian_voting.csv"
 )
+
 ```
 :::
 
 :::{.content-visible unless-format="pdf"}
+
 ```{r}
 #| eval: false
 #| echo: true
@@ -275,6 +292,7 @@ write_csv(
   x = raw_elections_data,
   file = "australian_voting.csv"
 )
+
 ```
 :::
 
@@ -296,6 +314,7 @@ write_csv(
   x = raw_elections_data,
   file = here::here("inputs/data/australian_voting.csv")
 )
+
 ```
 
 ```{r}
@@ -308,13 +327,16 @@ raw_elections_data <-
     here::here("inputs/data/australian_voting.csv"),
     show_col_types = FALSE
   )
+
 ```
 
 We can take a quick look at the dataset using `head()` which will show the first six rows, and `tail()` which will show the last six rows.
 
 ```{r}
+
 head(raw_elections_data)
 tail(raw_elections_data)
+
 ```
 
 We need to clean the data so that we can use it. We are trying to make it similar to the dataset that we thought we wanted in the planning stage. While it is fine to move away from the plan, this needs to be a deliberate, reasoned decision. After reading in the dataset that we saved, the first thing that we will do is adjust the names of the variables. We will do this using `clean_names()` from `janitor`.
@@ -329,6 +351,7 @@ raw_elections_data <-
     file = here::here("inputs/data/australian_voting.csv"),
     show_col_types = FALSE
   )
+
 ```
 
 ```{r}
@@ -341,6 +364,7 @@ raw_elections_data <-
     file = "australian_voting.csv",
     show_col_types = FALSE
   )
+
 ```
 
 ```{r}
@@ -353,6 +377,7 @@ cleaned_elections_data <-
 
 # Have a look at the first six rows
 head(cleaned_elections_data)
+
 ```
 
 The names are faster to type because RStudio\index{R!RStudio} will auto-complete them. To do this, we begin typing the name of a variable and then use the "tab" key to complete it.
@@ -371,15 +396,19 @@ cleaned_elections_data <-
   )
 
 head(cleaned_elections_data)
+
 ```
 
 Some of the variable names are still not obvious because they are abbreviated. We can look at the names of the columns in this dataset with `names()`. And we can change the names using `rename()` from `dplyr`.
 
 ```{r}
+
 names(cleaned_elections_data)
+
 ```
 
 ```{r}
+
 cleaned_elections_data <-
   cleaned_elections_data |>
   rename(
@@ -388,18 +417,22 @@ cleaned_elections_data <-
   )
 
 head(cleaned_elections_data)
+
 ```
 
 We could now look at the unique values in the "elected_party" column using `unique()`.
 
 ```{r}
+
 cleaned_elections_data$elected_party |>
   unique()
+
 ```
 
 As there is more detail in this than we wanted, we may want to simplify the party names to match what we simulated, using `case_match()` from `dplyr`.
 
 ```{r}
+
 cleaned_elections_data <-
   cleaned_elections_data |>
   mutate(
@@ -418,6 +451,7 @@ cleaned_elections_data <-
   )
 
 head(cleaned_elections_data)
+
 ```
 
 Our data now matches our plan (@fig-australiaexample-data). For every electoral division we have the party of the person that won it.
@@ -432,6 +466,7 @@ write_csv(
   x = cleaned_elections_data,
   file = "cleaned_elections_data.csv"
 )
+
 ```
 
 ```{r}
@@ -442,6 +477,7 @@ write_csv(
   cleaned_elections_data,
   here::here("outputs/data/cleaned_elections_data.csv")
 )
+
 ```
 
 ### Explore
@@ -460,6 +496,7 @@ cleaned_elections_data <-
     file = "outputs/data/cleaned_elections_data.csv",
     show_col_types = FALSE
   )
+
 ```
 
 ```{r}
@@ -472,6 +509,7 @@ cleaned_elections_data <-
     file = "cleaned_elections_data.csv",
     show_col_types = FALSE
   )
+
 ```
 
 We can get a quick count of how many seats each party won using `count()` from `dplyr`.
@@ -483,6 +521,7 @@ We can get a quick count of how many seats each party won using `count()` from `
 
 cleaned_elections_data |>
   count(elected_party)
+
 ```
 
 To build the graph that we are interested in, we use `ggplot2` which is part of the `tidyverse`. The key aspect of this package is that we build graphs by adding layers using "+", which we call the "add operator". In particular we will create a bar chart using `geom_bar()` from `ggplot2` (@fig-canadanice-1).
@@ -505,6 +544,7 @@ cleaned_elections_data |>
   geom_bar() +
   theme_minimal() + # Make the theme neater
   labs(x = "Party", y = "Number of seats") # Make labels more meaningful
+
 ```
 
 @fig-canadanice-1 accomplishes what we set out to do. But we can make it look a bit nicer by modifying the default options and improving the labels (@fig-canadanice-2).
@@ -523,7 +563,6 @@ To this point we have downloaded some data, cleaned it, and made a graph. We wou
 
 One aspect to be especially concerned with is making sure that this communication is focused on the needs of the audience and telling a story. Data journalism provides some excellent examples of how analysis needs to be tailored to the audience, for instance, @biasbehindbars and @bronnerftw.
 
-
 ## Toronto's unhoused population
 
 Toronto\index{Canada!Toronto unhoused population} has a large unhoused population [@torontohomeless]. Freezing winters mean it is important there are enough places in shelters. In this example we will make a table of shelter usage in 2021 to compare average use in each month. Our expectation is that there is greater usage in the colder months, for instance, December, compared with warmer months, for instance, July.
@@ -533,11 +572,13 @@ Toronto\index{Canada!Toronto unhoused population} has a large unhoused populatio
 The dataset that we are interested in would need to have the date, the shelter, and the number of beds that were occupied that night. A quick sketch of a dataset that would work is @fig-torontohomeless-data. We are interested in creating a table that has the monthly average number of beds occupied each night. The table would probably look something like @fig-torontohomeless-table.
 
 :::{#fig-torontohomeless layout-ncol="2"}
+
 ![Quick sketch of a dataset](figures/02-shelter_sketch.png){#fig-torontohomeless-data width="50%"}
 
 ![Quick sketch of a table of the average number of beds occupied each month](figures/02-homeless_sketch.png){#fig-torontohomeless-table width="50%"}
 
 Sketches of a dataset and table related shelter usage in Toronto
+
 :::
 
 ### Simulate
@@ -566,6 +607,7 @@ library(janitor)
 library(lubridate)
 library(opendatatoronto)
 library(tidyverse)
+
 ```
 
 ```{r}
@@ -579,27 +621,34 @@ library(janitor)
 library(lubridate)
 library(opendatatoronto)
 library(tidyverse)
+
 ```
 
 To add a bit more detail to the earlier example, packages contain code that other people have written. There are a few common ones that you will see regularly in this book, especially the `tidyverse`. To use a package, we must first install it and then we need to load it. A package only needs to be installed once per computer but must be loaded every time. This means the packages that we installed earlier do not need to be reinstalled here.
 
 :::callout-note
+
 ## Shoulders of giants
 
 Dr Robert Gentleman\index{Gentleman, Robert} is a co-creator of R. After earning a PhD in Statistics from the University of Washington in 1988, he moved to the University of Auckland.\index{statistics} He then went onto various roles including at 23andMe and is now the Executive Director of the Center for Computational Biomedicine at Harvard Medical School.
+
 :::
 
 :::callout-note
+
 ## Shoulders of giants
 
 Dr Ross Ihaka\index{Ihaka, Ross} is a co-creator of R. He earned a PhD in Statistics from the University of California, Berkeley, in 1985. He wrote a dissertation titled "Ruaumoko", which is the Māori god of earthquakes.\index{statistics}\index{Berkeley} He then moved to the University of Auckland where he remained for his entire career. He was awarded the Pickering Medal in 2008 by the Royal Society of New Zealand Te Apārangi.
+
 :::
 
 Given that people donate their time to make R and the packages that we use, it is important to cite them. To get the information that is needed, we use `citation()`.\index{citation!R} When run without any arguments, that provides the citation information for R itself, and when run with an argument that is the name of a package, it provides the citation information for that package.\index{packages!cite}\index{citation!R packages}
 
 ```{r}
+
 citation() # Get the citation information for R
 citation("ggplot2") # Get citation information for a package
+
 ```
 
 Turning to the simulation, we need three variables: "date", "shelter", and "occupancy". This example will build on the earlier one by adding a seed using `set.seed()`.\index{random seed} A seed enables us to always generate the same random data whenever we run the same code. Any integer can be used as the seed. In this case the seed will be 853. If you use that as your seed, then you should get the same random numbers as in this example. If you use a different seed, then you should expect different random numbers. Finally, we use `rep()` to repeat something a certain number of times. For instance, we repeat "Shelter 1" 365 times which accounts for about a year.\index{distribution!Poisson}
@@ -630,6 +679,7 @@ simulated_occupancy_data <-
   )
 
 head(simulated_occupancy_data)
+
 ```
 
 In this simulation we first create a list of all the dates in 2021. We repeat that list three times. We assume data for three shelters for every day of the year. To simulate the number of beds that are occupied each night, we draw from a Poisson distribution\index{distribution!Poisson}, assuming a mean number of 30 beds occupied per shelter, although this is just an arbitrary choice. By way of background, a Poisson distribution is often used when we have count data, and we return to it in @sec-its-just-a-generalized-linear-model.
@@ -639,6 +689,7 @@ In this simulation we first create a list of all the dates in 2021. We repeat th
 We use data made available about Toronto shelter usage by the City of Toronto. Shelter usage is measured by a count made each night at 4 a.m. of the number of occupied beds. To access the data, we use `opendatatoronto` and then save our own copy.
 
 :::{.content-visible when-format="pdf"}
+
 ```{r}
 #| eval: false
 #| echo: true
@@ -660,10 +711,12 @@ write_csv(
 )
 
 head(toronto_shelters)
+
 ```
 :::
 
 :::{.content-visible unless-format="pdf"}
+
 ```{r}
 #| eval: false
 #| echo: true
@@ -686,6 +739,7 @@ write_csv(
 )
 
 head(toronto_shelters)
+
 ```
 :::
 
@@ -698,6 +752,7 @@ write_csv(
   x = toronto_shelters,
   file = here::here("inputs/data/toronto_shelters.csv")
 )
+
 ```
 
 ```{r}
@@ -710,27 +765,32 @@ toronto_shelters <-
     here::here("inputs/data/toronto_shelters.csv"),
     show_col_types = FALSE
   )
+
 ```
 
 :::{.content-visible unless-format="pdf"}
+
 ```{r}
 #| eval: true
 #| echo: true
 #| warning: false
 
 head(toronto_shelters)
+
 ```
 :::
 
 Not much needs to be done to this to make it similar to the dataset that we were interested in (@fig-torontohomeless-data). We need to change the names to make them easier to type using `clean_names()`, and reduce the columns to only those that are relevant using `select()`.
 
 ```{r}
+
 toronto_shelters_clean <-
   clean_names(toronto_shelters) |>
   mutate(occupancy_date = ymd(occupancy_date)) |>
   select(occupancy_date, occupied_beds)
 
 head(toronto_shelters_clean)
+
 ```
 
 All that remains is to save the cleaned dataset.
@@ -744,6 +804,7 @@ write_csv(
   x = toronto_shelters_clean,
   file = "cleaned_toronto_shelters.csv"
 )
+
 ```
 
 ```{r}
@@ -755,6 +816,7 @@ write_csv(
   x = toronto_shelters_clean,
   file = here::here("outputs/data/cleaned_toronto_shelters.csv")
 )
+
 ```
 
 ### Explore
@@ -770,6 +832,7 @@ toronto_shelters_clean <-
     "outputs/data/cleaned_toronto_shelters.csv",
     show_col_types = FALSE
   )
+
 ```
 
 ```{r}
@@ -782,6 +845,7 @@ toronto_shelters_clean <-
     "cleaned_toronto_shelters.csv",
     show_col_types = FALSE
   )
+
 ```
 
 The dataset contains daily records for each shelter. We are interested in understanding average usage for each month. To do this, we need to add a month column using `month()` from `lubridate`. By default, `month()` provides the number of the month, and so we include two arguments---"label" and "abbr"---to get the full name of the month. We remove rows that do not have any data for the number of beds using `drop_na()` from `tidyr`, which is part of the `tidyverse`. We will do this here unthinkingly because our focus is on getting started, but this is an important decision and we talk more about missing data in @sec-farm-data and @sec-exploratory-data-analysis. We then create a summary statistic on the basis of monthly groups, using `summarise()` from `dplyr`. We use `tt()` from `tinytable` to create @tbl-homelessoccupancyd.
@@ -801,6 +865,7 @@ toronto_shelters_clean |>
   summarise(number_occupied = mean(occupied_beds),
             .by = occupancy_month) |>
   tt()
+
 ```
 
 As with before, this looks fine, and achieves what we set out to do. But we can make some tweaks to the defaults to make it look even better (@tbl-homelessoccupancy). In particular we make the column names easier to read, only show an appropriate number of decimal places, and change the alignment (`j` is used to specify the column number of interest and `r` is the alignment type i.e. right).
@@ -824,6 +889,7 @@ toronto_shelters_clean |>
   ) |>
   style_tt(j = 2, align = "r") |>
   setNames(c("Month", "Average daily number of occupied beds"))
+
 ```
 
 ### Share
@@ -851,11 +917,13 @@ For this example, we need to think about what our dataset should look like, and 
 The dataset needs to have variables that specify the country and the year. It also needs to have a variable with the NMR estimate for that year for that country. Roughly, it should look like @fig-nmrexample-data.
 
 :::{#fig-nmrexample layout-ncol="2"}
+
 ![Quick sketch of a potentially useful NMR dataset](figures/02-nmr_dataset_sketch.png){#fig-nmrexample-data}
 
 ![Quick sketch of a graph of NMR by country over time](figures/02-NMRgraph.png){#fig-nmrexample-graph}
 
 Sketches of a dataset and graph about the neonatal mortality rate (NMR)
+
 :::
 
 We are interested to make a graph with year on the x-axis and estimated NMR on the y-axis. Each country should have its own series. A quick sketch of what we are looking for is @fig-nmrexample-graph.
@@ -882,6 +950,7 @@ Within Posit Cloud\index{Posit Cloud}, make a new Quarto document\index{Quarto} 
 library(janitor)
 library(lubridate)
 library(tidyverse)
+
 ```
 
 ```{r}
@@ -893,13 +962,16 @@ library(tidyverse)
 library(janitor)
 library(lubridate)
 library(tidyverse)
+
 ```
 
 The code contained in packages can change from time to time as the authors update it and release new versions. We can see which version of a package we are using with `packageVersion()`. For instance, we are using version 2.0.0 of the `tidyverse` and version 2.2.0 of `janitor`.
 
 ```{r}
+
 packageVersion("tidyverse")
 packageVersion("janitor")
+
 ```
 
 To update the version of all of the packages that we have installed, we use `update.packages()`.\index{packages!update} We can use `tidyverse_update()` to just install the `tidyverse` packages. This does not need to be run, say, every day, but from time to time it is worth updating packages. While many packages take care to ensure backward compatibility, at a certain point this does not become possible. Updating packages could result in old code needing to be rewritten. This is not a big deal when you are getting started and in any case there are tools aimed at loading particular versions that we cover in @sec-reproducible-workflows.
@@ -927,6 +999,7 @@ simulated_nmr_data <-
   )
 
 head(simulated_nmr_data)
+
 ```
 
 While this simulation works, it would be time consuming and error prone if we decided that instead of 50 years, we were interested in simulating, say, 60 years. One way to improve this code is to replace all instances of 50 with a variable.\index{simulation}\index{distribution!uniform}
@@ -954,6 +1027,7 @@ simulated_nmr_data <-
   )
 
 head(simulated_nmr_data)
+
 ```
 
 The result will be the same, but now if we want to change from 50 to 60 years, we only have to make the change in one place.
@@ -983,6 +1057,7 @@ simulated_nmr_data$year |> max() == 2020
 simulated_nmr_data$nmr |> min() >= 0
 simulated_nmr_data$nmr |> max() <= 1000
 simulated_nmr_data$nmr |> class() == "numeric"
+
 ```
 
 Having passed these tests, we can have confidence in the simulated dataset.\index{confidence!establishing} More importantly, we can apply these tests to the real dataset. This enables us to have greater confidence in that dataset and to share that confidence with others.
@@ -1005,8 +1080,8 @@ raw_igme_data <-
   )
 
 write_csv(x = raw_igme_data, file = "igme.csv")
-```
 
+```
 
 ```{r}
 #| eval: false
@@ -1026,9 +1101,8 @@ arrow::write_parquet(
   x = raw_igme_data,
   sink = "inputs/data/igme.parquet"
 )
+
 ```
-
-
 
 ```{r}
 #| eval: true
@@ -1039,22 +1113,27 @@ raw_igme_data <-
   arrow::read_parquet(
     file = "inputs/data/igme.parquet"
 )
+
 ```
 
 With established data, such as this, it can be useful to read supporting material about the data. In this case, a codebook\index{data!codebook} is available [here](https://childmortality.org/wp-content/uploads/2021/03/CME-Info_codebook_for_downloads.xlsx). After this we can take a quick look at the dataset to get a better sense of it. We might be interested in what the dataset looks like with `head()` and `tail()`, and what the names of the columns are with `names()`.
 
 :::{.content-visible unless-format="pdf"}
+
 ```{r}
 #| eval: true
 #| echo: true
 #| warning: false
 
 head(raw_igme_data)
+
 ```
 :::
 
 ```{r}
+
 names(raw_igme_data)
+
 ```
 
 We would like to clean up the names and only keep the rows and columns that we are interested in. Based on our plan, we are interested in rows where "Sex" is "Total", "Series Name" is "UN IGME estimate", "Geographic area" is one of "Argentina", "Australia", "Canada", and "Kenya", and the "Indicator" is "Neonatal mortality rate". After this we are interested in just a few columns: "geographic_area", "time_period", and "obs_value".
@@ -1074,11 +1153,13 @@ cleaned_igme_data <-
   select(geographic_area, time_period, obs_value)
 
 head(cleaned_igme_data)
+
 ```
 
 We need to fix two other aspects: the class of "time_period" is character when we need it to be a year, and the name of "obs_value" should be "nmr" to be more informative.
 
 ```{r}
+
 cleaned_igme_data <-
   cleaned_igme_data |>
   mutate(
@@ -1089,11 +1170,13 @@ cleaned_igme_data <-
   rename(nmr = obs_value, year = time_period, country = geographic_area)
 
 head(cleaned_igme_data)
+
 ```
 
 Finally, we can check that our dataset passes the tests that we developed based on the simulated dataset.
 
 ```{r}
+
 cleaned_igme_data$country |>
   unique() == c("Argentina", "Australia", "Canada", "Kenya")
 
@@ -1106,6 +1189,7 @@ cleaned_igme_data$year |> max() == 2020
 cleaned_igme_data$nmr |> min() >= 0
 cleaned_igme_data$nmr |> max() <= 1000
 cleaned_igme_data$nmr |> class() == "numeric"
+
 ```
 
 All that remains is to save the nicely cleaned dataset.
@@ -1116,6 +1200,7 @@ All that remains is to save the nicely cleaned dataset.
 #| warning: false
 
 write_csv(x = cleaned_igme_data, file = "cleaned_igme_data.csv")
+
 ```
 
 ```{r}
@@ -1127,6 +1212,7 @@ write_csv(
   x = cleaned_igme_data,
   file = here::here("outputs/data/cleaned_igme_data.csv")
 )
+
 ```
 
 ### Explore
@@ -1142,6 +1228,7 @@ cleaned_igme_data <-
     "outputs/data/cleaned_igme_data.csv",
     show_col_types = FALSE
   )
+
 ```
 
 ```{r}
@@ -1154,6 +1241,7 @@ cleaned_igme_data <-
     file = "cleaned_igme_data.csv",
     show_col_types = FALSE
   )
+
 ```
 
 We can now make a graph of how NMR has changed over time and the differences between countries (@fig-nmrgraph).
@@ -1172,6 +1260,7 @@ cleaned_igme_data |>
   labs(x = "Year", y = "Neonatal Mortality Rate (NMR)", color = "Country") +
   scale_color_brewer(palette = "Set1") +
   theme(legend.position = "bottom")
+
 ```
 
 ### Share
@@ -1196,7 +1285,6 @@ It is also the case that it is not necessary to fully understand everything in t
 >
 > Joe Redmon, 20 February 2020
 
-
 Although the term "data science" is ubiquitous in academia, industry, and even more generally, as we have seen, it is difficult to define. One deliberately antagonistic definition of data science is "[t]he inhumane reduction of humanity down to what can be counted" [@keyes2019]. While purposefully controversial, this definition highlights one reason for the increased demand for data science and quantitative methods over the past decade---individuals and their behavior are now at the heart of it. Many of the techniques have been around for many decades, but what makes them popular now is this human focus.
 
 Unfortunately, even though much of the work may be focused on individuals, the issues of privacy and consent, and ethical concerns more broadly, rarely seem front of mind. While there are some exceptions, in general, even at the same time as claiming that AI, machine learning, and data science are going to revolutionize society, consideration of these types of issues appears to have been largely treated as something that would be nice to have, rather than something that we may like to think of before we embrace the revolution.
@@ -1212,7 +1300,6 @@ That said, there is some evidence that some data scientists are beginning to be 
 The purpose of ethical consideration and concern for the broader impact of data science is not to prescriptively rule things in or out, but to provide an opportunity to raise some issues that should be paramount. The variety of data science applications, the relative youth of the field, and the speed of change, mean that such considerations are sometimes knowingly set aside, and this is acceptable to the rest of the field. This contrasts with fields such as science, medicine, engineering, and accounting. Possibly those fields are more self-aware (@fig-personalprobability).
 
 ![Numbers cannot be removed from their context, as illustrated in "Probability" by Randall Munroe: https://xkcd.com/881/.](figures/probability.png){#fig-personalprobability width=90% fig-align="center"}
-
 
 ## Exercises
 
@@ -1360,6 +1447,7 @@ midwest |>
   geom_point() +
   scale_x_log10() +
   scale_y_log10()
+
 ```
 
 27. Why do we simulate a dataset (write at least three dot points)?
@@ -1379,6 +1467,7 @@ midwest |>
 - Simulate 50 draws from the Poisson distribution with lambda 10 in the `simulation.R` script. Write two tests for this dataset in the `tests.R` script.
 - Gather some data on Marriage Licence Statistics in Toronto using Open Data Toronto in the `gather.R` script. Clean it in the `cleaning.R` script.^[Consider `separate()` and then `lubridate::ymd()` for the dates.] Graph it in the Quarto document.
 - The following code produces an error. Please add it to a GitHub Gist, and then ask for help in an appropriate venue.
+
 ```{r}
 #| eval: false
 
@@ -1386,8 +1475,11 @@ tibble(year = 1875:1972,
        level = as.numeric(datasets::LakeHuron)) |>
   ggplot(aes(x = year, y = level)) |>
   geom_point()
+
 ```
+
 - The following code creates an odd-looking graph in terms of dates. Please identify the issue and fix it, by adding functions before `ggplot()`.
+
 ```{r}
 #| eval: false
 set.seed(853)
@@ -1405,8 +1497,11 @@ data |>
   # MAKE CHANGE HERE
   ggplot(aes(x = date, y = number)) +
   geom_col()
+
 ```
+
 - Consider the following code to make a graph. You want to move the legend to the bottom but cannot remember the `ggplot2` function to do that. Please use an LLM to identify the change needed. Share your prompt.
+
 ```{r}
 #| eval: false
 
@@ -1414,8 +1509,8 @@ penguins |>
   drop_na() |>
   ggplot(aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +
   geom_point()
-```
 
+```
 
 ### Task {.unnumbered}
 
@@ -1448,6 +1543,7 @@ cleaned_elections_data <-
     sep = "/"
   ) |>
   select(-Other)
+
 ```
 
 4. Explore:

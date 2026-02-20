@@ -2,11 +2,11 @@
 authors = ["Taeyoon Kim <deepthought@postech.ac.kr>"]
 channels = ["conda-forge"]
 name = "telling-stories-with-data"
-platforms = ["osx-arm64", "linux-64"]
+platforms = ["linux-64"]
 version = "0.1.0"
 
 [tasks]
-install-r-packages = "R -e 'install.packages(c(\"opendatatoronto\", \"datasauRus\", \"troopdata\", \"estimatr\", \"MatchIt\", \"rdrobust\", \"rstanarm\", \"analogsea\", \"plumber\", \"AustralianPoliticians\"), repos=\"https://cloud.r-project.org/\")'"
+install-r-packages = "R -e 'install.packages(c(\"opendatatoronto\", \"datasauRus\", \"troopdata\", \"estimatr\", \"MatchIt\", \"rdrobust\", \"rstanarm\", \"analogsea\", \"plumber\", \"AustralianPoliticians\", \"dataverse\", \"nflverse\"), repos=\"https://cloud.r-project.org/\")'"
 install-r-github-packages = "R -e 'devtools::install_github(c(\"ttimbers/canlang\", \"sharlagelfand/astrologer\"))'"
 
 [dependencies]
@@ -54,3 +54,12 @@ r-tidymodels = ">=1.3.0,<2"
 r-palmerpenguins = ">=0.1.1,<0.2"
 r-reticulate = ">=1.42.0,<2"
 r-tidytext = ">=0.4.2,<0.5"
+r-rstanarm = ">=2.32.2,<3"
+r-collapse = ">=2.1.6,<3"
+r-boot = ">=1.3_32,<2"
+r-haven = ">=2.5.5,<3"
+r-labelled = ">=2.16.0,<3"
+r-broom = ">=1.0.12,<2"
+r-marginaleffects = ">=0.32.0,<0.33"
+r-gutenbergr = ">=0.4.1,<0.5"
+r-tidybayes = ">=3.0.7,<4"

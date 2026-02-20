@@ -5,7 +5,9 @@ engine: knitr
 # Measurement, censuses, and sampling {#sec-farm-data}
 
 :::{.callout-note}
+
 Chapman and Hall/CRC published this book in July 2023. You can purchase that [here](https://www.routledge.com/Telling-Stories-with-Data-With-Applications-in-R/Alexander/p/book/9781032134772). This online version has some updates to what was printed.
+
 :::
 
 **Prerequisites**
@@ -46,6 +48,7 @@ library(maps)
 library(tidycensus)
 library(tidyverse)
 library(tinytable)
+
 ```
 
 ## Introduction
@@ -86,11 +89,12 @@ Philosophy\index{measurement!philosophy} brings more nuance and depth to their d
 
 Instrumentation\index{measurement!instrumentation}\index{instrumentation} refers to what we use to conduct the measurement. Thorough consideration of instrumentation is important because it determines what we can measure. For instance, @morange [p. 63] describes how the invention of microscopes in the sixteenth century led to the observation of capillaries by Marcello Malpighi in 1661, cells by Robert Hooke in 1665, and bacteria by Antonie van Leeuwenhoek in 1677 [@lane2015unseen]. And consider the measurement of time. Again we see the interaction between instrumentation and measurement. With a sundial it was difficult to be much more specific about elapsed time than an hour or so. But the gradual development of more accurate instruments of timekeeping would eventually enable some sports to differentiate competitors to the thousandth of the second, and through GPS, allow navigation that is accurate to within meters.
 
-
 :::{.callout-note}
+
 ## Oh, you think we have good data on that!
 
 Knowing the time\index{measurement!time} is a critical measurement. For instance, Formula 1 times laps to the thousandth of a second. And Michael Phelps, an American swimmer, won a gold medal at the Beijing Olympics by only one-hundredth of a second. Timing allows us to distinguish between outcomes even when the event does not happen concurrently. For instance, think back to the discussion of swimmers by @chambliss1989mundanity and how this would be impossible without knowing how long each event took each swimmer. Timing is also critical in finance where we need market participants to agree on whether an asset is available for sale. But the answer to "What time is it?" can be difficult to answer. The time, according to some individual, can be set to different sources, and so will differ depending on who you ask. Since the 1970s the definitive answer has been to use atomic time. A cesium second is defined by "9192 631 770 cycles of the hyperfine transition frequency in the ground state of cesium 133" [@Levine2023, p. 4]. But the problem of clock synchronization---how to have all the non-atomic clocks match atomic time and each other---remains.\index{internet!clock synchronization} @hopper2022 provides an overview of how the Network Time Protocol (NTP) of @mills1991internet enables clock synchronization and some of the difficulties that exist for computer networks to discover atomic time. Another measure of time is astronomical time, which is based on the rotation of the Earth. But because the Earth spins inconsistently and other issues, adjustments have been made to ensure atomic and astronomical time match. This has resulted in the inclusions of positive leap seconds, and the possibility of a negative leap second, which have created problems [@Levine2023]. As a result, at some point in the future astronomical and atomic time will be allowed to diverge [@Gibney2022; @mitchell2022again].
+
 :::
 
 A common instrument of measurement is a survey, and we discuss these further in @sec-hunt-data. Another commonly-used instrument is sensors.\index{measurement!sensors} For instance, climate scientists may be interested in temperature, humidity, or pressure. Much analysis of animal movement, such as @LeosBarajas2016, uses accelerometers.\index{measurement!accelerometer} Sensors placed on satellites may be particularly concerned with images, and such data are available from the Landsat Program.\index{measurement!satellites} Physicists are very concerned with measurement, and can be constrained not only by their instrumentation, but also storage capacity. For instance, the ATLAS detector at CERN is focused on the collision of particles, but not all of the measurements can be saved because that would result in 80TB per second [@Colombo2016]!
@@ -110,11 +114,12 @@ Such concerns are of special importance in psychology\index{measurement!psycholo
 
 Reliability draws on the part of the definition of measurement that reads "process of experimentally obtaining$\dots$".\index{measurement!reliable} It implies some degree of consistency and means that multiple measurements of one particular aspect, at one particular time, should be essentially the same. If two enumerators count the number of shops on a street, then we would hope that their counts are the same. And if they were different then we would hope we could understand the reason for the difference. For instance, perhaps one enumerator misunderstood the instructions and incorrectly counted only shops that were open. To consider another example, demographers are often concerned with the migration of people between countries, and economists are often concerned with international trade. It is concerning the number of times that the in-migration or imports data of Country A from Country B do not match the out-migration or exports data of Country B to Country A.
 
-
 :::{.callout-note}
+
 ## Oh, you think we have good data on that!
 
 It is common for the pilot of a plane to announce the altitude to their passengers.\index{measurement!altitude} But the notion and measurement of altitude is deceptively complicated, and underscores the fact that measurement occurs within a broader context [@skyfaring]. For instance, if we are interested in how many meters there are between the plane and the ground, then should we measure the difference between the ground and where the pilot is sitting, which would be most relevant for the announcement, or to the bottom of the wheels, which would be most relevant for landing? What happens if we go over a mountain? Even if the plane has not descended, such a measure---the number of meters between the plane and the ground---would claim a reduction in altitude and make it hard to vertically separate multiple planes. We may be interested in a comparison to sea level. But sea level changes because of the tide, and is different at different locations. As such, a common measure of altitude is flight level, which is determined by the amount of air pressure. And because air pressure is affected by weather, season, and location, the one flight level may be associated with very different numbers of meters to the ground over the course of a flight. The measures of altitude used by planes serve their purpose of enabling relatively safe air travel.
+
 :::
 
 ### Measurement error
@@ -166,6 +171,7 @@ newborn_weight |>
   geom_histogram(bins = 50) +
   facet_wrap(vars(measurement)) +
   theme_minimal()
+
 ```
 
 ```{r}
@@ -181,6 +187,7 @@ newborn_weight |>
   style_tt(j = 1:2, align = "lr") |>
   format_tt(digits = 3, num_fmt = "decimal") |>
   setNames(c("Measurement", "Mean"))
+
 ```
 
 ### Missing data
@@ -202,15 +209,19 @@ There are a variety of sources of data that have been produced for the purposes 
 Another source of data deliberately put together to be a dataset include official statistics\index{statistics!official} like surveys of economic conditions such as unemployment, inflation, and GDP.\index{Gross Domestic Product} Interestingly, @rockoff2019controversies describes how these economic statistics were not actually developed by the federal government, even though governments typically eventually took over that role. Censuses and other government-run surveys have the power, and financial resources, of the state behind them, which enables them to be thorough in a way that other datasets cannot be. For instance, the 2020 United States Census is estimated to have cost US$15.6 billion [@Hawes2020Implementing]. But this similarly brings a specific perspective. Census data, like all data, are not unimpeachable. Common errors include under- and over-enumeration, as well as misreporting [@steckel1991quality]. There are various measures and approaches used to assess quality [@statcanhistory].\index{census!United States}
 
 :::{.callout-note}
+
 ## Oh, you think we have good data on that!
 
 Censuses of population are critical, but not unimpeachable. @anderson1999counts describe how the history of the census in the United States is one of undercount, and that even George Washington\index{census!George Washington} complained about this in the 1790s.\index{census!undercount} The extent of the undercount was estimated due to the Selective Service registration system used for conscription in World War II. Those records were compared with census records, and it was found that there were about half a million more men recorded for conscription purposes than in the census. This was race-specific, with an average undercount of around 3 per cent, but an undercount of Black men of draft age of around 13 per cent [@anderson1999counts, p. 29].\index{census!race}\index{bias!race} This became a political issue in the 1960s, and race and ethnicity related questions were of special concern in the 1990s. @nobles2002racial [p. 47] discusses how counting by race first requires that race exists, but that this may be biologically difficult to establish.\index{bias!race} Despite how fundamental race is to the United States census it is not something that is "fixed" and "objective" but instead has influences from class, social, legal, structural, and political aspects [@nobles2002racial, p. 48].
+
 :::
 
 :::{.callout-note}
+
 ## Shoulders of giants
 
 Margo Anderson\index{Anderson, Margo} is Distinguished Professor, History and Urban Studies, at University of Wisconsin--Milwaukee. After earning a PhD in History from Rutgers University in 1978, she joined the University of Wisconsin--Milwaukee, and was promoted to professor in 1987. In addition to @anderson1999counts, another important book that she wrote is @anderson2015census. She was appointed a Fellow of the American Statistical Association in 1998.
+
 :::
 
 Another similarly large and established source of data are from long-running large surveys. These are conducted on a regular basis, and while not usually directly conducted by the government, they are usually funded, one way or another, by the government. For instance, here we often think of electoral surveys, such as the Canadian Election Study, which has run in association with every federal election since 1965, and similarly the British Election Study which has been associated with every general election since 1964.
@@ -218,8 +229,6 @@ Another similarly large and established source of data are from long-running lar
 More recently there has been a large push toward open data in government. The underlying principle---that the government should make available the data that it has---is undeniable. But the term has become a little contentious because of how it has occurred in practice. Governments only provide data that they want to provide. We may even sometimes see manipulation of data to suit a government's narrative [@Kalgin2014; @Zhang2019; @Berdine2018]. One way to get data that the government has, but does not necessarily want to provide, is to submit a Freedom of Information (FOI) request [@walby2019freedom]. For instance, @biasbehindbars use data from FOI to find evidence of systematic racism in the Canadian prison system.
 
 While farmed datasets have always been useful, they were developed for a time when much analysis was conducted without the use of programming languages. Many R packages have been developed to make it easier to get these datasets into R. Here we cover a few that are especially useful.
-
-
 
 ### Canada
 
@@ -234,19 +243,23 @@ After loading `canlang` we can use the `can_lang` dataset. This provides the num
 #| warning: false
 
 can_lang
+
 ```
 
 We can quickly see the top-ten most common languages to have as a mother tongue.
 
 ```{r}
+
 can_lang |>
   slice_max(mother_tongue, n = 10) |>
   select(language, mother_tongue)
+
 ```
 
 We could combine two datasets: `region_lang` and `region_data`, to see if the five most common languages differ between the largest region, Toronto, and the smallest, Belleville.
 
 ```{r}
+
 region_lang |>
   left_join(region_data, by = "region") |>
   slice_max(c(population)) |>
@@ -260,6 +273,7 @@ region_lang |>
   slice_max(mother_tongue, n = 5) |>
   select(region, language, mother_tongue, population) |>
   mutate(prop = mother_tongue / population)
+
 ```
 
 We can see a considerable difference between the proportions, with a little over 50 per cent of those in Toronto having English as their mother tongue, compared with around 90 per cent of those in Belleville.
@@ -286,6 +300,7 @@ ontario_population <-
   )
 
 ontario_population
+
 ```
 
 ```{r}
@@ -304,8 +319,8 @@ ontario_population <-
   )
 
 ontario_population
-```
 
+```
 
 ```{r}
 #| message: false
@@ -313,6 +328,7 @@ ontario_population
 #| echo: false
 
 ontario_population
+
 ```
 
 Data for censuses since 1996 are available, and `list_census_datasets()` provides the metadata that we need to provide to `get_census()` to access these. Data are available based on a variety of regions, and `list_census_regions()` provides the metadata that we need. Finally, `list_census_vectors()` provides the metadata about the variables that are available.
@@ -351,6 +367,7 @@ us_ave_household_size_2010 |>
   scale_color_brewer(
     palette = "Set1", labels = c("Total", "Owner occupied", "Renter occupied")
     )
+
 ```
 
 ```{r}
@@ -369,8 +386,8 @@ us_ave_household_size_2010 <-
   )
 
 write_csv(us_ave_household_size_2010, "inputs/data/census_household_size.csv")
-```
 
+```
 
 ```{r}
 #| message: false
@@ -409,6 +426,7 @@ us_ave_household_size_2010 |>
       "Renter occupied"
     )
   )
+
 ```
 
 @walker2022 provides further detail about analyzing United States census data with R.\index{census!United States}
@@ -418,9 +436,11 @@ us_ave_household_size_2010 |>
 The United States is in the enviable situation where there is usually a better approach than using the census and there is a better way than having to use government statistical agency websites.\index{IPUMS} IPUMS provides access to a wide range of datasets, including international census microdata. In the specific case of the United States, the American Community Survey (ACS) is a survey whose content is comparable to the questions asked on many censuses, but it is available on an annual basis, compared with a census which could be quite out-of-date by the time the data are available.\index{American Community Survey} It ends up with millions of responses each year. Although the ACS is smaller than a census, the advantage is that it is available on a more timely basis. We access the ACS through IPUMS.
 
 :::{.callout-note}
+
 ## Shoulders of giants
 
 Steven Ruggles\index{Ruggles, Steven} is Regents Professor of History and Population Studies at the University of Minnesota and is in charge of IPUMS.\index{IPUMS} After earning a PhD in historical demography\index{demography} from the University of Pennsylvania in 1984, he was appointed as an assistant professor at the University of Minnesota, and promoted to full professor in 1995. The initial IPUMS data release was in 1993 [@sobek1999ipums]. Since then it has grown and now includes social and economic data from many countries. Ruggles was awarded a MacArthur Foundation Fellowship in 2022.\index{MacArthur Foundation Fellowship}
+
 :::
 
 Go to [IPUMS](https://ipums.org), then "IPUMS USA", and click "Get Data". We are interested in a sample, so go to "SELECT SAMPLE". Un-select "Default sample from each year" and instead select "2019 ACS" and then "SUBMIT SAMPLE SELECTIONS" (@fig-ipumstwo).\index{IPUMS}
@@ -440,8 +460,8 @@ Go to [IPUMS](https://ipums.org), then "IPUMS USA", and click "Get Data". We are
 ![Reducing the sample size from three million responses to half a million](figures/ipums_redux_7.png){#fig-ipumsten}
 
 An overview of the steps involved in getting data from IPUMS
-:::
 
+:::
 
 We might be interested in data based on state. We would begin by looking at "HOUSEHOLD" variables and selecting "GEOGRAPHIC" (@fig-ipumsfour). We add "STATEICP" to our "cart" by clicking the plus, which will then turn into a tick (@fig-ipumssix). We might then be interested in data on a "PERSON" basis, for instance, "DEMOGRAPHIC" variables such as "AGE", which we should add to our cart. We also want "SEX" and "EDUC" (both are in "PERSON").
 
@@ -459,7 +479,9 @@ We will be asked to log in or create an account, and after doing that will be ab
 It is critical that we cite this dataset when we use it. For instance we can use the following BibTeX entry for @ipumsusa.\index{citation!IPUMS}
 
 :::{.content-visible when-format="pdf"}
+
 ```
+
 @misc{ipumsusa,
   author       = {Ruggles,  Steven and Flood,  Sarah and $\dots$},
   year         = 2021,
@@ -469,11 +491,14 @@ It is critical that we cite this dataset when we use it. For instance we can use
   url          = {https://usa.ipums.org},
   language     = {en},
 }
+
 ```
 :::
 
 :::{.content-visible unless-format="pdf"}
+
 ```
+
 @misc{ipumsusa,
   author       = {Ruggles,  Steven and Flood,  Sarah and Foster,  Sophia and Goeken,  Ronald and Pacas,  Jose and Schouweiler,  Megan and Sobek,  Matthew},
   year         = 2021,
@@ -483,6 +508,7 @@ It is critical that we cite this dataset when we use it. For instance we can use
   url          = {https://usa.ipums.org},
   language     = {en},
 }
+
 ```
 :::
 
@@ -502,6 +528,7 @@ ipums_extract <-
   to_factor()
 
 ipums_extract
+
 ```
 
 ```{r}
@@ -522,6 +549,7 @@ ipums_extract <-
 arrow::write_parquet(
   x = ipums_extract,
   sink = "inputs/data/ipums_extract.parquet")
+
 ```
 
 ```{r}
@@ -534,6 +562,7 @@ ipums_extract <-
     )
 
 ipums_extract
+
 ```
 
 ```{r}
@@ -583,6 +612,7 @@ cleaned_ipums <-
            factor(age_group, levels = c("18-29", "30-44", "45-59", "60+")))
 
 cleaned_ipums
+
 ```
 
 We will draw on this dataset in @sec-multilevel-regression-with-post-stratification, so we will save it.
@@ -593,8 +623,8 @@ We will draw on this dataset in @sec-multilevel-regression-with-post-stratificat
 
 write_csv(x = cleaned_ipums,
           file = "cleaned_ipums.csv")
-```
 
+```
 
 ```{r}
 #| eval: true
@@ -602,6 +632,7 @@ write_csv(x = cleaned_ipums,
 
 arrow::write_parquet(x = cleaned_ipums,
               sink = "outputs/data/cleaned_ipums.parquet")
+
 ```
 
 We can also have a look at some of the variables (@fig-ipumsquickgraph).
@@ -623,8 +654,8 @@ cleaned_ipums |>
   guides(x = guide_axis(angle = 90)) +
   theme(legend.position = "bottom") +
   scale_fill_brewer(palette = "Set1")
-```
 
+```
 
 Full count data---that is the entire census---are available through IPUMS\index{IPUMS} for United States censuses conducted between 1850 and 1940, with the exception of 1890.\index{census!United States} Most of the 1890 census records were destroyed due to a fire in 1921. One per cent samples are available for all censuses through to 1990. ACS data are available from 2000.
 
@@ -690,7 +721,6 @@ Consider if we want to speak to the titles of all the books ever written. Our ta
 
 To consider another example, consider wanting to speak of the attitudes of all Brazilians who live in Germany. The target population is all Brazilians who live in Germany. One possible source of information would be Facebook and so in that case, the sampling frame might be all Brazilians who live in Germany who have Facebook. And then our sample might be all Brazilians who live in Germany who have Facebook who we can gather data about. The target population and the sampling frame will be different because not all Brazilians who live in Germany will have Facebook. And the sampling frame will be different to the sample because we will likely not be able to gather data about all Brazilians who live in Germany and have Facebook.
 
-
 ### Sampling in Dublin and Reading
 
 To be clearer, we consider two examples: a 1798 count of the number of inhabitants of Dublin, Ireland [@whitelaw1805], and a 1912 count of working-class households in Reading, England [@bowley1913working].
@@ -754,11 +784,13 @@ illustrative_sampling <- tibble(
 
 illustrative_sampling |>
   count(simple_random_sampling)
+
 ```
 
 With systematic sampling,\index{sampling!systematic} as was used by @bowley1913working, we proceed by selecting some value, and we then sample every fifth unit to obtain a 20 per cent sample. To begin, we randomly pick a starting point from units one to five, say three. And so sampling every fifth unit would mean looking at the third, the eighth, the thirteenth, and so on.
 
 ```{r}
+
 set.seed(853)
 
 starting_point <- sample(x = c(1:5), size = 1)
@@ -775,6 +807,7 @@ illustrative_sampling <-
 
 illustrative_sampling |>
   count(systematic_sampling)
+
 ```
 
 When we consider our population, it will typically have some grouping. This may be as straight forward as a country having states, provinces, counties, or statistical districts; a university having faculties and departments; and humans having age-groups. A stratified structure is one in which we can divide the population into mutually exclusive, and collectively exhaustive, sub-populations called "strata".\index{sampling!stratified}
@@ -784,6 +817,7 @@ We use stratification to help with the efficiency of sampling\index{efficiency!s
 In our case, we will stratify our illustration by considering that our strata are the tens, that is, one to ten is one stratum, 11 to 20 is another, and so on. We will use simple random sampling within these strata to select two units from each.
 
 ```{r}
+
 set.seed(853)
 
 picked_in_strata <-
@@ -799,6 +833,7 @@ illustrative_sampling <-
 
 illustrative_sampling |>
   count(stratified_sampling)
+
 ```
 
 And finally, we can also take advantage of some clusters that may exist in our dataset.\index{sampling!cluster} Like strata, clusters are collectively exhaustive and mutually exclusive. Our examples from earlier of states, departments, and age-groups remain valid as clusters. However, it is our intention toward these groups that is different. Specifically, with cluster sampling, we do not intend to collect data from every cluster, whereas with stratified sampling we do. With stratified sampling we look at every stratum and conduct simple random sampling within each strata to select the sample. With cluster sampling we select clusters of interest. We can then either sample every unit in those selected clusters or use simple random sampling, within the selected clusters, to select units. That all said, this difference can become less clear in practice, especially after the fact. @rose2006comparison gather mortality data for North Darfur, Sudan, in 2005. They find that both cluster and systematic sampling provide similar results, and they point out that systematic sampling requires less training of the survey teams. In general, cluster sampling can be cheaper because of the focus on geographically close locations.
@@ -806,6 +841,7 @@ And finally, we can also take advantage of some clusters that may exist in our d
 In our case, we will cluster our illustration again based on the tens. We will use simple random sampling to select two clusters for which we will use the entire cluster.
 
 ```{r}
+
 set.seed(853)
 
 picked_clusters <-
@@ -821,6 +857,7 @@ illustrative_sampling <-
 
 illustrative_sampling |>
   count(cluster_sampling)
+
 ```
 
 At this point we can illustrate the differences between our approaches (@fig-samplingexamples). We could also consider it visually, by pretending that we randomly sample using the different methods from different parts of the world (@fig-samplingexamplesworld).
@@ -858,8 +895,8 @@ illustrative_sampling_long |>
   theme_minimal() +
   labs(x = "Unit", y = "Is included in sample") +
   theme(axis.text.y = element_blank())
-```
 
+```
 
 ```{r}
 #| fig-cap: "Illustrative example of simple random sampling, systematic sampling, stratified sampling, and cluster sampling across different parts of the world"
@@ -956,6 +993,7 @@ base +
     linewidth = 1,
     alpha = 0.7
   )
+
 ```
 
 @fig-samplingexamples and @fig-samplingexamplesworld illustrate the trade-offs between the different methods, and the ways in which they will be differently appropriate.\index{sampling!trade-offs} For instance, we see that systematic sampling provides a useful picture of the world in @fig-samplingexamplesworld, but if we were interested only in, say, only land, we would still be left with many samples that were not informative. Stratified sampling and cluster sampling enable us to focus on aspects of interest, but at the cost of a more holistic picture.\index{maps!sampling}
@@ -1009,6 +1047,7 @@ illustrative_sampling_long |>
       "Sum of sample",
       "Implied population sum"
     ))
+
 ```
 
 The actual sum of the population is 5,050.^[We can obtain this using a trick attributed to Carl Friedrich Gauss, the eighteenth century mathematician, who noticed that the sum of one to any number can be quickly obtained by finding the middle number and then multiplying that by one plus the number. In this case, we have $50 \times 101$. Alternatively we can use R: `sum(1:100)`.] While the specifics are unique to this sample, our estimate of the population sum, based on the scaling, are revealing.\index{sampling!comparison} The closest is stratified sample, closely followed by systematic sampling. Cluster sampling is a little over 10 per cent off, while simple random sampling is a little further away. To get close to the true sum, it is important that our sampling method gets as many of the higher values as possible. And so stratified and systematic sampling, both of which ensured that we had outcomes from the larger numbers did particularly well. The performance of cluster and simple random sampling would depend on the particular clusters, and units, selected. In this case, stratified and systematic sampling ensured that our estimate of the sum of the population would not be too far away from the actual population sum. Here, we might think of implications for the construction and evaluation of measures, such as GDP and other constructions that are summed, and the effect on the total of the different strata based on their size.
@@ -1034,6 +1073,7 @@ Ratio estimators\index{estimator!ratio} were used in 1802 by Pierre-Simon Laplac
 A ratio estimator of some population parameter is the ratio of two means.\index{estimator!ratio} For instance, imagine that we knew the total number of hours that a toddler slept for a 30-day period, and we want to know how many hours the parents slept over that same period. We may have some information on the number of hours that a toddler sleeps overnight, $x$, and the number of hours their parents sleep overnight, $y$, over a 30-day period.\index{simulation!toddler sleep}
 
 ```{r}
+
 set.seed(853)
 
 sleep <-
@@ -1045,6 +1085,7 @@ sleep <-
   select(toddler_sleep, parent_sleep, difference)
 
 sleep
+
 ```
 
 The average of each is different (@tbl-averagesleepestimate).
@@ -1064,6 +1105,7 @@ sleep |>
   style_tt(j = 1:2, align = "lr") |>
   format_tt(digits = 2, num_fmt = "decimal") |>
   setNames(c("Toddler sleep average", "Parent sleep average"))
+
 ```
 
 The ratio of the proportion of sleep that a parent gets compared with their toddler is:
@@ -1320,6 +1362,7 @@ For instance, we could imagine various countries in which it would be difficult 
 - Discuss to what extent the measurement of beauty is reliable, being sure to define the term as part of your discussion.
 - How is it possible that Country A's measure of imports of a given good from Country B do not equal Country B's measure of exports of that same good to Country A? Discuss, in detail, a different measurement that this makes you question.
 - Please discuss @tbl-bandmembers with respect to missing data.
+
 ```{r}
 #| echo: false
 #| label: tbl-bandmembers
@@ -1339,7 +1382,9 @@ tibble(
   tt() |>
   style_tt(j = 1:3, align = "lrr") |>
   setNames(c("Band", "Person", "Year of birth"))
+
 ```
+
 - Please discuss sampling bias in the context of the response by Katherine Rundell, a fellow at All Souls College, in response to a question about whether the word "emancipation" is from John Donne:
 
 > It is, although, of course, I think it would be amiss of me not to offer the caveat that often, the OED has always found first uses in canonical authors, in part because they're just the ones who survived fire. So of course, he may have just been noting down a word in common parlance rather than being its inventor
@@ -1352,8 +1397,6 @@ tibble(
 - I am interested in estimating the number of people on campus right now. Form a small group of 1-3 people and develop a plan, based on sampling, that you could execute given 15 minutes. Be sure to touch on measurement, counting, error, instrumentation, as well as sampling methodology. Share your plan with the class, improve it based on their feedback, and then, go an execute it. Let me know your estimate for how many people are on campus right now.
 - "Rabois' mistake": Imagine your sample consists of the entire population for some question of interest. Do you have to worry about bias? (Hint: Think about having a dataset for some year of everyone in some country and whether they went to a hospital and whether they died, and what that might lead you to conclude about the effect of hospitals on death.) To what extent would you be willing to give up some number of observations for better quality data (strong answers would reference @meng2018statistical and @Bradley2021)?  What data would you like (strong answers would establish an estimand)?
 - *Paper review:* Please read @Bradley2021 and write a review of at least one page, drawing on an example that you are familiar with.
-
-
 
 ### Task I {.unnumbered}
 
@@ -1378,7 +1421,6 @@ Your paper should cover at least:
 - A discussion of the strengths and weaknesses of the sampling approaches used by the ACS. (Hint: One fun thing could be to find the actual population of one state, then given the number of respondents in that and every state, use the ratio estimators approach to estimate the population of every state and then compare it with the actual populations.)
 
 Do not forget to cite the data (but do not upload the raw data to GitHub).
-
 
 Note:
 

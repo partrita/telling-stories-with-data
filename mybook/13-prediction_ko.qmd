@@ -39,6 +39,7 @@ library(poissonreg)
 library(tidymodels)
 library(tidyverse)
 library(tinytable)
+
 ```
 
 ## 서론
@@ -90,14 +91,17 @@ sim_run_data_split <-
   )
 
 sim_run_data_split
+
 ```
 
 데이터를 분할한 후, `training()`과 `testing()`을 사용하여 훈련 및 테스트 데이터셋을 생성합니다.
 
 ```{r}
+
 sim_run_data_train <- training(sim_run_data_split)
 
 sim_run_data_test <- testing(sim_run_data_split)
+
 ```
 
 데이터셋의 80%를 훈련 데이터셋에 배치했습니다. 이를 사용하여 모델의 매개변수를 추정할 것입니다. 나머지 20%는 남겨두고, 이를 사용하여 모델을 평가할 것입니다. 왜 이렇게 할까요? 우리의 관심사는 모델링의 모든 측면을 괴롭히는 편향-분산 트레이드오프입니다. 우리는 결과가 우리가 가진 데이터셋에 너무 특수하여 다른 데이터셋에 적용할 수 없을까 봐 우려합니다. 극단적인 예를 들자면, 10개의 관측치를 가진 데이터셋을 생각해 보십시오. 우리는 그 관측치를 완벽하게 맞추는 모델을 만들 수 있습니다. 그러나 그 모델을 다른 데이터셋에 적용하면, 동일한 기본 프로세스에 의해 생성된 데이터셋이라 할지라도 정확하지 않을 것입니다.
@@ -109,6 +113,7 @@ sim_run_data_test <- testing(sim_run_data_split)
 `tidymodels`를 사용하려면 먼저 `linear_reg()`로 선형 회귀에 관심이 있음을 지정합니다. 그런 다음 `set_engine()`로 선형 회귀 유형(이 경우 다중 선형 회귀)을 지정합니다. 마지막으로 `fit()`으로 모델을 지정합니다. 이것은 위에서 자세히 설명한 기본 R 접근 방식보다 훨씬 더 많은 인프라를 필요로 하지만, 이 접근 방식의 장점은 많은 모델을 적합하는 데 사용할 수 있다는 것입니다. 말하자면, 모델 공장을 만든 것입니다.
 
 ```{r}
+
 sim_run_data_first_model_tidymodels <-
   linear_reg() |>
   set_engine(engine = "lm") |>
@@ -116,6 +121,7 @@ sim_run_data_first_model_tidymodels <-
     marathon_time ~ five_km_time + was_raining,
     data = sim_run_data_train
   )
+
 ```
 
 추정된 계수는 @tbl-modelsummarybayesbetter 의 첫 번째 열에 요약되어 있습니다. 예를 들어, 데이터셋에서 5킬로미터 달리기 시간이 1분 더 길면 마라톤 시간이 약 8분 더 길어진다는 것을 발견합니다.
@@ -148,15 +154,18 @@ week_or_weekday_tidymodels <-
     is_weekday ~ number_of_cars,
     data = week_or_weekday_train
   )
+
 ```
 
 이전과 마찬가지로, 추정치와 비교하여 실제 결과를 그래프로 그릴 수 있습니다. 그러나 이의 좋은 점 중 하나는 테스트 데이터셋을 사용하여 모델의 예측 능력을 더 철저히 평가할 수 있다는 것입니다. 예를 들어, 혼동 행렬을 통해 각 예측의 개수를 실제 값과 비교하여 지정할 수 있습니다. 모델이 보류된 데이터셋에서 잘 작동한다는 것을 발견했습니다. 모델이 주중이라고 예측한 관측치는 90개였고, 실제로 주중이었습니다. 모델이 주말이라고 예측한 관측치는 95개였고, 실제로 주말이었습니다. 15개의 관측치에서 오류가 있었고, 이들은 주중이라고 예측했지만 주말이었던 7개와 그 반대였던 8개로 나뉘었습니다.
 
 ```{r}
+
 week_or_weekday_tidymodels |>
   predict(new_data = week_or_weekday_test) |>
   cbind(week_or_weekday_test) |>
   conf_mat(truth = is_weekday, estimate = .pred_class)
+
 ```
 
 #### 미국 정치적 지지
@@ -183,15 +192,18 @@ ces_tidymodels <-
   )
 
 ces_tidymodels
+
 ```
 
 그런 다음 테스트 세트에서 평가합니다. 모델이 트럼프 지지자를 식별하는 데 어려움을 겪는 것으로 보입니다.
 
 ```{r}
+
 ces_tidymodels |>
   predict(new_data = ces2020_test) |>
   cbind(ces2020_test) |>
   conf_mat(truth = voted_for, estimate = .pred_class)
+
 ```
 
 `tidymodels`를 소개할 때, 훈련 및 테스트 세트를 무작위로 구성하는 것의 중요성에 대해 논의했습니다. 우리는 훈련 데이터셋을 사용하여 매개변수를 추정하고, 테스트 세트에서 모델을 평가합니다. 무작위성의 변덕에 따라야 하는 이유와 데이터를 최대한 활용하고 있는지 묻는 것은 당연합니다. 예를 들어, 좋은 모델이 테스트 세트에 무작위로 포함되어 제대로 평가되지 않으면 어떻게 될까요? 또한, 테스트 세트가 크지 않으면 어떻게 될까요?
@@ -199,14 +211,17 @@ ces_tidymodels |>
 이를 해결하는 데 도움이 되는 일반적으로 사용되는 리샘플링 방법 중 하나는 $k$-겹 교차 검증입니다. 이 접근 방식에서는 데이터셋에서 $k$개의 다른 샘플 또는 "폴드"를 대체 없이 생성합니다. 그런 다음 모델을 처음 $k-1$개의 폴드에 적합하고, 마지막 폴드에서 평가합니다. 모든 관측치가 $k-1$번 훈련에 사용되고 한 번 테스트에 사용되도록 각 폴드에 대해 $k$번 이 작업을 수행합니다. $k$-겹 교차 검증 추정치는 평균 제곱 오차의 평균입니다[@islr, p. 181]. 예를 들어, `tidymodels`의 `vfold_cv()`를 사용하여 10개의 폴드를 생성할 수 있습니다.
 
 ```{r}
+
 set.seed(853)
 
 ces2020_10_folds <- vfold_cv(ces2020, v = 10)
+
 ```
 
 그런 다음 `fit_resamples()`를 사용하여 폴드의 다른 조합에 걸쳐 모델을 적합할 수 있습니다. 이 경우 모델은 10번 적합됩니다.
 
 ```{r}
+
 ces2020_cross_validation <-
   fit_resamples(
     object = logistic_reg(mode = "classification") |> set_engine("glm"),
@@ -216,6 +231,7 @@ ces2020_cross_validation <-
     metrics = metric_set(accuracy, sens),
     control = control_resamples(save_pred = TRUE)
   )
+
 ```
 
 모델의 성능을 이해하는 데 관심이 있을 수 있으며, `collect_metrics()`를 사용하여 폴드 전체에서 집계할 수 있습니다(@tbl-metricsvoters-1). 이러한 유형의 세부 정보는 일반적으로 논문의 본문에서 간략하게 언급되지만, 부록에 자세히 포함됩니다. 폴드 전체에서 모델의 평균 정확도는 0.61이고, 평균 민감도는 0.19이며, 평균 특이도는 0.90입니다.
@@ -238,6 +254,7 @@ conf_mat_resampled(ces2020_cross_validation) |>
   tt() |>
   style_tt(j = 1:4, align = "llrr") |>
   format_tt(digits = 2, num_mark_big = ",", num_fmt = "decimal")
+
 ```
 
 이것은 무엇을 의미합니까? 정확도는 올바르게 분류된 관측치의 비율입니다. 0.61이라는 결과는 모델이 동전 던지기보다 잘 작동하지만, 그 이상은 아니라는 것을 시사합니다. 민감도는 참으로 식별된 참 관측치의 비율입니다[@islr, p. 145]. 이 경우 모델이 응답자가 트럼프에게 투표했다고 예측했고, 실제로 그랬다는 것을 의미합니다. 특이도는 거짓으로 식별된 거짓 관측치의 비율입니다[@islr, p. 145]. 이 경우 바이든에게 투표한 유권자 중 바이든에게 투표할 것으로 예측된 유권자의 비율입니다. 이는 모델이 트럼프 지지자를 식별하는 데 어려움을 겪고 있다는 우리의 초기 생각을 확인시켜 줍니다.
@@ -247,6 +264,7 @@ conf_mat_resampled(ces2020_cross_validation) |>
 마지막으로, 개별 수준 결과에 관심이 있는 경우 `collect_predictions()`를 사용하여 데이터셋에 추가할 수 있습니다.
 
 ```{r}
+
 ces2020_with_predictions <-
   cbind(
     ces2020,
@@ -255,6 +273,7 @@ ces2020_with_predictions <-
       select(.pred_class)
   ) |>
   as_tibble()
+
 ```
 
 예를 들어, 모델이 고등학교를 졸업하지 않았거나, 고등학교를 졸업했거나, 2년제 대학을 졸업한 남성을 제외한 모든 개인에 대해 바이든 지지를 예측하고 있음을 알 수 있습니다(@tbl-omgthismodelishorriblelol).
@@ -276,14 +295,15 @@ ces2020_with_predictions |>
       "예측 투표",
       "수"
     ))
-```
 
+```
 
 ### 포아송 회귀
 
 `tidymodels`를 사용하여 `poissonreg`[@poissonreg]로 포아송 모델을 추정할 수 있습니다(@tbl-modelsummarypoisson).
 
 ```{r}
+
 count_of_A <-
   read_parquet(file = "outputs/data/count_of_A.parquet")
 
@@ -301,24 +321,22 @@ grades_tidymodels <-
     number_of_As ~ department,
     data = count_of_A_train
   )
+
 ```
 
-이 추정 결과는 @tbl-modelsummarypoisson의 두 번째 열에 있습니다. `glm()`의 추정치와 유사하지만, 분할로 인해 관측치 수가 적습니다.
-
-
-
+이 추정 결과는 @tbl-modelsummarypoisson 두 번째 열에 있습니다. `glm()`의 추정치와 유사하지만, 분할로 인해 관측치 수가 적습니다.
 
 ## 라쏘 회귀
 
-<!-- 텍스트의 좋은 점 중 하나는 기존 방법을 사용하여 입력으로 사용할 수 있다는 것입니다. 여기서는 로지스틱 회귀의 변형과 텍스트 입력을 사용하여 예측할 것입니다. @silge2018에서 영감을 받아 두 가지 다른 텍스트 입력을 사용하여 각각의 텍스트 샘플에서 모델을 훈련한 다음, 해당 모델을 사용하여 훈련 세트의 텍스트를 예측하려고 합니다. 이것은 임의의 예시이지만, 많은 실제 응용 프로그램을 상상할 수 있습니다. 예를 들어, 어떤 텍스트가 봇 또는 인간에 의해 작성되었을 가능성이 있는지에 관심이 있을 수 있습니다. -->
-
+<!-- 텍스트의 좋은 점 중 하나는 기존 방법을 사용하여 입력으로 사용할 수 있다는 것입니다. 여기서는 로지스틱 회귀의 변형과 텍스트 입력을 사용하여 예측할 것입니다. @silge2018 영감을 받아 두 가지 다른 텍스트 입력을 사용하여 각각의 텍스트 샘플에서 모델을 훈련한 다음, 해당 모델을 사용하여 훈련 세트의 텍스트를 예측하려고 합니다. 이것은 임의의 예시이지만, 많은 실제 응용 프로그램을 상상할 수 있습니다. 예를 들어, 어떤 텍스트가 봇 또는 인간에 의해 작성되었을 가능성이 있는지에 관심이 있을 수 있습니다. -->
 
 :::{.callout-note}
+
 ## 거인의 어깨 위에 서서
 
 로버트 팁시라니 박사\index{Tibshirani, Robert}는 스탠포드 대학교 통계학 및 생의학 데이터 과학과 교수입니다.\index{statistics} 1981년 스탠포드 대학교에서 통계학 박사 학위를 받은 후, 토론토 대학교에 조교수로 합류했습니다.\index{University of Toronto} 1994년 정교수로 승진했으며 1998년 스탠포드로 옮겼습니다. 그는 위에서 언급된 GAM과 자동 변수 선택 방법인 라쏘 회귀를 포함한 근본적인 기여를 했습니다. 그는 @islr 의 저자입니다. 그는 1996년 COPSS 회장상\index{COPSS Presidents' Award}을 수상했으며 2019년 왕립 학회 펠로우로 임명되었습니다.
-:::
 
+:::
 
 <!-- 먼저 데이터를 가져와야 합니다. `gutenbergr`[@gutenbergr]의 `gutenberg_download()`를 사용하여 프로젝트 구텐베르크에서 책을 가져옵니다. *제인 에어*[@janeeyre]와 *이상한 나라의 앨리스*[@citealice]를 고려합니다. -->
 
@@ -472,7 +490,6 @@ grades_tidymodels <-
 <!-- predictor <- alice_and_jane_dtm_training[] |> as.matrix() -->
 <!-- ``` -->
 
-
 <!-- 이제 모델을 실행할 수 있습니다. -->
 
 <!-- ```{r} -->
@@ -495,7 +512,6 @@ grades_tidymodels <-
 
 <!-- load("outputs/model/alice_vs_jane.rda") -->
 <!-- ``` -->
-
 
 <!-- ```{r} -->
 <!-- library(glmnet) -->
@@ -526,9 +542,6 @@ grades_tidymodels <-
 
 <!-- 아마도 놀랍지 않게도, 줄에 앨리스가 언급되면 이상한 나라의 앨리스일 가능성이 높고, 제인이 언급되면 제인 에어일 가능성이 높습니다. -->
 
-
-
-
 ## Python을 사용한 예측
 
 ### 설정
@@ -547,7 +560,6 @@ Microsoft에서 제공하는 무료 IDE인 VSCode 내에서 Python을 사용할 
 
 #### TensorFlow
 
-
 ## 연습 문제
 
 ### 연습 {.unnumbered}
@@ -560,7 +572,6 @@ Microsoft에서 제공하는 무료 IDE인 VSCode 내에서 Python을 사용할 
 
 ### 퀴즈 {.unnumbered}
 
-
 ### 수업 활동 {.unnumbered}
 
 ### 과제 {.unnumbered}
@@ -572,6 +583,7 @@ Microsoft에서 제공하는 무료 IDE인 VSCode 내에서 Python을 사용할 
 qb_regular_season_stats <-
   load_player_stats(seasons = TRUE) |>
   filter(season_type == "REG" & position == "QB")
+
 ```
 
 NFL 분석가라고 가정하고 2023년 정규 시즌의 절반, 즉 9주차가 막 끝났다고 가정하십시오. 시즌의 나머지 부분, 즉 10-18주차에 각 팀에 대해 생성할 수 있는 `passing_epa`의 최상의 예측 모델에 관심이 있습니다.

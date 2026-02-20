@@ -54,13 +54,14 @@ library(rstanarm)
 library(scales)
 library(tidyverse)
 library(tinytable)
+
 ```
 
 ## 서론
 
 인과 관계에 대해 말할 수 있도록 실험을 수행할 수 있다면 삶은 훌륭합니다.\\index{causal inference} 그러나 실험을 실행할 수 없는 상황에서도 인과적 주장을 하고 싶을 때가 있습니다. 그리고 실험 외부의 데이터는 실험이 가지지 않는 가치를 가집니다. 이 장에서는 관찰 데이터를 사용하여 인과 관계에 대해 말할 수 있는 상황과 방법을 논의합니다. 우리는 통계학뿐만 아니라 경제학\\index{economics} 및 정치학\\index{political science}과 같은 다양한 사회 과학, 그리고 역학\\index{epidemiology}에서 가져온 비교적 간단한 방법을 정교한 방식으로 사용합니다.
 
-예를 들어, @dagan2021bnt162b2는 관찰 데이터를 사용하여 Pfizer-BioNTech 백신의 효과를 확인합니다.\\index{causal inference!observational data} 그들은 이러한 방식으로 관찰 데이터를 사용하는 한 가지 우려 사항은 혼란 변수라고 논의합니다. 이는 예측 변수와 결과 변수 모두에 영향을 미치고 허위 관계를 초래할 수 있는 어떤 변수가 있다고 우려하는 경우입니다.\\index{confounder} @dagan2021bnt162b2는 백신 접종자와 비접종자 간에 일대일 매칭을 통해 연령, 성별, 지리적 위치 및 의료 사용과 같은 잠재적 혼란 변수 목록을 먼저 작성한 다음 각각을 조정하여 이를 해결합니다. 실험 데이터는 관찰 데이터 사용을 안내했으며, 후자의 더 큰 크기는 특정 연령대 및 질병 범위에 초점을 맞출 수 있게 했습니다.
+예를 들어, @dagan2021bnt162b2 관찰 데이터를 사용하여 Pfizer-BioNTech 백신의 효과를 확인합니다.\\index{causal inference!observational data} 그들은 이러한 방식으로 관찰 데이터를 사용하는 한 가지 우려 사항은 혼란 변수라고 논의합니다. 이는 예측 변수와 결과 변수 모두에 영향을 미치고 허위 관계를 초래할 수 있는 어떤 변수가 있다고 우려하는 경우입니다.\\index{confounder} @dagan2021bnt162b2 백신 접종자와 비접종자 간에 일대일 매칭을 통해 연령, 성별, 지리적 위치 및 의료 사용과 같은 잠재적 혼란 변수 목록을 먼저 작성한 다음 각각을 조정하여 이를 해결합니다. 실험 데이터는 관찰 데이터 사용을 안내했으며, 후자의 더 큰 크기는 특정 연령대 및 질병 범위에 초점을 맞출 수 있게 했습니다.
 
 이 장은 관찰 데이터를 정교한 방식으로 사용하는 것에 관한 것입니다. A/B 테스트나 RCT를 실행할 수 없을 때에도 인과적 진술을 편안하게 할 수 있는 방법입니다. 실제로, 어떤 상황에서는 그러한 테스트를 실행하지 않거나, 그 외에 관찰 기반 접근 방식을 실행하는 것을 선호할 수도 있습니다. 우리는 세 가지 주요 방법인 차이-차이, 회귀 불연속성, 도구 변수를 다룹니다.
 
@@ -104,6 +105,7 @@ department_two <-
 both_departments <- rbind(department_one, department_two)
 
 both_departments
+
 ```
 
 ```{r}
@@ -127,9 +129,10 @@ both_departments |>
   theme_minimal() +
   scale_color_brewer(palette = "Set1") +
   theme(legend.position = "bottom")
+
 ```
 
-심슨의 역설은 종종 캘리포니아 대학교 버클리\index{Berkeley}의 대학원 입학에 대한 실제 데이터를 사용하여 설명됩니다[@bickel1975sex]. 이 논문은 [@sec-on-writing]에서 출판된 가장 훌륭한 부제목 중 하나로 언급되었습니다. @Hernn2011은 관계와 역설의 원인을 더 자세히 설명하는 DAG를 생성합니다.
+심슨의 역설은 종종 캘리포니아 대학교 버클리\index{Berkeley}의 대학원 입학에 대한 실제 데이터를 사용하여 설명됩니다[@bickel1975sex]. 이 논문은 [@sec-on-writing]에서 출판된 가장 훌륭한 부제목 중 하나로 언급되었습니다. @Hernn2011 관계와 역설의 원인을 더 자세히 설명하는 DAG를 생성합니다.
 
 최근에는 문서에 언급된 바와 같이 `palmerpenguins`의 "펭귄" 데이터셋은 펭귄의 다른 종에서 체질량과 부리 깊이 사이의 관계에 대한 실제 데이터를 사용하여 심슨의 역설의 예를 제공합니다(@fig-simpsonsparadoxinpenguins). 전체적인 음의 추세는 젠투 펭귄이 아델리 및 턱끈 펭귄에 비해 더 무겁지만 부리가 더 짧은 경향이 있기 때문에 발생합니다.
 
@@ -158,6 +161,7 @@ penguins |>
   theme_minimal() +
   scale_color_brewer(palette = "Set1") +
   theme(legend.position = "bottom")
+
 ```
 
 ### 버크슨의 역설
@@ -188,8 +192,8 @@ general_public <- tibble(
 )
 
 professionals_and_public <- bind_rows(professionals, general_public)
-```
 
+```
 
 ```{r}
 #| eval: true
@@ -212,8 +216,8 @@ professionals_and_public |>
   theme_minimal() +
   scale_color_brewer(palette = "Set1") +
   theme(legend.position = "bottom")
-```
 
+```
 
 ## 차이-차이
 
@@ -265,6 +269,7 @@ simulated_diff_in_diff <-
   )
 
 simulated_diff_in_diff
+
 ```
 
 ```{r}
@@ -283,6 +288,7 @@ simulated_diff_in_diff |>
   labs(x = "기간", y = "서브 속도", color = "새 라켓을 얻은 사람") +
   scale_color_brewer(palette = "Set1") +
   theme(legend.position = "bottom")
+
 ```
 
 평균 차이의 평균을 통해 추정치를 수동으로 얻을 수 있습니다. 그렇게 하면 새 테니스 라켓의 효과가 5.06으로 추정되며, 이는 우리가 시뮬레이션한 것과 유사합니다.
@@ -305,6 +311,7 @@ ave_diff <-
 
 # 각 그룹의 평균 차이 간의 차이
 ave_diff$average_difference[2] - ave_diff$average_difference[1]
+
 ```
 
 그리고 선형 회귀를 사용하여 동일한 결과를 얻을 수 있습니다. 우리가 관심 있는 모델은 다음과 같습니다.
@@ -334,8 +341,8 @@ saveRDS(
   diff_in_diff_example_regression,
   file = "diff_in_diff_example_regression.rds"
 )
-```
 
+```
 
 ```{r}
 #| echo: false
@@ -348,6 +355,7 @@ saveRDS(
   diff_in_diff_example_regression,
   file = "outputs/model/diff_in_diff_example_regression.rds"
 )
+
 ```
 
 ```{r}
@@ -358,6 +366,7 @@ saveRDS(
 
 diff_in_diff_example_regression <-
   readRDS(file = "diff_in_diff_example_regression.rds")
+
 ```
 
 ```{r}
@@ -368,8 +377,8 @@ diff_in_diff_example_regression <-
 
 diff_in_diff_example_regression <-
   readRDS(file = "outputs/model/diff_in_diff_example_regression.rds")
-```
 
+```
 
 ```{r}
 #| tbl-cap: "새 테니스 라켓을 얻기 전후의 차이를 보여주는 시뮬레이션된 데이터의 그림"
@@ -380,8 +389,8 @@ diff_in_diff_example_regression <-
 modelsummary(
   diff_in_diff_example_regression
 )
-```
 
+```
 
 ### 가정
 
@@ -396,38 +405,30 @@ modelsummary(
 3. 신뢰성과 비교한 장기적인 효과. [@sec-hunt-data]에서 논의했듯이, 우리가 실행하는 분석의 길이에 따라 절충안이 있습니다. 분석을 더 오래 실행할수록 다른 요인이 결과에 영향을 미 미칠 가능성이 더 커집니다. 또한 치료받지 않은 사람이 치료받을 가능성도 증가합니다. 그러나 다른 한편으로는 단기적인 결과가 장기적으로 계속될 것이라고 설득력 있게 주장하기 어려울 수 있습니다.
 4. 함수형태 의존성. 결과가 유사할 때는 문제가 덜하지만, 다를 경우 함수형태가 결과의 일부 측면에 영향을 미칠 수 있습니다.
 
-
-
-
-
-
-
-
-
-
 ### 1960년에서 1974년 사이 프랑스 신문 가격
 
-이 사례 연구에서는 @angelucci2019newspapers를 소개합니다. 그들은 텔레비전 도입이 프랑스 신문에 미치는 영향을 이해하는 데 관심이 있습니다. 주요 발견 중 하나를 재현할 것입니다.\\index{France!newspaper prices}\\index{difference-in-differences!French newspapers}
+이 사례 연구에서는 @angelucci2019newspapers 소개합니다. 그들은 텔레비전 도입이 프랑스 신문에 미치는 영향을 이해하는 데 관심이 있습니다. 주요 발견 중 하나를 재현할 것입니다.\\index{France!newspaper prices}\\index{difference-in-differences!French newspapers}
 
-신문의 비즈니스 모델은 인터넷으로 인해 도전을 받았고 많은 지역 신문이 폐간되었습니다. 이 문제는 새로운 것이 아닙니다. 텔레비전이 도입되었을 때도 비슷한 우려가 있었습니다. @angelucci2019newspapers는 1967년에 발표된 프랑스의 텔레비전 광고 도입을 사용하여 광고 수익 감소가 신문에 미치는 영향을 조사합니다. 그들은 1960년부터 1974년까지 프랑스 신문 데이터셋을 생성한 다음 차이-차이를 사용하여 광고 수익 감소가 신문의 콘텐츠 및 가격에 미치는 영향을 조사합니다. 그들이 초점을 맞추는 변화는 텔레비전 광고 도입이며, 이는 지역 신문보다 전국 신문에 더 큰 영향을 미쳤다고 주장합니다. 그들은 이러한 변화가 신문의 저널리즘 콘텐츠 감소와 신문 가격 하락으로 이어진다는 것을 발견합니다. 이러한 변화에 초점을 맞추고 차이-차이를 사용하여 분석하는 것은 몇 가지 경쟁 효과를 분리하는 데 중요합니다. 예를 들어, 신문이 더 이상 광고에 높은 가격을 청구할 수 없었기 때문에 불필요해졌는지, 아니면 소비자들이 텔레비전에서 뉴스를 얻는 것을 선호했기 때문인지?
+신문의 비즈니스 모델은 인터넷으로 인해 도전을 받았고 많은 지역 신문이 폐간되었습니다. 이 문제는 새로운 것이 아닙니다. 텔레비전이 도입되었을 때도 비슷한 우려가 있었습니다. @angelucci2019newspapers 1967년에 발표된 프랑스의 텔레비전 광고 도입을 사용하여 광고 수익 감소가 신문에 미치는 영향을 조사합니다. 그들은 1960년부터 1974년까지 프랑스 신문 데이터셋을 생성한 다음 차이-차이를 사용하여 광고 수익 감소가 신문의 콘텐츠 및 가격에 미치는 영향을 조사합니다. 그들이 초점을 맞추는 변화는 텔레비전 광고 도입이며, 이는 지역 신문보다 전국 신문에 더 큰 영향을 미쳤다고 주장합니다. 그들은 이러한 변화가 신문의 저널리즘 콘텐츠 감소와 신문 가격 하락으로 이어진다는 것을 발견합니다. 이러한 변화에 초점을 맞추고 차이-차이를 사용하여 분석하는 것은 몇 가지 경쟁 효과를 분리하는 데 중요합니다. 예를 들어, 신문이 더 이상 광고에 높은 가격을 청구할 수 없었기 때문에 불필요해졌는지, 아니면 소비자들이 텔레비전에서 뉴스를 얻는 것을 선호했기 때문인지?
 
-@angelucci2019newspapers의 기반 데이터에 대한 무료 접근은 등록 후 [여기](https://www.openicpsr.org/openicpsr/project/116438/version/V1/view)에서 얻을 수 있습니다. 데이터셋은 Stata 데이터 형식인 ".dta"이며, `haven`의 `read_dta()`로 읽을 수 있습니다. 우리가 관심 있는 파일은 "Angelucci_Cage_AEJMicro_dataset.dta"이며, 이는 "dta" 폴더에 있습니다.
+@angelucci2019newspapers 기반 데이터에 대한 무료 접근은 등록 후 [여기](https://www.openicpsr.org/openicpsr/project/116438/version/V1/view)에서 얻을 수 있습니다. 데이터셋은 Stata 데이터 형식인 ".dta"이며, `haven`의 `read_dta()`로 읽을 수 있습니다. 우리가 관심 있는 파일은 "Angelucci_Cage_AEJMicro_dataset.dta"이며, 이는 "dta" 폴더에 있습니다.
 
 ```{r}
 #| eval: false
 #| include: true
 
 newspapers <- read_dta("Angelucci_Cage_AEJMicro_dataset.dta")
-```
 
+```
 
 ```{r}
 #| echo: false
 
 newspapers <- read_dta("inputs/data/116438-V1/data/dta/Angelucci_Cage_AEJMicro_dataset.dta")
+
 ```
 
-데이터셋에는 1,196개의 관측치와 52개의 변수가 있습니다. @angelucci2019newspapers는 1960-1974년 기간에 관심이 있으며, 약 100개의 신문이 있습니다. 기간 시작 시 14개의 전국 신문이 있었고, 끝에는 12개가 있었습니다. 핵심 기간은 1967년으로, 프랑스 정부가 텔레비전 광고를 허용한다고 발표한 때입니다. @angelucci2019newspapers는 전국 신문이 이러한 변화의 영향을 받았지만, 지역 신문은 그렇지 않았다고 주장합니다. 전국 신문은 처리군이고 지역 신문은 대조군입니다.
+데이터셋에는 1,196개의 관측치와 52개의 변수가 있습니다. @angelucci2019newspapers 1960-1974년 기간에 관심이 있으며, 약 100개의 신문이 있습니다. 기간 시작 시 14개의 전국 신문이 있었고, 끝에는 12개가 있었습니다. 핵심 기간은 1967년으로, 프랑스 정부가 텔레비전 광고를 허용한다고 발표한 때입니다. @angelucci2019newspapers 전국 신문이 이러한 변화의 영향을 받았지만, 지역 신문은 그렇지 않았다고 주장합니다. 전국 신문은 처리군이고 지역 신문은 대조군입니다.
 
 우리는 헤드라인 차이-차이 결과에만 초점을 맞추고 요약 통계를 구성합니다.
 
@@ -445,6 +446,7 @@ newspapers <-
          year = as.integer(year))
 
 newspapers
+
 ```
 
 1967년 이후에 무슨 일이 일어났는지, 특히 광고 수익 측면에서, 그리고 전국 신문과 비교하여 지역 신문에 어떤 차이가 있었는지에 관심이 있습니다(@fig-frenchnewspapersrevenue). y축을 조정하기 위해 `scales`를 사용합니다.
@@ -470,8 +472,8 @@ newspapers |>
   facet_wrap(vars(type), nrow = 2) +
   theme_minimal() +
   geom_vline(xintercept = 1966.5, linetype = "dashed")
-```
 
+```
 
 우리가 추정하는 데 관심 있는 모델은 다음과 같습니다.
 
@@ -533,8 +535,8 @@ saveRDS(
   subscription_price,
   file = "subscription_price.rds"
 )
-```
 
+```
 
 ```{r}
 #| echo: false
@@ -557,6 +559,7 @@ saveRDS(
   subscription_price,
   file = "outputs/model/subscription_price.rds"
 )
+
 ```
 
 ```{r}
@@ -573,8 +576,8 @@ ad_revenue_div_circulation <-
 
 subscription_price <-
   readRDS(file = "subscription_price.rds")
-```
 
+```
 
 ```{r}
 #| echo: false
@@ -590,9 +593,10 @@ ad_revenue_div_circulation <-
 
 subscription_price <-
   readRDS(file = "outputs/model/subscription_price.rds")
+
 ```
 
-@tbl-frenchnewspapersadvertising에서 수익 및 가격과 같은 광고 관련 변수를 살펴보면 일관되게 음의 계수를 발견합니다.
+@tbl-frenchnewspapersadvertising 수익 및 가격과 같은 광고 관련 변수를 살펴보면 일관되게 음의 계수를 발견합니다.
 
 ```{r}
 #| label: tbl-frenchnewspapersadvertising
@@ -611,13 +615,14 @@ modelsummary(
   fmt = 2,
   coef_map = selected_variables
 )
+
 ```
 
-@angelucci2019newspapers의 주요 결과를 재현할 수 있으며, 많은 경우 1967년 이후로 차이가 나타나는 것을 발견합니다. @angelucci2019newspapers [pp. 353-358]는 또한 차이-차이 모델에 필요한 해석, 외부 타당성 및 견고성에 대한 논의의 훌륭한 예시를 포함합니다.
+@angelucci2019newspapers 주요 결과를 재현할 수 있으며, 많은 경우 1967년 이후로 차이가 나타나는 것을 발견합니다. @angelucci2019newspapers [pp. 353-358]는 또한 차이-차이 모델에 필요한 해석, 외부 타당성 및 견고성에 대한 논의의 훌륭한 예시를 포함합니다.
 
 ## 성향 점수 매칭
 
-차이-차이는 강력한 분석 프레임워크입니다. 그러나 적절한 처리군과 대조군을 식별하기 어려울 수 있습니다. @alexander2018age는 이주 형제를 비교합니다. 한 형제는 대부분의 교육을 다른 나라에서 받았고, 다른 형제는 대부분의 교육을 미국에서 받았습니다. 사용 가능한 데이터를 고려할 때, 이 매칭은 합리적인 처리군과 대조군을 제공합니다. 그러나 친구나 사촌과 같은 다른 매칭은 다른 결과를 제공할 수 있습니다.
+차이-차이는 강력한 분석 프레임워크입니다. 그러나 적절한 처리군과 대조군을 식별하기 어려울 수 있습니다. @alexander2018age 이주 형제를 비교합니다. 한 형제는 대부분의 교육을 다른 나라에서 받았고, 다른 형제는 대부분의 교육을 미국에서 받았습니다. 사용 가능한 데이터를 고려할 때, 이 매칭은 합리적인 처리군과 대조군을 제공합니다. 그러나 친구나 사촌과 같은 다른 매칭은 다른 결과를 제공할 수 있습니다.
 
 우리는 관찰 가능한 변수를 기반으로만 매칭할 수 있습니다. 예를 들어, 연령대 또는 교육. 두 가지 다른 시점에서 한 도시의 18세 흡연율과 다른 도시의 18세 흡연율을 비교합니다. 이것은 거친 매칭이 될 것입니다. 왜냐하면 18세 사이에는 우리가 일반적으로 관찰하는 변수, 예를 들어 성별 및 교육 측면에서도 많은 차이가 있다는 것을 알고 있기 때문입니다. 이를 처리하는 한 가지 방법은 하위 그룹을 만드는 것입니다. 예를 들어, 고등학교 교육을 받은 18세 남성 등. 그러나 그러면 표본 크기가 빠르게 작아집니다. 또한 연속 변수를 처리하는 방법도 문제입니다. 그리고 18세가 19세와 정말 그렇게 다릅니까? 그들과도 비교해 보는 것은 어떻습니까?
 
@@ -651,6 +656,7 @@ purchase_data <-
   )
 
 purchase_data
+
 ```
 
 그런 다음 무료 배송으로 처리될 확률을 추가해야 합니다. 우리는 그것이 예측 변수에 따라 달라지며, 젊고, 고소득이며, 남성인 개인이 이 처리를 더 가능하게 한다고 말할 것입니다. 우리는 상황을 시뮬레이션했기 때문에 그것을 알고 있습니다. 실제 데이터를 사용한다면 알지 못할 것입니다.
@@ -676,6 +682,7 @@ purchase_data <-
     softmax_prob = exp(sum_num) / exp(max(sum_num) + 0.5),
     free_shipping = rbinom(n = sample_size, size = 1, prob = softmax_prob)) |>
   select(-(age_num:softmax_prob))
+
 ```
 
 마지막으로, 개인의 평균 지출에 대한 어떤 측정값이 필요합니다. 우리는 이것이 소득에 따라 증가한다고 가정할 것입니다. 무료 배송을 받은 사람들의 지출이 그렇지 않은 사람들보다 약간 더 높기를 원합니다.\\index{distribution!Normal}
@@ -695,9 +702,10 @@ purchase_data <-
   mutate(across(c(gender, free_shipping), as.factor))
 
 purchase_data
+
 ```
 
-순진하게도 무료 배송을 받은 사람들과 그렇지 않은 사람들 간의 평균 지출에 차이가 있음을 알 수 있습니다(@tbl-heyheybigspender). 그러나 근본적인 우려는 무료 배송을 받지 않았다면 무료 배송을 받은 사람들의 지출이 어떠했을까 하는 것입니다. @tbl-heyheybigspender는 평균 비교를 보여주지만, 모든 사람이 무료 배송을 받을 기회가 동일하지는 않았습니다. 따라서 우리는 평균 비교 사용의 타당성에 의문을 제기합니다. 대신 성향 점수 매칭을 사용하여 실제로 무료 배송을 받은 각 관측치를 관찰 가능한 변수를 기반으로 무료 배송을 받지 않은 가장 유사한 관측치와 "연결"합니다. 결과는 508개의 관측치를 가진 데이터셋입니다.
+순진하게도 무료 배송을 받은 사람들과 그렇지 않은 사람들 간의 평균 지출에 차이가 있음을 알 수 있습니다(@tbl-heyheybigspender). 그러나 근본적인 우려는 무료 배송을 받지 않았다면 무료 배송을 받은 사람들의 지출이 어떠했을까 하는 것입니다. @tbl-heyheybigspender 평균 비교를 보여주지만, 모든 사람이 무료 배송을 받을 기회가 동일하지는 않았습니다. 따라서 우리는 평균 비교 사용의 타당성에 의문을 제기합니다. 대신 성향 점수 매칭을 사용하여 실제로 무료 배송을 받은 각 관측치를 관찰 가능한 변수를 기반으로 무료 배송을 받지 않은 가장 유사한 관측치와 "연결"합니다. 결과는 508개의 관측치를 가진 데이터셋입니다.
 
 ```{r}
 #| message: false
@@ -716,6 +724,7 @@ matched_groups
 matched_dataset <- match.data(matched_groups)
 
 matched_dataset
+
 ```
 
 마지막으로, 선형 회귀를 사용하여 평균 지출에 대한 처리 효과를 추정할 수 있습니다(@tbl-treatedexample). 특히 관심 있는 것은 처리 변수, 이 경우 무료 배송과 관련된 계수입니다.
@@ -732,20 +741,21 @@ propensity_score_regression <- lm(
 )
 
 modelsummary(propensity_score_regression)
+
 ```
 
-@tbl-treatedexample는 매칭된 표본만을 기반으로 하며, 효과가 우리가 시뮬레이션한 것과 같다는 것을 발견합니다. 즉, 무료 배송을 받은 사람들과 그렇지 않은 사람들 간의 평균 지출에 10의 차이가 있습니다. 이는 전체 표본을 기반으로 한 @tbl-heyheybigspender와 대조됩니다.
+@tbl-treatedexample 매칭된 표본만을 기반으로 하며, 효과가 우리가 시뮬레이션한 것과 같다는 것을 발견합니다. 즉, 무료 배송을 받은 사람들과 그렇지 않은 사람들 간의 평균 지출에 10의 차이가 있습니다. 이는 전체 표본을 기반으로 한 @tbl-heyheybigspender 대조됩니다.
 
 성향 점수 매칭을 다루는 이유는 널리 사용되기 때문입니다. 그러나 절충안이 있습니다. 사용 시 투명성이 필요합니다[@omggreifer]. 이러한 우려 사항에는 다음이 포함됩니다[@king2019propensity].\\index{propensity score matching!concerns}
 
 1. 관찰 불가능한 변수. 성향 점수 매칭은 관찰 불가능한 변수에 대해 매칭할 수 없습니다. 이는 교실 환경에서는 괜찮을 수 있지만, 더 현실적인 환경에서는 문제를 야기할 가능성이 높습니다. 매우 유사해 보이는 개인이 다른 처리를 받았을 때, 차이를 유발하는 관찰 불가능한 어떤 것이 없다면 이해하기 어렵습니다. 성향 점수 매칭은 이러한 것을 설명할 수 없으므로, 어떤 기능이 실제로 함께 모이는지 알기 어렵습니다.
 2. 모델링. 성향 점수 매칭의 결과는 사용되는 모델에 따라 달라지는 경향이 있습니다. 어떤 모델을 사용할지에 대한 상당한 유연성이 있으므로, 연구자는 적합한 모델을 찾기 위해 매칭을 선택할 수 있습니다. 또한, 두 회귀 단계(매칭 및 분석)가 별도로 수행되므로 불확실성 전파가 없습니다.
 
-관찰 불가능한 변수의 근본적인 문제는 관찰되지 않은 데이터가 필요하므로 결코 중요하지 않다는 것을 보여줄 수 없습니다. 성향 점수 매칭 및 기타 매칭 방법을 사용하려는 사람들은 그것이 적절하다는 것을 설득력 있게 주장할 수 있어야 합니다. @mckenzieforthedefence는 예를 들어 용량 제한이 있을 때 이것이 가능한 몇 가지 경우를 제시합니다. 이 책의 공통된 주제와 마찬가지로, 이러한 경우는 데이터와 그것을 생성한 상황에 대한 깊은 이해에 초점을 맞춰야 합니다.
+관찰 불가능한 변수의 근본적인 문제는 관찰되지 않은 데이터가 필요하므로 결코 중요하지 않다는 것을 보여줄 수 없습니다. 성향 점수 매칭 및 기타 매칭 방법을 사용하려는 사람들은 그것이 적절하다는 것을 설득력 있게 주장할 수 있어야 합니다. @mckenzieforthedefence 예를 들어 용량 제한이 있을 때 이것이 가능한 몇 가지 경우를 제시합니다. 이 책의 공통된 주제와 마찬가지로, 이러한 경우는 데이터와 그것을 생성한 상황에 대한 깊은 이해에 초점을 맞춰야 합니다.
 
 ## 회귀 불연속성 설계
 
-회귀 불연속성 설계(RDD)\\index{regression discontinuity design}는 @thistlethwaite1960regression에 의해 확립되었으며, 처리를 결정하는 절단점이 있는 연속 변수가 있을 때 인과 관계를 얻는 인기 있는 방법입니다. 79%를 얻은 학생과 80%를 얻은 학생 사이에 차이가 있습니까? 아마도 많지 않겠지만, 한 명은 A-를 받을 수 있고 다른 한 명은 B+를 받을 수 있습니다. 성적표에서 그것을 보면 직업에 영향을 미치고 소득에 영향을 미칠 수 있습니다. 이 경우 백분율은 "강제 변수" 또는 "강제 함수"이고 A-의 절단점은 "임계값"입니다. 처리가 강제 변수에 의해 결정되므로 해당 변수를 제어해야 합니다. 이러한 겉보기에 임의적인 절단점은 항상 볼 수 있습니다. 따라서 RDD를 사용하는 많은 연구가 있었습니다.
+회귀 불연속성 설계(RDD)\\index{regression discontinuity design}는 @thistlethwaite1960regression 의해 확립되었으며, 처리를 결정하는 절단점이 있는 연속 변수가 있을 때 인과 관계를 얻는 인기 있는 방법입니다. 79%를 얻은 학생과 80%를 얻은 학생 사이에 차이가 있습니까? 아마도 많지 않겠지만, 한 명은 A-를 받을 수 있고 다른 한 명은 B+를 받을 수 있습니다. 성적표에서 그것을 보면 직업에 영향을 미치고 소득에 영향을 미칠 수 있습니다. 이 경우 백분율은 "강제 변수" 또는 "강제 함수"이고 A-의 절단점은 "임계값"입니다. 처리가 강제 변수에 의해 결정되므로 해당 변수를 제어해야 합니다. 이러한 겉보기에 임의적인 절단점은 항상 볼 수 있습니다. 따라서 RDD를 사용하는 많은 연구가 있었습니다.
 
 RDD와 관련하여 약간 다른 용어가 사용되는 경우가 있습니다. 예를 들어, @Cunningham2021 은 강제 함수를 실행 변수라고 부릅니다. 사용되는 정확한 용어는 일관되게 사용하는 한 중요하지 않습니다.
 
@@ -778,6 +788,7 @@ rdd_example_data <-
   )
 
 rdd_example_data
+
 ```
 
 ```{r}
@@ -811,6 +822,7 @@ rdd_example_data |>
     x = "점수",
     y = "소득 ($)"
   )
+
 ```
 
 이진 변수를 사용하여 선형 회귀로 80점 이상을 받은 것이 소득에 미치는 영향을 추정할 수 있습니다. 계수가 약 2일 것으로 예상하며, 이는 우리가 시뮬레이션한 것과 일치하고, 우리가 발견한 것입니다(@tbl-rddexample).
@@ -840,6 +852,7 @@ saveRDS(
   rdd_example,
   file = "rdd_example.rds"
 )
+
 ```
 
 ```{r}
@@ -853,6 +866,7 @@ saveRDS(
   rdd_example,
   file = "outputs/model/rdd_example.rds"
 )
+
 ```
 
 ```{r}
@@ -863,6 +877,7 @@ saveRDS(
 
 rdd_example <-
   readRDS(file = "rdd_example.rds")
+
 ```
 
 ```{r}
@@ -873,6 +888,7 @@ rdd_example <-
 
 rdd_example <-
   readRDS(file = "outputs/model/rdd_example.rds")
+
 ```
 
 ```{r}
@@ -885,6 +901,7 @@ modelsummary(
   models = rdd_example,
   fmt = 2
 )
+
 ```
 
 이 추정치에는 다양한 주의 사항이 있지만, RDD의 본질은 여기에 있습니다. 적절한 설정과 모델이 주어진다면 RDD는 무작위 시험과 비교하여 유리할 수 있습니다[@bloombellreiman2020].
@@ -892,6 +909,7 @@ modelsummary(
 `rdrobust`를 사용하여 RDD를 구현할 수도 있습니다. 이 접근 방식의 장점은 많은 일반적인 확장을 쉽게 사용할 수 있다는 것입니다.
 
 ```{r}
+
 rdrobust(
   y = rdd_example_data$income,
   x = rdd_example_data$mark,
@@ -900,8 +918,8 @@ rdrobust(
   all = TRUE
 ) |>
   summary()
-```
 
+```
 
 ### 가정
 
@@ -912,7 +930,7 @@ RDD의 주요 가정은 다음과 같습니다[@Cunningham2021, p. 163].\\index{
 
 첫 번째 가정은 주로 절단점을 조작할 수 없다는 것과 관련이 있으며, 절단점이 의미를 갖도록 보장합니다. 두 번째 가정은 임계값의 양쪽에 있는 사람들이 본질적으로 임계값의 양쪽에 떨어지는 것 외에는 유사하다는 것을 확신할 수 있게 합니다.
 
-@sec-hunt-data에서 무작위 대조 시험과 A/B 테스트를 논의했을 때, 처리의 무작위 할당은 통제군과 처리군이 처리 외에는 동일하다는 것을 의미했습니다. 그런 다음 차이-차이로 넘어갔고, 처리군과 통제군 사이에 공통적인 추세가 있다고 가정했습니다. 우리는 그룹이 다를 수 있지만, 그들의 차이를 "차이로 제거"할 수 있다고 허용했습니다. 마지막으로, 매칭을 고려했고, 통제군과 처리군이 달라 보일지라도, 처리되지 않았다는 사실 외에는 모든 면에서 그들과 유사한 그룹과 매칭할 수 있다고 말했습니다.
+@sec-hunt-data 무작위 대조 시험과 A/B 테스트를 논의했을 때, 처리의 무작위 할당은 통제군과 처리군이 처리 외에는 동일하다는 것을 의미했습니다. 그런 다음 차이-차이로 넘어갔고, 처리군과 통제군 사이에 공통적인 추세가 있다고 가정했습니다. 우리는 그룹이 다를 수 있지만, 그들의 차이를 "차이로 제거"할 수 있다고 허용했습니다. 마지막으로, 매칭을 고려했고, 통제군과 처리군이 달라 보일지라도, 처리되지 않았다는 사실 외에는 모든 면에서 그들과 유사한 그룹과 매칭할 수 있다고 말했습니다.
 
 회귀 불연속성에서는 약간 다른 설정을 고려합니다. 두 그룹은 강제 변수 측면에서 완전히 다릅니다. 그들은 임계값의 양쪽에 있습니다. 전혀 겹치지 않습니다. 그러나 우리는 임계값을 알고 있으며, 양쪽에 있는 사람들이 본질적으로 일치한다고 믿습니다. 2019년 NBA 동부 컨퍼런스 준결승인 토론토와 필라델피아를 고려해 봅시다.
 
@@ -985,12 +1003,12 @@ both |>
   geom_smooth(formula = y ~ poly(x, 3), method = "lm") +
   theme_minimal() +
   theme(legend.position = "bottom")
+
 ```
 
 결과는 결과의 추정치가 모델 선택에 따라 달라진다는 것입니다. RDD에서 이 문제가 자주 발생하며[@gelmanonrdd], 고차 다항식을 사용하지 않고 대신 선형, 2차 또는 다른 부드러운 함수를 모델 선택으로 사용하는 것이 특히 권장됩니다[@gelmanimbensrdd].
 
 RDD는 인기 있는 접근 방식이지만, 메타 분석에 따르면 표준 오차가 부적절하게 작고 이로 인해 허위 결과가 발생할 수 있습니다[@stommessaysno]. RDD를 사용하는 경우 소프트웨어 패키지에서 보고하는 것보다 훨씬 더 넓은 표준 오차의 가능성과 이것이 결론에 미칠 영향을 논의하는 것이 중요합니다.
-
 
 ### 캘리포니아의 알코올 및 범죄
 
@@ -1006,6 +1024,7 @@ carpenter_dobkin <-
   read_dta(
     "P01 Age Profile of Arrest Rates 1979-2006.dta"
   )
+
 ```
 
 ```{r}
@@ -1016,8 +1035,8 @@ carpenter_dobkin <-
   read_dta(
     "inputs/data/P01 Age Profile of Arrest Rates 1979-2006.dta"
   )
-```
 
+```
 
 ```{r}
 #| label: fig-californiaarrests
@@ -1047,9 +1066,11 @@ carpenter_dobkin_prepared |>
   geom_point(alpha = 0.05) +
   facet_wrap(facets = vars(arrested_for), scales = "free_y") +
   theme_minimal()
+
 ```
 
 ```{r}
+
 carpenter_dobkin_aggravated_assault_only <-
   carpenter_dobkin_prepared |>
   filter(
@@ -1057,6 +1078,7 @@ carpenter_dobkin_aggravated_assault_only <-
     abs(age - 21) < 2
   ) |>
   mutate(is_21_or_more = if_else(age < 21, 0, 1))
+
 ```
 
 ```{r}
@@ -1080,8 +1102,8 @@ saveRDS(
   rdd_example,
   file = "rdd_example.rds"
 )
-```
 
+```
 
 ```{r}
 #| echo: false
@@ -1094,6 +1116,7 @@ saveRDS(
   rdd_carpenter_dobkin,
   file = "outputs/model/rdd_carpenter_dobkin.rds"
 )
+
 ```
 
 ```{r}
@@ -1104,6 +1127,7 @@ saveRDS(
 
 rdd_carpenter_dobkin <-
   readRDS(file = "rdd_carpenter_dobkin.rds")
+
 ```
 
 ```{r}
@@ -1114,6 +1138,7 @@ rdd_carpenter_dobkin <-
 
 rdd_carpenter_dobkin <-
   readRDS(file = "outputs/model/rdd_carpenter_dobkin.rds")
+
 ```
 
 ```{r}
@@ -1126,6 +1151,7 @@ modelsummary(
   models = rdd_carpenter_dobkin,
   fmt = 2
 )
+
 ```
 
 그리고 `rdrobust`를 사용해도 결과는 비슷합니다.
@@ -1140,24 +1166,8 @@ rdrobust(
   all = TRUE
 ) |>
   summary()
+
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ## 도구 변수
 
@@ -1181,8 +1191,7 @@ rdrobust(
 - 단조성.
 - 배제 제약.
 
-여담으로, 도구 변수의 역사는 흥미롭고, @stock2003retrospectives 는 @Cunningham2021 을 통해 간략한 개요를 제공합니다.\\index{instrumental variables!history} 이 방법은 @wright1928tariff 에서 처음 출판되었습니다. 이것은 동물성 및 식물성 기름에 대한 관세의 효과에 대한 책입니다. 왜 도구 변수가 동물성 및 식물성 기름에 대한 관세에 대한 책에서 중요할 수 있을까요? 근본적인 문제는 관세의 효과가 공급과 수요 모두에 달려 있다는 것입니다. 그러나 우리는 가격과 수량만 알고 있으므로 무엇이 효과를 유발하는지 알 수 없습니다. 도구 변수를 사용하여 인과 관계를 고정할 수 있습니다. 흥미로운 측면은 도구 변수 논의가 해당 책의 "부록 B"에만 있다는 것입니다. 주요 통계적 돌파구를 부록으로 강등하는 것은 이상하게 보일 것입니다. 또한, 책의 저자인 필립 G. 라이트에게는 통계학 및 "부록 B"에서 사용된 특정 방법에 상당한 전문 지식을 가진 아들 시월 라이트가 있었습니다. 따라서 "부록 B"의 미스터리: 필립이 썼을까요, 아니면 시월이 썼을까요? @Cunningham2021, @stock2003retrospectives, @angristkrueger는 모두 더 자세히 설명하지만, 대체로 필립이 저술했을 가능성이 높다고 생각합니다.
-
+여담으로, 도구 변수의 역사는 흥미롭고, @stock2003retrospectives 는 @Cunningham2021 을 통해 간략한 개요를 제공합니다.\\index{instrumental variables!history} 이 방법은 @wright1928tariff 에서 처음 출판되었습니다. 이것은 동물성 및 식물성 기름에 대한 관세의 효과에 대한 책입니다. 왜 도구 변수가 동물성 및 식물성 기름에 대한 관세에 대한 책에서 중요할 수 있을까요? 근본적인 문제는 관세의 효과가 공급과 수요 모두에 달려 있다는 것입니다. 그러나 우리는 가격과 수량만 알고 있으므로 무엇이 효과를 유발하는지 알 수 없습니다. 도구 변수를 사용하여 인과 관계를 고정할 수 있습니다. 흥미로운 측면은 도구 변수 논의가 해당 책의 "부록 B"에만 있다는 것입니다. 주요 통계적 돌파구를 부록으로 강등하는 것은 이상하게 보일 것입니다. 또한, 책의 저자인 필립 G. 라이트에게는 통계학 및 "부록 B"에서 사용된 특정 방법에 상당한 전문 지식을 가진 아들 시월 라이트가 있었습니다. 따라서 "부록 B"의 미스터리: 필립이 썼을까요, 아니면 시월이 썼을까요? @Cunningham2021, @stock2003retrospectives, @angristkrueger 모두 더 자세히 설명하지만, 대체로 필립이 저술했을 가능성이 높다고 생각합니다.
 
 ### 시뮬레이션 예시: 건강 상태, 흡연 및 세금율
 
@@ -1203,6 +1212,7 @@ iv_example_data <- tibble(
   smoker =
     sample(x = c(0:1), size = num_observations, replace = TRUE)
   )
+
 ```
 
 이제 흡연량과 건강 상태를 연결해야 합니다. 우리는 건강 상태를 정규 분포에서 추출한 것으로 모델링할 것이며, 흡연 여부에 따라 평균이 높거나 낮을 것입니다.\\index{distribution!Normal}
@@ -1218,6 +1228,7 @@ iv_example_data <-
     rnorm(n = n(), mean = 1, sd = 1),
     rnorm(n = n(), mean = 0, sd = 1)
   ))
+
 ```
 
 이제 담배와 주(이 그림에서는 주마다 세금율이 다름) 사이의 관계가 필요합니다.
@@ -1249,11 +1260,13 @@ iv_example_data <- iv_example_data |>
     )
 
 iv_example_data
+
 ```
 
 이제 데이터를 살펴볼 수 있습니다.
 
 ```{r}
+
 iv_example_data |>
   mutate(smoker = as_factor(smoker)) |>
   ggplot(aes(x = health, fill = smoker)) +
@@ -1266,11 +1279,13 @@ iv_example_data |>
   ) +
   scale_fill_brewer(palette = "Set1") +
   facet_wrap(vars(province))
+
 ```
 
 마지막으로, 세금율을 도구 변수로 사용하여 흡연이 건강에 미치는 영향을 추정할 수 있습니다.
 
 ```{r}
+
 health_on_tax <- lm(health ~ tax, data = iv_example_data)
 smoker_on_tax <- lm(smoker ~ tax, data = iv_example_data)
 
@@ -1282,6 +1297,7 @@ tibble(
     coef(health_on_tax)["tax"] / coef(smoker_on_tax)["tax"]
   )
 )
+
 ```
 
 세금율이 흡연과 건강 모두에 미치는 영향을 이해함으로써, 흡연을 하면 흡연하지 않는 것보다 건강이 더 나빠질 가능성이 높다는 것을 알 수 있습니다.
@@ -1296,14 +1312,17 @@ tibble(
 
 iv_robust(health ~ smoker | tax, data = iv_example_data) |>
   modelsummary()
+
 ```
 
 ### 가정
 
 :::{.content-visible when-format="pdf"}
-도구 변수의 설정은 @fig-dot-taxrebateasiv-pdf에 설명되어 있으며, 이는 소득과 행복 사이의 혼란 변수로서 교육을 보여줍니다.\\index{confounder} 세금 환급은 소득에만 영향을 미치고 교육에는 영향을 미치지 않을 가능성이 높으며, 도구 변수로 사용될 수 있습니다.
+
+도구 변수의 설정은 @fig-dot-taxrebateasiv-pdf 설명되어 있으며, 이는 소득과 행복 사이의 혼란 변수로서 교육을 보여줍니다.\\index{confounder} 세금 환급은 소득에만 영향을 미치고 교육에는 영향을 미치지 않을 가능성이 높으며, 도구 변수로 사용될 수 있습니다.
 
 ```{dot}
+
 //| label: fig-dot-taxrebateasiv-pdf
 //| fig-cap: "소득과 행복 사이의 관계에 대한 혼란 변수로서 교육을 보여주는 세금 환급을 도구 변수로 사용"
 //| echo: true
@@ -1322,13 +1341,16 @@ digraph D {
   c->b
   d->a
 }
+
 ```
 :::
 
 :::{.content-visible unless-format="pdf"}
-도구 변수의 설정은 @fig-dot-taxrebateasiv-quarto에 설명되어 있으며, 이는 소득과 행복 사이의 혼란 변수로서 교육을 보여줍니다.\\index{confounder} 세금 환급은 소득에만 영향을 미치고 교육에는 영향을 미치지 않을 가능성이 높으며, 도구 변수로 사용될 수 있습니다.
+
+도구 변수의 설정은 @fig-dot-taxrebateasiv-quarto 설명되어 있으며, 이는 소득과 행복 사이의 혼란 변수로서 교육을 보여줍니다.\\index{confounder} 세금 환급은 소득에만 영향을 미치고 교육에는 영향을 미치지 않을 가능성이 높으며, 도구 변수로 사용될 수 있습니다.
 
 ```{dot}
+
 //| label: fig-dot-taxrebateasiv-quarto
 //| fig-cap: "소득과 행복 사이의 관계에 대한 혼란 변수로서 교육을 보여주는 세금 환급을 도구 변수로 사용"
 //| echo: true
@@ -1347,6 +1369,7 @@ digraph D {
   c->b
   d->a
 }
+
 ```
 :::
 
@@ -1361,12 +1384,9 @@ digraph D {
 
 도구 변수는 명시적인 무작위화 없이도 인과적 추정치를 얻을 수 있기 때문에 유용한 접근 방식입니다. 도구 변수를 찾는 것은 특히 학계에서 일종의 백경이었습니다. 그러나 A/B 테스트의 하류에서 IV 접근 방식의 사용이 증가했습니다[@taddy2019, p. 162].
 
-오랫동안 정규 도구 변수는 강우량, 또는 더 일반적으로 날씨였습니다. 그러나 문제는 도구 변수가 다른, 잠재적으로 관찰되지 않은 변수와 상관 관계가 있다면, 관심 변수와 상관 관계가 있을 수 있다는 것입니다. 이는 위에서 언급한 성향 점수 매칭에 대한 비판과 유사합니다. @mellontakingourtoys는 많은 변수가 도구 변수 논문에서 날씨와 연결되어 있음을 발견했습니다. 일부에서 잘못 추정된 효과의 가능성이 상당히 높을 것으로 보입니다.
+오랫동안 정규 도구 변수는 강우량, 또는 더 일반적으로 날씨였습니다. 그러나 문제는 도구 변수가 다른, 잠재적으로 관찰되지 않은 변수와 상관 관계가 있다면, 관심 변수와 상관 관계가 있을 수 있다는 것입니다. 이는 위에서 언급한 성향 점수 매칭에 대한 비판과 유사합니다. @mellontakingourtoys 많은 변수가 도구 변수 논문에서 날씨와 연결되어 있음을 발견했습니다. 일부에서 잘못 추정된 효과의 가능성이 상당히 높을 것으로 보입니다.
 
 도구 변수 접근 방식을 고려할 때, 이 두 가지 가정에 상당한 시간을 할애해야 합니다. @mellontakingourtoys 는 이 특정 세금 환급이 소득에만 영향을 미 미치고 다른 변수에는 영향을 미치지 않는다는 점에 특히 우려하며, 이는 그 자체로 관심 변수와 연결될 수 있습니다. 도구 변수를 기반으로 한 접근 방식은 연구자에게 광범위한 자유를 제공하며, @brodeurcookheyes 는 RCT 및 RDD와 비교하여 p-값 해킹 및 선택 보고와 더 관련이 있음을 발견합니다. 다중 대체 및 성향 점수 매칭과 마찬가지로 IV를 사용할 때 주의를 기울이고, 결코 순진하게 사용해서는 안 된다고 권장합니다. 실제로, @betzcookhollenbach2018 은 공간 도구가 거의 유효하지 않다고 더 나아가 말합니다.
-
-
-
 
 ## 연습 문제
 
@@ -1410,11 +1430,9 @@ digraph D {
 
 ### 수업 활동 {.unnumbered}
 
-
 - "아빠, 저 면도해요". 세 살짜리 아이가 아빠 옆에 서 있습니다. 아빠는 면도를 하고 수염이 없습니다. 세 살짜리 아이는 "면도"를 하고 수염이 없습니다. DAG를 사용하여 상황과 누락된 것을 설명하십시오.
 - 다음 상황을 고려하십시오: "병원에 두 명의 외과 의사가 있습니다. 한 명은 훌륭하다고 여겨져서, 평균적으로 어려운 환자가 그에게 보내지므로 많은 환자가 사망합니다. 다른 외과 의사는 좋다고 여겨져서, 평균적으로 중간 정도의 환자가 그에게 보내지므로 평균 수의 환자가 사망합니다." 환자 이름, 외과 의사 이름, 환자 결과만 포함하여 상황을 시뮬레이션하십시오. 회귀를 실행하십시오. 어떤 결론을 도출합니까? 그런 다음 해당 회귀에서 누락된 데이터를 지정하는 DAG를 그리십시오. 해당 변수를 시뮬레이션에 추가하고 회귀를 다시 실행하십시오. 결론이 어떻게 달라집니까?
 - 심슨의 역설 또는 버크슨의 역설 중 하나를 선택한 다음, 예를 들어 설명하고 이를 조정하기 위한 분석적 접근 방식을 논의하십시오.
-
 
 ### 과제 {.unnumbered}
 

@@ -8,7 +8,6 @@ engine: knitr
 
 **TODO**
 
-
 **Prerequisites**
 
 - https://royalsocietypublishing.org/doi/epdf/10.1098/rsta.1922.0009
@@ -24,7 +23,6 @@ engine: knitr
 ```{r}
 #| message: false
 #| warning: false
-
 
 ```
 
@@ -50,7 +48,6 @@ Bring in Gauss and French meridian arcs from Dunkirk to Barcelona
 
 https://doi.org/10.2307/2281213
 
-
 ## Exercises
 
 ### Scales {.unnumbered}
@@ -64,8 +61,6 @@ https://doi.org/10.2307/2281213
 ### Questions {.unnumbered}
 
 - The heights of the lighthouses of Tasmania, Australia, are available [here](ADD LINK). Please write code to scrape the data and then make a histogram of the heights. What do you notice about the distribution? With the help of references and simulation, please explain in three or four paragraphs why you think this might arise? Submit a link to the GitHub repo.
-
-
 
 ### Tutorial {.unnumbered}
 

@@ -5,7 +5,9 @@ engine: knitr
 # APIs, scraping, and parsing {#sec-gather-data}
 
 :::{.callout-note}
+
 Chapman and Hall/CRC published this book in July 2023. You can purchase that [here](https://www.routledge.com/Telling-Stories-with-Data-With-Applications-in-R/Alexander/p/book/9781032134772). This online version has some updates to what was printed.
+
 :::
 
 **Prerequisites**
@@ -63,8 +65,8 @@ library(tidyverse)
 library(tinytable)
 library(usethis)
 library(xml2)
-```
 
+```
 
 ## Introduction
 
@@ -96,7 +98,6 @@ The advantage of using an API is that the data provider usually specifies the da
 
 We will now go through a few case studies of using APIs. In the first we deal directly with an API using `httr`. And then we access data from Spotify using `spotifyr`.
 
-
 ### arXiv, NASA, and Dataverse
 
 After installing and loading `httr` we use `GET()` to obtain data from an API directly. This will try to get some specific data and the main argument is "url". This is similar to the Google Maps example in @fig-focuson2020 where the specific information that we were interested in was a map.
@@ -113,11 +114,13 @@ In this case study we will use an [API provided by arXiv](https://arxiv.org/help
 arxiv <- GET("http://export.arxiv.org/api/query?id_list=2310.01402")
 
 status_code(arxiv)
+
 ```
 
 We can use `status_code()` to check our response. For instance, 200 means a success, while 400 means we received an error from the server. Assuming we received something back from the server, we can use `content()` to display it. In this case we have received XML formatted data. XML is a markup language where entries are identified by tags, which can be nested within other tags.\index{XML} After installing and loading `xml2` we can read XML using `read_xml()`. XML is a semi-formatted structure, and it can be useful to start by having a look at it using `html_structure()`.
 
 :::{.content-visible when-format="pdf"}
+
 ```{r}
 #| eval: false
 #| echo: true
@@ -125,22 +128,26 @@ We can use `status_code()` to check our response. For instance, 200 means a succ
 content(arxiv) |>
   read_xml() |>
   html_structure()
+
 ```
 :::
 
 :::{.content-visible unless-format="pdf"}
+
 ```{r}
 #| eval: false
 
 content(arxiv) |>
   read_xml() |>
   html_structure()
+
 ```
 :::
 
 We might like to create a dataset based on extracting various aspects of this XML tree.\index{XML} For instance, we might look at "entry", which is the eighth item, and in particular obtain the "title" and the "URL", which are the fourth and ninth items, respectively, within "entry".
 
 :::{.content-visible when-format="pdf"}
+
 ```{r}
 #| eval: false
 #| echo: true
@@ -158,10 +165,12 @@ data_from_arxiv <-
       xml_child(search = 9) |>
       xml_attr("href")
   )
+
 ```
 :::
 
 :::{.content-visible unless-format="pdf"}
+
 ```{r}
 #| eval: false
 
@@ -179,6 +188,7 @@ data_from_arxiv <-
       xml_attr("href")
   )
 data_from_arxiv
+
 ```
 :::
 
@@ -187,13 +197,16 @@ data_from_arxiv
 To consider another example, each day, NASA provides the Astronomy Picture of the Day (APOD) through its [APOD API](https://api.nasa.gov).\index{API!APOD}\index{astronomy} We can use `GET()` to obtain the URL for the photo on particular dates and then display it.
 
 ```{r}
+
 NASA_APOD_20190719 <-
   GET("https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&date=2019-07-19")
+
 ```
 
 Examining the returned data using `content()`, we can see that we are provided with various fields, such as date, title, explanation, and a URL.
 
 :::{.content-visible when-format="pdf"}
+
 For reasons of space the output is withheld here, but it can be seen on the free, online version of this [book](https://tellingstorieswithdata.com).
 
 ```{r}
@@ -205,25 +218,31 @@ content(NASA_APOD_20190719)$date
 content(NASA_APOD_20190719)$title
 content(NASA_APOD_20190719)$explanation
 content(NASA_APOD_20190719)$url
+
 ```
 
 :::
 
 :::{.content-visible unless-format="pdf"}
+
 ```{r}
+
 # APOD July 19, 2019
 content(NASA_APOD_20190719)$date
 content(NASA_APOD_20190719)$title
 content(NASA_APOD_20190719)$explanation
 content(NASA_APOD_20190719)$url
+
 ```
 
 We can provide that URL to `include_graphics()` from `knitr` to display it (@fig-nasaone).
 
 :::{#fig-nasaone}
+
 ![Tranquility Base Panorama (Image Credit: Neil Armstrong, Apollo 11, NASA)](figures/apollo11TranquilitybasePan.jpg){#fig-nasamoon}
 
 Images obtained from the NASA APOD API
+
 :::
 :::
 
@@ -232,6 +251,7 @@ Images obtained from the NASA APOD API
 Finally, another common API response in semi-structured form is JSON.\index{JSON} JSON is a human-readable way to store data that can be parsed by machines. In contrast to, say, a CSV, where we are used to rows and columns, JSON uses key-value pairs.
 
 ```{css}
+
 {
   "firstName": "Rohan",
   "lastName": "Alexander",
@@ -242,11 +262,13 @@ Finally, another common API response in semi-structured form is JSON.\index{JSON
     "third": null
   }
 }
+
 ```
 
 We can parse JSON with `jsonlite`. To consider a specific example, we use a "Dataverse" which is a web application that makes it easier to share datasets. We can use an API to query a demonstration dataverse. For instance, we might be interested in datasets related to politics.\index{API!Dataverse}
 
 :::{.content-visible when-format="pdf"}
+
 ```{r}
 #| message: false
 #| warning: false
@@ -255,10 +277,12 @@ We can parse JSON with `jsonlite`. To consider a specific example, we use a "Dat
 
 politics_datasets <-
   fromJSON("https://demo.dataverse.org/api/search?q=politics")
+
 ```
 :::
 
 :::{.content-visible unless-format="pdf"}
+
 ```{r}
 #| message: false
 #| warning: false
@@ -269,6 +293,7 @@ politics_datasets <-
   fromJSON("https://demo.dataverse.org/api/search?q=politics")
 
 politics_datasets
+
 ```
 :::
 
@@ -283,10 +308,8 @@ This tells us how to obtain the dataset of interest.
 #| echo: true
 
 as_tibble(politics_datasets[["data"]][["items"]])
+
 ```
-
-
-
 
 <!-- ### Gathering data from Twitter -->
 
@@ -411,6 +434,7 @@ Continuing with the registration process, in our case, we "do not know" what we 
 #| eval: false
 
 edit_r_environ()
+
 ```
 
 When we run `edit_r_environ()`, a ".Renviron" file will open and we can add our "Spotify Client ID" and "Client Secret". Use the same names, because `spotifyr` will look in our environment for keys with those specific names. Being careful to use single quotes is important here even though we normally use double quotes in this book.
@@ -420,6 +444,7 @@ When we run `edit_r_environ()`, a ".Renviron" file will open and we can add our 
 
 SPOTIFY_CLIENT_ID = 'PUT_YOUR_CLIENT_ID_HERE'
 SPOTIFY_CLIENT_SECRET = 'PUT_YOUR_SECRET_HERE'
+
 ```
 
 Save the ".Renviron" file, and then restart R: "Session" $\rightarrow$ "Restart R". We can now use our "Spotify Client ID" and "Client Secret" as needed. And functions that require those details as arguments will work without them being explicitly specified again.
@@ -431,6 +456,7 @@ To try this out we install and load `spotifyr`. We will get and save some inform
 
 radiohead <- get_artist_audio_features("radiohead")
 saveRDS(radiohead, "radiohead.rds")
+
 ```
 
 ```{r}
@@ -441,6 +467,7 @@ saveRDS(radiohead, "radiohead.rds")
 
 radiohead <- get_artist_audio_features("radiohead")
 saveRDS(radiohead, "inputs/data/radiohead.rds")
+
 ```
 
 ```{r}
@@ -448,6 +475,7 @@ saveRDS(radiohead, "inputs/data/radiohead.rds")
 #| include: false
 
 radiohead <- readRDS("inputs/data/radiohead.rds")
+
 ```
 
 ```{r}
@@ -455,6 +483,7 @@ radiohead <- readRDS("inputs/data/radiohead.rds")
 #| include: true
 
 radiohead <- readRDS("radiohead.rds")
+
 ```
 
 There is a variety of information available based on songs. We might be interested to see whether their songs are getting longer over time (@fig-readioovertime). Following the guidance in @sec-static-communication this is a nice opportunity to additionally use a boxplot to communicate summary statistics by album at the same time.
@@ -481,6 +510,7 @@ radiohead |>
     x = "Album release date",
     y = "Duration of song (ms)"
   )
+
 ```
 
 One interesting variable provided by Spotify about each song is "valence".\index{Spotify!valence} The Spotify [documentation](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-audio-features) describes this as a measure between zero and one that signals "the musical positiveness" of the track with higher values being more positive. We might be interested to compare valence over time between a few artists, for instance, Radiohead, the American rock band The National, and the American singer Taylor Swift.
@@ -495,8 +525,8 @@ the_national <- get_artist_audio_features("the national")
 
 saveRDS(taylor_swift, "taylor_swift.rds")
 saveRDS(the_national, "the_national.rds")
-```
 
+```
 
 ```{r}
 #| include: false
@@ -509,6 +539,7 @@ the_national <- get_artist_audio_features("the national")
 
 saveRDS(taylor_swift, "inputs/data/taylor_swift.rds")
 saveRDS(the_national, "inputs/data/the_national.rds")
+
 ```
 
 ```{r}
@@ -519,8 +550,8 @@ saveRDS(the_national, "inputs/data/the_national.rds")
 
 taylor_swift <- readRDS("inputs/data/taylor_swift.rds")
 the_national <- readRDS("inputs/data/the_national.rds")
-```
 
+```
 
 Then we can bring them together and make the graph (@fig-swiftyvsnationalvsradiohead). This appears to show that while Taylor Swift and Radiohead have largely maintained their level of valence over time, The National has decreased theirs.
 
@@ -546,13 +577,12 @@ rbind(taylor_swift, the_national, radiohead) |>
   ) +
   scale_color_brewer(palette = "Set1") +
   theme(legend.position = "bottom")
+
 ```
 
 How amazing that we live in a world where all that information is available with very little effort or cost! And having gathered the data, there much that could be done. For instance, @kaylinpavlik uses an expanded dataset to classify musical genres and @theeconomistonspotify looks at how language is associated with music streaming on Spotify. Our ability to gather such data enables us to answer questions that had to be considered experimentally in the past. For instance, @salganik2006experimental had to use experimental data to analyze the social aspect of what makes a hit song, rather than the observational data we can now access.
 
 That said, it is worth thinking about what valence is purporting to measure. Little information is available in the Spotify documentation how it was created. It is doubtful that one number can completely represent how positive is a song. And what about the songs from these artists that are not on Spotify, or even publicly released? This is a nice example of how measurement and sampling pervade all aspects of telling stories with data.\index{Spotify!measurement}
-
-
 
 ## Web scraping
 
@@ -563,6 +593,7 @@ Web scraping is a way to get data from websites.\index{web scraping} Rather than
 Privacy often trumps reproducibility.\index{ethics!privacy vs reproducibility} There is also a considerable difference between data being publicly available on a website and being scraped, cleaned, and prepared into a dataset which is then publicly released. For instance, @kirkegaard2016okcupid scraped publicly available OKCupid\index{ethics!OKCupid} profiles and then made the resulting dataset easily available [@hackett2016researchers]. @zimmer2018addressing details some of the important considerations that were overlooked including "minimizing harm", "informed consent", and ensuring those in the dataset maintain "privacy and confidentiality".\index{ethics!context specific} While it is correct to say that OKCupid made data public, they did so in a certain context, and when their data was scraped that context was changed.
 
 :::{.callout-note}
+
 ## Oh, you think we have good data on that!
 
 Police violence is particularly concerning because of the need for trust between the police and society.\index{police violence!measurement of} Without good data it is difficult to hold police departments accountable, or know whether there is an issue, but getting data is difficult [@bronnerpolicenordata]. The fundamental problem is that there is no way to easily simplify an encounter that results in violence into a dataset. Two popular datasets draw on web scraping:
@@ -571,6 +602,7 @@ Police violence is particularly concerning because of the need for trust between
 2) "Fatal Force Database".
 
 @Bor2018 use "Mapping Police Violence" to examine police killings of Black Americans, especially when unarmed, and find a substantial effect on the mental health of Black Americans. Responses to the paper, such as @Nix2020, have special concern with the coding of the dataset, and after re-coding draw different conclusions. An example of a coding difference is the unanswerable question, because it depends on context and usage, of whether to code an individual who was killed with a toy firearm as "armed" or "unarmed". We may want a separate category, but some simplification is necessary for the construction of a quantitative dataset. *The Washington Post* writes many articles using the "Fatal Force Database" [@washpostfatalforce]. @washpostfatalforcemethods describes their methodology and the challenges of standardization. @Comer2022 compare the datasets and find similarities, but document ways in which the datasets are different.
+
 :::
 
 Web scraping is an invaluable source of data. But they are typically datasets that can be created as a by-product of someone trying to achieve another aim. And web scraping imposes a cost on the website host, and so we should reduce this to the extent possible. For instance, a retailer may have a website with their products and their prices. That has not been created deliberately as a source of data, but we can scrape it to create a dataset. The following principles may be useful to guide web scraping.\index{web scraping!principles}
@@ -595,17 +627,21 @@ Web scraping is possible by taking advantage of the underlying structure of a we
 HTML/CSS is a markup language based on matching tags. If we want text to be bold, then we would use something like:
 
 ```text
+
 <b>My bold text</b>
+
 ```
 
 Similarly, if we want a list, then we start and end the list as well as indicating each item.
 
 ```text
+
 <ul>
   <li>Learn webscraping</li>
   <li>Do data science</li>
   <li>Profit</li>
 </ul>
+
 ```
 
 When scraping we will search for these tags.
@@ -617,6 +653,7 @@ To get started, we can pretend that we obtained some HTML from a website, and th
 #| echo: true
 
 website_extract <- "<p>Hi, I'm <b>Rohan</b> Alexander.</p>"
+
 ```
 
 `rvest` is part of the `tidyverse` so it does not have to be installed, but it is not part of the core, so it does need to be loaded. After that, use `read_html()` to read in the data.
@@ -630,6 +667,7 @@ website_extract <- "<p>Hi, I'm <b>Rohan</b> Alexander.</p>"
 rohans_data <- read_html(website_extract)
 
 rohans_data
+
 ```
 
 The language used by `rvest` to look for tags is "node", so we focus on bold nodes. By default `html_elements()` returns the tags as well. We extract the text with `html_text()`.
@@ -644,6 +682,7 @@ rohans_data |>
 rohans_data |>
   html_elements("b") |>
   html_text()
+
 ```
 
 Web scraping is an exciting source of data, and we will now go through some examples. But in contrast to these examples, information is not usually all on one page. Web scraping quickly becomes a difficult art form that requires practice. For instance, we distinguish between an index scrape and a contents scrape. The former is scraping to build the list of URLs that have the content you want, while the latter is to get the content from those URLs. An example is provided by @luscombe2022jumpstarting. If you end up doing much web scraping, then `polite` [@polite] may be helpful to better optimize your workflow. And using GitHub Actions to allow for larger and slower scrapes over time.
@@ -664,6 +703,7 @@ We use `rvest` to download a website, and to then navigate the HTML to find the 
 books_data <- read_html("https://rohansbooks.com")
 
 write_html(books_data, "inputs/my_website/raw_data.html")
+
 ```
 
 ```{r}
@@ -674,16 +714,21 @@ write_html(books_data, "inputs/my_website/raw_data.html")
 books_data <- read_html("https://rohansbooks.com")
 
 write_html(books_data, "raw_data.html")
+
 ```
 
 We need to navigate the HTML to get the aspects that we want.\index{web scraping!HTML} And then try to get the data into a tibble as quickly as possible because this will allow us to more easily use `dplyr` verbs and other functions from the `tidyverse`.
 
 :::{.content-visible when-format="pdf"}
+
 See ["R essentials"](https://tellingstorieswithdata.com/20-r_essentials.html) if this is unfamiliar to you.
+
 :::
 
 :::{.content-visible unless-format="pdf"}
+
 See [Online Appendix -@sec-r-essentials] if this is unfamiliar to you.
+
 :::
 
 ```{r}
@@ -694,6 +739,7 @@ See [Online Appendix -@sec-r-essentials] if this is unfamiliar to you.
 #| warning: false
 
 books_data <- read_html("raw_data.html")
+
 ```
 
 ```{r}
@@ -704,6 +750,7 @@ books_data <- read_html("raw_data.html")
 #| warning: false
 
 books_data <- read_html("inputs/my_website/raw_data.html")
+
 ```
 
 ```{r}
@@ -714,6 +761,7 @@ books_data <- read_html("inputs/my_website/raw_data.html")
 #| echo: true
 
 books_data
+
 ```
 
 To get the data into a tibble we first need to use HTML tags to identify the data that we are interested in. If we look at the website then we know we need to focus on list items (@fig-rohansbooks-display). And we can look at the source, focusing particularly on looking for a list (@fig-rohansbooks-html).
@@ -725,8 +773,8 @@ To get the data into a tibble we first need to use HTML tags to identify the dat
 ![HTML for the top of the books website and the list of books](figures/books_source.png){#fig-rohansbooks-html width=50%}
 
 Screen captures from the books website as at 16 June 2022
-:::
 
+:::
 
 The tag for a list item is "li", so we can use that to focus on the list.
 
@@ -744,6 +792,7 @@ all_books <-
   tibble(books = text_data)
 
 head(all_books)
+
 ```
 
 We now need to clean the data. First we want to separate the title and the author using `separate()` and then clean up the author and title columns. We can take advantage of the fact that the year is present and separate based on that.
@@ -761,6 +810,7 @@ all_books <-
   separate(books, into = c("author", "title"), sep = "\\, [[:digit:]]{4}\\, ")
 
 head(all_books)
+
 ```
 
 Finally, we could make, say, a table of the distribution of the first letter of the names (@tbl-lettersofbooks).
@@ -779,9 +829,8 @@ all_books |>
   tt() |>
   style_tt(j = 1:2, align = "lr") |>
   setNames(c("First letter", "Number of times"))
+
 ```
-
-
 
 ### Prime Ministers of the United Kingdom
 
@@ -811,6 +860,7 @@ simulated_dataset <-
   arrange(birth_year)
 
 simulated_dataset
+
 ```
 
 One of the advantages of generating a simulated dataset is that if we are working in groups then one person can start making the graph, using the simulated dataset, while the other person gathers the data. In terms of a graph, we are aiming for something like @fig-pmsgraphexample.
@@ -833,6 +883,7 @@ raw_data <-
     "https://en.wikipedia.org/wiki/List_of_prime_ministers_of_the_United_Kingdom"
   )
 write_html(raw_data, "inputs/wiki/pms.html") # Note that we save the file as a HTML file.
+
 ```
 
 ```{r}
@@ -845,6 +896,7 @@ raw_data <-
     "https://en.wikipedia.org/wiki/List_of_prime_ministers_of_the_United_Kingdom"
   )
 write_html(raw_data, "pms.html")
+
 ```
 
 As with the earlier case study, we are looking for patterns in the HTML that we can use to help us get closer to the data that we want. This is an iterative process and involves trial and error. Even simple examples will take time.
@@ -853,12 +905,12 @@ One tool that may help is the [SelectorGadget](https://rvest.tidyverse.org/artic
 
 ![Using the Selector Gadget to identify the tag, as at 12 February 2023](figures/07-wikipedia_selectorgadget_screenshot.png){#fig-selectorgadget width=75% fig-align="center"}
 
-
 ```{r}
 #| eval: false
 #| include: true
 
 raw_data <- read_html("pms.html")
+
 ```
 
 ```{r}
@@ -868,6 +920,7 @@ raw_data <- read_html("pms.html")
 raw_data <- read_html("inputs/wiki/pms.html")
 
 raw_data
+
 ```
 
 ```{r}
@@ -880,6 +933,7 @@ parse_data_selector_gadget <-
   html_table()
 
 head(parse_data_selector_gadget)
+
 ```
 
 In this case there are many columns that we do not need, and some duplicated rows.
@@ -897,6 +951,7 @@ parsed_data <-
   distinct()
 
 head(parsed_data)
+
 ```
 
 Now that we have the parsed data, we need to clean it to match what we wanted. We want a names column, as well as columns for birth year and death year. We use `separate()` to take advantage of the fact that it looks like the names and dates are distinguished by brackets. The argument in `str_extract()` is a regular expression. It looks for four digits in a row, followed by a dash, followed by four more digits in a row. We use a slightly different regular expression for those prime ministers who are still alive.
@@ -916,6 +971,7 @@ initial_clean <-
   select(name, date, born)
 
 head(initial_clean)
+
 ```
 
 Finally, we need to clean up the columns.
@@ -941,6 +997,7 @@ cleaned_data <-
   distinct() # Some of the PMs had two goes at it.
 
 head(cleaned_data)
+
 ```
 
 Our dataset looks similar to the one that we said we wanted at the start (@tbl-canadianpmscleanddata).
@@ -956,8 +1013,8 @@ cleaned_data |>
   tt() |>
   style_tt(j = 1:4, align = "lrrr") |>
   setNames(c("Prime Minister", "Birth year", "Death year", "Age at death"))
-```
 
+```
 
 At this point we would like to make a graph that illustrates how long each prime minister lived (@fig-pmslives). If they are still alive then we would like them to run to the end, but we would like to color them differently.
 
@@ -983,8 +1040,8 @@ cleaned_data |>
   theme_minimal() +
   scale_color_brewer(palette = "Set1") +
   theme(legend.position = "bottom")
-```
 
+```
 
 ### Iteration
 
@@ -1010,11 +1067,15 @@ statements_of_interest <-
       ),
     local_save_name = c("2023-02.pdf", "2023-05.pdf")
     )
+
 ```
 
 :::{.content-visible unless-format="pdf"}
+
 ```{r}
+
 statements_of_interest
+
 ```
 :::
 
@@ -1033,6 +1094,7 @@ visit_download_and_wait <-
 
     Sys.sleep(sample(5:10, 1))
   }
+
 ```
 
 We now apply that function to our tibble of URLs and save names using the function `walk2()`.
@@ -1046,6 +1108,7 @@ walk2(
   statements_of_interest$local_save_name,
   ~ visit_download_and_wait(.x, .y)
 )
+
 ```
 
 The result is that we have downloaded these PDFs and saved them to our computer. An alternative to writing these functions ourselves would be to use `heapsofpapers` [@heapsofpapers]. This includes various helpful options for downloading lists of files, especially PDF, CSV, and txt files. For instance, @collinsalexander use this to obtain thousands of PDFs and estimate the extent to which COVID-19 research was reproducible.
@@ -1085,6 +1148,7 @@ first_example <- pdf_text("first_example.pdf")
 first_example
 
 class(first_example)
+
 ```
 
 ```{r}
@@ -1096,6 +1160,7 @@ first_example <- pdf_text("inputs/pdfs/first_example.pdf")
 first_example
 
 class(first_example)
+
 ```
 
 We can see that the PDF has been correctly read in, as a character vector.
@@ -1113,10 +1178,11 @@ We use the same function as before.
 second_example <- pdf_text("second_example.pdf")
 class(second_example)
 second_example
+
 ```
 
-
 :::{.content-visible when-format="pdf"}
+
 ```{r}
 #| eval: true
 #| echo: false
@@ -1124,10 +1190,12 @@ second_example
 second_example <- pdf_text("inputs/pdfs/second_example.pdf")
 class(second_example)
 second_example |> str_trunc(width = 70)
+
 ```
 :::
 
 :::{.content-visible unless-format="pdf"}
+
 ```{r}
 #| eval: true
 #| echo: false
@@ -1135,6 +1203,7 @@ second_example |> str_trunc(width = 70)
 second_example <- pdf_text("inputs/pdfs/second_example.pdf")
 class(second_example)
 second_example
+
 ```
 :::
 
@@ -1147,9 +1216,11 @@ Again, we have a character vector. The end of each line is signaled by "\\n", bu
 third_example <- pdf_text("third_example.pdf")
 class(third_example)
 third_example
+
 ```
 
 :::{.content-visible when-format="pdf"}
+
 ```{r}
 #| eval: true
 #| echo: false
@@ -1157,10 +1228,12 @@ third_example
 third_example <- pdf_text("inputs/pdfs/third_example.pdf")
 class(third_example)
 third_example |> str_trunc(width = 70)
+
 ```
 :::
 
 :::{.content-visible unless-format="pdf"}
+
 ```{r}
 #| eval: true
 #| echo: false
@@ -1168,6 +1241,7 @@ third_example |> str_trunc(width = 70)
 third_example <- pdf_text("inputs/pdfs/third_example.pdf")
 class(third_example)
 third_example
+
 ```
 :::
 
@@ -1182,6 +1256,7 @@ jane_eyre <- tibble(
   raw_text = third_example,
   page_number = c(1:2)
 )
+
 ```
 
 We then want to separate the lines so that each line is an observation. We can do that by looking for "\\n" remembering that we need to escape the backslash as it is a special character.
@@ -1193,6 +1268,7 @@ jane_eyre <-
   separate_rows(jane_eyre, raw_text, sep = "\\n", convert = FALSE)
 
 jane_eyre
+
 ```
 
 ### Total Fertility Rate in the United States
@@ -1219,6 +1295,7 @@ summary_tfr_dataset <- read_csv(
   paste0("https://raw.githubusercontent.com/RohanAlexander/",
          "telling_stories/main/inputs/tfr_tables_info.csv")
   )
+
 ```
 
 ```{r}
@@ -1228,8 +1305,8 @@ summary_tfr_dataset <- read_csv(
 #| message: false
 
 summary_tfr_dataset <- read_csv("inputs/tfr_tables_info.csv")
-```
 
+```
 
 :::{.content-visible unless-format="pdf"}
 
@@ -1247,6 +1324,7 @@ summary_tfr_dataset |>
   tt() |>
   style_tt(j = 1:5, align = "lrrrr") |>
   setNames(c("Year", "Page", "Table", "Column", "URL"))
+
 ```
 :::
 
@@ -1261,6 +1339,7 @@ download.file(
   url = summary_tfr_dataset$url[1],
   destfile = "year_2000.pdf"
 )
+
 ```
 
 ```{r}
@@ -1274,6 +1353,7 @@ download.file(
   url = summary_tfr_dataset$url[1],
   destfile = "inputs/pdfs/dhs/year_2000.pdf"
 )
+
 ```
 
 We then read the PDF in as a character vector using `pdf_text()` from `pdftools`. And then convert it to a tibble, so that we can use familiar verbs on it.
@@ -1283,6 +1363,7 @@ We then read the PDF in as a character vector using `pdf_text()` from `pdftools`
 #| echo: true
 
 dhs_2000 <- pdf_text("year_2000.pdf")
+
 ```
 
 ```{r}
@@ -1290,6 +1371,7 @@ dhs_2000 <- pdf_text("year_2000.pdf")
 #| echo: false
 
 dhs_2000 <- pdf_text("inputs/pdfs/dhs/year_2000.pdf")
+
 ```
 
 ```{r}
@@ -1298,6 +1380,7 @@ dhs_2000 <- pdf_text("inputs/pdfs/dhs/year_2000.pdf")
 dhs_2000_tibble <- tibble(raw_data = dhs_2000)
 
 head(dhs_2000_tibble)
+
 ```
 
 Grab the page that is of interest (remembering that each page is an element of the character vector, hence a row in the tibble).
@@ -1310,6 +1393,7 @@ dhs_2000_relevant_page <-
   slice(summary_tfr_dataset$page[1])
 
 head(dhs_2000_relevant_page)
+
 ```
 
 We want to separate the rows and use `separate_rows()` from `tidyr`, which is part of the core tidyverse.
@@ -1322,6 +1406,7 @@ dhs_2000_separate_rows <-
   separate_rows(raw_data, sep = "\\n", convert = FALSE)
 
 head(dhs_2000_separate_rows)
+
 ```
 
 We are searching for patterns that we can use. Let us look at the first ten lines of content (ignoring aspects such as headings and page numbers at the top of the page).
@@ -1331,6 +1416,7 @@ We are searching for patterns that we can use. Let us look at the first ten line
 
 dhs_2000_separate_rows[13:22, ] |>
   mutate(raw_data = str_remove(raw_data, "\\.{40}"))
+
 ```
 
 And now at just one line.
@@ -1340,6 +1426,7 @@ And now at just one line.
 
 dhs_2000_separate_rows[20, ] |>
   mutate(raw_data = str_remove(raw_data, "\\.{40}"))
+
 ```
 
 It does not get much better than this:
@@ -1364,6 +1451,7 @@ dhs_2000_separate_columns <-
 
 dhs_2000_separate_columns[18:28, ] |>
   select(state, data)
+
 ```
 
 We then separate the data based on spaces. There is an inconsistent number of spaces, so we first squish any example of more than one space into just one with `str_squish()` from `stringr`.
@@ -1391,6 +1479,7 @@ dhs_2000_separate_data <-
 
 dhs_2000_separate_data[18:28, ] |>
   select(-raw_data, -data)
+
 ```
 
 This is all looking fairly great. The only thing left is to clean up.
@@ -1408,13 +1497,16 @@ dhs_2000_cleaned <-
     state = str_trim(state),
     state = if_else(state == "United States 1", "Total", state)
   )
+
 ```
+
 And run some checks, for instance that we have all the states.
 
 ```{r}
 #| echo: true
 
 all(state.name %in% dhs_2000_cleaned$state)
+
 ```
 
 And we are done (@tbl-tfrforthewin). We can see that there is quite a wide distribution of TFR by US state (@fig-smalldhsexample). Utah has the highest and Vermont the lowest.
@@ -1430,6 +1522,7 @@ dhs_2000_cleaned |>
   style_tt(j = 1:2, align = "lr") |>
   format_tt(digits = 0, num_mark_big = ",", num_fmt = "decimal") |>
   setNames(c("State", "TFR"))
+
 ```
 
 ```{r}
@@ -1443,14 +1536,15 @@ dhs_2000_cleaned |>
   geom_point() +
   theme_classic() +
   labs(y = "State", x = "Total Fertility Rate")
-```
 
+```
 
 ```{r}
 #| eval: true
 #| include: false
 
 write_csv(dhs_2000_cleaned, "outputs/notmonicas_tfr.csv")
+
 ```
 
 @kieransparsing provides another example of using this approach in a different context.
@@ -1474,6 +1568,7 @@ text <- ocr(
   engine = tesseract("eng")
 )
 cat(text)
+
 ```
 
 ```{r}
@@ -1485,6 +1580,7 @@ text <- ocr(
   engine = tesseract("eng")
 )
 cat(text)
+
 ```
 
 In general the result is not too bad. OCR is a useful tool but is not perfect and the resulting data may require extra attention in terms of cleaning. For instance, in the OCR results of @fig-janescan we see irregularities that would need to be fixed. Various options, such as focusing on the particular data of interest and increasing the contrast can help. Other popular OCR engines include Amazon Textract, Google Vision API, and ABBYY.\index{text!gathering}
@@ -1526,6 +1622,7 @@ repo_info <- tibble(
   created = map_chr(repos, "created_at"),
   full_name = map_chr(repos, "full_name"),
 )
+
 ```
 
 4. Please consider the UN's [Data API](https://population.un.org/dataportal/about/dataapi) and the introductory note on how to use it by @schmertmannunapi. Argentina's location code is 32. Modify the following code to determine what Argentina's single-year fertility rate was for 20-year-olds in 1995 (pick one)?
@@ -1554,6 +1651,7 @@ un_data <- read_delim(file = url, delim = "|", skip = 1)
 un_data |>
   filter(AgeLabel == 25 & TimeLabel == 1996) |>
   select(Value)
+
 ```
 
 5. What is the main argument to `GET()` from `httr` (pick one)?
@@ -1661,6 +1759,7 @@ un_data |>
 - Use the [starter folder](https://github.com/RohanAlexander/starter_folder) and create a new repo. Obtain the NASA APOD for today using the API and then add it to the Quarto document in the repo.
 - Use the Spotify API to determine which Beyonce album has the highest average "danceability"?
 - Please make a graph to answer the question of whether Camila Cabello's departure from Fifth Harmony in December 2016 affected the valence of the songs in their studio albums.^[Students who finish quickly should similarly look at Jessica's departure from Girls' Generation in September 2014, and then attempt to compare the two situations.] Some helpful cleaning code is below.
+
 ```{r}
 #| eval: false
 
@@ -1668,7 +1767,9 @@ fifth_harmony |>
   filter(album_name %in% c("Reflection", "7/27 (Deluxe)", "Fifth Harmony")) |>
   mutate(album_release_date = ymd(album_release_date)) |>
   filter(album_release_date != "2017-10-29") # There is a essentially duplicate album
+
 ```
+
 - Build an equivalent to @fig-pmslives, but for Canada.
 - *Paper review:* Please read @Kish1959 and write a review of at least one page, drawing on an example that you are familiar with.
 

@@ -3,9 +3,11 @@ engine: knitr
 ---
 
 :::{.callout-note}
+
 Chapman and Hall/CRC published this book in July 2023. You can purchase that [here](https://www.routledge.com/Telling-Stories-with-Data-With-Applications-in-R/Alexander/p/book/9781032134772).
 
 This online version has some updates to what was printed. An online version that matches the print version is available [here](https://rohanalexander.github.io/telling_stories-published/).
+
 :::
 
 **Endorsements**
@@ -89,6 +91,7 @@ Part VI---Applications---provides three applications of modeling. @sec-causality
 @sec-concluding-remarks offers some concluding remarks, details some outstanding issues, and suggests some next steps.
 
 :::{.content-visible unless-format="pdf"}
+
 Online appendices offer critical aspects that are either a little too unwieldy for the size constraints of the page, or likely to need more frequent updating than is reasonable for a printed book.
 [-@sec-r-essentials] goes through some essential tasks in R, which is the statistical programming language used in this book. It can be a reference chapter and some students find themselves returning to it as they go through the rest of the book.
 [-@sec-datasets] provides a list of datasets that may be useful for assessment.
@@ -96,9 +99,8 @@ The core of this book is centered around Quarto, however its predecessor, R Mark
 A set of papers is included in [-@sec-papers]. If you write these, you will be conducting original research on a topic that is of interest to you. Although open-ended research may be new to you, the extent to which you are able to: develop your own questions, use quantitative methods to explore them, and communicate your findings, is the measure of the success of this book.
 [-@sec-sql] gives a brief overview of SQL essentials.
 [-@sec-production] considers how to make model estimates and forecasts more widely available.
+
 :::
-
-
 
 ## Pedagogy and key features {.unnumbered}
 
@@ -137,17 +139,20 @@ Some chapters additionally feature:
 -   A section called "Oh, you think we have good data on that!" which focuses on a particular setting where it is often assumed that there are unimpeachable and unambiguous data but the reality tends to be quite far from that.
 -   A section called "Shoulders of giants", which focuses on some of those who created the intellectual foundation on which we build.
 
-
 ## Software information and conventions {.unnumbered}
 
 The software that I start with in this book is R [@citeR].\index{R!why} This language was chosen because it is open source, widely used, general enough to cover the entire workflow, yet specific enough to have plenty of well-developed features. I do not assume that you have used R before, and so another reason for selecting R for this book is the community of R users. The community is especially welcoming of newcomers and there is a lot of complementary beginner-friendly material available.
 
 :::{.content-visible when-format="pdf"}
+
 If you do not have a programming language, then R is a great one to start with. Please do go through ["R essentials"](https://tellingstorieswithdata.com/20-r_essentials.html).
+
 :::
 
 :::{.content-visible unless-format="pdf"}
+
 If you do not have a programming language, then R is a great one to start with. Please do go through [-@sec-r-essentials].
+
 :::
 
 Having established a comfort with R, I encourage you to also learn Python, which is another open-source programming language. Python tends to be a little less easy to get started with for newcomers than R, but is widely used in industry. I will use Python where it makes sense to do so, which will provide you with familiarity with both R and Python.
@@ -158,7 +163,6 @@ Having established a comfort with R, I encourage you to also learn Python, which
 4. Create a free account on Google Colab [here](https://colab.google).
 
 Packages are in typewriter text, for instance, `tidyverse`, while functions are also in typewriter text, but include brackets, for instance `filter()`.
-
 
 ## About the author {.unnumbered}
 
@@ -288,10 +292,11 @@ Finally, thank you to Monica Alexander. Without you I would not have written a b
 You can contact me at: rohan.alexander\@utoronto.ca.
 
 :::{style="text-align: right;"}
+
 Rohan Alexander
 Toronto, Canada
 May 2023
-:::
 
+:::
 
 \mainmatter

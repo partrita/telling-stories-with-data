@@ -6,4 +6,5 @@
 DoctorVisits |> 
   count(visits) |> 
   knitr::kable()
+
 ```

@@ -49,9 +49,8 @@ library(naniar)
 library(opendatatoronto)
 library(tidyverse)
 library(tinytable)
+
 ```
-
-
 
 ## Introduction
 
@@ -89,11 +88,13 @@ us_populations <-
   select(state, population, income)
 
 us_populations
+
 ```
 
 We want to get a quick sense of the data.\index{exploratory data analysis} The first step is to have a look at the top and bottom of it with `head()` and `tail()`, then a random selection, and finally to focus on the variables and their class with `glimpse()`. The random selection is an important aspect, and when you use `head()` you should also quickly consider a random selection.
 
 ```{r}
+
 us_populations |>
   head()
 
@@ -105,13 +106,16 @@ us_populations |>
 
 us_populations |>
   glimpse()
+
 ```
 
 We are then interested in understanding key summary statistics, such as the minimum, median, and maximum values for numeric variables with `summary()` from base R and the number of observations.
 
 ```{r}
+
 us_populations |>
   summary()
+
 ```
 
 Finally, it is especially important to understand the behavior of these key summary statistics at the limits.\index{exploratory data analysis!limits} In particular, one approach is to randomly remove some observations and compare what happens to them. For instance, we can randomly create five datasets that differ on the basis of which observations were removed. We can then compare the summary statistics. If any of them are especially different, then we would want to look at the observations that were removed as they may contain observations with high influence\index{influential points}.
@@ -146,6 +150,7 @@ sample_means |>
   style_tt(j = 1:3, align = "lrr") |> 
   format_tt(digits = 0, num_mark_big = ",", num_fmt = "decimal") |> 
   setNames(c("Seed", "Mean", "Ignored states"))
+
 ```
 
 In the case of the populations of US states, we know that larger states, such as California and New York, will have an out sized effect on our estimate of the mean. @tbl-summarystatesrandom supports that, as we can see that when we use seeds 2 and 3, there is a lower mean.
@@ -161,6 +166,7 @@ We have discussed missing data a lot throughout this book, especially in @sec-fa
 When data are Missing Completely At Random (MCAR),\index{missing data!MCAR} observations are missing from the dataset independent of any other variables---whether in the dataset or not. As discussed in @sec-farm-data, when data are MCAR there are fewer concerns about summary statistics and inference, but data are rarely MCAR. Even if they were it would be difficult to be convinced of this. Nonetheless we can simulate an example. For instance we can remove the population data for three randomly selected states.\index{simulation}
 
 ```{r}
+
 set.seed(853)
 
 remove_random_states <-
@@ -174,6 +180,7 @@ us_states_MCAR <-
   )
 
 summary(us_states_MCAR)
+
 ```
 
 When observations are Missing at Random (MAR) they are missing from the dataset in a way that is related to other variables in the dataset.\index{missing data!MAR} For instance, it may be that we are interested in understanding the effect of income and gender on political participation, and so we gather information on these three variables. But perhaps for some reason males are less likely to respond to a question about income. 
@@ -181,6 +188,7 @@ When observations are Missing at Random (MAR) they are missing from the dataset 
 In the case of the US states dataset, we can simulate a MAR dataset by making the three US states with the highest population not have an observation for income.
 
 ```{r}
+
 highest_income_states <-
   us_populations |>
   slice_max(income, n = 3) |>
@@ -193,6 +201,7 @@ us_states_MAR <-
          )
 
 summary(us_states_MAR)
+
 ```
 
 Finally when observations are Missing Not At Random (MNAR) they are missing from the dataset in a way that is related to either unobserved variables, or the missing variable itself.\index{missing data!MNAR} For instance, it may be that respondents with a higher income, or that respondents with higher education (a variable that we did not collect), are less likely to fill in their income. 
@@ -200,6 +209,7 @@ Finally when observations are Missing Not At Random (MNAR) they are missing from
 In the case of the US states dataset, we can simulate a MNAR dataset by making the three US states with the highest population not have an observation for population.
 
 ```{r}
+
 highest_population_states <-
   us_populations |>
   slice_max(population, n = 3) |>
@@ -213,6 +223,7 @@ us_states_MNAR <-
                    population))
 
 us_states_MNAR
+
 ```
 
 The best approach will be bespoke to the circumstances, but in general we want to use simulation to better understand the implications of our choices. From a data side we can choose to remove observations that are missing or input a value. (There are also options on the model side, but those are beyond the scope of this book.) These approaches have their place, but need to be used with humility and well communicated. The use of simulation is critical. 
@@ -238,8 +249,8 @@ multiple_imputation <-
 mice_estimates <-
   complete(multiple_imputation) |>
   as_tibble()
-```
 
+```
 
 ```{r}
 #| echo: false
@@ -260,7 +271,6 @@ us_states_MCAR_mean_imputation <- us_states_MCAR |>
 
 # Mean US state population after mean imputation
 mean_imputation_overall <- mean(us_states_MCAR_mean_imputation$population)
-
 
 tibble(
   observation = c("Florida", "Montana", "New Hampshire", "Overall"),
@@ -296,6 +306,7 @@ tibble(
     "Multiple imputation",
     "Actual"
   ))
+
 ```
 
 @tbl-imputationoptions makes it clear that none of these approaches should be naively imposed. For instance, Florida's population should be 8,277. Imputing the mean across all the states would result in an estimate of 4,308, and multiple imputation results in an estimate of 11,197, the former is too low and the latter is too high. If imputation is the answer, it may be better to look for a different question. It is worth pointing out that it was developed for specific circumstances of limiting public disclosure of private information [@myboynick]. 
@@ -309,7 +320,6 @@ Finally, more prosaically, but just as importantly, sometimes missing data is en
 - ".": Respondent skipped
 
 It is always worth looking explicitly for values that seem like they do not belong and investigating them. Graphs and tables are especially useful for this purpose. 
-
 
 ## TTC subway delays 
 
@@ -331,6 +341,7 @@ all_2021_ttc_data <-
 write_csv(all_2021_ttc_data, "all_2021_ttc_data.csv")
 
 all_2021_ttc_data
+
 ```
 
 ```{r}
@@ -340,6 +351,7 @@ all_2021_ttc_data
 # INTERNAL - Run above and then run this to save it in the appropriate place.
 
 write_csv(all_2021_ttc_data, "inputs/data/all_2021_ttc_data.csv")
+
 ```
 
 ```{r}
@@ -351,6 +363,7 @@ write_csv(all_2021_ttc_data, "inputs/data/all_2021_ttc_data.csv")
 all_2021_ttc_data <- read_csv("inputs/data/all_2021_ttc_data.csv")
 
 all_2021_ttc_data
+
 ```
 
 The dataset has a variety of columns, and we can find out more about each of them by downloading the codebook. The reason for each delay is coded, and so we can also download the explanations. One variable of interest appears is "min_delay", which gives the extent of the delay in minutes. 
@@ -380,6 +393,7 @@ delay_codes <-
   clean_names()
 
 write_csv(delay_codes, "delay_codes.csv")
+
 ```
 
 ```{r}
@@ -390,6 +404,7 @@ write_csv(delay_codes, "delay_codes.csv")
 
 write_csv(delay_codebook, "inputs/data/delay_codebook.csv")
 write_csv(delay_codes, "inputs/data/delay_codes.csv")
+
 ```
 
 ```{r}
@@ -401,6 +416,7 @@ delay_codebook
 
 delay_codes <- read_csv("inputs/data/delay_codes.csv")
 delay_codes
+
 ```
 
 There is no one way to explore a dataset while conducting EDA, but we are usually especially interested in: 
@@ -416,6 +432,7 @@ It is important to document all aspects as we go through and note anything surpr
 We should check that the variables are what they say they are. If they are not, then we need to work out what to do. For instance, should we change them, or possibly even remove them? It is also important to ensure that the class of the variables is as we expect. For instance, variables that should be a factor are a factor and those that should be a character are a character. And that we do not accidentally have, say, factors as numbers, or vice versa. One way to do this is to use `unique()`, and another is to use `table()`. There is no universal answer to which variables should be of certain classes, because the answer depends on the context.
 
 ```{r}
+
 unique(all_2021_ttc_data$day)
 
 unique(all_2021_ttc_data$line)
@@ -423,17 +440,20 @@ unique(all_2021_ttc_data$line)
 table(all_2021_ttc_data$day)
 
 table(all_2021_ttc_data$line)
+
 ```
 
 We have likely issues in terms of the subway lines. Some of them have a clear fix, but not all. One option would be to drop them, but we would need to think about whether these errors might be correlated with something that is of interest. If they were then we may be dropping important information. There is usually no one right answer, because it will usually depend on what we are using the data for. We would note the issue, as we continued with EDA and then decide later about what to do. For now, we will remove all the lines that are not the ones that we know to be correct based on the codebook.
 
 ```{r}
+
 delay_codebook |>
   filter(field_name == "Line")
 
 all_2021_ttc_data_filtered_lines <-
   all_2021_ttc_data |>
   filter(line %in% c("YU", "BD", "SHP", "SRT"))
+
 ```
 
 Entire careers are spent understanding missing data, and the presence, or lack, of missing values can haunt an analysis. To get started we could look at known-unknowns, which are the NAs for each variable. For instance, we could create counts by variable.
@@ -449,6 +469,7 @@ Sometimes data happen to be duplicated. If we did not notice this, then our anal
 #| warning: false
 
 get_dupes(all_2021_ttc_data_filtered_lines)
+
 ```
 
 This dataset has many duplicates. We are interested in whether there is something systematic going on. Remembering that during EDA we are trying to quickly come to terms with a dataset, one way forward is to flag this as an issue to come back to and explore later, and to just remove duplicates for now using `distinct()`.
@@ -460,14 +481,17 @@ This dataset has many duplicates. We are interested in whether there is somethin
 all_2021_ttc_data_no_dupes <-
   all_2021_ttc_data_filtered_lines |>
   distinct()
+
 ```
 
 The station names have many errors.
 
 ```{r}
+
 all_2021_ttc_data_no_dupes |>
   count(station) |>
   filter(str_detect(station, "WEST"))
+
 ```
 
 We could try to quickly bring a little order to the chaos by just taking just the first word or first few words, accounting for names like "ST. CLAIR" and "ST. PATRICK" by checking if the name starts with "ST", as well as distinguishing between stations like "DUNDAS" and "DUNDAS WEST" by checking if the name contains "WEST". Again, we are just trying to get a sense of the data, not necessarily make binding decisions here. We use `word()` from `stringr` to extract specific words from the station names.
@@ -490,6 +514,7 @@ all_2021_ttc_data_no_dupes <-
   )
 
 all_2021_ttc_data_no_dupes
+
 ```
 
 We need to see the data in its original state to understand it, and we often use bar charts, scatterplots, line plots, and histograms for this. During EDA we are not so concerned with whether the graph looks nice, but are instead trying to acquire a sense of the data as quickly as possible. We can start by looking at the distribution of "min_delay", which is one outcome of interest.
@@ -512,6 +537,7 @@ all_2021_ttc_data_no_dupes |>
   ggplot(aes(x = min_delay)) +
   geom_histogram(bins = 30) +
   scale_x_log10()
+
 ```
 
 The largely empty graph in @fig-delayhist-1 suggests the presence of outliers. There are a variety of ways to try to understand what could be going on, but one quick way to proceed is to use logarithms, remembering that we would expect values of zero to drop away (@fig-delayhist-2).
@@ -551,6 +577,7 @@ all_2021_ttc_data_no_dupes_with_explanation <-
 all_2021_ttc_data_no_dupes_with_explanation |>
   select(station_clean, code, min_delay, code_desc) |>
   arrange(-min_delay)
+
 ```
 
 From this we can see that the 348 minute delay was due to "Traction Power Rail Related", the 343 minute delay was due to "Signals - Track Circuit Problems", and so on.
@@ -588,6 +615,7 @@ all_2021_ttc_data_no_dupes_with_explanation |>
     bins = 10
   ) +
   scale_x_log10()
+
 ```
 
 @fig-delaydensity-1 uses density so that we can look at the distributions more comparably, but we should also be aware of differences in frequency (@fig-delaydensity-2). In this case, we see that "SHP" and "SRT" have much smaller counts.
@@ -612,6 +640,7 @@ all_2021_ttc_data_no_dupes_with_explanation |>
   scale_x_log10() +
   facet_wrap(vars(day)) +
   theme(legend.position = "bottom")
+
 ```
 
 We can also plot the top five stations by mean delay, faceted by line (@fig-whatisthisagraphforants). This raises something that we would need to follow up on, which is what is "ZONE" in "YU"?
@@ -633,6 +662,7 @@ all_2021_ttc_data_no_dupes_with_explanation |>
   geom_col() +
   coord_flip() +
   facet_wrap(vars(line), scales = "free_y")
+
 ```
 
 As discussed in @sec-clean-and-prepare, dates are often difficult to work with because they are so prone to having issues. For this reason, it is especially important to consider them during EDA. Let us create a graph by week, to see if there is any seasonality over the course of a year. When using dates, `lubridate` is especially useful. For instance, we can look at the average delay, of those that were delayed, by week, using `week()` to construct the weeks (@fig-delaybyweek).
@@ -654,6 +684,7 @@ all_2021_ttc_data_no_dupes_with_explanation |>
   geom_point() +
   geom_smooth() +
   facet_wrap(vars(line), scales = "free_y")
+
 ```
 
 Now let us look at the proportion of delays that were greater than ten minutes (@fig-longdelaybyweek).
@@ -674,6 +705,7 @@ all_2021_ttc_data_no_dupes_with_explanation |>
   geom_point() +
   geom_smooth() +
   facet_wrap(vars(line), scales = "free_y")
+
 ```
 
 These figures, tables, and analysis may not have a place in a final paper. Instead, they allow us to become comfortable with the data. We note aspects about each that stand out, as well as the warnings and any implications or aspects to return to.
@@ -695,6 +727,7 @@ all_2021_ttc_data_no_dupes_with_explanation |>
   geom_point() +
   scale_x_log10() +
   scale_y_log10()
+
 ```
 
 The relationship between categorical variables takes more work, but we could also, for instance, look at the top five reasons for delay by station. We may be interested in whether they differ, and how any difference could be modelled (@fig-categorical).
@@ -716,29 +749,12 @@ all_2021_ttc_data_no_dupes_with_explanation |>
   geom_col() +
   facet_wrap(vars(line), scales = "free_y", nrow = 4) +
   coord_flip()
+
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <!-- ## Case study - Historical Canadian elections -->
 
-
 <!-- https://twitter.com/semrasevi/status/1122889166008745985?s=21  -->
-
-
-
 
 <!-- ```{r}
 #| eval: false
@@ -748,12 +764,10 @@ all_2021_ttc_data_no_dupes_with_explanation |>
 
 <!-- elections_data <- read_csv("inputs/federal_candidates-1.csv") -->
 
-
 <!-- elections_data$Province |> table() -->
 
 <!-- # There are inconsistencies in the province names -->
 <!-- elections_data$Province[elections_data$Province == "Québec"] <- "Quebec" -->
-
 
 <!-- elections_data <- elections_data |> -->
 <!--   filter(!is.na(Province)) -->
@@ -774,7 +788,6 @@ all_2021_ttc_data_no_dupes_with_explanation |>
 <!-- elections_data$incumbent_candidate |> table() -->
 <!-- elections_data$party_short |> unique() |> length() -->
 
-
 <!-- # Add year -->
 <!-- elections_data <- -->
 <!--   elections_data |> -->
@@ -785,13 +798,9 @@ all_2021_ttc_data_no_dupes_with_explanation |>
 <!--   elections_data |> -->
 <!--   mutate(counter = year - 1867) -->
 
-
-
 <!-- #### Save #### -->
 <!-- write_csv(elections_data, "outputs/elections.csv") -->
 <!-- ``` -->
-
-
 
 <!-- ```{r}
 #| eval: false
@@ -811,21 +820,16 @@ all_2021_ttc_data_no_dupes_with_explanation |>
 <!--   geom_point() + -->
 <!--   facet_wrap(vars(Province)) -->
 
-
 <!-- elections_data |> -->
 <!--   ggplot(aes(x = Province, fill = Gender)) + -->
 <!--   geom_bar(position = "dodge") -->
 <!-- # We discovered WW1! -->
-
-
-
 
 <!-- ``` -->
 
 <!-- ```{r}
 #| eval: false
 #| include: true
-
 
 <!-- #### Set up workspace ### -->
 <!-- library(broom) -->
@@ -861,10 +865,7 @@ all_2021_ttc_data_no_dupes_with_explanation |>
 <!-- model6 <- lm(Result ~ Gender + incumbent_candidate + Province + counter + counter*Gender, data = elections_data) -->
 <!-- tidy(model6) -->
 
-
 <!-- ``` -->
-
-
 
 ## Airbnb listings in London, England
 
@@ -897,6 +898,7 @@ airbnb_data <-
 write_csv(airbnb_data, "airbnb_data.csv")
 
 airbnb_data
+
 ```
 
 We should refer to this local copy of our data when we run our scripts to explore the data, rather than asking the Inside Airbnb servers for the data each time. It might be worth even commenting out this call to their servers to ensure that we do not accidentally stress their service.
@@ -915,6 +917,7 @@ airbnb_data <-
     file = "dont_push/2023-03-14-london-airbnb_data.csv",
     guess_max = 20000
   )
+
 ```
 
 While we need to archive this CSV because that is the original, unedited data, at more than 100MB it is a little unwieldy. For exploratory purposes we will create a parquet file\index{parquet} with selected variables (we do this in an iterative way, using `names(airbnb_data)` to work out the variable names).
@@ -947,9 +950,8 @@ write_parquet(
   )
 
 rm(airbnb_data)
+
 ```
-
-
 
 ```{r}
 #| eval: true
@@ -961,6 +963,7 @@ airbnb_data_selected <-
   read_parquet(file = "inputs/data/2023-03-14-london-airbnblistings-select_variables.parquet")
 
 airbnb_data_selected
+
 ```
 
 ### Distribution and properties of individual variables
@@ -989,6 +992,7 @@ airbnb_data_selected <-
     price = str_remove_all(price, "[\\$,]"),
     price = as.integer(price)
   )
+
 ```
 
 Now we can look at the distribution of prices (@fig-airbnbpricesfirst-1). There are outliers, so again we might like to consider it on the log scale (@fig-airbnbpricesfirst-2). 
@@ -1024,6 +1028,7 @@ airbnb_data_selected |>
     y = "Number of properties"
   ) +
   scale_y_log10()
+
 ```
 
 Turning to @fig-airbnbpricesbunch, if we focus on prices that are less than \$1,000, then we see that most properties have a nightly price less than \$250 (@fig-airbnbpricesbunch-1). In the same way that we saw some bunching in ages in @sec-clean-and-prepare, it looks like there is some bunching of prices here. It might be that this is happening around numbers ending in zero or nine. Let us just zoom in on prices between \$90 and \$210, out of interest, but change the bins to be smaller (@fig-airbnbpricesbunch-2).
@@ -1060,6 +1065,7 @@ airbnb_data_selected |>
     x = "Price per night",
     y = "Number of properties"
   )
+
 ```
 
 For now, we will just remove all prices that are more than $999.
@@ -1071,6 +1077,7 @@ For now, we will just remove all prices that are more than $999.
 airbnb_data_less_1000 <-
   airbnb_data_selected |>
   filter(price < 1000)
+
 ```
 
 Superhosts are especially experienced Airbnb hosts, and we might be interested to learn more about them. For instance, a host either is or is not a superhost, and so we would not expect any NAs. But we can see that there are NAs. It might be that the host removed a listing or similar, but this is something that we would need to look further into.
@@ -1081,6 +1088,7 @@ Superhosts are especially experienced Airbnb hosts, and we might be interested t
 
 airbnb_data_less_1000 |>
   filter(is.na(host_is_superhost))
+
 ```
 
 We will also want to create a binary variable from this. It is true/false at the moment, which is fine for the modeling, but there are a handful of situations where it will be easier if we have a 0/1. And for now we will just remove anyone with a NA for whether they are a superhost.
@@ -1096,6 +1104,7 @@ airbnb_data_no_superhost_nas <-
     host_is_superhost_binary =
       as.numeric(host_is_superhost)
   )
+
 ```
 
 On Airbnb, guests can give one to five star ratings across a variety of different aspects, including cleanliness, accuracy, value, and others. But when we look at the reviews in our dataset, it is clear that it is effectively a binary, and almost entirely the case that either the rating is five stars or not (@fig-airbnbreviews).
@@ -1116,6 +1125,7 @@ airbnb_data_no_superhost_nas |>
     x = "Review scores rating",
     y = "Number of properties"
   )
+
 ```
 
 We would like to deal with the NAs in "review_scores_rating", but this is more complicated as there are a lot of them. It may be that this is just because they do not have any reviews.
@@ -1132,6 +1142,7 @@ airbnb_data_no_superhost_nas |>
   filter(is.na(review_scores_rating)) |>
   select(number_of_reviews) |>
   table()
+
 ```
 
 These properties do not have a review rating yet because they do not have enough reviews. It is a large proportion of the total, at almost a fifth of them so we might like to look at this in more detail using counts.
@@ -1176,6 +1187,7 @@ airbnb_data_no_superhost_nas |>
     x = "Average review score",
     y = "Number of properties"
   )
+
 ```
 
 For now, we will remove anyone with an NA in their main review score, even though this will remove roughly 20 per cent of observations. If we ended up using this dataset for actual analysis, then we would want to justify this decision in an appendix or similar.
@@ -1187,6 +1199,7 @@ For now, we will remove anyone with an NA in their main review score, even thoug
 airbnb_data_has_reviews <-
   airbnb_data_no_superhost_nas |>
   filter(!is.na(review_scores_rating))
+
 ```
 
 Another important factor is how quickly a host responds to an inquiry. Airbnb allows hosts up to 24 hours to respond, but encourages responses within an hour.
@@ -1197,6 +1210,7 @@ Another important factor is how quickly a host responds to an inquiry. Airbnb al
 
 airbnb_data_has_reviews |>
   count(host_response_time)
+
 ```
 
 It is unclear how a host could have a response time of NA. It may be this is related to some other variable. Interestingly it seems like what looks like "NAs" in "host_response_time" variable are not coded as proper NAs, but are instead being treated as another category. We will recode them to be actual NAs and change the variable to be a factor.
@@ -1215,6 +1229,7 @@ airbnb_data_has_reviews <-
     ),
     host_response_time = factor(host_response_time)
   )
+
 ```
 
 There is an issue with NAs as there are a lot of them. For instance, we might be interested to see if there is a relationship with the review score (@fig-airbnbreviewsselectednasresponse). There are a lot that have an overall review of 100.
@@ -1236,6 +1251,7 @@ airbnb_data_has_reviews |>
     x = "Average review score",
     y = "Number of properties"
   )
+
 ```
 
 Usually missing values are dropped by `ggplot2`. We can use `geom_miss_point()` from `naniar` to include them in the graph (@fig-visualisemissing).
@@ -1260,6 +1276,7 @@ airbnb_data_has_reviews |>
     color = "Is missing?"
   ) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
 ```
 
 For now, we will remove anyone with a NA in their response time. This will again remove roughly another 20 per cent of the observations.
@@ -1271,6 +1288,7 @@ For now, we will remove anyone with a NA in their response time. This will again
 airbnb_data_selected <-
   airbnb_data_has_reviews |>
   filter(!is.na(host_response_time))
+
 ```
 
 We might be interested in how many properties a host has on Airbnb (@fig-airbnbhostlisting).
@@ -1291,6 +1309,7 @@ airbnb_data_selected |>
     x = "Total number of listings, by host",
     y = "Number of hosts"
   )
+
 ```
 
 Based on @fig-airbnbhostlisting we can see there are a large number who have somewhere in the 2-500 properties range, with the usual long tail. The number with that many listings is unexpected and worth following up on. And there are a bunch with NA that we will need to deal with.
@@ -1302,6 +1321,7 @@ Based on @fig-airbnbhostlisting we can see there are a large number who have som
 airbnb_data_selected |>
   filter(host_total_listings_count >= 500) |>
   head()
+
 ```
 
 There is nothing that immediately jumps out as odd about the people with more than ten listings, but at the same time it is still not clear. For now, we will move on and focus on only those with one property for simplicity.
@@ -1315,8 +1335,8 @@ airbnb_data_selected <-
   add_count(host_id) |>
   filter(n == 1) |>
   select(-n)
-```
 
+```
 
 ### Relationships between variables
 
@@ -1344,6 +1364,7 @@ airbnb_data_selected |>
     color = "Superhost"
   ) +
   scale_color_brewer(palette = "Set1")
+
 ```
 
 One of the aspects that may make someone a superhost is how quickly they respond to inquiries. One could imagine that being a superhost involves quickly saying yes or no to inquiries. Let us look at the data. First, we want to look at the possible values of superhost by their response times.
@@ -1358,6 +1379,7 @@ airbnb_data_selected |>
     proportion = n / sum(n),
     proportion = round(proportion, digits = 2)
   )
+
 ```
 
 Fortunately, it looks like when we removed the reviews rows we removed any NAs from whether they were a superhost, but if we go back and look into that we may need to check again. 
@@ -1373,6 +1395,7 @@ airbnb_data_selected |>
   adorn_pct_formatting(digits = 0) |>
   adorn_ns() |>
   adorn_title()
+
 ```
 
 Finally, we could look at neighborhood. The data provider has attempted to clean the neighborhood variable for us, so we will use that variable for now. Although if we ended up using this variable for our actual analysis we would want to examine how it was constructed.
@@ -1388,8 +1411,8 @@ airbnb_data_selected |>
   filter(n > 100) |>
   adorn_totals("row") |>
   head()
-```
 
+```
 
 We will quickly run a model on our dataset. We will cover modeling in more detail in @sec-its-just-a-linear-model, but we can use models during EDA to help get a better sense of relationships that may exist between multiple variables in a dataset. For instance, we may like to see whether we can forecast whether someone is a superhost, and the factors that go into explaining that. As the outcome is binary, this is a good opportunity to use logistic regression. We expect that superhost status will be associated with faster responses and better reviews. Specifically, the model that we estimate is:
 
@@ -1409,6 +1432,7 @@ logistic_reg_superhost_response_review <-
     data = airbnb_data_selected,
     family = binomial
   )
+
 ```
 
 After installing and loading `modelsummary` we can have a quick look at the results using `modelsummary()` (@tbl-modelsummarylogisticregressionsuper).
@@ -1420,6 +1444,7 @@ After installing and loading `modelsummary` we can have a quick look at the resu
 #| tbl-cap: "Explaining whether a host is a superhost based on their response time"
 
 modelsummary(logistic_reg_superhost_response_review)
+
 ```
 
 We see that each of the levels is positively associated with the probability of being a superhost. However, having a host that responds within an hour is associated with individuals that are superhosts in our dataset.
@@ -1434,6 +1459,7 @@ write_parquet(
   x = airbnb_data_selected, 
   sink = "2023-05-05-london-airbnblistings-analysis_dataset.parquet"
   )
+
 ```
 
 ```{r}
@@ -1442,17 +1468,14 @@ write_parquet(
 
 write_parquet(x = airbnb_data_selected, 
                      sink = "outputs/data/2023-05-05-london-airbnblistings-analysis_dataset.parquet")
+
 ```
-
-
 
 ## Concluding remarks
 
 In this chapter we have considered exploratory data analysis (EDA), which is the active process of getting to know a dataset. We focused on missing data, the distributions of variables, and the relationships between variables. And we extensively used graphs and tables to do this. 
 
 The approaches to EDA will vary depending on context, and the issues and features that are encountered in the dataset. It will also depend on your skills, for instance it is common to consider regression models, and dimensionality reduction approaches.
-
-
 
 ## Exercises
 
@@ -1487,9 +1510,10 @@ The approaches to EDA will vary depending on context, and the issues and feature
 
 ### Class activities {.unnumbered}
 
-
 - Fix the following file names.
+
 ```text
+
 example_project/
 ├── .gitignore
 ├── Example project.Rproj
@@ -1498,13 +1522,16 @@ example_project/
 │   ├── DownloadData.R
 │   ├── data-cleaning.R
 │   ├── test(new)data.R
+
 ```
+
 - Consider Anscombe's Quartet, introduced in @sec-static-communication. We will randomly remove certain observations. Please pretend you are given the dataset with missing data.  Pick one of the approaches to dealing with missing data from @sec-farm-data and @sec-exploratory-data-analysis, then write code to implement your choice. Compare: 
     - the results with the actual observations; 
     - the summary statistics with the actual summary statistics; and
     - build a graph that shows the missing and actual data on the one graph.
 
 ```{r}
+
 set.seed(853)
 
 tidy_anscombe <-
@@ -1529,9 +1556,13 @@ tidy_anscombe_MCAR <-
 tidy_anscombe_MCAR
 
 # ADD CODE HERE
+
 ```
+
 - Redo the exercise, but with the following dataset. What is the main difference in this case?
+
 ```{r}
+
 tidy_anscombe_MNAR <-
   tidy_anscombe |>
   arrange(desc(x)) |>
@@ -1551,9 +1582,11 @@ tidy_anscombe_MNAR <-
 tidy_anscombe_MNAR
 
 # ADD CODE HERE
+
 ```
 
 - Using pair programming (being sure to switch every 5 minutes), create a new R project, then read in the following dataset from @Bombieri2023 and explore it by adding code and notes to a Quarto document.
+
 ```{r}
 #| echo: true
 #| eval: false
@@ -1566,7 +1599,9 @@ data <-
             col_types = "text") |>
   clean_names() |>
   mutate(date = convert_to_date(date))
+
 ```
+
 - Play the role of a data scientist partnering with a subject expert by pairing up with another student. Your partner gets to pick a topic, and a question, and it should be something they know well but you do not (perhaps something about their country, if they are an international student). You need to work with them to develop an analysis plan, simulate some data, and create a graph that they can use.
 
 ### Task {.unnumbered}

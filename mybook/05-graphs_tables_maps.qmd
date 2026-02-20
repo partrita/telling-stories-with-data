@@ -5,7 +5,9 @@ engine: knitr
 # Graphs, tables, and maps {#sec-static-communication}
 
 :::{.callout-note}
+
 Chapman and Hall/CRC published this book in July 2023. You can purchase that [here](https://www.routledge.com/Telling-Stories-with-Data-With-Applications-in-R/Alexander/p/book/9781032134772). This online version has some updates to what was printed.
+
 :::
 
 **Prerequisites**
@@ -83,8 +85,8 @@ library(troopdata)
 library(shiny)
 library(usethis)
 library(WDI)
-```
 
+```
 
 ## Introduction
 
@@ -109,7 +111,9 @@ The most important objective of a graph is to convey as much of the actual data,
 To see why graphing the actual data is important\index{graphs!importance of}, after installing and loading `datasauRus` consider the `datasaurus_dozen` dataset.
 
 ```{r}
+
 datasaurus_dozen
+
 ```
 
 The dataset consists of values for "x" and "y", which should be plotted on the x-axis and y-axis, respectively. There are 13 different values in the variable "dataset" including: "dino", "star", "away", and "bullseye". We focus on those four and generate summary statistics for each (@tbl-datasaurussummarystats).
@@ -127,6 +131,7 @@ datasaurus_dozen |>
   style_tt(j = 2:5, align = "r") |>
   format_tt(digits = 1, num_fmt = "decimal") |>
   setNames(c("Dataset", "x mean", "x sd", "y mean", "y sd"))
+
 ```
 
 Notice that the summary statistics are similar (@tbl-datasaurussummarystats). Despite this it turns out that the different datasets are actually very different beasts. This becomes clear when we plot the data (@fig-datasaurusgraph).
@@ -145,24 +150,31 @@ datasaurus_dozen |>
   theme_minimal() +
   facet_wrap(vars(dataset), nrow = 2, ncol = 2) +
   labs(color = "Dataset")
+
 ```
 
 We get a similar lesson---always plot your data---from "Anscombe's Quartet", created by the twentieth century statistician Frank Anscombe. The key takeaway is that it is important to plot the actual data and not rely solely on summary statistics.\index{graphs!not relying on summary statistics}
 
 ```{r}
+
 head(anscombe)
+
 ```
 
 :::{.content-visible when-format="pdf"}
+
 Anscombe's Quartet consists of eleven observations for four different datasets, with x and y values for each observation. We need to manipulate this dataset with `pivot_longer()` to get it into the "tidy" format discussed in the ["R Essentials" Online Appendix](https://tellingstorieswithdata.com/20-r_essentials.html).
+
 :::
 
 :::{.content-visible unless-format="pdf"}
+
 Anscombe's Quartet consists of eleven observations for four different datasets, with x and y values for each observation. We need to manipulate this dataset with `pivot_longer()` to get it into the "tidy" format discussed in [Online Appendix -@sec-r-essentials].
+
 :::
 
-
 ```{r}
+
 # From: https://www.njtierney.com/post/2020/06/01/tidy-anscombe/
 # And the pivot_longer() vignette.
 
@@ -173,6 +185,7 @@ tidy_anscombe <-
     names_to = c(".value", "set"),
     names_pattern = "(.)(.)"
   )
+
 ```
 
 We can first create summary statistics (@tbl-anscombesummarystats) and then plot the data (@fig-anscombegraph). This again illustrates the importance of graphing the actual data, rather than relying on summary statistics.
@@ -191,8 +204,8 @@ tidy_anscombe |>
   style_tt(j = 2:5, align = "r") |>
   format_tt(digits = 1, num_fmt = "decimal") |>
   setNames(c("Dataset", "x mean", "x sd", "y mean", "y sd"))
-```
 
+```
 
 ```{r}
 #| eval: true
@@ -209,6 +222,7 @@ tidy_anscombe |>
   facet_wrap(vars(set), nrow = 2, ncol = 2) +
   labs(colour = "Dataset") +
   theme(legend.position = "bottom")
+
 ```
 
 ### Bar charts
@@ -216,16 +230,19 @@ tidy_anscombe |>
 We typically use a bar chart\index{graphs!bar chart} when we have a categorical variable that we want to focus on. We saw an example of this in @sec-fire-hose when we constructed a graph of the number of occupied beds. The geometric object---a "geom"---that we primarily use is `geom_bar()`, but there are many variants to cater for specific situations. To illustrate the use of bar charts, we use a dataset from the 1997-2001 British Election Panel Study that was put together by @fox2006effect and made available with `BEPS`, after installing and loading `carData`.\index{gender!British Election Panel Study}\index{British Election Panel Study}
 
 ```{r}
+
 beps <-
   BEPS |>
   as_tibble() |>
   clean_names() |>
   select(age, vote, gender, political_knowledge)
+
 ```
 
 The dataset consists of which party the respondent supports, along with various demographic, economic, and political variables. In particular, we have the age of the respondent. We begin by creating age-groups from the ages, and making a bar chart showing the frequency of each age-group using `geom_bar()` (@fig-bepfitst-1).
 
 ```{r}
+
 beps <-
   beps |>
   mutate(
@@ -240,6 +257,7 @@ beps <-
     age_group =
       factor(age_group, levels = c("<35", "35-49", "50-64", "65-79", "80-99"))
   )
+
 ```
 
 ```{r}
@@ -262,6 +280,7 @@ beps |>
   geom_col() +
   theme_minimal() +
   labs(x = "Age group", y = "Number of observations")
+
 ```
 
 The default axis label used by `ggplot2` is the name of the relevant variable, so it is often useful to add more detail. We do this using `labs()` by specifying a variable and a name. In the case of @fig-bepfitst-1 we have specified labels for the x-axis and y-axis.
@@ -289,6 +308,7 @@ beps |>
   geom_bar(position = "dodge2") +
   labs(x = "Age group", y = "Number of observations", fill = "Vote") +
   theme(legend.position = "bottom")
+
 ```
 
 By default, these different groups are stacked, but they can be placed side by side with `position = "dodge2"` (@fig-bepsecond-2). (Using "dodge2" rather than "dodge" adds a little space between the bars.)
@@ -329,6 +349,7 @@ theme_minimal <-
   theme_minimal()
 
 (theme_bw + theme_classic) / (theme_dark + theme_minimal)
+
 ```
 
 In @fig-bepthemes we use `patchwork` to bring together multiple graphs. To do this, after installing and loading the package, we assign the graph to a variable. We then use "+" to signal which should be next to each other, "/" to signal which should be on top, and use brackets to indicate precedence
@@ -356,6 +377,7 @@ beps |>
   facet_wrap(vars(vote)) +
   guides(x = guide_axis(angle = 90)) +
   theme(legend.position = "bottom")
+
 ```
 
 We could change `facet_wrap()` to wrap vertically instead of horizontally with `dir = "v"`. Alternatively, we could specify a few rows, say `nrow = 2`, or a number of columns, say `ncol = 2`.
@@ -381,6 +403,7 @@ beps |>
   facet_wrap(vars(vote), scales = "free") +
   guides(x = guide_axis(angle = 90)) +
   theme(legend.position = "bottom")
+
 ```
 
 Finally, we can change the labels of the facets using `labeller()` (@fig-facetsfancylabels).
@@ -412,6 +435,7 @@ beps |>
   ) +
   guides(x = guide_axis(angle = 90)) +
   theme(legend.position = "bottom")
+
 ```
 
 We now have three ways to combine multiple graphs: sub-figures, facets, and `patchwork`. They are useful in different circumstances:
@@ -425,9 +449,11 @@ We now have three ways to combine multiple graphs: sub-figures, facets, and `pat
 We now turn to the colors\index{graphs!color} used in the graph. There are a variety of different ways to change the colors. The many palettes available from `RColorBrewer` [@RColorBrewer] can be specified using `scale_fill_brewer()`. In the case of `viridis` [@viridis] we can specify the palettes using `scale_fill_viridis_d()`. Additionally, `viridis` is particularly focused on color-blind palettes (@fig-usecolor). Neither `RColorBrewer` nor `viridis` need to be explicitly installed or loaded because `ggplot2`, which is part of the `tidyverse`, takes care of that for us.
 
 :::callout-note
+
 ## Shoulders of giants
 
 The name of the "brewer" palette refers to Cindy Brewer\index{Brewer, Cindy} [@brewerisarealperson]. After earning a PhD in Geography from Michigan State University in 1991, she joined San Diego State University as an assistant professor, moving to Pennsylvania State University in 1994, where she was promoted to full professor in 2007. One of her best-known books is *Designing Better Maps: A Guide for GIS Users* [@brewerbook]. In 2019 she became only the ninth person to have been awarded the O. M. Miller Cartographic Medal since it was established in 1968.\index{O. M. Miller Cartographic Medal}
+
 :::
 
 ```{r}
@@ -475,20 +501,22 @@ beps |>
   labs(x = "Age-group", y = "Number", fill = "Voted for") +
   theme(legend.position = "bottom") +
   scale_fill_viridis_d(option = "magma")
+
 ```
 
 In addition to using pre-built palettes, we could build our own palette. That said, color is something to be considered with care. It should be used to increase the amount of information that is communicated [@elementsofgraphingdata]. Color should not be added to graphs unnecessarily---that is to say, it should play some role. Typically, that role is to distinguish different groups, which implies making the colors dissimilar. Color may also be appropriate if there is some relationship between the color and the variable.
 For instance, if making a graph of the price of mangoes and raspberries, then it could help the reader decode the information if the colors were yellow and red, respectively [@franconeri2021science, p. 121].
-
 
 ### Scatterplots
 
 We are often interested in the relationship between two numeric or continuous variables. We can use scatterplots\index{graphs!scatterplot} to show this. A scatterplot may not always be the best choice, but it is rarely a bad one [@weissgerber2015beyond]. Some consider it the most versatile and useful graph option [@historyofdataviz, p. 121]. To illustrate scatterplots, we install and load `WDI` and then use that to download some economic indicators from the World Bank\index{World Bank!economic data}. In particular, we use `WDIsearch()` to find the unique key that we need to pass to `WDI()` to facilitate the download.
 
 :::{.callout-note}
+
 ## Oh, you think we have good data on that!
 
 From @EssentialMacroAggregates [p. 15] Gross Domestic Product (GDP) "combines in a single figure, and with no double counting, all the output (or production) carried out by all the firms, non-profit institutions, government bodies and households in a given country during a given period, regardless of the type of goods and services produced, provided that the production takes place within the country's economic territory." \index{Gross Domestic Product (GDP)} The modern concept was developed by the twentieth century economist Simon Kuznets and is widely used and reported. There is a certain comfort in having a definitive and concrete single number to describe something as complicated as the economic activity of a country. It is useful and informative that we have such summary statistics. But as with any summary statistic, its strength is also its weakness. A single number necessarily loses information about constituent components, and disaggregated differences can be important [@Moyer2020Measuring]. It highlights short term economic progress over longer term improvements. And "the quantitative definiteness of the estimates makes it easy to forget their dependence upon imperfect data and the consequently wide margins of possible error to which both totals and components are liable" [@NationalIncomeAndItsComposition, p. xxvi]. Summary measures of economic performance shows only one side of a country's economy. While there are many strengths there are also well-known areas where GDP is weak.
+
 :::
 
 ```{r}
@@ -499,6 +527,7 @@ WDIsearch("gdp growth")
 WDIsearch("inflation")
 WDIsearch("population, total")
 WDIsearch("Unemployment, total")
+
 ```
 
 ```{r}
@@ -511,6 +540,7 @@ world_bank_data <-
       c("FP.CPI.TOTL.ZG", "NY.GDP.MKTP.KD.ZG", "SP.POP.TOTL","SL.UEM.TOTL.NE.ZS"),
     country = c("AU", "ET", "IN", "US")
   )
+
 ```
 
 ```{r}
@@ -519,6 +549,7 @@ world_bank_data <-
 
 # INTERNAL
 write_csv(world_bank_data, "inputs/data/world_bank_data.csv")
+
 ```
 
 ```{r}
@@ -533,6 +564,7 @@ world_bank_data <-
     "inputs/data/world_bank_data.csv",
     show_col_types = FALSE
   )
+
 ```
 
 We may like to change the variable names to be more meaningful, and only keep those that we need.
@@ -552,6 +584,7 @@ world_bank_data <-
   select(country, year, inflation, gdp_growth, population, unem_rate)
 
 head(world_bank_data)
+
 ```
 
 To get started we can use `geom_point()` to make a scatterplot showing GDP growth and inflation, by country (@fig-scattorplot-1).
@@ -574,6 +607,7 @@ world_bank_data |>
   geom_point() +
   theme_minimal() +
   labs(x = "GDP growth", y = "Inflation", color = "Country")
+
 ```
 
 As with bar charts, we can change the theme, and update the labels (@fig-scattorplot-2).
@@ -625,6 +659,7 @@ world_bank_data |>
   labs(x = "GDP growth",  y = "Inflation", color = "Country") +
   theme(legend.position = "bottom") +
   scale_colour_viridis_d(option = "magma")
+
 ```
 
 The points of a scatterplot sometimes overlap. We can address this situation in a variety of ways (@fig-alphajitter):
@@ -654,6 +689,7 @@ world_bank_data |>
   geom_jitter(width = 1, height = 1) +
   theme_minimal() +
   labs(x = "GDP growth", y = "Inflation", color = "Country")
+
 ```
 
 We often use scatterplots to illustrate a relationship between two continuous variables.\index{graphs!continuous variables} It can be useful to add a "summary" line using `geom_smooth()` (@fig-scattorplottwo).\index{graphs!best fit} We can specify the relationship using "method", change the color with "color", and add or remove standard errors with "se".
@@ -690,8 +726,8 @@ world_bank_data |>
   geom_smooth(method = lm, color = "black", se = FALSE) +
   theme_minimal() +
   labs(x = "GDP growth", y = "Inflation", color = "Country")
-```
 
+```
 
 ### Line plots
 
@@ -719,6 +755,7 @@ world_bank_data |>
   geom_step() +
   theme_minimal() +
   labs(x = "Year",y = "GDP growth", caption = "Data source: World Bank.")
+
 ```
 
 We can use `geom_step()`, a slight variant of `geom_line()`, to focus attention on the change from year to year (@fig-lineplot-2).
@@ -726,13 +763,17 @@ We can use `geom_step()`, a slight variant of `geom_line()`, to focus attention 
 The Phillips curve\index{Phillips curve} is the name given to plot of the relationship between unemployment and inflation over time. An inverse relationship is sometimes found in the data, for instance in the United Kingdom between 1861 and 1957 [@phillips1958relation]. We have a variety of ways to investigate this relationship in our data, including:
 
 :::{.content-visible when-format="pdf"}
+
 1) Adding a second line to our graph. For instance, we could add inflation (@fig-notphillips-1). This requires us to use `pivot_longer()`, which is discussed in the ["R Essentials" Online Appendix](https://tellingstorieswithdata.com/20-r_essentials.html), to ensure that the data are in a tidy format.
 2) Using `geom_path()` to link values in the order they appear in the dataset. In @fig-notphillips-2 we show a Phillips curve for the United States between 1960 and 2020. @fig-notphillips-2 does not appear to show any clear relationship between unemployment and inflation.
+
 :::
 
 :::{.content-visible unless-format="pdf"}
+
 1) Adding a second line to our graph. For instance, we could add inflation (@fig-notphillips-1). This requires us to use `pivot_longer()`, which is discussed in [Online Appendix -@sec-r-essentials], to ensure that the data are in a tidy format.
 2) Using `geom_path()` to link values in the order they appear in the dataset. In @fig-notphillips-2 we show a Phillips curve for the United States between 1960 and 2020. @fig-notphillips-2 does not appear to show any clear relationship between unemployment and inflation.
+
 :::
 
 ```{r}
@@ -769,6 +810,7 @@ world_bank_data |>
     x = "Unemployment rate", y = "Inflation",
     caption = "Data source: World Bank."
   )
+
 ```
 
 ### Histograms
@@ -791,6 +833,7 @@ world_bank_data |>
     y = "Number of occurrences",
     caption = "Data source: World Bank."
   )
+
 ```
 
 The key component that determines the shape of a histogram is the number of bins. This can be specified in one of two ways (@fig-hisogrambins):
@@ -849,6 +892,7 @@ world_bank_data |>
     x = "GDP growth",
     y = "Number of occurrences"
   )
+
 ```
 
 Histograms\index{graphs!histograms} can be thought of as locally averaging data, and the number of bins affects how much of this occurs. When there are only two bins then there is considerable smoothing, but we lose a lot of accuracy. Too few bins results in more bias, while too many bins results in more variance [@wasserman, p. 303]. Our decision as to the number of bins, or their width, is concerned with trying to balance bias and variance. This will depend on a variety of concerns including the subject matter and the goal [@elementsofgraphingdata, p. 135]. This is one of the reasons that @Denby2009 consider histograms to be especially valuable as exploratory tools.
@@ -903,6 +947,7 @@ world_bank_data |>
     caption = "Data source: World Bank."
   ) +
   scale_color_brewer(palette = "Set1")
+
 ```
 
 An interesting alternative to a histogram is the empirical cumulative distribution function (ECDF).\index{graphs!ECDF} The choice between this and a histogram is tends to be audience-specific. It may not appropriate for less-sophisticated audiences, but if the audience is quantitatively comfortable, then it can be a great choice because it does less smoothing than a histogram. We can build an ECDF with `stat_ecdf()`. For instance, @fig-ecdfismyfavohidonthavefavs shows an ECDF equivalent to @fig-hisogramone.
@@ -921,6 +966,7 @@ world_bank_data |>
     caption = "Data source: World Bank."
   ) +
   theme(legend.position = "bottom")
+
 ```
 
 ### Boxplots
@@ -930,6 +976,7 @@ A boxplot\index{graphs!boxplot} typically shows five aspects: 1) the median, 2) 
 One reason for using graphs is that they help us understand and embrace how complex our data are, rather than trying to hide and smooth it away [@armstrongembracecomplexity]. One appropriate use case for boxplots is to compare the summary statistics of many variables at once, such as in @Bethlehem2022. But boxplots alone are rarely the best choice because they hide the distribution of data, rather than show it. The same boxplot can apply to very different distributions. To see this, consider some simulated data from the beta distribution of two types.\index{simulation!beta distribution} The first contains draws from two beta distributions:\index{distribution!beta} one that is right skewed and another that is left skewed. The second contains draws from a beta distribution with no skew, noting that $\mbox{Beta}(1, 1)$ is equivalent to $\mbox{Uniform}(0, 1)$.
 
 ```{r}
+
 set.seed(853)
 
 number_of_draws <- 10000
@@ -951,6 +998,7 @@ beta_distributions <-
       rep("No skew", number_of_draws)
     )
   )
+
 ```
 
 We can first compare the boxplots of the two series (@fig-boxplotfirst-1). But if we plot the actual data then we can see how different they are (@fig-boxplotfirst-2).
@@ -973,6 +1021,7 @@ beta_distributions |>
   geom_freqpoly(binwidth = 0.05) +
   theme_classic() +
   theme(legend.position = "bottom")
+
 ```
 
 One way forward, if a boxplot is to be used, is to include the actual data as a layer on top of the boxplot.\index{graphs!boxplot} For instance, in @fig-bloxplotandoverlay we show the distribution of inflation across the four countries. The reason that this works well is that it shows the actual observations, as well as the summary statistics.
@@ -993,9 +1042,8 @@ world_bank_data |>
     y = "Inflation",
     caption = "Data source: World Bank."
   )
+
 ```
-
-
 
 ### Interactive graphs
 
@@ -1024,6 +1072,7 @@ top_five_names_by_year |>
     y = "Occurrences",
     fill = "Sex"
   )
+
 ```
 
 One thing that we might be interested in is how the effect of the "bins" parameter shapes what we see. We might like to use interactivity to explore different values.
@@ -1078,15 +1127,12 @@ server <- function(input, output) {
 
 # Run the application
 shinyApp(ui = ui, server = server)
+
 ```
 
 We have just build an interactive graph where the number of bins can be changed. It should look like @fig-shinyone.
 
 ![Example of Shiny app where the user controls the number of bins](figures/22-shiny_one.png){#fig-shinyone width=90% fig-align="center"}
-
-
-
-
 
 ## Tables
 
@@ -1101,17 +1147,21 @@ Tables\index{tables} are an important part of telling a compelling story. Tables
 We illustrate showing part of a dataset using `tt()` from `tinytable`. We use the World Bank\index{World Bank} dataset that we downloaded earlier and focus on inflation, GDP growth, and population as unemployment data are not available for every year for every country.\index{tables!kable()}
 
 ```{r}
+
 world_bank_data <-
   world_bank_data |>
   select(-unem_rate)
+
 ```
 
 To begin, after installing and loading `tinytable`, we can display the first ten rows with the default `tt()` settings.
 
 ```{r}
+
 world_bank_data |>
   slice(1:10) |>
   tt()
+
 ```
 
 To be able to cross-reference a table in the text, we need to add a table caption and label to the R chunk as shown in @sec-quartocrossreferences of @sec-reproducible-workflows. We can also make the column names more informative with `setNames` and specify the number of digits to be displayed (@tbl-gdpfirst).
@@ -1128,6 +1178,7 @@ world_bank_data |>
   style_tt(j = 2:5, align = "r") |>
   format_tt(digits = 1, num_fmt = "decimal") |>
   setNames(c("Country", "Year", "Inflation", "GDP growth", "Population"))
+
 ```
 
 ### Improving the formatting
@@ -1146,8 +1197,8 @@ world_bank_data |>
   style_tt(j = 1:5, align = "lccrr") |>
   format_tt(digits = 1, num_mark_big = ",", num_fmt = "decimal") |>
   setNames(c("Country", "Year", "Inflation", "GDP growth", "Population"))
-```
 
+```
 
 ### Communicating summary statistics
 
@@ -1164,6 +1215,7 @@ We can use this to get a table such as @tbl-testdatasummarynormal. That might be
 world_bank_data |>
   select(-population) |>
   datasummary_skim(histogram = FALSE)
+
 ```
 
 By default, `datasummary_skim()` summarizes the numeric variables, but we can ask for the categorical variables (@tbl-testdatasummary). Additionally we can add cross-references in the same way as `kable()`, that is, include a "tbl-cap" entry and then cross-reference the name of the R chunk.
@@ -1174,6 +1226,7 @@ By default, `datasummary_skim()` summarizes the numeric variables, but we can as
 
 world_bank_data |>
   datasummary_skim(type = "categorical")
+
 ```
 
 We can create a table that shows the correlation\index{tables!correlation} between variables using `datasummary_correlation()` (@tbl-correlationtable).
@@ -1184,6 +1237,7 @@ We can create a table that shows the correlation\index{tables!correlation} betwe
 
 world_bank_data |>
   datasummary_correlation()
+
 ```
 
 We typically need a table of descriptive statistics\index{tables!descriptive statistics} that we could add to our paper (@tbl-descriptivestats). This contrasts with @tbl-testdatasummary which would likely not be included in the main section of a paper, and is more to help us understand the data. We can add a note about the source of the data using `notes`.
@@ -1200,9 +1254,8 @@ datasummary_balance(
   dinm = FALSE,
   notes = "Data source: World Bank."
 )
+
 ```
-
-
 
 ### Display regression results
 
@@ -1228,6 +1281,7 @@ third_model <- lm(
 )
 
 modelsummary(list(first_model, second_model, third_model))
+
 ```
 
 The number of significant digits can be adjusted with "fmt" (@tbl-twomodelstwo). To help establish credibility you should generally not add as many significant digits as possible [@howes2022representing]. Instead, you should think carefully about the data-generating process and adjust based on that.
@@ -1240,6 +1294,7 @@ modelsummary(
   list(first_model, second_model, third_model),
   fmt = 1
 )
+
 ```
 
 ## Maps
@@ -1261,6 +1316,7 @@ french_cities <-
   filter(country.etc == "France")
 
 head(french_cities)
+
 ```
 
 Using that information you can create a map of France\index{France!cities} that shows the larger cities (@fig-heyitsfrance).\index{maps!France} Use `geom_polygon()` from `ggplot2` to draw shapes by connecting points within groups. And `coord_map()` adjusts for the fact that we are making a 2D map to represent a world that is 3D.
@@ -1286,6 +1342,7 @@ ggplot() +
   ) +
   theme_minimal() +
   labs(x = "Longitude", y = "Latitude")
+
 ```
 
 As is often the case with R, there are many ways to get started creating static maps. We have seen how they can be built using only `ggplot2`, but `ggmap` brings additional functionality.
@@ -1296,7 +1353,6 @@ There are two essential components to a map:
 2) something of interest within that border, or on top of that tile.
 
 In `ggmap`, we use an open-source option for our tile, Stamen Maps.\index{maps!Stamen Maps} And we use plot points based on latitude and longitude.
-
 
 ### Static maps
 
@@ -1314,6 +1370,7 @@ It can be useful to use Google Maps,\index{maps!Google Maps} or other mapping pl
 #| message: false
 
 bbox <- c(left = 148.95, bottom = -35.5, right = 149.3, top = -35.1)
+
 ```
 
 It is free, but we need to register in order to get a map. To do this go to https://client.stadiamaps.com/signup/ and create an account. Then create a new property, then "Add API Key". Copy the key and run (replacing PUT-KEY-HERE with the key) `register_stadiamaps(key = "PUT-KEY-HERE", write = TRUE)`. Then once you have defined the bounding box, the function `get_stadiamap()` will get the tiles in that area (@fig-heyitscanberra).\index{maps!tiles} The number of tiles that it needs depends on the zoom, and the type of tiles that it gets depends on the type of map. We have used "toner-lite", which is black and white, but there are others including: "terrain", "toner", and "toner-lines". We pass the tiles to `ggmap()` which will plot it. An internet connection is needed for this to work as `get_stadiamap()` downloads the tiles.\index{internet!map tiles}
@@ -1327,11 +1384,13 @@ It is free, but we need to register in order to get a map. To do this go to http
 canberra_stamen_map <- get_stadiamap(bbox, zoom = 11, maptype = "stamen_toner_lite")
 
 ggmap(canberra_stamen_map)
+
 ```
 
 Once we have a map then we can use `ggmap()` to plot it. Now we want to get some data that we plot on top of our tiles. We will plot the location of the polling place based on its "division". This is available [from the Australian Electoral Commission (AEC)](https://results.aec.gov.au/20499/Website/Downloads/HouseTppByPollingPlaceDownload-20499.csv).\index{Australia!Australian Electoral Commission}
 
 :::{.content-visible when-format="pdf"}
+
 ```{r}
 #| warning: false
 #| message: false
@@ -1347,10 +1406,12 @@ booths <-
     skip = 1,
     guess_max = 10000
   )
+
 ```
 :::
 
 :::{.content-visible unless-format="pdf"}
+
 ```{r}
 #| warning: false
 #| message: false
@@ -1363,6 +1424,7 @@ booths <-
     skip = 1,
     guess_max = 10000
   )
+
 ```
 :::
 
@@ -1373,6 +1435,7 @@ booths <-
 # INTERNAL
 
 write_csv(booths, "inputs/data/booths.csv")
+
 ```
 
 ```{r}
@@ -1386,6 +1449,7 @@ booths <-
     file = "inputs/data/booths.csv",
     guess_max = 10000
   )
+
 ```
 
 This dataset is for the whole of Australia, but as we are only plotting the area around Canberra, we will filter the data to only booths with a geography close to Canberra.\index{Australia!Canberra}
@@ -1400,6 +1464,7 @@ booths_reduced <-
   select(PollingPlaceID, DivisionNm, Latitude, Longitude) |>
   filter(!is.na(Longitude)) |> # Remove rows without geography
   filter(Longitude < 165) # Remove Norfolk Island
+
 ```
 
 Now we can use `ggmap` in the same way as before to plot our underlying tiles, and then build on that using `geom_point()` to add our points of interest.\index{maps!plotting locations}
@@ -1425,6 +1490,7 @@ ggmap(canberra_stamen_map, extent = "normal", maprange = FALSE) +
   theme_minimal() +
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank())
+
 ```
 
 We may like to save the map so that we do not have to create it every time, and we can do that in the same way as any other graph, using `ggsave()`.
@@ -1433,6 +1499,7 @@ We may like to save the map so that we do not have to create it every time, and 
 #| eval: false
 
 ggsave("map.pdf", width = 20, height = 10, units = "cm")
+
 ```
 
 Finally, the reason that we used Stamen Maps and OpenStreetMap is because they are open source, but we could have also used Google Maps.\index{maps!Google Maps} This requires you to first register a credit card with Google, and specify a key, but with low usage the service should be free. Using Google Maps---by using `get_googlemap()` within `ggmap`---brings some advantages over `get_stadiamap()`. For instance it will attempt to find a place name rather than needing to specify a bounding box.
@@ -1442,9 +1509,11 @@ Finally, the reason that we used Stamen Maps and OpenStreetMap is because they a
 To see another example of a static map we will plot some United States military bases after installing and loading `troopdata`.\index{maps!US military bases} We can access data about United States overseas military bases back to the start of the Cold War using `get_basedata()`.
 
 ```{r}
+
 bases <- get_basedata()
 
 head(bases)
+
 ```
 
 We will look at the locations of United States military bases in Germany,\index{Germany!US military bases} Japan,\index{Japan!US military bases} and Australia.\index{Australia!US military bases} The `troopdata` dataset already has the latitude and longitude of each base, and we will use that as our item of interest. The first step is to define a bounding box for each country.\index{maps!bounding box}
@@ -1459,6 +1528,7 @@ bbox_germany <- c(left = 5.867, bottom = 45.967, right = 15.033, top = 55.133)
 bbox_japan <- c(left = 127, bottom = 30, right = 146, top = 45)
 
 bbox_australia <- c(left = 112.467, bottom = -45, right = 155, top = -9.133)
+
 ```
 
 Then we need to get the tiles using `get_stadiamap()` from `ggmap`.\index{maps!tiles}
@@ -1472,6 +1542,7 @@ german_stamen_map <- get_stadiamap(bbox_germany, zoom = 6, maptype = "stamen_ton
 japan_stamen_map <- get_stadiamap(bbox_japan, zoom = 6, maptype = "stamen_toner_lite")
 
 aus_stamen_map <- get_stadiamap(bbox_australia, zoom = 5, maptype = "stamen_toner_lite")
+
 ```
 
 And finally, we can bring it all together with maps showing United States military bases in Germany (@fig-mapbasesin-1), Japan (@fig-mapbasesin-2), and Australia (@fig-mapbasesin-3).\index{maps!plotting locations}
@@ -1501,6 +1572,7 @@ ggmap(aus_stamen_map) +
   labs(x = "Longitude",
        y = "Latitude") +
   theme_minimal()
+
 ```
 
 ### Geocoding
@@ -1508,6 +1580,7 @@ ggmap(aus_stamen_map) +
 So far we have assumed that we already have geocoded data. This means that we have latitude and longitude coordinates for each place. But sometimes we only have place names, such as "Sydney, Australia", "Toronto, Canada", "Accra, Ghana", and "Guayaquil, Ecuador". Before we can plot them, we need to get the latitude and longitude coordinates for each case. The process of going from names to coordinates is called geocoding.\index{maps!geocoding}
 
 :::{.callout-note}
+
 ## Oh, you think we have good data on that!
 
 While you almost surely know where you live, it can be surprisingly difficult to specifically define the boundaries of many places.\index{maps!boundaries} And this is made especially difficult when different levels of government have different definitions. @bronnerquantediting illustrates this in the case of Atlanta, Georgia,\index{United States!Georgia} where there are (at least) three official different definitions:
@@ -1517,11 +1590,13 @@ While you almost surely know where you live, it can be surprisingly difficult to
 3) the census place.
 
 Which definition is used can have a substantial effect on the analysis, or even the data that are available, even though they are all "Atlanta".
+
 :::
 
 There are a range of options to geocode data in R, but `tidygeocoder` is especially useful. We first need a dataframe of locations.
 
 ```{r}
+
 place_names <-
   tibble(
     city = c("Sydney", "Toronto", "Accra", "Guayaquil"),
@@ -1529,6 +1604,7 @@ place_names <-
   )
 
 place_names
+
 ```
 
 ```{r}
@@ -1543,6 +1619,7 @@ place_names <-
   )
 
 place_names
+
 ```
 
 And we can now plot and label these cities (@fig-mynicemap).
@@ -1571,9 +1648,8 @@ ggplot() +
   theme_minimal() +
   labs(x = "Longitude",
        y = "Latitude")
+
 ```
-
-
 
 ### Interactive maps
 
@@ -1584,7 +1660,6 @@ That said, we should be cognizant of what we are doing when we build maps, and m
 > Google began life in 1998 as a company famously dedicated to organising the vast amounts of data on the Internet. But over the last two decades its ambitions have changed in a crucial way. Extracting data such as words and numbers from the physical world is now merely a stepping-stone towards apprehending and organizing the physical world as data. Perhaps this shift is not surprising at a moment when it has become possible to comprehend human identity as a form of (genetic) 'code'. However, apprehending and organizing the world as data under current settings is likely to take us well beyond Heidegger's 'standing reserve' in which modern technology enframed 'nature' as productive resource. In the 21st century, it is the stuff of human life itself—from genetics to bodily appearances, mobility, gestures, speech, and behaviour---that is being progressively rendered as productive resource that can not only be harvested continuously but subject to modulation over time.
 
 Does this mean that we should not use or build interactive maps? Of course not. But it is important to be aware of the fact that this is a frontier, and the boundaries of appropriate use are still being determined. Indeed, the literal boundaries of the maps themselves are being consistently determined and updated. The move to digital maps, compared with physical printed maps, means that it is possible for different users to be presented with different realities. For instance, "...Google routinely takes sides in border disputes. Take, for instance, the representation of the border between Ukraine and Russia. In Russia, the Crimean Peninsula is represented with a hard-line border as Russian-controlled, whereas Ukrainians and others see a dotted-line border. The strategically important peninsula is claimed by both nations and was violently seized by Russia in 2014, one of many skirmishes over control" [@washingtonpostmaps].
-
 
 #### Leaflet
 
@@ -1611,6 +1686,7 @@ leaflet(data = bases) |>
     popup = bases$basename,
     label = bases$countryname
   )
+
 ```
 
 There are two new arguments, compared with `ggmap`. The first is "popup", which is the behavior that occurs when the user clicks on the marker. In this case, the name of the base is provided. The second is "label", which is what happens when the user hovers on the marker. In this case it is the name of the country.
@@ -1661,9 +1737,8 @@ leaflet() |>
     title = "Type",
     opacity = 1
   )
+
 ```
-
-
 
 #### Mapdeck
 
@@ -1675,6 +1750,7 @@ To this point we have used "stamen maps" as our underlying tile, but `mapdeck` u
 #| eval: false
 
 MAPBOX_TOKEN <- "PUT_YOUR_MAPBOX_SECRET_HERE"
+
 ```
 
 We then save this ".Renviron" file, and restart R ("Session" -> "Restart R").
@@ -1698,11 +1774,8 @@ mapdeck(style = mapdeck_style("light")) |>
     radius_max_pixels = 100,
     tooltip = "location"
   )
+
 ```
-
-
-
-
 
 ## Concluding remarks
 
@@ -1778,6 +1851,7 @@ datasaurus_dozen |>
   filter(dataset == "v_lines") |>
   ggplot(aes(x=x, y=y)) +
   geom_point()
+
 ```
 
 11. From @r4ds, what happens when you map a variable to the `color` aesthetic in `ggplot2` (select all that apply)?
@@ -1813,6 +1887,7 @@ beps |>
   geom_bar() +
   theme_minimal() +
   labs(x = "Age of respondent", y = "Number of respondents")
+
 ```
 
 16. Based on the help file for `scale_colour_brewer()` which palette diverges (pick one)?
@@ -1837,6 +1912,7 @@ beps |>
 beps |>
   ggplot(mapping = aes(x = age, fill = vote)) +
   geom_bar()
+
 ```
 
 19. Based on @vanderplas2020testing, which cognitive principle should be considered when creating graphs (pick one)?
@@ -1922,11 +1998,11 @@ beps |>
     c.  `popup`
     d. `label`
 
-
 ### Class activities {.unnumbered}
 
 - Use the [starter folder](https://github.com/RohanAlexander/starter_folder) and create a new repo. Add a link to the GitHub repo in the class's shared Google Doc. Do all the following in `paper.qmd`.
 - The following produces a scatterplot showing the level, in feet, of Lake Huron between 1875 and 1972. Please improve it.
+
 ```{r}
 #| eval: false
 
@@ -1934,8 +2010,11 @@ tibble(year = 1875:1972,
        level = as.numeric(datasets::LakeHuron)) |>
   ggplot(aes(x = year, y = level)) +
   geom_point()
+
 ```
+
 - The following produces a bar chart of the height of 31 Black Cherry Trees. Please improve it.
+
 ```{r}
 #| eval: false
 
@@ -1943,9 +2022,11 @@ datasets::trees |>
   as_tibble() |>
   ggplot(aes(x = Height)) +
   geom_bar()
+
 ```
 
 - The following produces a line plot showing the weight of chicks, in grams, by how many days old they were. Please improve it.
+
 ```{r}
 #| eval: false
 
@@ -1953,6 +2034,7 @@ datasets::ChickWeight |>
   as_tibble() |>
   ggplot(aes(x = Time, y = weight, group = Chick)) +
   geom_line()
+
 ```
 ```{r}
 #| echo: false
@@ -1978,9 +2060,11 @@ datasets::ChickWeight |>
   theme_classic() +
   scale_color_brewer(palette = "Set1") +
   scale_y_continuous(breaks = seq(0, 400, 50))
+
 ```
 
 - The following produces a histogram showing the annual number of sunspots between 1700 and 1988. Please improve it.
+
 ```{r}
 #| eval: false
 
@@ -1988,10 +2072,12 @@ tibble(year = 1700:1988,
        sunspots = as.numeric(datasets::sunspot.year) |> round(0)) |>
   ggplot(aes(x = sunspots)) +
   geom_histogram()
+
 ```
 
 - Please follow [this code](https://github.com/saloni-nd/misc/blob/main/Mortality%20rates%20by%20age%20-%20HMD.R) from Saloni Dattani, and make a graph for two countries of interest to you.
 - The following code, taken from the `palmerpenguins` [vignette](https://allisonhorst.github.io/palmerpenguins/articles/examples.html), produces a beautiful graph. Please modify it to create the ugliest graph that you can.^[The idea for this exercise is from Liza Bolton.]
+
 ```{r}
 #| eval: false
 #| warning: false
@@ -2019,14 +2105,17 @@ ggplot(data = penguins,
     plot.caption = element_text(hjust = 0, face = "italic"),
     plot.caption.position = "plot"
   )
+
 ```
 
 - The following code provides estimates for the speed of light, from three experiments, each of 20 runs. Please create an average speed of light, per experiment, then use `knitr::kable()` to create a cross-referenced table, with specified column names, and no significant digits.
+
 ```{r}
 #| eval: false
 
 datasets::morley |>
   tibble()
+
 ```
 
 ### Task I {.unnumbered}
@@ -2047,15 +2136,17 @@ Then, based on the themes brought up in @americaslavery, discuss your work in at
 
 Use the starter folder, and submit a PDF created using the Quarto doc provided there. Ensure that your essay contains links to both your app and the GitHub repo that contains all code and data. As well as extensive citations to relevant literature that you reflected on.
 
-
 ### Paper {.unnumbered}
 
 :::{.content-visible when-format="pdf"}
+
 At about this point the *Mawson* Paper in the ["Papers" Online Appendix](https://tellingstorieswithdata.com/23-assessment.html) would be appropriate.
+
 :::
 
 :::{.content-visible unless-format="pdf"}
-At about this point the *Mawson* Paper from [Online Appendix -@sec-papers] would be appropriate.
-:::
 
+At about this point the *Mawson* Paper from [Online Appendix -@sec-papers] would be appropriate.
+
+:::
 

@@ -14,12 +14,12 @@ library(tidyverse)
 library(tinytable)
 
 rubric <- read_csv(here::here("inputs/rubric.csv"))
+
 ```
 
 자료를 이해하는 한 가지 방법은 자료를 사용하는 것입니다. 이 논문들의 목적은 여러분이 배운 것을 실제 환경에서 구현할 기회를 제공하는 것입니다. 논문을 완성하는 것은 또한 취업 지원을 위한 포트폴리오를 구축하는 관점에서도 중요합니다.
 
 기대치는 매년 바뀌므로 "이전 예시"를 템플릿이 아닌 예시로 취급하십시오.
-
 
 ## *도널드슨* 논문 {#sec-paper-one} 
 
@@ -81,7 +81,6 @@ rubric <- read_csv(here::here("inputs/rubric.csv"))
 - 시작 폴더의 논문에는 데이터 시트 부록이 있는데, 데이터 시트를 만들어야 합니까? 아니요. 시작 폴더는 모든 논문에 적용할 수 있도록 설계되었으므로 필요 없는 부분은 삭제하십시오.
 - "실제 데이터를 그래프로 나타낸다"는 것은 무엇을 의미합니까? 예를 들어 데이터셋에 5,000개의 관측치와 세 개의 변수가 있다면, 모든 변수에 대해 점의 경우 5,000개의 점이 있는 그래프가 있어야 하며, 막대 차트와 히스토그램의 경우 5,000개로 합산되어야 합니다.
 
-
 ### 루브릭
 
 ```{r}
@@ -93,6 +92,7 @@ rubric <- read_csv(here::here("inputs/rubric.csv"))
 rubric |>
   filter(!Component %in% c("Data cited", "Class paper", "Estimand", "Replication", "Model", "Results", "Discussion", "Enhancements", "Idealized methodology", "Idealized survey", "Pollster review", "Datasheet", "Parquet", "Surveys, sampling, and observational data")) |>
   tt()
+
 ```
 
 ### 이전 예시
@@ -128,12 +128,6 @@ rubric |>
 [모르가인 웨스틴](inputs/pdfs/paper_one-2021-Morgaine_Westin.pdf), 그리고
 [레이첼 램](inputs/pdfs/paper_one-2021-Rachael_Lam.pdf).
 
-
-
-
-
-
-
 ## *모슨* 논문 {#sec-paper-two}
 
 ### 과제
@@ -158,13 +152,11 @@ rubric |>
 - GitHub 저장소 링크를 제출하십시오. 마감일 이후에는 저장소를 업데이트하지 마십시오.
 - 이것이 수업 과제라는 증거가 없어야 합니다.
 
-
 ### 확인 사항
 
 - 논문은 원본 논문의 코드를 단순히 복사/붙여넣기하는 것이 아니라, 이를 기반으로 작업해야 합니다.
 - 논문에는 관련 GitHub 저장소 링크와 수행한 사회 과학 재현 플랫폼 복제의 DOI가 있어야 합니다.
 - R을 포함하여 모든 것을 참조했는지 확인하십시오. 강력한 제출물은 토론(및 기타 섹션)에서 관련 문헌을 활용하고 이를 참조할 것입니다. 참고 문헌 스타일은 일관적이라면 중요하지 않습니다.
-
 
 ### FAQ
 
@@ -189,6 +181,7 @@ rubric |>
 rubric |>
   filter(!Component %in% c("Model", "Enhancements", "Idealized methodology", "Idealized survey", "Pollster review", "Datasheet", "Parquet", "Surveys, sampling, and observational data")) |>
   tt()
+
 ```
 
 ### 이전 예시
@@ -201,15 +194,6 @@ rubric |>
 [위안이 (레오) 리우, 치 얼 (엠마) 텅](inputs/pdfs/2024-paper2-YuanyiLiu_QiErTeng.pdf).
 - 2023: [제이든 정, 핀 코롤, 소피아 셀리토](inputs/pdfs/paper-2-2023-Jayden_Jung_Finn_Korol_Sofia_Sellitto.pdf).
 - 2022: [알리사 슐라이퍼, 허드슨 위엔, 탐센 야우](inputs/pdfs/paper_two-2022-Alyssa_Schleifer_Hudson_Yuen_Tamsen_Yau.pdf); [올라에도 오크파레케, 아르쉬 라칸팔, 스와르나딥 차토파디아이](inputs/pdfs/paper_two-2022-Olaedo_Okpareke_Arsh_Lakhanpal_Swarnadeep_Chattopadhyay.pdf); 그리고 [킴린 친](inputs/pdfs/paper_two-2022-Kimlin_Chin.pdf).
-
-
-
-
-
-
-
-
-
 
 ## *하우라* 논문 {#sec-paper-three}
 
@@ -228,7 +212,6 @@ rubric |>
 - GitHub 저장소 링크를 제출하십시오. 마감일 이후에는 저장소를 업데이트하지 마십시오.
 - 논문은 잘 작성되어야 하며, 관련 문헌을 활용하고 모든 기술 개념을 설명해야 합니다. 대학 교육을 받았지만 비전문가인 독자를 대상으로 하십시오. 설문조사, 샘플링, 통계 용어를 사용하되, 반드시 설명해야 합니다. 논문은 흐름이 자연스럽고 이해하기 쉬워야 합니다.
 - 이것이 수업 논문이라는 증거가 없어야 합니다.
-
 
 ### 확인 사항
 
@@ -251,6 +234,7 @@ rubric |>
 rubric |>
   filter(!Component %in% c("Replication", "Enhancements", "Model", "Idealized methodology", "Datasheet", "Parquet", "Surveys, sampling, and observational data")) |>
   tt()
+
 ```
 
 ### 이전 예시
@@ -263,10 +247,6 @@ rubric |>
 [럭키나 로랑, 사미타 프라바사바트, 조이 소](inputs/pdfs/paper3-2022-LuckynaLaurent_SamitaPrabhasavat_ZoieSo.pdf);
 [파스칼 리 슬루, 윤경 박](inputs/pdfs/paper3-2022-Pascal_Lee_Slew_Yunkyung_Park.pdf); 그리고
 [레이 웬, 이스판디아르 비라니, 레이한 왈리아](inputs/pdfs/paper3-2022-Ray_Wen_Isfandyar_Virani_Rayhan_Walia.pdf).
-
-
-
-
 
  
 ## *다이사트* 논문 {#sec-paper-four}
@@ -287,7 +267,6 @@ rubric |>
 - GitHub 저장소 링크를 제출하십시오. 마감일 이후에는 저장소를 업데이트하지 마십시오.
 - 이것이 수업 논문이라는 증거가 없어야 합니다.
 
-
 ### 확인 사항
 
 - 최소한 몇 번의 커밋을 하고 설명적인 커밋 메시지를 사용하여 GitHub를 잘 활용하십시오.
@@ -302,7 +281,6 @@ rubric |>
 <!-- - 캐나다 GSS는 도서관을 통해 토론토 대학교 학생들에게 제공됩니다. 이를 사용하려면 데이터를 정리하고 준비해야 합니다. 한 해 동안 이를 수행하는 코드는 이 문제 세트와 함께 배포되며 강의에서 논의되었습니다. -->
 <!-- - 이 코드를 그대로 사용해도 좋지만, 해당 연도의 주제가 여러분의 초점을 제한할 것입니다. 물론 코드를 다른 연도에 맞게 조정할 수 있습니다. 코드를 그대로 사용한다면 인용해야 합니다. 코드를 조정한다면 MIT 라이선스이므로 인용할 필요는 없지만, 조정 정도에 따라 최소한 언급하고 인정하는 것이 적절할 것입니다. -->
 
-
 ### 루브릭
 
 ```{r}
@@ -314,8 +292,8 @@ rubric |>
 rubric |>
   filter(!Component %in% c("Replication", "Enhancements", "Model", "Idealized methodology", "Idealized survey", "Pollster review", "Surveys, sampling, and observational data")) |>
   tt()
-```
 
+```
 
 ### 이전 예시
 
@@ -323,14 +301,6 @@ rubric |>
 [찰스 루, 마하크 자인, 위준 지아오](inputs/pdfs/paper-4-2022-CharlesLu_MahakJain_YujunJiao.pdf);
 [제이콥 요크 홍 시](inputs/pdfs/paper-4-2022-jacob_yoke_hong_si.pdf); 그리고
 [파스칼 리 슬루, 윤경 박](inputs/pdfs/paper-4-2022-PascalLeeSlew_YunkyungPark.pdf).
-
-
-
-
-
-
-
-
 
 ## *스파디나* 논문 {#sec-spadina}
 
@@ -342,7 +312,6 @@ rubric |>
 - 이 [시작 폴더](https://github.com/RohanAlexander/starter_folder)를 사용해야 합니다.
 - GitHub 저장소 링크를 제출하십시오. 마감일 이후에는 저장소를 업데이트하지 마십시오.
 - 이것이 수업 논문이라는 증거가 없어야 합니다.
-
 
 ### 확인 사항
 
@@ -367,8 +336,8 @@ rubric |>
 rubric |>
   filter(!Component %in% c("Replication", "Enhancements", "Idealized methodology", "Idealized survey", "Pollster review", "Surveys, sampling, and observational data")) |>
   tt()
-```
 
+```
 
 ### 이전 예시
 
@@ -382,11 +351,7 @@ rubric |>
 
 <!-- - 인과 추론에 대한 논문. -->
 
-
 <!-- - DAG를 포함해야 합니다 (아마도 모델 섹션에). -->
-
-
-
 
 ## *세인트 조지* 논문 {#sec-st-george-paper}
 
@@ -406,7 +371,6 @@ rubric |>
 - GitHub 저장소 링크를 제출하십시오. 마감일 이후에는 저장소를 업데이트하지 마십시오.
 - 이것이 수업 논문이라는 증거가 없어야 합니다.
 
-
 ### 확인 사항
 
 - 필요한 두 가지 부록이 모두 있는지 확인하십시오.
@@ -415,7 +379,6 @@ rubric |>
 
 - 데이터셋의 모든 예측 변수를 사용해야 합니까? 아니요, 사용하는 예측 변수에 대해 신중하고 사려 깊게 선택해야 합니다.
 - 선거인단은 어떻습니까? 미국 대통령 선거는 선거인단에 따라 승패가 결정됩니다. 단순히 일반 투표에만 집중해도 괜찮습니다. 그러나 뛰어난 제출물은 주별 일반 투표를 고려하고, 불확실성을 전파하는 데 주의하면서 선거인단 추정치를 구성할 것입니다.
-
 
 ### 루브릭
 
@@ -428,8 +391,8 @@ rubric |>
 rubric |>
   filter(!Component %in% c("Replication", "Enhancements", "Datasheet", "Surveys, sampling, and observational data")) |>
   tt()
-```
 
+```
 
 ### 이전 예시
 
@@ -438,10 +401,6 @@ rubric |>
 [소피아 브라더스, 데이 콩, 라얀 아와드 알림](https://github.com/eeeee-cmd/US_Election/blob/main/paper/paper.pdf);
 [콜린 시한 양, 렉순 유, 시다르트 고다](https://github.com/yulexun/2024uselectionprediction/blob/main/paper/paper.qmd); 그리고
 [위안이 (레오) 리우, 더전 첸, 지위안 션](https://github.com/leoyliu/Forecasting-the-2024-US-Presidential-Election/blob/main/paper/paper.pdf).
-
-
-
-
 
 ## *스포포스* 논문 {#sec-paper-five}
 
@@ -459,12 +418,9 @@ rubric |>
 - GitHub 저장소 링크를 제출하십시오. 마감일 이후에는 저장소를 업데이트하지 마십시오.
 - 이것이 수업 논문이라는 증거가 없어야 합니다.
 
-
-
 ### FAQ
 
 - 얼마나 작성해야 합니까? 대부분의 학생들은 10~15페이지 범위의 내용을 제출하지만, 이는 여러분에게 달려 있습니다. 정확하고 철저하게 작성하십시오.
-
 
 ### 루브릭
 
@@ -477,6 +433,7 @@ rubric |>
 rubric |>
   filter(!Component %in% c("Replication", "Enhancements", "Idealized methodology", "Idealized survey", "Pollster review", "Datasheet", "Surveys, sampling, and observational data")) |>
   tt()
+
 ```
 
 ### 이전 예시
@@ -485,8 +442,6 @@ rubric |>
 [정우 김, 지원 최](inputs/pdfs/kim_choi.pdf);
 [탈리아 파브레가스, 파티마 유누사, 아미시 순딥 아바르세카르](inputs/pdfs/fabregas_yunusa_avarsekar.pdf).
 - 2020: [알렌 미트로프스키, 샤오얀 양, 매튜 완키에비치](inputs/pdfs/paper_five_2020-Mitrovski_Yang_Wankiewicz.pdf) (이 논문은 ASA 2020년 12월 학부 통계 연구 프로젝트 대회에서 "우수 언급"을 받았습니다.)
-
-
 
 ## 최종 논문 {#sec-final-paper}
 
@@ -527,6 +482,7 @@ rubric |>
 rubric |>
   filter(!Component %in% c("Replication", "Idealized methodology", "Idealized survey", "Pollster review", "Datasheet")) |>
   tt()
+
 ```
 
 ### 이전 예시

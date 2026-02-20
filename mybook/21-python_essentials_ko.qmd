@@ -6,9 +6,7 @@ engine: knitr
 
 **선수 지식**
 
-
 **핵심 개념 및 기술**
-
 
 **소프트웨어 및 패키지**
 
@@ -32,6 +30,7 @@ RStudio 내에서 `Python`을 사용할 수도 있지만, 더 널리 사용되�
 VS Code를 열고(@fig-vscodesetup-a) 새 터미널을 엽니다: 터미널 -> 새 터미널(@fig-vscodesetup-b). 그런 다음 Python 패키지 관리자인 `uv`를 설치할 수 있습니다. 터미널에 `curl -LsSf https://astral.sh/uv/install.sh | sh`를 입력하고 엔터를 누릅니다(@fig-vscodesetup-c). 마지막으로, Python을 설치하려면 터미널에 `uv python install`을 입력하고 엔터를 누릅니다(@fig-vscodesetup-d).
 
 :::{#fig-vscodesetup layout-ncol="2"}
+
 ![VS Code 열기](figures/B-VS_Code-1.png){#fig-vscodesetup-a width="50%"}
 
 ![VS Code에서 터미널 열기](figures/B-VS_Code-2.png){#fig-vscodesetup-b width="50%"}
@@ -41,6 +40,7 @@ VS Code를 열고(@fig-vscodesetup-a) 새 터미널을 엽니다: 터미널 -> �
 ![Python 설치](figures/B-VS_Code-4.png){#fig-vscodesetup-d width="50%"}
 
 VS Code를 열고 새 터미널을 연 다음 uv와 Python 설치
+
 :::
 
 ## 시작하기
@@ -54,34 +54,41 @@ VS Code를 열고 새 터미널을 엽니다: "터미널" -> "새 터미널". �
 이 새 폴더를 만들고 싶은 곳이 만족스러우면 터미널에서 `uv init`를 사용하여 이를 수행하고, 엔터를 누릅니다(그 다음 `cd`는 새 폴더 "shelter_usage"로 이동합니다).
 
 ```{bash}
+
 #| eval: false
 #| echo: true
 
 uv init shelter_usage
 cd shelter_usage
+
 ```
 
 기본적으로 예시 폴더에 스크립트가 있을 것입니다. `uv run`을 사용하여 해당 스크립트를 실행하여 프로젝트 환경을 만들 것입니다.
 
 ```{bash}
+
 #| eval: false
 #| echo: true
 
 uv run hello.py
+
 ```
 
 프로젝트 환경은 해당 프로젝트에만 해당됩니다. `numpy` 패키지를 사용하여 데이터를 시뮬레이션할 것입니다. 이 패키지를 `uv add`를 사용하여 환경에 추가해야 합니다.
 
 ```{bash}
+
 #| eval: false
 #| echo: true
 
 uv add numpy
+
 ```
 
 그런 다음 `hello.py`를 수정하여 `numpy`를 사용하여 정규 분포에서 시뮬레이션할 수 있습니다.
 
 ```{python}
+
 #| eval: false
 #| echo: true
 #| warning: false
@@ -106,6 +113,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 ```
 
 `hello.py`를 수정하고 저장한 후, 이전과 동일한 방식으로 `uv run`으로 실행할 수 있습니다.
@@ -117,11 +125,13 @@ if __name__ == "__main__":
 이 데이터셋을 [@sec-fire-hose]에서 처음 사용했지만, 다시 말하지만, 매일 각 쉼터에 대해 쉼터를 사용한 사람들의 수가 있습니다. 따라서 우리가 시뮬레이션하고 싶은 데이터셋은 [@fig-python_torontohomeless-data]와 같고, [@fig-python_torontohomeless-table]과 같이 매월 평균 일일 점유 침대 수 표를 만들고 싶습니다.
 
 :::{#fig-python_torontohomeless layout-ncol="2"}
+
 ![데이터셋의 빠른 스케치](figures/B-raw_data.jpeg){#fig-python_torontohomeless-data width="50%"}
 
 ![매월 평균 점유 침대 수 표의 빠른 스케치](figures/B-by_month.jpeg){#fig-python_torontohomeless-table width="50%"}
 
 토론토의 쉼터 사용량과 관련된 데이터셋 및 표의 스케치
+
 :::
 
 ### 시뮬레이션
@@ -129,15 +139,18 @@ if __name__ == "__main__":
 관심 있는 데이터셋을 더 철저히 시뮬레이션하고 싶습니다. 시뮬레이션된 결과를 저장할 데이터프레임을 제공하기 위해 `polars`를 사용할 것이므로, `uv add`를 사용하여 환경에 추가해야 합니다.
 
 ```{bash}
+
 #| eval: false
 #| echo: true
 
 uv add polars
+
 ```
 
 `00-simulate_data.py`라는 새 Python 파일을 만듭니다.
 
 ```{python}
+
 #| eval: false
 #| echo: true
 #| warning: false
@@ -154,14 +167,12 @@ uv add polars
 # - `numpy` 추가: uv add numpy
 # - `datetime` 추가: uv add datetime
 
-
 #### 작업 공간 설정 ####
 import polars as pl
 import numpy as np
 from datetime import date
 
 rng = np.random.default_rng(seed=853)
-
 
 #### 데이터 시뮬레이션 ####
 # 쉼터 10개와 설정된 용량 시뮬레이션
@@ -190,21 +201,24 @@ usage = np.minimum(poisson_draw, data["Capacity"])
 data = data.with_columns([pl.Series("사용량", usage)])
 
 data.write_parquet("simulated_data.parquet")
-```
 
+```
 
 이 시뮬레이션된 데이터를 기반으로 실제 데이터에 적용할 테스트를 작성하고 싶습니다. 이를 위해 `pydantic`을 사용할 것이므로, `uv add`를 사용하여 환경에 추가해야 합니다.
 
 ```{bash}
+
 #| eval: false
 #| echo: true
 
 uv add pydantic
+
 ```
 
 `00-test_simulated_data.py`라는 새 Python 파일을 만듭니다. 첫 번째 단계는 `pydantic`에서 제공하는 `BaseModel`의 하위 클래스인 `ShelterData`를 정의하는 것입니다.
 
 ```{python}
+
 #| eval: false
 #| echo: true
 #| warning: false
@@ -227,6 +241,7 @@ class ShelterData(BaseModel):
         if capacity is not None and usage > capacity:
             raise ValueError(f"사용량 ({usage})이 용량 ({capacity})을 초과합니다.")
         return usage
+
 ```
 
 날짜가 유효한지, 쉼터가 올바른 유형인지, 용량과 사용량이 모두 음수가 아닌 정수인지 테스트하는 데 관심이 있습니다. 추가적인 문제는 사용량이 용량을 초과해서는 안 된다는 것입니다. 이를 위한 테스트를 작성하기 위해 `field_validator`를 사용합니다.
@@ -234,6 +249,7 @@ class ShelterData(BaseModel):
 그런 다음 시뮬레이션된 데이터셋을 가져와 테스트할 수 있습니다.
 
 ```{python}
+
 #| eval: false
 #| echo: true
 #| warning: false
@@ -269,11 +285,13 @@ if errors:
     print("\n오류:")
     for i, error in errors:
         print(f"행 {i}: {error}")
+
 ```
 
 오류가 있었다면 어떻게 되었을지 확인하기 위해 두 가지 오류가 포함된 더 작은 데이터셋을 고려할 수 있습니다. 즉, 잘못 형식화된 날짜 하나와 사용량이 용량을 초과하는 상황 하나입니다.
 
 ```{python}
+
 #| eval: false
 #| echo: true
 #| warning: false
@@ -336,6 +354,7 @@ if errors:
 다음 메시지가 나타납니다.
 
 ```
+
 오류:
 행 1: ShelterData에 대한 1개의 유효성 검사 오류
 Dates
@@ -345,15 +364,15 @@ Dates
 Usage
   값 오류, 사용량 (55)이 용량 (50)을 초과할 수 없습니다. [type=value_error, input_value=55, input_type=int]
     자세한 내용은 https://errors.pydantic.dev/2.9/v/value_error을 참조하십시오.
-```
 
+```
 
 ### 획득
 
 이전과 동일한 출처 사용: https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/21c83b32-d5a8-4106-a54f-010dbe49f6f2/resource/ffd20867-6e3c-4074-8427-d63810edf231/download/Daily%20shelter%20overnight%20occupancy.csv
 
-
 ```{python}
+
 #| eval: false
 #| echo: true
 #| warning: false
@@ -369,12 +388,13 @@ df = pl.read_csv(url)
 
 # 원시 데이터 저장
 df.write_parquet("shelter_usage.parquet")
-```
 
+```
 
 몇 개의 열과 데이터가 있는 행에만 관심이 있을 것입니다.
 
 ```{python}
+
 #| eval: false
 #| echo: true
 #| warning: false
@@ -403,11 +423,13 @@ renamed_df = filtered_df.rename({"OCCUPANCY_DATE": "date",
 print(renamed_df.head())
 
 renamed_df.write_parquet("cleaned_shelter_usage.parquet")
+
 ```
 
 그런 다음 실제 데이터셋에 테스트를 적용하고 싶을 수 있습니다.
 
 ```{python}
+
 #| eval: false
 #| echo: true
 #| warning: false
@@ -460,6 +482,7 @@ if errors:
     print("\n오류:")
     for i, error in errors:
         print(f"행 {i}: {error}")
+
 ```
 
 ### 탐색
@@ -467,6 +490,7 @@ if errors:
 데이터 조작
 
 ```{python}
+
 #| eval: false
 #| echo: true
 #| warning: false
@@ -491,12 +515,13 @@ aggregated_df = (
 
 # 집계된 DataFrame 표시
 print(aggregated_df)
-```
 
+```
 
 그래프 만들기
 
 ```{python}
+
 #| eval: false
 #| echo: true
 #| warning: false
@@ -559,8 +584,8 @@ plt.tight_layout()
 
 # 플롯 표시
 plt.show()
-```
 
+```
 
 ### 공유
 
@@ -580,7 +605,6 @@ matplotlib
 
 seaborn
 
-
 ## polars 탐색
 
 ### 데이터 가져오기
@@ -591,15 +615,11 @@ seaborn
 
 ### 요인 변수
 
-
-
 ## 연습 문제
 
 ### 연습 {.unnumbered}
 
-
 ### 퀴즈 {.unnumbered}
-
 
 ### 과제 {.unnumbered}
 

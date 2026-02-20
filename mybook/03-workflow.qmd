@@ -5,7 +5,9 @@ engine: knitr
 # Reproducible workflows {#sec-reproducible-workflows}
 
 :::{.callout-note}
+
 Chapman and Hall/CRC published this book in July 2023. You can purchase that [here](https://www.routledge.com/Telling-Stories-with-Data-With-Applications-in-R/Alexander/p/book/9781032134772). This online version has some updates to what was printed.
+
 :::
 
 **Prerequisites**
@@ -62,8 +64,8 @@ library(tidyverse)
 library(tinytable)
 library(tinytex)
 library(usethis)
-```
 
+```
 
 ## Introduction
 
@@ -119,17 +121,23 @@ There are various tools that we can use at the different stages that will improv
 Quarto\index{Quarto} integrates code and natural language in a way that is called "literate programming" [@Knuth1984]. It is the successor to R Markdown, which was a variant of Markdown specifically designed to allow R code chunks to be included. Quarto uses a mark-up language similar to HyperText Markup Language (HTML) or LaTeX, in comparison to a "What You See Is What You Get" (WYSIWYG) language, such as Microsoft Word. This means that all the aspects are consistent, for instance, all top-level headings will look the same. But it means that we must designate or "mark up" how we would like certain aspects to appear. And it is only when we render the document that we get to see what it looks like. A visual editor option can also be used, and this hides the need for the user to do this mark-up themselves.
 
 :::{.content-visible when-format="pdf"}
+
 While it makes sense to use Quarto going forward, there are many resources written for and in R Markdown\index{R!R Markdown}. For this reason we provide R Markdown equivalents in the ["R Markdown" Online Appendix](https://tellingstorieswithdata.com/22-rmarkdown.html).
+
 :::
 
 :::{.content-visible unless-format="pdf"}
+
 While it makes sense to use Quarto going forward, there are many resources written for and in R Markdown.\index{R!R Markdown} For this reason we provide R Markdown equivalents in [Online Appendix -@sec-rmarkdown].
+
 :::
 
 :::{.callout-note}
+
 ## Shoulders of giants
 
 Fernando Pérez\index{Pérez, Fernando} is an associate professor of statistics at the University of California, Berkeley\index{Berkeley} and a Faculty Scientist, Data Science and Technology Division, at Lawrence Berkeley National Laboratory.\index{statistics} He earned a PhD in particle physics from the University of Colorado, Boulder. During his PhD he created iPython, which enables Python to be used interactively, and now underpins Project Jupyter, which inspired similar notebook approaches such as R Markdown and now Quarto. @somers2018obsolete describes how open-source notebook approaches create virtuous feedback loops that result in dramatically improved scientific computing. And @romersays aligns the features of open-source approaches, such as Jupyter, with the features that enable scientific consensus and progress. In 2017 Pérez was awarded the Association for Computing Machinery (ACM) Software System Award.
+
 :::
 
 One advantage of literate programming is that we get a "live" document in which code executes and then forms part of the document. Another advantage of Quarto is that similar code can compile into a variety of documents, including HTML and PDFs. Quarto also has default options for including a title, author, and date. One disadvantage is that it can take a while for a document to compile because the code needs to run.
@@ -143,17 +151,20 @@ After opening a new Quarto document and selecting "Source" view, you will see th
 Top matter consists of defining aspects such as the title, author, and date. It is contained within three dashes at the top of a Quarto document. For instance, the following would specify a title, a date that automatically updated to the date the document was rendered, and an author.
 
 ```
+
 ---
 title: "My document"
 author: "Rohan Alexander"
 date: format(Sys.time(), "%d %B %Y")
 format: html
 ---
+
 ```
 
 An abstract is a short summary of the paper, and we could add that to the top matter.
 
 ```
+
 ---
 title: "My document"
 author: "Rohan Alexander"
@@ -161,11 +172,13 @@ date: format(Sys.time(), "%d %B %Y")
 abstract: "This is my abstract."
 format: html
 ---
+
 ```
 
 By default, Quarto will create an HTML document, but we can change the output format to produce a PDF. This uses LaTeX in the background and requires the installation of supporting packages. To do this install `tinytex`. But as it is used in the background we should not need to load it.
 
 ```
+
 ---
 title: "My document"
 author: "Rohan Alexander"
@@ -173,6 +186,7 @@ date: format(Sys.time(), "%d %B %Y")
 abstract: "This is my abstract."
 format: pdf
 ---
+
 ```
 
 ### References
@@ -180,6 +194,7 @@ format: pdf
 We can include references by specifying a BibTeX\index{BibTeX} file in the top matter and then calling it within the text, as needed.
 
 ```
+
 ---
 title: "My document"
 author: "Rohan Alexander"
@@ -188,6 +203,7 @@ format: pdf
 abstract: "This is my abstract."
 bibliography: bibliography.bib
 ---
+
 ```
 
 We would need to make a separate file called "bibliography.bib" and save it next to the Quarto file.\index{citation!BibTeX} In the BibTeX file we need an entry for the item that is to be referenced. For instance, the citation for R can be obtained with `citation()` and this can be added to the "bibliography.bib" file.\index{citation!R} The citation for a package can be found by including the package name, for instance `citation("tidyverse")`, and again adding the output to the ".bib" file.\index{citation!R packages} It can be helpful to use [Google Scholar](https://scholar.google.com) or [doi2bib](https://www.doi2bib.org) to get citations for books or articles.\index{citation!Google Scholar}\index{citation!doi2bib}
@@ -195,6 +211,7 @@ We would need to make a separate file called "bibliography.bib" and save it next
 We need to create a unique key that we use to refer to this item in the text.\index{citation!unique key} This can be anything, provided it is unique, but meaningful ones can be easier to remember, for instance "citeR".
 
 ```
+
 @Manual{citeR,
     title = {R: A Language and Environment for Statistical Computing},
     author = {{R Core Team}},
@@ -210,6 +227,7 @@ We need to create a unique key that we use to refer to this item in the text.\in
     publisher = {Chapman and Hall/CRC},
     url = {https://tellingstorieswithdata.com}
   }
+
 ```
 
 To cite\index{citation} R in the Quarto document we then include `@citeR`, which would put brackets around the year: @citeR, or `[@citeR]`, which would put brackets around the whole thing: [@citeR].
@@ -218,46 +236,58 @@ The reference list\index{citation} at the end of the paper is automatically buil
 
 BibTeX\index{BibTeX!capitalization} will try to adjust the capitalization of entries. This can be helpful, but sometimes it is better to insist on a specific capitalization. To force BibTeX to use a particular capitalization use double braces instead of single braces around the entry. For instance, in the above examples `{{R Core Team}}` will be printed with that exact capitalization, whereas `{Telling Stories with Data}` is subject to the whims of BibTeX. Insisting on a particular capitalization is important when citing R packages, which can have a specific capitalization, and when citing an organization as an author. For instance, when citing `usethis`, you need to use `title = {{usethis: Automate Package and Project Setup}},`, not `title = {usethis: Automate Package and Project Setup},`. And if, say, data were provided by the City of Toronto, then when specifying the author to cite that dataset you would want to use `author = {{City of Toronto}},` not `author = {City of Toronto},`. The latter would result in the incorrect reference list entry "Toronto, City of" while the former would result in the correct reference list entry of "City of Toronto".
 
-
 ### Essential commands
 
 Quarto\index{Quarto} uses a variation of Markdown as its underlying syntax. Essential Markdown commands include those for emphasis, headers, lists, links, and images. A reminder of these is included in RStudio: "Help" $\rightarrow$ "Markdown Quick Reference". It is your choice as to whether you want to use the visual or source editor. But either way, it is good to understand these essentials because it will not always be possible to use a visual editor (for instance if you are quickly looking at a Quarto document in GitHub). As you get more experience it can be useful to use a text editor such as Sublime Text, or an alternative Integrated Development Environment such as VS Code.
 
 - Emphasis: ```*italic*```, ```**bold**```
 - Headers (these go on their own line with a blank line before and after):
+
 ```
+
          # First level header
 
          ## Second level header
 
          ### Third level header
+
 ```
+
 - Unordered list, with sub-lists:
+
 ```
+
     * Item 1
     * Item 2
         + Item 2a
         + Item 2b
+
 ```
+
 - Ordered list, with sub-lists:
+
 ```
+
     1. Item 1
     2. Item 2
     3. Item 3
         + Item 3a
         + Item 3b
+
 ```
+
 - URLs can be added: ```[this book](https://www.tellingstorieswithdata.com)``` results in [this book](https://www.tellingstorieswithdata.com).
 - A paragraph is created by leaving a blank line.
+
 ```
+
 A paragraph about an idea, nicely spaced from the following paragraph.
 
 A paragraph about another idea, again spaced from the earlier paragraph.
+
 ```
 
 Once we have added some aspects, then we may want to see the actual document. To build the document click "Render".
-
-
 
 ### R chunks
 
@@ -283,6 +313,7 @@ data("DoctorVisits", package = "AER")
 DoctorVisits |>
   ggplot(aes(x = illness)) +
   geom_histogram(stat = "count")
+
 ```
 
 There are various evaluation options that are available in chunks\index{Quarto!R}. We include these, each on a new line, by opening the line with the chunk-specific comment delimiter "#|" and then the option. Helpful options include:
@@ -312,9 +343,11 @@ Often when writing code, we may want to make the same change across multiple lin
 We can include equations\index{equations!LaTeX}\index{Quarto!equations} by using LaTeX\index{LaTeX}, which is based on the programming language TeX. We invoke math mode in LaTeX by using two dollar signs as opening and closing tags. Then whatever is inside is evaluated as LaTeX mark-up. For instance we can produce the compound interest formula with:
 
 ``` markdown
+
 $$
 A = P\left(1+\frac{r}{n}\right)^{nt}
 $$
+
 ```
 
 $$
@@ -324,9 +357,11 @@ $$
 LaTeX is a comprehensive mark-up language but we will mostly just use it to specify the model of interest. We include some examples here that contain the critical aspects we will draw on starting in @sec-its-just-a-linear-model.
 
 ``` markdown
+
 $$
 y_i|\mu_i, \sigma \sim \mbox{Normal}(\mu_i, \sigma)
 $$
+
 ```
 
 $$
@@ -342,6 +377,7 @@ LaTeX math mode assumes letters are variables and so makes them italic, but some
 We line up equations across multiple lines using `\begin{aligned}` and `\end{aligned}`. Then the item that is to be lined up is noted by an ampersand. The following is a model that we will estimate in @sec-multilevel-regression-with-post-stratification.\index{equations!multiple lines}
 
 ``` markdown
+
 $$
 \begin{aligned}
 y_i|\pi_i & \sim \mbox{Bern}(\pi_i) \\
@@ -356,6 +392,7 @@ y_i|\pi_i & \sim \mbox{Bern}(\pi_i) \\
 \sigma_{\mbox{edu}} & \sim \mbox{Exponential}(1)
 \end{aligned}
 $$
+
 ```
 
 $$
@@ -380,6 +417,7 @@ Finally, certain functions are built into LaTeX. For instance, we can appropriat
 It can be useful to cross-reference\index{Quarto!cross-references} figures, tables, and equations. This makes it easier to refer to them in the text. To do this for a figure we refer to the name of the R chunk that creates or contains the figure. For instance, consider the following code.\index{graphs!cross-references}
 
 :::{.content-visible when-format="pdf"}
+
 ```{r}
 #| echo: fenced
 #| label: fig-theuniquename
@@ -391,12 +429,15 @@ data("DoctorVisits", package = "AER")
 DoctorVisits |>
   ggplot(aes(x = illness)) +
   geom_histogram(stat = "count")
+
 ```
 
 Then `(@fig-theuniquename)` would produce: (@fig-theuniquename) as the label of the R chunk is `fig-theuniquename`. We need to add "fig" to the start of the chunk name so that Quarto knows that this is a figure. We then include a "fig-cap:" in the R chunk that specifies a caption.
+
 :::
 
 :::{.content-visible unless-format="pdf"}
+
 ```{r}
 #| echo: fenced
 #| label: fig-uniquename
@@ -408,12 +449,12 @@ data("DoctorVisits", package = "AER")
 DoctorVisits |>
   ggplot(aes(x = illness)) +
   geom_histogram(stat = "count")
+
 ```
 
 Then `(@fig-uniquename)` would produce: (@fig-uniquename) as the name of the R chunk is `fig-uniquename`. We need to add "fig" to the start of the chunk name so that Quarto knows that this is a figure. We then include a "fig-cap:" in the R chunk that specifies a caption.
+
 :::
-
-
 
 We can add `#| layout-ncol: 2` in an R chunk within a Quarto document to have two graphs appear side by side (@fig-doctorgraphsidebyside).\index{graphs!sub-figures} Here @fig-doctorgraphsidebyside-1 uses the minimal theme, and @fig-doctorgraphsidebyside-2 uses the classic theme. These both cross-reference the same label `#| label: fig-doctorgraphsidebyside` in the R chunk, with an additional option added in the R chunk of `#| fig-subcap: ["Number of illnesses","Number of visits to the doctor"]` which provides the sub-captions. The addition of a letter in-text is accomplished by adding "-1" and "-2" to the end of the label when it is used in-text: `(@fig-doctorgraphsidebyside)`, `@fig-doctorgraphsidebyside-1`, and `@fig-doctorgraphsidebyside-2` for (@fig-doctorgraphsidebyside), @fig-doctorgraphsidebyside-1, and @fig-doctorgraphsidebyside-2, respectively.
 
@@ -435,6 +476,7 @@ DoctorVisits |>
   ggplot(aes(x = visits)) +
   geom_histogram(stat = "count") +
   theme_classic()
+
 ```
 
 We can take a similar approach to cross-reference tables. For instance, `(@tbl-docvisittable)` will produce: (@tbl-docvisittable). In this case we specify "tbl" at the start of the label so that Quarto knows that it is a table. And we specify a caption for the table with "tbl-cap:".\index{tables!cross-references}
@@ -449,14 +491,17 @@ DoctorVisits |>
   tt() |>
   style_tt(j = 2, align = "r") |>
   setNames(c("Number of visits", "Occurrences"))
+
 ```
 
 Finally, we can also cross-reference equations.\index{equations!cross-reference} To that we need to add a tag such as `{#eq-macroidentity}` which we then reference.
 
 ``` markdown
+
 $$
 Y = C + I + G + (X - M)
 $$ {#eq-gdpidentity}
+
 ```
 
 For instance, we then use `@eq-gdpidentity` to produce @eq-gdpidentity
@@ -466,7 +511,6 @@ Y = C + I + G + (X - M)
 $$ {#eq-gdpidentity}
 
 Labels should be relatively simple when using cross-references. In general, try to keep the names simple but unique, avoid punctuation, and stick to letters and hyphens. Try not to use underscores, because they can cause an error.
-
 
 ## R Projects and file structure
 
@@ -481,6 +525,7 @@ The use of projects is required to meet the minimal level of reproducibility exp
 There are a variety of ways to set up a folder\index{folder structure}. A variant of @wilsongoodenough that is often useful when you are getting started is shown in the example file structure linked above.
 
 ```text
+
 example_project/
 ├── .gitignore
 ├── LICENSE.md
@@ -521,13 +566,12 @@ example_project/
 │   ├── 07-replication.R
 │   └── ...
 └── ...
+
 ```
 
 Here we have an `data` folder that contains simulated data, the unedited data that should not be written over [@wilsongoodenough] and the analysis data that were put together. The `model` folder contains saved model estimates. The `other` folder contains aspects like a datasheet, literature, LLM usage, and sketches, which are useful depending on the circumstances. The `paper` folder contains the Quarto document and a BibTeX file. Finally, `scripts` contain the code to simulate, download, test, and analyze the data.
 
 Useful other aspects include a `README.md` which will specify overview details about the project, and a LICENSE. An example of what to put in the README is [here](https://social-science-data-editors.github.io/template_README/). Another helpful variant of this project skeleton is provided by @GoodResearchCode.
-
-
 
 ## Version control
 
@@ -546,17 +590,17 @@ One complication is that Git was designed for teams of software developers. As s
 
 GitHub, GitLab, and various other companies offer easier-to-use services that build on Git. While there are tradeoffs, we introduce GitHub here because it is the predominant platform [@eghbal2020working, p. 21]. Git and GitHub are built into Posit Cloud, which provides a nice option if you have issues with local installation. One of the initial challenging aspects of Git is the terminology.\index{Git!terminology} Folders are called "repos". Creating a snapshot is called a "commit". One gets used to it eventually, but feeling confused initially is normal. @happygit is especially useful for setting up and using Git and GitHub.
 
-
-
 ### Git
 
 We first need to check whether Git\index{Git!set up} is installed. Open RStudio, go to the Terminal, type the following, and then enter/return.
 
 ```{bash}
+
 #| eval: false
 #| echo: true
 
 git --version
+
 ```
 
 If you get a version number, then you are done (@fig-gitone).
@@ -568,8 +612,8 @@ If you get a version number, then you are done (@fig-gitone).
 ![Adding a username and email address to Git in RStudio](figures/03-git-setup-02.png){#fig-gitone-setup}
 
 An overview of the steps involved in setting up Git
-:::
 
+:::
 
 Git is pre-installed in Posit Cloud\index{Posit Cloud!Git}\index{Git!Posit Cloud}, it should be pre-installed on Mac, and it may be pre-installed on Windows. If you do not get a version number in response, then you need to install it. To do that you should follow the instructions specific to your operating system in @happygit [Chapter 5].
 
@@ -578,18 +622,19 @@ After Git is installed we need to tell it a username and email. We need to do th
 Again, within the Terminal, type the following, replacing the details with yours, and then press "enter/return" after each line.
 
 ```{bash}
+
 #| eval: false
 #| echo: true
 
 git config --global user.name "Rohan Alexander"
 git config --global user.email "rohan.alexander@utoronto.ca"
 git config --global --list
+
 ```
 
 When this set-up has been done properly, the values that you entered for "user.name" and "user.email" will be returned after the last line (@fig-gitone-setup).
 
 These details---username and email address---will be public. There are various ways to hide the email address if necessary, and GitHub provides instructions about this. @happygit [Chapter 7] provides more detailed instructions about this step, and a trouble-shooting guide.
-
 
 ### GitHub
 
@@ -610,6 +655,7 @@ Now that Git is set up, we need to set up GitHub\index{GitHub}. We created a Git
 ![Making a commit](figures/03-github-commit.png){#fig-githubcommit}
 
 An overview of the steps involved in setting up GitHub
+
 :::
 
 At this point we can add a sensible name for the repo. Leave it as "public" for now, because it can always be deleted later. And check the box to "Initialize this repository with a README". Change "Add .gitignore" to R. After that, click "Create repository".
@@ -631,9 +677,11 @@ To use GitHub\index{GitHub} for a project that we are actively working on we fol
 There are a few common pain-points when it comes to Git and GitHub. We recommend committing and pushing regularly, especially when you are new to version control. This increases the number of snapshots that you could come back to if needed. All commits should have an informative commit message. If you are new to version control, then the expectation of a good commit message is that it contains a short summary of the change, followed by a blank line, and then an explanation of the change including what the change is, and why it is being made. For instance, if your commit adds graphs to a paper, then a commit message could be:
 
 ```{verbatim}
+
 Add graphs
 
 Graphs of unemployment and inflation added into Data section.
+
 ```
 
 There is some evidence of a relationship between overall quality and commit behavior [@sprint2019mining]. As you get more experience ideally the commit messages will act as a kind of journal of the project. But the main thing is to commit regularly.
@@ -652,6 +700,7 @@ use_git_config(
   user.name = "Rohan Alexander",
   user.email = "rohan.alexander@utoronto.ca"
 )
+
 ```
 
 Rather than starting a new project in GitHub, and then adding it locally, we can now use `use_git()` to initiate it and commit the files. Having committed, we can use `use_github()` to push to GitHub, which will create the folder on GitHub as well.
@@ -669,6 +718,7 @@ It is normal to be intimidated by Git and GitHub. Many data scientists only know
 ![The first few lines from the 1616 version](figures/03-faustus1616.png){#fig-githubconflicttwo}
 
 Showing differences between the 1604 and 1616 versions of Doctor Faustus
+
 :::
 
 When using Git and GitHub we check-in versions from time to time. But what happens when two people working in the same repo try to check-in code that makes changes to the same lines? Git establishes a merge conflict, and then it is up to the person who surfaced the conflict to resolve it i.e. the person who made the second commit.
@@ -676,6 +726,7 @@ When using Git and GitHub we check-in versions from time to time. But what happe
 Git will identify the lines that are in conflict by displaying them both in the file and adding identifying markers `<<<<<<< HEAD` to the start, `=======` to distinguish the conflicting changes and `>>>>>>> new_branch` to show the end and which branch is creating the conflict.
 
 ```{bash}
+
 #| eval: false
 #| echo: true
 
@@ -684,11 +735,10 @@ Some content
 =======
 Some conflicted content
 >>>>>>> new_branch
+
 ```
 
 It is the task of the person trying to resolve the conflict to pick which content to keep. Edit the file, save it, and then add and commit in the normal way.
-
-
 
 ## Using R in practice
 
@@ -712,7 +762,6 @@ Everyone who uses R, or any programming language for that matter, has trouble fi
 10. If you are working in a Quarto doc then include label in the chunk options to make it easier to find where the mistake may be happening.
 
 More generally, while this is not always possible, it is almost always helpful to take a break and come back the next day.
-
 
 ### Reproducible examples  {#sec-omgpleasemakeareprexplease}
 
@@ -740,11 +789,6 @@ If the code is self-contained, then it will preview in the viewer. If it is not,
 
 If you need data to reproduce the error, then you should use data that is built into R. There are a large number of datasets that are built into R and can be seen using `library(help = "datasets")`. But if possible, you should use a common option such as `mtcars` or `faithful`. Combining a reprex with a GitHub Gist that was introduced in @sec-fire-hose increases the chances that someone is able to help you.
 
-
-
-
-
-
 ### Mentality
 
 > (Y)ou are a real, valid, *competent* user and programmer no matter what IDE you develop in or what tools you use to make your work work for you
@@ -761,8 +805,6 @@ If you write code, then you are a programmer, regardless of how you do it, what 
 - **Tenacious:** Again, this is a balancing act. Unexpected problems and issues arise with every project. On the one hand, persevering despite these is a good tendency. But on the other hand, sometimes one does need to be prepared to give up on something if it does not seem like a break through is possible. Mentors can be useful as they tend to be a better judge of what is reasonable.
 - **Planned:** It is almost always useful to excessively plan what you are going to do. For instance, you may want to make a histogram of some data. You should plan the steps that are needed and even sketch out how each step might be implemented. For instance, the first step is to get the data. What packages might be useful? Where might the data be? What is the back-up plan if the data do not exist there?
 - **Done is better than perfect:** We all have various perfectionist tendencies, but it can be useful to initially try to turn them off to a certain extent. Initially just worry about writing code that works. You can always come back and improve aspects of it. But it is important to actually ship. Ugly code that gets the job done is better than beautiful code that is never finished.
-
-
 
 ### Code comments and style
 
@@ -781,6 +823,7 @@ Additionally, at the top of each file it is important to note basic information,
 Your R scripts should have a preamble and a clear demarcation of sections.
 
 ```
+
 #### Preamble ####
 # Purpose: Brief sentence about what this script does
 # Author: Your name
@@ -790,7 +833,6 @@ Your R scripts should have a preamble and a clear demarcation of sections.
 # Pre-requisites:
 # - Maybe you need some data or some other script to have been run?
 
-
 #### Workspace setup ####
 # do not keep install.packages lines; comment out if need be
 # Load packages
@@ -798,7 +840,6 @@ library(tidyverse)
 
 # Read in the unedited data.
 raw_data <- read_csv("inputs/data/unedited_data.csv")
-
 
 #### Next section ####
 ...
@@ -808,8 +849,6 @@ raw_data <- read_csv("inputs/data/unedited_data.csv")
 Finally, try not to rely on a user commenting and uncommenting code, or any other manual step, such as directory specification, for code to work. This will preclude the use of automated code checking and testing.
 
 This all takes time. As a rough rule of thumb, you should expect to spend at least as much time commenting and improving your code as you spent writing it. Some examples of nicely commented code include @AhadyDolatsara2021 and @burton2021reconsidering.
-
-
 
 ### Tests
 
@@ -830,23 +869,24 @@ We do all this initially on our simulated data and then move to the real data. T
 
 One type of test is an "assertion".\index{testing!assertion} Assertions are written throughout the code to check whether something is true and stop the code from running if not [@researchsoftware, p. 272]. For instance, you might assert that a variable should be numeric. If it was tested against this assertion and found to be a character, then the test would fail and the script would stop running. Assertion tests in data science will typically be used in data cleaning and preparation scripts. We have more to say about these in @sec-clean-and-prepare. Unit tests check some complete aspect of code [@researchsoftware, p. 274].\index{testing!unit tests} We will consider them more in @sec-its-just-a-linear-model when we consider modeling.
 
-
-
 ## Efficiency
 
 Generally\index{efficiency!code} in this book we are, and will continue to be, concerned with just getting something done. Not necessarily getting it done in the best or most efficient way, because to a large extent, being worried about that is a waste of time. For the most part one is better off just pushing things into the cloud, letting them run for a reasonable time, and using that time to worry about other aspects of the pipeline. But that eventually becomes unfeasible. At a certain point, and this differs depending on context, efficiency becomes important. Eventually ugly or slow code, and dogmatic insistence on a particular way of doing things, have an effect. And it is at that point that one needs to be open to new approaches to ensure efficiency. There is rarely a most common area for obvious performance gains. Instead, it is important to develop the ability to measure, evaluate, and think.
 
 One of the best ways to improve the efficiency of our code is preparing it in such a way that we can bring in a second pair of eyes.\index{Peer review}\index{efficiency!by sharing} To make the most of their time, it is important that our code easy to read. So we start with "code linting" and "styling". This does not speed up our code, per se, but instead makes it more efficient when another person comes to it, or we revisit it. This enables formal code review and refactoring, which is where we rewrite code to make it better, while not changing what it does (it does the same thing, but in a different way). We then turn to measurement of run time, and introduce parallel processing, where we allow our computer to run code for multiple processes at the same time
 
-
 ### Sharing a code environment
 
 :::{.content-visible when-format="pdf"}
+
 We have discussed at length the need to share code, and we have put forward an approach to this using GitHub.\index{reproducibility}\index{efficiency!reproducibility} And in @sec-store-and-share, we will discuss sharing data. But there is another requirement to enable other people to run our code. In @sec-fire-hose we discussed how R itself, as well as R packages update from time to time, as new functionality is developed, errors fixed, and other general improvements made. The ["R Essentials" Online Appendix](https://tellingstorieswithdata.com/20-r_essentials.html) describes how one advantage of the `tidyverse` is that it can update faster than base R, because it is more specific. But this could mean that even if we were to share all the code and data that we use, it is possible that the software versions that have become available would cause errors.
+
 :::
 
 :::{.content-visible unless-format="pdf"}
+
 We have discussed at length the need to share code, and we have put forward an approach to this using GitHub.\index{reproducibility}\index{efficiency!reproducibility} And in @sec-store-and-share, we will discuss sharing data. But, there is another requirement to enable other people to run our code. In @sec-fire-hose we discussed how R itself, as well as R packages update from time to time, as new functionality is developed, errors fixed, and other general improvements made. [Online Appendix -@sec-r-essentials] describes how one advantage of the `tidyverse` is that it can update faster than base R, because it is more specific. But this could mean that even if we were to share all the code and data that we use, it is possible that the software versions that have become available would cause errors.
+
 :::
 
 The solution to this is to detail the environment that was used.\index{reproducibility} There are a large number of ways to do this, and they can add complexity. We just focus on documenting the version of R and R packages that were used, and making it easier for others to install that exact version. Essentially we are just isolating the set-up that we used because that will help with reproducibility [@perkel2023]. In `R` we can use `renv` to do this.
@@ -880,6 +920,7 @@ SIMULATED_DATA <-
       replace = T
     )
   )
+
 ```
 
 ```{r}
@@ -887,6 +928,7 @@ SIMULATED_DATA <-
 #| eval: false
 
 lint(filename = "linting_example.R")
+
 ```
 
 The result is that the file "linting_example.R" is opened and the issues that `lint()` found are printed in "Markers" (@fig-linter). It is then up to you to deal with the issues.
@@ -910,6 +952,7 @@ simulated_data <-
       replace = TRUE
     )
   )
+
 ```
 
 At first it may seem that some aspects that the linter\index{code!linting} is identifying, like trailing whitespace and only using double quotes are small and inconsequential.\index{efficiency!fix the small stuff} But they distract from being able to fix bigger issues. Further, if we are not able to get small things right, then how could anyone trust that we could get the big things right? Therefore, it is important to have dealt with all the small aspects that a linter identifies.
@@ -921,10 +964,10 @@ In addition to `lintr` we also use `styler`. This will automatically adjust styl
 #| eval: false
 
 style_file(path = "linting_example.R")
+
 ```
 
 This will automatically make changes, such as spacing and indentation. As such this should be done regularly, rather than only once at the end of a project, so as to be able to review the changes and make sure no errors have been introduced.
-
 
 ### Code review
 
@@ -981,6 +1024,7 @@ mtcars =
 library(datasauRus)
 
 datasaurus_dozen
+
 ```
 
 We could change that, starting by creating an R Project which enables us to remove `setwd()`, grouping all the `library()` calls at the top, using "<-" instead of "=", and being consistent with variable names:
@@ -998,15 +1042,12 @@ mpg_to_kpl_conversion_factor <- 2.352
 mtcars <-
   mtcars |>
   mutate(kpl = mpg / mpg_to_kpl_conversion_factor)
-```
 
+```
 
 ## Concluding remarks
 
 In this chapter we have considered much and it is normal to be overwhelmed. Come back to the Quarto section as needed. Many people are confused by Git and GitHub and just know enough to get by. And while there was a lot of material in efficiency, the most important aspect of performant code is making it easier for another person to read it, even if that person is just yourself returning after a break.
-
-
-
 
 ## Exercises
 
@@ -1027,6 +1068,7 @@ election_results <-
     party = rep(x = 1:4, times = 175),
     votes = runif(n = 175 * 4, min = 0, max = 1000) |> floor()
   )
+
 ```
 
 3. *(Acquire)* Please specify a source of actual data about voting in a country of interest to you.
@@ -1042,6 +1084,7 @@ election_results |>
   slice_max(votes, n = 1, by = seat) |>
   count(party) |>
   tt()
+
 ```
 
 5. *(Share)* Please write two paragraphs as if you had gathered data from the source you identified (rather than simulated), and if the table that you built using simulated data reflected the actual situation. The exact details contained in the paragraphs do not have to be factual but they should be reasonable (i.e. you do not actually have to get the data nor create the graphs). Separate the code appropriately into R files and a Quarto doc. Submit a link to a GitHub repo with a README.
@@ -1279,7 +1322,6 @@ election_results |>
     c. Predictive analytics in your code.
     d. Collaborative work with future colleagues.
 
-
 ### Class activities {.unnumbered}
 
 - Use the [starter folder](https://github.com/RohanAlexander/starter_folder) and create a new repo. Add a link to the GitHub repo in the class's shared Google Doc.
@@ -1290,6 +1332,7 @@ election_results |>
 - [The instructor should (very slowly) live code all this and have students code-along.] Set up git on your local computer.^[If you have hidden your GitHub email then make sure you use the alias when you add an email address locally.] Make a GitHub repo, then make a local copy, make some changes, and push.^[There will always be a few students that cannot get git working locally. I find the best approach is to triage by pairing them with an advanced student while you demonstrate, and if there are remaining issues then deal with them individually at an office hour.]
 - Find the GitHub repo of a partner, fork it, make a change, and make a pull request.
 - The following code produces an error. Please follow the strategies in @sec-dealingwitherrors to fix it.
+
 ```{r}
 #| eval: false
 
@@ -1297,8 +1340,11 @@ tibble(year = 1875:1972,
        level = as.numeric(datasets::LakeHuron)) |>
   ggplot(aes(x = year, y = level)) |>
   geom_point()
+
 ```
+
 - The following code produces an error. Please follow the strategies in @sec-dealingwitherrors to fix it.
+
 ```{r}
 #| eval: false
 
@@ -1306,8 +1352,11 @@ tibble(year = 1871:1970,
        annual_nile_flow = as.character(datasets::Nile)) |>
   ggplot(aes(x = annual_nile_flow)) +
   geom_histogram()
+
 ```
+
 - The following code produces an error. Following @sec-omgpleasemakeareprexplease create a reprex (change the example to use a more common dataset such as `mtcars`), add it to a GitHub Gist, and email it to the instructor.
+
 ```{r}
 #| eval: false
 
@@ -1315,16 +1364,19 @@ tibble(year = 1875:1972,
        level = as.numeric(datasets::LakeHuron)) |>
   ggplot(aes(x = year, y = level)) |>
   geom_point()
+
 ```
+
 - The following code produces an error. Please use ChatGPT, or an equivalent LLM, to correct it. Discuss: 1) the prompt, and 2) the corrected code.
+
 ```{r}
 #| eval: false
 
 penguins |>
   ggplot(aes(x = bill_length_mm, y = bill_depth_mm, color = species)) |>
   geom_point()
-```
 
+```
 
 ### Task I {.unnumbered}
 
@@ -1349,7 +1401,6 @@ Read @googlecoderview and @giladpeerreview. Then using GitHub Issues please cond
 7. Any other comments:
     *[Any other comments.]*
 
-
 ### Task II {.unnumbered}
 
 The purpose of this task is to develop comfort with:
@@ -1372,6 +1423,7 @@ Get started by creating a new project ("File" -> "New project" -> "New Directory
 ![Updating the Quarto yaml](figures/quartofour.png){#fig-quartofour}
 
 Using Quarto to make a website
+
 :::
 
 The default basic website can be produced with "Build" -> "Render Website" (@fig-quartotwo). By default it may show in the "Viewer" pane, but can also be shown in a New Window, by . Again, at this point we may like to change the details to reflect our own. In particular, we may like to change the title of "index.qmd", and add our own details (@fig-quartothree).
@@ -1387,6 +1439,7 @@ After the details are personalized and we are not unhappy with the website it ca
 project:
   type: website
   output-dir: docs
+
 ```
 
 The other aspect to know is that when we use this service, by default, GitHub would try to build the site, which we do not want, so we need to first add a hidden file to turn that off, by running this in the console:
@@ -1396,6 +1449,7 @@ The other aspect to know is that when we use this service, by default, GitHub wo
 #| echo: true
 
 file.create(".nojekyll")
+
 ```
 
 Then, assuming GitHub was set-up we can use `usethis` to get our newly created project onto GitHub. We use `use_git()` to initialize a Git repository, and then `use_github()` pushes it to GitHub.
@@ -1406,6 +1460,7 @@ Then, assuming GitHub was set-up we can use `usethis` to get our newly created p
 
 use_git()
 use_github()
+
 ```
 
 The project will then be on GitHub. We can use GitHub pages to host it: "Settings -> Pages" and then change the source to "main" or "master", depending on your settings, and finally "docs". After a few minutes to run through various checks, GitHub will let you know the address that you can share to visit your site.
@@ -1416,14 +1471,16 @@ Please ensure that your website has some normal text paragraphs, sections headin
 
 Components of the rubric that are relevant are: "Class paper", "LLM usage is documented", "Prose", "Commits", and "Reproducible workflow". Submit a link to your website.
 
-
-
 ### Paper {.unnumbered}
 
 :::{.content-visible when-format="pdf"}
+
 At about this point the *Donaldson* Paper in the ["Papers" Online Appendix](https://tellingstorieswithdata.com/23-assessment.html) would be appropriate.
+
 :::
 
 :::{.content-visible unless-format="pdf"}
+
 At about this point the *Donaldson* Paper from [Online Appendix -@sec-papers] would be appropriate.
+
 :::

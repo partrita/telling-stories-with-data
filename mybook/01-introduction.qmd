@@ -5,7 +5,9 @@ engine: knitr
 # Telling stories with data {#sec-introduction}
 
 :::{.callout-note}
+
 Chapman and Hall/CRC published this book in July 2023. You can purchase that [here](https://www.routledge.com/Telling-Stories-with-Data-With-Applications-in-R/Alexander/p/book/9781032134772). This online version has some updates to what was printed.
+
 :::
 
 **Prerequisites**
@@ -156,9 +158,11 @@ Much of statistics is focused on considering, thoroughly, the data that we have.
 The process of our world becoming data necessarily involves measurement.\index{measurement} Paradoxically, often those that do the measurement and are deeply immersed in the details have less trust in the data than those who are removed from it.\index{data!trust} Even seemingly clear tasks, such as measuring distance, defining boundaries, and counting populations, are surprisingly difficult in practice. Turning our world into data requires many decisions and imposes much error. Among many other considerations, we need to decide what will be measured, how accurately we will do this, and who will be doing the measurement.
 
 :::{.callout-note}
+
 ## Oh, you think we have good data on that!
 
 An important example of how something seemingly simple quickly becomes difficult is maternal-related deaths. That refers to the number of women who die while pregnant, or soon after a termination, from a cause related to the pregnancy or its management [@matmortality].\index{maternal mortality} It is difficult but critical to turn the tragedy of such a death into cause-specific data because that helps mitigate future deaths. Some countries have well-developed civil registration and vital statistics (CRVS),\index{civil registration and vital statistics} which collect data about every death. But many countries lack a CRVS, resulting in unrecorded deaths. Even if a death is recorded, defining a cause of death may be difficult, especially when there is a lack of qualified medical personal or equipment. Maternal deaths are particularly difficult because there are typically many causes. Some CRVS systems have a checkbox on the death registration form to specify whether the death should be counted as maternal [@dattanimatmortality]. But even some developed countries have only recently adopted this. For instance, it was only introduced in the United States\index{United States} in 2003, and even in 2015 Alabama, California, and West Virginia had not adopted the standard question [@macdorman2018failure]. This means there is a risk that maternal deaths are under-reported or misclassified.
+
 :::
 
 We typically use various instruments\index{instrumentation} to turn the world into data. In astronomy,\index{astronomy} the development of better telescopes, and eventually satellites and probes, enabled new understanding of other worlds. Similarly, we have new instruments for turning our own world into data being developed each day. Where once a census was a generation-defining event, now we have regular surveys, transaction data available by the second, and almost all interactions on the internet become data of some kind. The development of such instruments has enabled exciting new stories.
@@ -182,9 +186,11 @@ Much of data science focuses on the "science", but it is important to also focus
 @Jordan2019Artificial describes being in a medical office and being given some probability, based on prenatal initial screening, that his child, then a fetus, had Down syndrome. By way of background, one can do a test to know for sure, but that test comes with the risk of the fetus not surviving, so this initial screening is done and then parents typically use the probability of Down syndrome from that initial screening to decide whether to do the conclusive test. @Jordan2019Artificial found the probabilities provided by the initial screening were being determined based on a study done a decade earlier in the United Kingdom. The issue was that in the ensuing ten years, imaging technology had improved so the initial screening was not expecting such high-resolution images, and there had been a subsequent (false) increase in Down syndrome diagnoses from the initial screening. The data were the problem.
 
 :::{.callout-note}
+
 ## Shoulders of giants
 
 Dr Michael Jordan\index{Jordan, Michael} is the Pehong Chen Distinguished Professor at the University of California, Berkeley.\index{Berkeley} After earning a PhD in Cognitive Science from University of California, San Diego, in 1985, he was appointed as an assistant professor at MIT, being promoted to full professor in 1997, and in 1998 he moved to Berkeley. One area of his research is statistical machine learning. For instance, one particularly important paper is @Blei2003latent, which defined how text could be grouped together to define topics, and we cover this in @sec-text-as-data.\index{text!topic models}
+
 :::
 
 It is not just the "science" bit that is hard, it is the "data" bit as well. For instance, researchers went back and examined one of the most popular text datasets in computer science,\index{computer science} and they found that around 30 per cent of the data were improperly duplicated [@bandy2021addressing]. There is an entire field---linguistics\index{linguistics}---that specializes in these types of datasets, and inappropriate use of data is one of the dangers of any one field being hegemonic. The strength of data science is that it brings together people with a variety of backgrounds and training to the task of learning about some dataset. It is not constrained by what was done in the past. This means that we must go out of our way to show respect for those who do not come from our own tradition, but who are as interested in a dataset as we are. Data science is multi-disciplinary and increasingly critical; hence it must reflect our world. There is a need for a diversity of backgrounds, of approaches, and of disciplines in data science.\index{data science!diversity}

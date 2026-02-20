@@ -117,8 +117,6 @@ engine: knitr
 >
 > "The Idea of Order at Key West" 발췌, [@wallacestevens]
 
-
-
 ## 연습 문제
 
 ### 질문 {.unnumbered}

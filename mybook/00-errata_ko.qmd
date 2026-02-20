@@ -5,9 +5,11 @@ engine: knitr
 # 오류 및 업데이트 {.unnumbered}
 
 :::{.callout-note}
+
 채프먼 앤 홀/CRC는 이 책을 2023년 7월에 출판했습니다. [여기](https://www.routledge.com/Telling-Stories-with-Data-With-Applications-in-R/Alexander/p/book/9781032134772)에서 구매하실 수 있습니다.
 
 이 온라인 버전은 인쇄된 내용에 일부 업데이트가 있습니다. 인쇄 버전과 일치하는 온라인 버전은 [여기](https://rohanalexander.github.io/telling_stories-published/)에서 확인할 수 있습니다.
+
 :::
 
 *최종 업데이트: 2024년 11월 21일.*
@@ -36,7 +38,6 @@ engine: knitr
 
 다음 오류는 인쇄 버전에 존재하지만, 온라인 버전에서는 업데이트되었습니다. 아래에 언급되지 않은 오류를 발견하면 [이슈](https://github.com/RohanAlexander/telling_stories/issues)를 제출하거나 rohan.alexander@utoronto.ca로 이메일을 보내주십시오.
 
-
 - p. xxi: 감사의 글에 Alex Hayes를 추가하십시오.
 - p. 20: "use the `tidyverse` and `janitor` packages."에 "packages"를 추가하십시오.
 - p. 34: `"daily-shelter-overnight-service-occupancy-capacity-2021"`은 `"daily-shelter-overnight-service-occupancy-capacity-2021.csv"`로 변경되어야 합니다 (".csv"가 추가됨).
@@ -51,6 +52,7 @@ toronto_shelters_clean <-
      select(occupancy_date, id, occupied_beds)
 
 head(toronto_shelters_clean)
+
 ```
 
 ```{r}
@@ -63,6 +65,7 @@ toronto_shelters_clean <-
   select(occupancy_date, occupied_beds)
 
 head(toronto_shelters_clean)
+
 ```
 
 - p. 38: "이 시점에서 2019년 캐나다 연방 선거에서 각 정당이 얻은 의석 수에 대한 멋진 그래프를 만들 수 있습니다."는 2021년 선거를 참조해야 합니다.

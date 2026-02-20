@@ -46,6 +46,7 @@ library(stm)
 library(tidytext)
 library(tidyverse)
 library(tinytable)
+
 ```
 
 ## Introduction
@@ -66,9 +67,11 @@ One exciting aspect of text data is that it is typically not generated for the p
 The larger size of text datasets means that it is especially important to simulate, and start small, when it comes to their analysis.\index{simulation} Using text as data is exciting because of the quantity and variety of text that is available to us. But in general, dealing with text datasets is messy. There is a lot of cleaning and preparation that is typically required. Often, text datasets are large. As such having a reproducible workflow in place and then clearly communicating your findings, becomes critical.\index{reproducibility}\index{workflow} Nonetheless, it is an exciting area.
 
 :::{.callout-note}
+
 ## Shoulders of giants
 
 Professor Kenneth Benoit is Professor of Computational Social Science and Director of the Data Science Institute at the London School of Economics and Political Science (LSE). After obtaining a PhD in Government from Harvard University in 1998, supervised by Gary King and Kenneth Shepsle, he took a position at Trinity College, Dublin, where he was promoted to professor in 2007. He moved to the LSE in 2020. He is an expert in using quantitative methods to analyse text data, especially political text, and social media. Some of his important papers include @laver2003 which extracted policy positions from political texts and helped start the "text as data" subfield in political science. He has also worked extensively in other methods for estimating policy positions, such as @benoitbook, which provided original expert survey positions in dozens of countries, and @benoit2007 in which  he compared expert surveys with hand coded analysis of party policy positions. A core contribution is the family of R packages known as `quanteda`, for the "quantitative analysis of textual data" [@quanteda] which makes it easy to analyse text data.
+
 :::
 
 In this chapter we first consider preparing text datasets. We then consider Term Frequency-Inverse Document Frequency (TF-IDF) and topic models.
@@ -104,17 +107,20 @@ bookshelf <-
   )
 
 bookshelf
+
 ```
 
 We typically want to construct a document-feature matrix, which has documents in each observation, words in each column, and a count for each combination, along with associated metadata.\index{text!document-feature matrix} For instance, if our corpus was the text from Airbnb reviews, then each document may be a review, and typical features could include: "The", "Airbnb", "was", "great". Notice here that the sentence has been split into different words. We typically talk of "tokens" to generalize away from words, because of the variety of aspects we may be interested in, but words are commonly used.\index{text!tokens}
 
 ```{r}
+
 books_corpus <-
   corpus(bookshelf,
          docid_field = "book",
          text_field = "first_sentence")
 
 books_corpus
+
 ```
 
 We use the tokens in the corpus to construct a document-feature matrix (DFM) using `dfm()` from `quanteda` [@quanteda].\index{text!document-feature matrix}
@@ -129,6 +135,7 @@ books_dfm <-
   dfm()
 
 books_dfm
+
 ```
 
 We now consider some of the many decisions that need to be made as part of this process. There is no definitive right or wrong answer. Instead, we make those decisions based on what we will be using the dataset for.
@@ -140,12 +147,15 @@ Stop words are words such as "the", "and", and "a".\index{text!stop words} For a
 We can get a list of stop words using `stopwords()` from `quanteda`.
 
 ```{r}
+
 stopwords(source = "snowball")[1:10]
+
 ```
 
 We could then look for all instances of words in that list and crudely remove them with `str_replace_all()`.
 
 ```{r}
+
 stop_word_list <-
   paste(stopwords(source = "snowball"), collapse = " | ")
 
@@ -156,11 +166,13 @@ bookshelf |>
     replacement = " ")
   ) |>
   select(no_stops, first_sentence)
+
 ```
 
 There are many different lists of stop words that have been put together by others.\index{text!stop words} For instance, `stopwords()` can use lists including: "snowball", "stopwords-iso", "smart", "marimo", "ancient", and "nltk". More generally, if we decide to use stop words then we often need to augment such lists with project-specific words. We can do this by creating a count of individual words in the corpus, and then sorting by the most common and adding those to the stop words list as appropriate.
 
 ```{r}
+
 stop_word_list_updated <-
   paste(
     "Methodist |",
@@ -177,6 +189,7 @@ bookshelf |>
     replacement = " ")
   ) |>
   select(no_stops)
+
 ```
 
 We can integrate the removal of stop words into our construction of the DFM with `dfm_remove()` from `quanteda`.
@@ -187,6 +200,7 @@ We can integrate the removal of stop words into our construction of the DFM with
 
 books_dfm |>
   dfm_remove(stopwords(source = "snowball"))
+
 ```
 
 When we remove stop words we artificially adjust our dataset.\index{text!stop words} Sometimes there may be a good reason to do that. But it must not be done unthinkingly. For instance, in @sec-farm-data and @sec-store-and-share we discussed how sometimes datasets may need to be censored, truncated, or manipulated in other similar ways, to preserve the privacy of respondents. It is possible that the integration of the removal of stop words as a default step in natural language processing was due to computational power, which may have been more limited when these methods were developed. In any case, @jurafskymartin [p. 62] conclude that removing stop words does not improve performance for text classification. Relatedly, @schofield2017 find that inference from topic models is not improved by the removal of anything other than the most frequent words. If stop words are to be removed, then they recommend doing this after topics are constructed.
@@ -196,13 +210,15 @@ When we remove stop words we artificially adjust our dataset.\index{text!stop wo
 There are times when all we care about is the word, not the case or punctuation.\index{text!case}\index{text!numbers}\index{text!punctuation}\index{text!cleaning} For instance, if the text corpus was particularly messy or the existence of particular words was informative. We trade-off the loss of information for the benefit of making things simpler. We can convert to lower case with `str_to_lower()`, and use `str_replace_all()` to remove punctuation with "[:punct:]", and numbers with "[:digit:]".
 
 ```{r}
+
 bookshelf |>
   mutate(lower_sentence = str_to_lower(string = first_sentence)) |>
   select(lower_sentence)
+
 ```
 
-
 ```{r}
+
 bookshelf |>
   mutate(no_punctuation_numbers = str_replace_all(
     string = first_sentence,
@@ -210,6 +226,7 @@ bookshelf |>
     replacement = " "
   )) |>
   select(no_punctuation_numbers)
+
 ```
 
 As an aside, we can remove letters, numbers, and punctuation with "[:graph:]" in `str_replace_all()`. While this is rarely needed in textbook examples, it is especially useful with real datasets, because they will typically have a small number of unexpected symbols that we need to identify and then remove. We use it to remove everything that we are used to, leaving only that which we are not.
@@ -217,8 +234,10 @@ As an aside, we can remove letters, numbers, and punctuation with "[:graph:]" in
 More generally, we can use arguments in `tokens()` from `quanteda()` to do this.
 
 ```{r}
+
 books_corpus |>
   tokens(remove_numbers = TRUE, remove_punct = TRUE)
+
 ```
 
 ### Typos and uncommon words
@@ -235,6 +254,7 @@ books_corpus |>
   tokens(remove_numbers = TRUE, remove_punct = TRUE) |>
   dfm(tolower = TRUE) |>
   dfm_trim(min_termfreq = 2)
+
 ```
 
 ### Tuples
@@ -244,6 +264,7 @@ A tuple is an ordered list of elements. In the context of text it is a series of
 This is a clear issue when it comes to place names. For instance, consider "British Columbia", "New Hampshire", "United Kingdom", and "Port Hedland". One way forward is to create a list of such places and then use `str_replace_all()` to add an underscore, for instance, "British_Columbia", "New_Hampshire", "United_Kingdom", and "Port_Hedland". Another option is to use `tokens_compound()` from `quanteda`.
 
 ```{r}
+
 some_places <- c("British Columbia",
                  "New Hampshire",
                  "United Kingdom",
@@ -253,6 +274,7 @@ c("Vancouver is in British Columbia and New Hampshire is not")
 
 tokens(a_sentence) |>
   tokens_compound(pattern = phrase(some_places))
+
 ```
 
 In that case, we knew what the tuples were. But it might be that we were not sure what the common tuples were in the corpus. We could use `tokens_ngrams()` to identify them. We could ask for, say, all bi-grams in an excerpt from *Jane Eyre*.\index{Brontë, Charlotte!Jane Eyre} We showed how to download the text of this book from Project Gutenberg\index{Project Gutenberg} in @sec-its-just-a-generalized-linear-model and so here we load the local version that we saved earlier.
@@ -270,6 +292,7 @@ jane_eyre <- read_csv(
 )
 
 jane_eyre
+
 ```
 
 ```{r}
@@ -287,18 +310,21 @@ jane_eyre <- read_csv(
 )
 
 jane_eyre
+
 ```
 
 As there are many blank lines we will remove them.
 
 ```{r}
+
 jane_eyre <-
   jane_eyre |>
   filter(!is.na(text))
+
 ```
 
-
 ```{r}
+
 jane_eyre_text <- tibble(
   book = "Jane Eyre",
   text = paste(jane_eyre$text, collapse = " ") |>
@@ -316,6 +342,7 @@ ngram_counts <-
   count(ngrams, sort = TRUE)
 
 head(ngram_counts)
+
 ```
 
 Having identified some common bi-grams, we could add them to the list to be changed. This example includes names like "Mr Rochester" and "St John" which would need to remain together for analysis.
@@ -327,12 +354,14 @@ Stemming and lemmatizing words is another common approach for reducing the dimen
 We can do this with `dfm_wordstem()`. We notice, that, say, "minister", has been changed to "minist".
 
 ```{r}
+
 char_wordstem(c("Canadians", "Canadian", "Canada"))
 
 books_corpus |>
   tokens(remove_numbers = TRUE, remove_punct = TRUE) |>
   dfm(tolower = TRUE) |>
   dfm_wordstem()
+
 ```
 
 While this is a common step in using text as data, @schofield2017understanding find that in the context of topic modeling, which we cover later, stemming has little effect and there is little need to do it.
@@ -350,19 +379,24 @@ Install and load `astrologer`, which is a dataset of horoscopes to explore a rea
 We can then access the "horoscopes" dataset.
 
 ```{r}
+
 horoscopes
+
 ```
 
 There are four variables: "startdate", "zodiacsign", "horoscope", and "url" (note that URL is out-of-date because the website has been updated, for instance, the first one refers to [here](https://chaninicholas.com/horoscopes-week-january-5th/)). We are interested in the words that are used to distinguish the horoscope of each zodiac sign.
 
 ```{r}
+
 horoscopes |>
   count(zodiacsign)
+
 ```
 
 There are 106 horoscopes for each zodiac sign. In this example we first tokenize by word, and then create counts based on zodiac sign only, not date. We use `tidytext` because it is used extensively in @hvitfeldt2021supervised.
 
 ```{r}
+
 horoscopes_by_word <-
   horoscopes |>
   select(-startdate,-url) |>
@@ -375,6 +409,7 @@ horoscopes_counts_by_word <-
   count(zodiacsign, word, sort = TRUE)
 
 horoscopes_counts_by_word
+
 ```
 
 We can see that the most popular words appear to be similar for the different zodiacs. At this point, we could use the data in a variety of ways.
@@ -384,6 +419,7 @@ We might be interested to know which words characterize each group---that is to 
 We can create this value using `bind_tf_idf()` from `tidytext`. It will create new variables for each of these measures.
 
 ```{r}
+
 horoscopes_counts_by_word_tf_idf <-
   horoscopes_counts_by_word |>
   bind_tf_idf(
@@ -394,6 +430,7 @@ horoscopes_counts_by_word_tf_idf <-
   arrange(-tf_idf)
 
 horoscopes_counts_by_word_tf_idf
+
 ```
 
 In @tbl-zodiac we look at the words that distinguish the horoscopes of each zodiac sign. The first thing to notice is that some of them have their own zodiac sign. On the one hand, there is an argument for removing this, but on the other hand, the fact that it does not happen for all of them is perhaps informative of the nature of the horoscopes for each sign.
@@ -411,6 +448,7 @@ horoscopes_counts_by_word_tf_idf |>
   tt() |>
   style_tt(j = 1:2, align = "lr") |>
   setNames(c("Zodiac sign", "Most common words unique to that sign"))
+
 ```
 
 ## Topic models
@@ -449,6 +487,7 @@ ggplot(document_2, aes(Topics, Probability)) +
   geom_point() +
   theme_classic() +
   coord_cartesian(ylim = c(0, 0.4))
+
 ```
 
 Similarly, each topic could be considered a probability distribution over terms. To choose the terms used in each document the speaker picks terms from each topic in the appropriate proportion. For instance, if there were ten terms, then one topic could be defined by giving more weight to terms related to immigration; and some other topic may give more weight to terms related to the economy (@fig-topicsoverterms).
@@ -482,6 +521,7 @@ ggplot(topic_2, aes(Terms, Probability)) +
   geom_point() +
   theme_classic() +
   coord_cartesian(ylim = c(0, 0.4))
+
 ```
 
 <!-- Following @BleiLafferty2009, @blei2012 and @GriffithsSteyvers2004, the process by which a document is generated is more formally considered to be: -->
@@ -553,6 +593,7 @@ hansard_canada_2018 <-
   filter(!is.na(speakername))
 
 hansard_canada_2018
+
 ```
 
 ```{r}
@@ -589,17 +630,20 @@ hansard_canada_2018 <-
   filter(!is.na(speakername))
 
 hansard_canada_2018
+
 ```
 
 The use of `filter()` at the end is needed because sometimes aspects such as "directions" and similar non-speech aspects are included in the Hansard. For instance, if we do not include that `filter()` then the first line is "The House resumed from November 9, 2017, consideration of the motion." We can then construct a corpus.
 
 ```{r}
+
 hansard_canada_2018_corpus <-
   corpus(hansard_canada_2018,
          docid_field = "basepk",
          text_field = "speechtext")
 
 hansard_canada_2018_corpus
+
 ```
 
 We use the tokens in the corpus to construct a document-feature matrix. To make our life a little easier, computationally, we remove any word that does not occur at least twice, and any word that does not occur in at least two documents.
@@ -619,6 +663,7 @@ hansard_dfm <-
   dfm_remove(stopwords(source = "snowball"))
 
 hansard_dfm
+
 ```
 
 At this point we can use `stm()` from `stm` to implement a LDA model.\index{latent Dirichlet allocation} We need to specify a document-feature matrix and the number of topics. Topic models are essentially just summaries. Instead of a document becoming a collection of words, they become a collection of topics with some probability associated with each topic. But because it is just providing a collection of words that tend to be used at similar times, rather than actual underlying meaning, we need to specify the number of topics that we are interested in. This decision will have a big impact, and we should consider a few different numbers.
@@ -635,6 +680,7 @@ write_rds(
   hansard_topics,
   file = "hansard_topics.rda"
 )
+
 ```
 
 ```{r}
@@ -651,6 +697,7 @@ write_rds(
   hansard_topics,
   file = "outputs/hansard_topics.rda"
 )
+
 ```
 
 This will take some time, likely 15-30 minutes, so it is useful to save the model when it is done using `write_rds()`, and use `beep` to get a notification when it is done. We could then read the results back in with `read_rds()`.
@@ -662,6 +709,7 @@ This will take some time, likely 15-30 minutes, so it is useful to save the mode
 hansard_topics <- read_rds(
   file = "hansard_topics.rda"
 )
+
 ```
 
 ```{r}
@@ -671,26 +719,30 @@ hansard_topics <- read_rds(
 hansard_topics <- read_rds(
   file = "outputs/hansard_topics.rda"
 )
+
 ```
 
 We can look at the words in each topic with `labelTopics()`.
 
 :::{.content-visible when-format="pdf"}
+
 ```{r}
 #| message: false
 #| eval: false
 
 labelTopics(hansard_topics)
+
 ```
 :::
 
 :::{.content-visible unless-format="pdf"}
+
 ```{r}
+
 labelTopics(hansard_topics)
+
 ```
 :::
-
-
 
 ## Exercises
 
@@ -736,7 +788,6 @@ labelTopics(hansard_topics)
     c. fishes
     d. pisces
 8. Re-run the Canadian topic model, but only including five topics. Looking at the words in each topic, how would you describe what each of them is about?
-
 
 ### Class activities {.unnumbered}
 

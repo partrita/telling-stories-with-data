@@ -5,7 +5,9 @@ engine: knitr
 # 소방 호스에서 마시기 {#sec-fire-hose}
 
 :::{.callout-note}
+
 채프먼 앤 홀/CRC는 이 책을 2023년 7월에 출판했습니다. [여기](https://www.routledge.com/Telling-Stories-with-Data-With-Applications-in-R/Alexander/p/book/9781032134772)에서 구매하실 수 있습니다. 이 온라인 버전은 인쇄된 내용에 일부 업데이트가 있습니다.
+
 :::
 
 선행 조건
@@ -46,6 +48,7 @@ library(lubridate)
 #library(opendatatororonto)
 library(tidyverse)
 library(tinytable)
+
 ```
 
 ## 안녕하세요, 세상!
@@ -67,7 +70,7 @@ R에 익숙하지 않다면 일부 코드가 다소 생소할 수 있습니다. 
 
 워크플로우의 첫 번째 단계는 계획하는 것입니다. 우리는 상황에 대해 더 많이 알게 되면서 나중에 업데이트해야 할지라도 최종 지점을 설정해야 하기 때문에 이를 수행합니다. 그런 다음 시뮬레이션합니다. 이는 계획의 세부 사항에 집중하게 하기 때문입니다. 일부 프로젝트에서는 데이터 획득이 데이터셋을 다운로드하는 것처럼 간단할 수 있지만, 다른 프로젝트에서는 예를 들어 설문조사를 수행하는 경우 데이터 획득이 주요 초점이 될 수 있습니다. 다양한 양적 방법을 사용하여 데이터를 탐색하여 이해합니다. 마지막으로, 청중의 요구에 초점을 맞춰 우리의 이해를 공유합니다.
 
-시작하려면 [Posit Cloud](https://posit.cloud)\index{Posit Cloud}로 이동하여 계정을 만드십시오. 무료 버전으로도 충분합니다. 처음에는 데스크톱 대신 이를 사용합니다. 이는 모든 사람이 동일하게 시작할 수 있도록 하기 위함이지만, 비용을 지불하지 않으려면 나중에 로컬 설치로 변경해야 합니다. 계정을 만들고 로그인하면 @fig-02-rstudio_cloud-1과 비슷하게 보일 것입니다.
+시작하려면 [Posit Cloud](https://posit.cloud)\index{Posit Cloud}로 이동하여 계정을 만드십시오. 무료 버전으로도 충분합니다. 처음에는 데스크톱 대신 이를 사용합니다. 이는 모든 사람이 동일하게 시작할 수 있도록 하기 위함이지만, 비용을 지불하지 않으려면 나중에 로컬 설치로 변경해야 합니다. 계정을 만들고 로그인하면 @fig-02-rstudio_cloud-1 비슷하게 보일 것입니다.
 
 :::{#fig-openrstudio layout-ncol="2" layout-valign="bottom"}
 
@@ -76,12 +79,12 @@ R에 익숙하지 않다면 일부 코드가 다소 생소할 수 있습니다. 
 ![새 RStudio 프로젝트 열기](figures/02-posit_cloud-2.png){#fig-02-rstudio_cloud-2}
 
 Posit Cloud 및 새 프로젝트 시작하기
+
 :::
 
 "내 프로젝트"에 있을 것입니다. 여기에서 새 프로젝트를 시작해야 합니다: "새 프로젝트" $\rightarrow$ "새 RStudio 프로젝트" (@fig-02-rstudio_cloud-2). "제목 없는 프로젝트"를 클릭하고 이름을 바꿔 프로젝트 이름을 지정할 수 있습니다.
 
 이제 세 가지 예제를 살펴볼 것입니다: 호주 선거, 토론토 쉼터 사용량, 신생아 사망률. 이 예제들은 점점 더 복잡해지지만, 첫 번째 예제부터 데이터를 사용하여 이야기를 전달할 것입니다. 여기서 많은 측면을 간략하게 설명하지만, 거의 모든 것이 책의 나머지 부분에서 훨씬 더 자세히 설명됩니다.
-
 
 ## 호주 선거
 
@@ -100,6 +103,7 @@ Posit Cloud 및 새 프로젝트 시작하기
 ![각 정당이 얻은 의석 수에 대한 가능한 그래프의 빠른 스케치](figures/02-divisiongraph.png){#fig-australiaexample-graph width="45%"}
 
 호주 선거 관련 잠재적 데이터셋 및 그래프 스케치
+
 :::
 
 우리는 또한 관심 있는 그래프를 계획해야 합니다. 각 정당이 얻은 의석 수를 표시하고 싶으므로, 우리가 목표로 할 수 있는 빠른 스케치는 [@fig-australiaexample-graph]입니다.
@@ -125,6 +129,7 @@ Posit Cloud 및 새 프로젝트 시작하기
 ![렌더링 버튼 강조 표시](figures/02-posit_cloud-8.png){#fig-quarto-australian-elections-6}
 
 Quarto 문서 시작하기
+
 :::
 
 "패키지 rmarkdown 필요..."와 같은 알림이 표시될 수 있습니다 (@fig-quarto-australian-elections-wtfquarto). 그런 경우 "설치"를 클릭하십시오. 이 예제에서는 모든 것을 이 하나의 Quarto 문서에 넣을 것입니다. "australian_elections.qmd"로 저장해야 합니다: "파일" $\rightarrow$ "다른 이름으로 저장...".
@@ -147,16 +152,19 @@ Quarto 문서 시작하기
 # 이메일: rohan.alexander@utoronto.ca
 # 날짜: 2023년 1월 1일
 # 선행 조건: 호주 선거 데이터를 얻을 수 있는 곳을 알고 있어야 합니다.
+
 ```
 
-R에서 "#"으로 시작하는 줄은 주석입니다. 이는 R에 의해 코드로 실행되지 않고, 대신 사람이 읽도록 설계되었음을 의미합니다. 이 서문의 각 줄은 "#"으로 시작해야 합니다. 또한 "####"로 둘러싸서 이것이 서문 섹션임을 명확히 하십시오. 결과는 @fig-quarto-australian-elections-3과 같아야 합니다.
+R에서 "#"으로 시작하는 줄은 주석입니다. 이는 R에 의해 코드로 실행되지 않고, 대신 사람이 읽도록 설계되었음을 의미합니다. 이 서문의 각 줄은 "#"으로 시작해야 합니다. 또한 "####"로 둘러싸서 이것이 서문 섹션임을 명확히 하십시오. 결과는 @fig-quarto-australian-elections-3 같아야 합니다.
 
 이 후에는 작업 공간을 설정해야 합니다. 여기에는 필요한 패키지를 설치\index{packages!install}하고 로드하는 것이 포함됩니다. 패키지는 각 컴퓨터에 한 번만 설치하면 되지만, 사용할 때마다 로드해야 합니다. 이 경우 `tidyverse`와 `janitor` 패키지를 사용할 것입니다. 이전에 설치되지 않았다면 설치해야 하며, 그런 다음 각각 로드해야 합니다.
 
 :::{.callout-note}
+
 ## 거인의 어깨
 
 Hadley Wickham\index{Wickham, Hadley}은 RStudio의 수석 과학자입니다. 2008년 아이오와 주립 대학교에서 통계학 박사 학위를 취득한 후 라이스 대학교 조교수로 임용되었고, 2013년 RStudio(현재 Posit)의 수석 과학자가 되었습니다.\index{statistics} 그는 `tidyverse` 패키지 컬렉션을 개발했으며, *R for Data Science* [@r4ds] 및 *Advanced R* [@advancedr]를 포함한 많은 책을 출판했습니다. 그는 2019년 COPSS 회장상\index{COPSS Presidents' Award}을 수상했습니다.
+
 :::
 
 패키지 설치 예시는 다음과 같습니다.\index{packages!install} R 코드 청크와 관련된 작은 녹색 화살표를 클릭하여 이 코드를 실행하십시오 (@fig-quarto-australian-elections-4).
@@ -168,6 +176,7 @@ Hadley Wickham\index{Wickham, Hadley}은 RStudio의 수석 과학자입니다. 2
 #### 작업 공간 설정 ####
 install.packages("tidyverse")
 install.packages("janitor")
+
 ```
 
 이제 패키지가 설치되었으므로 로드해야 합니다. 패키지 설치 단계는 컴퓨터당 한 번만 수행하면 되므로, 해당 코드는 실수로 실행되지 않도록 주석 처리하거나 제거해야 합니다. 또한 패키지를 설치할 때 인쇄된 메시지를 제거할 수 있습니다 (@fig-quarto-australian-elections-5).
@@ -184,6 +193,7 @@ install.packages("janitor")
 
 library(tidyverse)
 library(janitor)
+
 ```
 
 "렌더링"을 클릭하여 전체 문서를 렌더링할 수 있습니다 (@fig-quarto-australian-elections-6). 이렇게 하면 일부 패키지를 설치하라는 메시지가 표시될 수 있습니다. 그런 경우 동의해야 합니다. 그러면 HTML 문서가 생성됩니다.\index{Quarto!render HTML}
@@ -214,11 +224,13 @@ simulated_data <-
   )
 
 simulated_data
+
 ```
 
 어느 시점에서 코드가 실행되지 않고 도움을 요청하고 싶을 것입니다.\index{help!asking for} 코드의 작은 스니펫을 스크린샷하여 누군가가 그것을 기반으로 도움을 줄 수 있을 것이라고 기대하지 마십시오. 그들은 거의 확실히 그럴 수 없습니다. 대신, 그들이 실행할 수 있는 방식으로 전체 스크립트를 제공해야 합니다. GitHub\index{GitHub}가 무엇인지는 [@sec-reproducible-workflows]에서 더 자세히 설명할 것이지만, 지금 당장 도움이 필요하다면 스크린샷을 찍는 것보다 더 유용한 방식으로 코드를 공유할 수 있도록 GitHub Gist를 순진하게 생성해야 합니다. 첫 번째 단계는 [GitHub](https://github.com)에서 무료 계정을 만드는 것입니다 ([@fig-githubone]). 적절한 사용자 이름을 생각하는 것이 중요합니다. 이는 여러분의 전문 프로필의 일부가 될 것이기 때문입니다. 전문적이고, 어떤 과정과도 독립적이며, 이상적으로는 실제 이름과 관련된 사용자 이름을 사용하는 것이 좋습니다. 그런 다음 오른쪽 상단에서 "+"를 찾고 "새 Gist"를 선택하십시오 ([@fig-githubgistone]).
 
 :::{#fig-githubgist layout-ncol="2" layout-nrow="2" layout-valign="bottom"}
+
 ![GitHub 가입 화면](figures/github_1.png){#fig-githubone}
 
 ![새 GitHub Gist](figures/githubgistone.png){#fig-githubgistone}
@@ -226,9 +238,10 @@ simulated_data
 ![코드를 공유하기 위해 공개 GitHub Gist 만들기](figures/githubgisttwo.png){#fig-githubgisttwo}
 
 도움을 요청할 때 코드를 공유하기 위해 Gist 만들기
+
 :::
 
-여기에서 오류가 발생하는 마지막 부분뿐만 아니라 모든 코드를 Gist에 추가해야 합니다. 그리고 끝에 ".R"이 포함된 의미 있는 파일 이름을 지정하십시오. 예를 들어 "australian_elections.R". @fig-githubgisttwo에서는 `library(Tidyverse)` 대신 `library(tidyverse)`와 같이 잘못된 대소문자가 사용되었습니다.
+여기에서 오류가 발생하는 마지막 부분뿐만 아니라 모든 코드를 Gist에 추가해야 합니다. 그리고 끝에 ".R"이 포함된 의미 있는 파일 이름을 지정하십시오. 예를 들어 "australian_elections.R". @fig-githubgisttwo `library(Tidyverse)` 대신 `library(tidyverse)`와 같이 잘못된 대소문자가 사용되었습니다.
 
 "공개 Gist 생성"을 클릭하십시오. 그런 다음 이 Gist의 URL을 도움을 요청하는 사람과 공유하고, 문제가 무엇인지, 무엇을 달성하려고 하는지 설명할 수 있습니다. 모든 코드를 사용할 수 있으므로 그들이 더 쉽게 도움을 줄 수 있을 것입니다.
 
@@ -257,10 +270,12 @@ write_csv(
   x = raw_elections_data,
   file = "australian_voting.csv"
 )
+
 ```
 :::
 
 :::{.content-visible unless-format="pdf"}
+
 ```{r}
 #| eval: false
 #| echo: true
@@ -280,6 +295,7 @@ write_csv(
   x = raw_elections_data,
   file = "australian_voting.csv"
 )
+
 ```
 :::
 
@@ -301,6 +317,7 @@ write_csv(
   x = raw_elections_data,
   file = here::here("inputs/data/australian_voting.csv")
 )
+
 ```
 
 ```{r}
@@ -313,13 +330,16 @@ raw_elections_data <-
     here::here("inputs/data/australian_voting.csv"),
     show_col_types = FALSE
   )
+
 ```
 
 `head()`를 사용하여 데이터셋을 빠르게 살펴볼 수 있습니다. `head()`는 처음 여섯 행을 보여주고, `tail()`는 마지막 여섯 행을 보여줍니다.
 
 ```{r}
+
 head(raw_elections_data)
 tail(raw_elections_data)
+
 ```
 
 데이터를 사용하려면 정리해야 합니다. 계획 단계에서 원했던 데이터셋과 유사하게 만들려고 합니다. 계획에서 벗어나는 것은 괜찮지만, 이는 의도적이고 합리적인 결정이어야 합니다. 저장한 데이터셋을 읽어들인 후 가장 먼저 할 일은 변수 이름을 조정하는 것입니다. `janitor`의 `clean_names()`를 사용하여 이를 수행할 것입니다.
@@ -334,6 +354,7 @@ raw_elections_data <-
     file = here::here("inputs/data/australian_voting.csv"),
     show_col_types = FALSE
   )
+
 ```
 
 ```{r}
@@ -346,6 +367,7 @@ raw_elections_data <-
     file = "australian_voting.csv",
     show_col_types = FALSE
   )
+
 ```
 
 ```{r}
@@ -358,6 +380,7 @@ cleaned_elections_data <-
 
 # 처음 여섯 행을 살펴봅니다.
 head(cleaned_elections_data)
+
 ```
 
 이름이 더 빨리 입력되는 이유는 RStudio\index{R!RStudio}가 자동으로 완성하기 때문입니다. 이를 위해 변수 이름을 입력하기 시작한 다음 "tab" 키를 사용하여 완성합니다.
@@ -376,15 +399,19 @@ cleaned_elections_data <-
   )
 
 head(cleaned_elections_data)
+
 ```
 
 일부 변수 이름은 여전히 약어이기 때문에 명확하지 않습니다. `names()`를 사용하여 이 데이터셋의 열 이름을 살펴볼 수 있습니다. 그리고 `dplyr`의 `rename()`을 사용하여 이름을 변경할 수 있습니다.
 
 ```{r}
+
 names(cleaned_elections_data)
+
 ```
 
 ```{r}
+
 cleaned_elections_data <-
   cleaned_elections_data |>
   rename(
@@ -393,18 +420,22 @@ cleaned_elections_data <-
   )
 
 head(cleaned_elections_data)
+
 ```
 
 이제 `unique()`를 사용하여 "elected_party" 열의 고유 값을 살펴볼 수 있습니다.
 
 ```{r}
+
 cleaned_elections_data$elected_party |>
   unique()
+
 ```
 
 우리가 원했던 것보다 더 많은 세부 정보가 있으므로, `dplyr`의 `case_match()`를 사용하여 정당 이름을 시뮬레이션한 것과 일치하도록 단순화할 수 있습니다.
 
 ```{r}
+
 cleaned_elections_data <-
   cleaned_elections_data |>
   mutate(
@@ -423,6 +454,7 @@ cleaned_elections_data <-
   )
 
 head(cleaned_elections_data)
+
 ```
 
 이제 데이터가 계획과 일치합니다 (@fig-australiaexample-data). 모든 선거구에 대해 당선된 사람의 정당을 가지고 있습니다.
@@ -437,6 +469,7 @@ write_csv(
   x = cleaned_elections_data,
   file = "cleaned_elections_data.csv"
 )
+
 ```
 
 ```{r}
@@ -447,11 +480,12 @@ write_csv(
   cleaned_elections_data,
   here::here("outputs/data/cleaned_elections_data.csv")
 )
+
 ```
 
 ### 탐색
 
-우리가 만든 데이터셋을 탐색하고 싶을 수 있습니다. 데이터셋을 더 잘 이해하는 한 가지 방법은 그래프를 만드는 것입니다. 특히, 여기서는 @fig-australiaexample-graph에서 계획한 그래프를 만들고 싶습니다.
+우리가 만든 데이터셋을 탐색하고 싶을 수 있습니다. 데이터셋을 더 잘 이해하는 한 가지 방법은 그래프를 만드는 것입니다. 특히, 여기서는 @fig-australiaexample-graph 계획한 그래프를 만들고 싶습니다.
 
 먼저, 방금 만든 데이터셋을 읽어들입니다.
 
@@ -464,6 +498,7 @@ cleaned_elections_data <-
     "outputs/data/cleaned_elections_data.csv",
     show_col_types = FALSE
   )
+
 ```
 
 ```{r}
@@ -476,6 +511,7 @@ cleaned_elections_data <-
     file = "cleaned_elections_data.csv",
     show_col_types = FALSE
   )
+
 ```
 
 `dplyr`의 `count()`를 사용하여 각 정당이 얻은 의석 수를 빠르게 셀 수 있습니다.
@@ -487,6 +523,7 @@ cleaned_elections_data <-
 
 cleaned_elections_data |>
   count(elected_party)
+
 ```
 
 관심 있는 그래프를 만들기 위해 `tidyverse`의 일부인 `ggplot2`를 사용합니다. 이 패키지의 핵심은 "+"를 사용하여 레이어를 추가하여 그래프를 만든다는 것입니다. 이를 "더하기 연산자"라고 부릅니다. 특히 `ggplot2`의 `geom_bar()`를 사용하여 막대 차트를 만들 것입니다 (@fig-canadanice-1).
@@ -509,9 +546,10 @@ cleaned_elections_data |>
   geom_bar() +
   theme_minimal() + # 테마를 더 깔끔하게 만듭니다.
   labs(x = "정당", y = "의석 수") # 레이블을 더 의미 있게 만듭니다.
+
 ```
 
-@fig-canadanice-1은 우리가 목표로 한 것을 달성합니다. 그러나 기본 옵션을 수정하고 레이블을 개선하여 더 보기 좋게 만들 수 있습니다 (@fig-canadanice-2).
+@fig-canadanice-1 우리가 목표로 한 것을 달성합니다. 그러나 기본 옵션을 수정하고 레이블을 개선하여 더 보기 좋게 만들 수 있습니다 (@fig-canadanice-2).
 
 ### 공유
 
@@ -533,7 +571,7 @@ cleaned_elections_data |>
 
 ### 계획
 
-관심 있는 데이터셋은 날짜, 쉼터, 그리고 그날 밤 점유된 침대 수를 포함해야 합니다. 작동할 데이터셋의 빠른 스케치는 @fig-torontohomeless-data입니다. 우리는 매월 평균 일일 점유 침대 수를 포함하는 표를 만드는 데 관심이 있습니다. 표는 @fig-torontohomeless-table과 비슷하게 보일 것입니다.
+관심 있는 데이터셋은 날짜, 쉼터, 그리고 그날 밤 점유된 침대 수를 포함해야 합니다. 작동할 데이터셋의 빠른 스케치는 @fig-torontohomeless-data. 우리는 매월 평균 일일 점유 침대 수를 포함하는 표를 만드는 데 관심이 있습니다. 표는 @fig-torontohomeless-table 비슷하게 보일 것입니다.
 
 :::{#fig-torontohomeless layout-ncol="2"}
 
@@ -542,6 +580,7 @@ cleaned_elections_data |>
 ![매월 평균 점유 침대 수 테이블의 빠른 스케치](figures/02-homeless_sketch.png){#fig-torontohomeless-table width="50%"}
 
 토론토 쉼터 사용량 관련 데이터셋 및 테이블 스케치
+
 :::
 
 ### 시뮬레이션
@@ -570,6 +609,7 @@ library(janitor)
 library(lubridate)
 library(opendatatoronto)
 library(tidyverse)
+
 ```
 
 ```{r}
@@ -583,27 +623,34 @@ library(janitor)
 library(lubridate)
 library(opendatatoronto)
 library(tidyverse)
+
 ```
 
 이전 예제에 세부 정보를 추가하자면, 패키지에는 다른 사람들이 작성한 코드가 포함되어 있습니다. 이 책에서 정기적으로 보게 될 몇 가지 일반적인 패키지가 있습니다. 특히 `tidyverse`. 패키지를 사용하려면 먼저 설치해야 하고, 그런 다음 로드해야 합니다. 패키지는 컴퓨터당 한 번만 설치하면 되지만, 사용할 때마다 로드해야 합니다. 이는 이전에 설치한 패키지를 여기에서 다시 설치할 필요가 없음을 의미합니다.
 
 :::{.callout-note}
+
 ## 거인의 어깨
 
 로버트 젠틀맨 박사\index{Gentleman, Robert}는 R의 공동 창시자입니다. 1988년 워싱턴 대학교에서 통계학 박사 학위를 취득한 후 오클랜드 대학교로 옮겼습니다.\index{statistics} 그 후 23andMe를 포함한 다양한 역할을 수행했으며, 현재 하버드 의과대학 계산 생의학 센터의 전무이사입니다.
+
 :::
 
 :::{.callout-note}
+
 ## 거인의 어깨
 
 로스 이아카 박사\index{Ihaka, Ross}는 R의 공동 창시자입니다. 그는 1985년 캘리포니아 대학교 버클리에서 통계학 박사 학위를 취득했습니다. 그는 마오리족 지진의 신인 "Ruaumoko"라는 제목의 논문을 작성했습니다.\index{statistics}\index{Berkeley} 그 후 오클랜드 대학교로 옮겨 평생 그곳에 머물렀습니다. 그는 2008년 뉴질랜드 왕립 학회 테 아파랑기에서 피커링 메달을 수상했습니다.
+
 :::
 
 사람들이 R과 우리가 사용하는 패키지를 만들기 위해 시간을 기부한다는 점을 고려할 때, 그들을 인용하는 것이 중요합니다. 필요한 정보를 얻기 위해 `citation()`을 사용합니다.\index{citation!R} 인수를 사용하지 않고 실행하면 R 자체에 대한 인용 정보를 제공하고, 패키지 이름인 인수를 사용하여 실행하면 해당 패키지에 대한 인용 정보를 제공합니다.\index{packages!cite}\index{citation!R packages}
 
 ```{r}
+
 citation() # R에 대한 인용 정보 얻기
 citation("ggplot2") # 패키지에 대한 인용 정보 얻기
+
 ```
 
 시뮬레이션으로 돌아가서, 우리는 "date", "shelter", "occupancy" 세 가지 변수가 필요합니다.\index{simulation} 이 예제는 `set.seed()`를 사용하여 시드를 추가하여 이전 예제를 기반으로 구축됩니다.\index{random seed} 시드는 동일한 코드를 실행할 때마다 항상 동일한 무작위 데이터를 생성할 수 있도록 합니다. 어떤 정수든 시드로 사용할 수 있습니다. 이 경우 시드는 853입니다. 이 시드를 사용하면 이 예제와 동일한 무작위 숫자를 얻을 수 있습니다. 다른 시드를 사용하면 다른 무작위 숫자를 예상해야 합니다. 마지막으로, `rep()`를 사용하여 특정 횟수만큼 무언가를 반복합니다. 예를 들어, "Shelter 1"을 365번 반복합니다. 이는 약 1년치에 해당합니다.\index{distribution!Poisson}
@@ -634,15 +681,17 @@ simulated_occupancy_data <-
   )
 
 head(simulated_occupancy_data)
+
 ```
 
-이 시뮬레이션에서 우리는 먼저 2021년의 모든 날짜 목록을 만듭니다. 그 목록을 세 번 반복합니다. 우리는 1년 내내 매일 세 개의 쉼터에 대한 데이터를 가정합니다. 매일 밤 점유된 침대 수를 시뮬레이션하기 위해, 우리는 포아송 분포\index{distribution!Poisson}에서 추출하며, 평균 30개의 침대가 쉼터당 점유된다고 가정합니다. 이는 임의의 선택입니다. 배경 설명을 하자면, 포아송 분포는 종종 카운트 데이터가 있을 때 사용되며, @sec-its-just-a-generalized-linear-model에서 다시 다룹니다.
+이 시뮬레이션에서 우리는 먼저 2021년의 모든 날짜 목록을 만듭니다. 그 목록을 세 번 반복합니다. 우리는 1년 내내 매일 세 개의 쉼터에 대한 데이터를 가정합니다. 매일 밤 점유된 침대 수를 시뮬레이션하기 위해, 우리는 포아송 분포\index{distribution!Poisson}에서 추출하며, 평균 30개의 침대가 쉼터당 점유된다고 가정합니다. 이는 임의의 선택입니다. 배경 설명을 하자면, 포아송 분포는 종종 카운트 데이터가 있을 때 사용되며, @sec-its-just-a-generalized-linear-model 다시 다룹니다.
 
 ### 획득
 
 토론토 시에서 제공하는 토론토 쉼터 사용량 데이터를 사용합니다. 쉼터 사용량은 매일 새벽 4시에 점유된 침대 수를 세어 측정합니다. 데이터에 액세스하려면 `opendatatoronto`를 사용한 다음 자체 사본을 저장합니다.
 
 :::{.content-visible when-format="pdf"}
+
 ```{r}
 #| eval: false
 #| echo: true
@@ -663,10 +712,12 @@ write_csv(
 )
 
 head(toronto_shelters)
+
 ```
 :::
 
 :::{.content-visible unless-format="pdf"}
+
 ```{r}
 #| eval: false
 #| echo: true
@@ -688,6 +739,7 @@ write_csv(
 )
 
 head(toronto_shelters)
+
 ```
 :::
 
@@ -700,6 +752,7 @@ write_csv(
   x = toronto_shelters,
   file = here::here("inputs/data/toronto_shelters.csv")
 )
+
 ```
 
 ```{r}
@@ -712,27 +765,32 @@ toronto_shelters <-
     here::here("inputs/data/toronto_shelters.csv"),
     show_col_types = FALSE
   )
+
 ```
 
 :::{.content-visible unless-format="pdf"}
+
 ```{r}
 #| eval: true
 #| echo: true
 #| warning: false
 
 head(toronto_shelters)
+
 ```
 :::
 
 이것을 우리가 관심 있었던 데이터셋(@fig-torontohomeless-data)과 유사하게 만들기 위해 많은 작업이 필요하지 않습니다. `clean_names()`를 사용하여 이름을 더 쉽게 입력할 수 있도록 변경하고, `select()`를 사용하여 관련 열만 남겨야 합니다.
 
 ```{r}
+
 toronto_shelters_clean <-
   clean_names(toronto_shelters) |>
   mutate(occupancy_date = ymd(occupancy_date)) |>
   select(occupancy_date, occupied_beds)
 
 head(toronto_shelters_clean)
+
 ```
 
 남은 것은 정리된 데이터셋을 저장하는 것입니다.
@@ -746,6 +804,7 @@ write_csv(
   x = toronto_shelters_clean,
   file = "cleaned_toronto_shelters.csv"
 )
+
 ```
 
 ```{r}
@@ -757,6 +816,7 @@ write_csv(
   x = toronto_shelters_clean,
   file = here::here("outputs/data/cleaned_toronto_shelters.csv")
 )
+
 ```
 
 ### 탐색
@@ -772,6 +832,7 @@ toronto_shelters_clean <-
     "outputs/data/cleaned_toronto_shelters.csv",
     show_col_types = FALSE
   )
+
 ```
 
 ```{r}
@@ -784,6 +845,7 @@ toronto_shelters_clean <-
     "cleaned_toronto_shelters.csv",
     show_col_types = FALSE
   )
+
 ```
 
 데이터셋에는 각 쉼터에 대한 일일 기록이 포함되어 있습니다. 우리는 각 월의 평균 사용량을 이해하는 데 관심이 있습니다. 이를 위해 `lubridate`의 `month()`를 사용하여 월 열을 추가해야 합니다. 기본적으로 `month()`는 월의 숫자를 제공하므로, 월의 전체 이름을 얻기 위해 "label"과 "abbr" 두 가지 인수를 포함합니다. `tidyverse`의 일부인 `tidyr`의 `drop_na()`를 사용하여 침대 수에 대한 데이터가 없는 행을 제거합니다. 우리는 시작하는 데 중점을 두기 때문에 여기서는 생각 없이 이 작업을 수행할 것이지만, 이는 중요한 결정이며 [@sec-farm-data]와 [@sec-exploratory-data-analysis]에서 누락된 데이터에 대해 더 자세히 이야기합니다. 그런 다음 `dplyr`의 `summarise()`를 사용하여 월별 그룹을 기반으로 요약 통계를 생성합니다. `tinytable`의 `tt()`를 사용하여 [@tbl-homelessoccupancyd]를 생성합니다.
@@ -803,6 +865,7 @@ toronto_shelters_clean |>
   summarise(number_occupied = mean(occupied_beds),
             .by = occupancy_month) |>
   tt()
+
 ```
 
 이전과 마찬가지로, 이것은 괜찮아 보이며 우리가 목표로 한 것을 달성합니다. 그러나 기본값을 약간 조정하여 더 보기 좋게 만들 수 있습니다 ([@tbl-homelessoccupancy]). 특히 열 이름을 더 읽기 쉽게 만들고, 적절한 소수점 이하 자릿수만 표시하고, 정렬을 변경합니다 (`j`는 관심 있는 열 번호를 지정하는 데 사용되고 `r`은 정렬 유형, 즉 오른쪽 정렬입니다).
@@ -826,6 +889,7 @@ toronto_shelters_clean |>
   ) |>
   style_tt(j = 2, align = "r") |>
   setNames(c("월", "일일 평균 점유 침대 수"))
+
 ```
 
 ### 공유
@@ -853,11 +917,13 @@ toronto_shelters_clean |>
 데이터셋에는 국가와 연도를 지정하는 변수가 있어야 합니다. 또한 해당 국가의 해당 연도에 대한 NMR 추정치가 포함된 변수도 있어야 합니다. 대략적으로 @fig-nmrexample-data 와 같아야 합니다.
 
 :::{#fig-nmrexample layout-ncol="2"}
+
 ![잠재적으로 유용한 NMR 데이터셋의 빠른 스케치](figures/02-nmr_dataset_sketch.png){#fig-nmrexample-data}
 
 ![시간 경과에 따른 국가별 NMR 그래프의 빠른 스케치](figures/02-NMRgraph.png){#fig-nmrexample-graph}
 
 신생아 사망률(NMR)에 대한 데이터셋 및 그래프 스케치
+
 :::
 
 우리는 x축에 연도, y축에 추정 NMR이 있는 그래프를 만들고 싶습니다. 각 국가는 자체 시리즈를 가져야 합니다. 우리가 찾고 있는 것의 빠른 스케치는 @fig-nmrexample-graph 입니다.
@@ -883,6 +949,7 @@ Posit Cloud\index{Posit Cloud} 내에서 새 Quarto 문서\index{Quarto}를 만�
 library(janitor)
 library(lubridate)
 library(tidyverse)
+
 ```
 
 ```{r}
@@ -894,13 +961,16 @@ library(tidyverse)
 library(janitor)
 library(lubridate)
 library(tidyverse)
+
 ```
 
 패키지에 포함된 코드는 저자가 업데이트하고 새 버전을 출시함에 따라 때때로 변경될 수 있습니다. `packageVersion()`을 사용하여 사용 중인 패키지 버전을 확인할 수 있습니다. 예를 들어, `tidyverse` 버전 2.0.0과 `janitor` 버전 2.2.0을 사용하고 있습니다.
 
 ```{r}
+
 packageVersion("tidyverse")
 packageVersion("janitor")
+
 ```
 
 설치된 모든 패키지의 버전을 업데이트하려면 `update.packages()`를 사용합니다.\index{packages!update} `tidyverse_update()`를 사용하여 `tidyverse` 패키지만 설치할 수 있습니다. 이것은 매일 실행할 필요는 없지만, 때때로 패키지를 업데이트하는 것이 좋습니다. 많은 패키지가 하위 호환성을 보장하기 위해 노력하지만, 어느 시점부터는 불가능해집니다. 패키지를 업데이트하면 이전 코드를 다시 작성해야 할 수 있습니다. 시작할 때는 큰 문제가 아니며, 어쨌든 @sec-reproducible-workflows 에서 다루는 특정 버전을 로드하는 도구가 있습니다.
@@ -928,6 +998,7 @@ simulated_nmr_data <-
   )
 
 head(simulated_nmr_data)
+
 ```
 
 이 시뮬레이션은 작동하지만, 50년 대신 60년을 시뮬레이션하는 데 관심이 있다면 시간이 많이 걸리고 오류가 발생하기 쉽습니다. 이 코드를 개선하는 한 가지 방법은 50의 모든 인스턴스를 변수로 대체하는 것입니다.\index{simulation}\index{distribution!uniform}
@@ -955,6 +1026,7 @@ simulated_nmr_data <-
   )
 
 head(simulated_nmr_data)
+
 ```
 
 결과는 동일하지만, 이제 50년에서 60년으로 변경하려면 한 곳에서만 변경하면 됩니다.
@@ -984,6 +1056,7 @@ simulated_nmr_data$year |> max() == 2020
 simulated_nmr_data$nmr |> min() >= 0
 simulated_nmr_data$nmr |> max() <= 1000
 simulated_nmr_data$nmr |> class() == "numeric"
+
 ```
 
 이러한 테스트를 통과했으므로 시뮬레이션된 데이터셋을 신뢰할 수 있습니다.\index{confidence!establishing} 더 중요한 것은 이러한 테스트를 실제 데이터셋에 적용할 수 있다는 것입니다. 이를 통해 해당 데이터셋에 대한 신뢰를 높이고 그 신뢰를 다른 사람들과 공유할 수 있습니다.
@@ -1006,8 +1079,8 @@ raw_igme_data <-
   )
 
 write_csv(x = raw_igme_data, file = "igme.csv")
-```
 
+```
 
 ```{r}
 #| eval: false
@@ -1027,9 +1100,8 @@ arrow::write_parquet(
   x = raw_igme_data,
   sink = "inputs/data/igme.parquet"
 )
+
 ```
-
-
 
 ```{r}
 #| eval: true
@@ -1040,22 +1112,27 @@ raw_igme_data =
   arrow::read_parquet(
     file = "inputs/data/igme.parquet"
 )
+
 ```
 
 이와 같이 확립된 데이터의 경우, 데이터에 대한 지원 자료를 읽는 것이 유용할 수 있습니다. 이 경우 코드북\index{data!codebook}은 [여기](https://childmortality.org/wp-content/uploads/2021/03/CME-Info_codebook_for_downloads.xlsx)에서 사용할 수 있습니다. 이 후에는 데이터셋을 더 잘 이해하기 위해 빠르게 살펴볼 수 있습니다. `head()`로 데이터셋이 어떻게 생겼는지, `tail()`로 마지막 여섯 행을, `names()`로 열 이름을 확인할 수 있습니다.
 
 :::{.content-visible unless-format="pdf"}
+
 ```{r}
 #| eval: true
 #| echo: true
 #| warning: false
 
 head(raw_igme_data)
+
 ```
 :::
 
 ```{r}
+
 names(raw_igme_data)
+
 ```
 
 이름을 정리하고 관심 있는 행과 열만 유지하고 싶습니다. 계획에 따라 "Sex"가 "Total", "Series Name"이 "UN IGME estimate", "Geographic area"가 "Argentina", "Australia", "Canada", "Kenya" 중 하나, "Indicator"가 "Neonatal mortality rate"인 행에 관심이 있습니다. 이 후에는 "geographic_area", "time_period", "obs_value" 몇 개의 열에만 관심이 있습니다.
@@ -1075,11 +1152,13 @@ cleaned_igme_data <-
   select(geographic_area, time_period, obs_value)
 
 head(cleaned_igme_data)
+
 ```
 
 두 가지 다른 측면을 수정해야 합니다: "time_period"의 클래스는 문자이지만 연도여야 하고, "obs_value"의 이름은 더 유익하도록 "nmr"로 변경해야 합니다.
 
 ```{r}
+
 cleaned_igme_data <-
   cleaned_igme_data |>
   mutate(
@@ -1090,11 +1169,13 @@ cleaned_igme_data <-
   rename(nmr = obs_value, year = time_period, country = geographic_area)
 
 head(cleaned_igme_data)
+
 ```
 
 마지막으로, 시뮬레이션된 데이터셋을 기반으로 개발한 테스트를 데이터셋이 통과하는지 확인할 수 있습니다.
 
 ```{r}
+
 cleaned_igme_data$country |>
   unique() == c("Argentina", "Australia", "Canada", "Kenya")
 
@@ -1107,6 +1188,7 @@ cleaned_igme_data$year |> max() == 2020
 cleaned_igme_data$nmr |> min() >= 0
 cleaned_igme_data$nmr |> max() <= 1000
 cleaned_igme_data$nmr |> class() == "numeric"
+
 ```
 
 남은 것은 깔끔하게 정리된 데이터셋을 저장하는 것입니다.
@@ -1117,6 +1199,7 @@ cleaned_igme_data$nmr |> class() == "numeric"
 #| warning: false
 
 write_csv(x = cleaned_igme_data, file = "cleaned_igme_data.csv")
+
 ```
 
 ```{r}
@@ -1128,6 +1211,7 @@ write_csv(
   x = cleaned_igme_data,
   file = here::here("outputs/data/cleaned_igme_data.csv")
 )
+
 ```
 
 ### 탐색
@@ -1143,6 +1227,7 @@ cleaned_igme_data <-
     "outputs/data/cleaned_igme_data.csv",
     show_col_types = FALSE
   )
+
 ```
 
 ```{r}
@@ -1155,6 +1240,7 @@ cleaned_igme_data <-
     file = "cleaned_igme_data.csv",
     show_col_types = FALSE
   )
+
 ```
 
 이제 NMR이 시간 경과에 따라 어떻게 변했는지, 그리고 국가 간의 차이를 그래프로 만들 수 있습니다 (@fig-nmrgraph).
@@ -1173,6 +1259,7 @@ cleaned_igme_data |>
   labs(x = "연도", y = "신생아 사망률(NMR)", color = "국가") +
   scale_color_brewer(palette = "Set1") +
   theme(legend.position = "bottom")
+
 ```
 
 ### 공유
@@ -1197,7 +1284,6 @@ cleaned_igme_data |>
 >
 > Joe Redmon, 2020년 2월 20일
 
-
 "데이터 과학"이라는 용어는 학계, 산업계, 심지어 더 일반적으로도 널리 사용되지만, 우리가 보았듯이 정의하기 어렵습니다. 데이터 과학에 대한 의도적으로 적대적인 정의는 "인간성을 셀 수 있는 것으로 비인간적으로 축소하는 것"입니다 [@keyes2019]. 의도적으로 논란의 여지가 있지만, 이 정의는 지난 10년 동안 데이터 과학 및 양적 방법론에 대한 수요가 증가한 한 가지 이유를 강조합니다. 즉, 개인과 그들의 행동이 이제 그 중심에 있다는 것입니다. 많은 기술은 수십 년 동안 존재했지만, 지금 인기를 끄는 것은 이러한 인간 중심적인 접근 방식입니다.
 
 불행히도, 많은 작업이 개인에게 초점을 맞추고 있음에도 불구하고, 개인 정보 보호 및 동의 문제, 그리고 더 넓은 윤리적 문제는 거의 최우선으로 고려되지 않는 것 같습니다. 일부 예외는 있지만, 일반적으로 AI, 머신러닝, 데이터 과학이 사회를 혁신할 것이라고 주장하면서도, 이러한 유형의 문제는 혁명을 받아들이기 전에 생각해야 할 것이 아니라, 있으면 좋은 것으로 취급되는 경향이 있습니다.
@@ -1213,7 +1299,6 @@ cleaned_igme_data |>
 데이터 과학의 윤리적 고려와 더 넓은 영향에 대한 우려의 목적은 어떤 것을 규범적으로 허용하거나 금지하는 것이 아니라, 가장 중요하게 다루어져야 할 몇 가지 문제를 제기할 기회를 제공하는 것입니다. 데이터 과학 응용의 다양성, 분야의 상대적인 젊음, 그리고 변화의 속도는 그러한 고려 사항이 때때로 의도적으로 제쳐두어지며, 이는 해당 분야의 나머지 부분에서 허용된다는 것을 의미합니다. 이는 과학, 의학, 공학, 회계와 같은 분야와 대조됩니다. 아마도 이러한 분야는 더 자각적일 것입니다 (@fig-personalprobability).
 
 ![랜달 먼로의 "확률"에서 보여주듯이 숫자는 맥락에서 벗어날 수 없습니다: https://xkcd.com/881/.](figures/probability.png){#fig-personalprobability width=90% fig-align="center"}
-
 
 ## 연습 문제
 
@@ -1335,8 +1420,8 @@ cleaned_igme_data |>
   * 필요한 열은 당선된 후보에 대한 것입니다. 이 열에는 당선된 후보의 성, 쉼표, 이름, 공백, 그리고 슬래시로 구분된 영어와 프랑스어 정당 이름이 포함되어 있습니다. `tidyr`의 `separate()`를 사용하여 이 열을 조각으로 분리한 다음, `select()`를 사용하여 정당 정보만 유지합니다 (아래에 일부 도우미 코드가 있습니다).
   * 마지막으로, 시뮬레이션한 내용과 일치하도록 정당 이름을 프랑스어에서 영어로 다시 코딩합니다.
 
-  ```{r}
-  #| eval: false
+```{r}
+#| eval: false
   #| echo: true
 
   cleaned_elections_data <-
@@ -1347,7 +1432,8 @@ cleaned_igme_data |>
       sep = "/"
     ) |>
     select(-Other)
-  ```
+
+```
 
 4. 탐색:
   * 2021년 캐나다 연방 선거에서 각 정당이 얻은 선거구 수를 멋진 그래프로 만듭니다.

@@ -6,9 +6,7 @@ engine: knitr
 
 **Prerequisites**
 
-
 **Key concepts and skills**
-
 
 **Software and packages**
 
@@ -32,6 +30,7 @@ We could use `Python` within RStudio, but another option is to use what is used 
 Open VS Code (@fig-vscodesetup-a), and open a new Terminal: Terminal -> New Terminal (@fig-vscodesetup-b). We can then install `uv`, which is a Python package manager, by putting `curl -LsSf https://astral.sh/uv/install.sh | sh`  into the Terminal and pressing "return/enter" afterwards (@fig-vscodesetup-c). Finally, to install Python we can use `uv` by putting `uv python install` into that Terminal and pressing "return/enter" afterwards (@fig-vscodesetup-d).
 
 :::{#fig-vscodesetup layout-ncol="2"}
+
 ![Opening VS Code](figures/B-VS_Code-1.png){#fig-vscodesetup-a width="50%"}
 
 ![Opening a Terminal in VS Code](figures/B-VS_Code-2.png){#fig-vscodesetup-b width="50%"}
@@ -41,6 +40,7 @@ Open VS Code (@fig-vscodesetup-a), and open a new Terminal: Terminal -> New Term
 ![Install Python](figures/B-VS_Code-4.png){#fig-vscodesetup-d width="50%"}
 
 Opening VS Code and a new terminal and then installing uv and Python
+
 :::
 
 ## Getting started
@@ -54,34 +54,41 @@ Open VS Code and open a new Terminal: "Terminal" -> "New Terminal". Then use Uni
 Once you are happy with where you are going to create this new folder, we can use `uv init` in the Terminal to do this, pressing "return/enter" afterwards (`cd` then moves to the new folder "shelter_usage").
 
 ```{bash}
+
 #| eval: false
 #| echo: true
 
 uv init shelter_usage
 cd shelter_usage
+
 ```
 
 By default, there will be a script in the example folder. We want to use `uv run` to run that script, which will then create an project environment for us.
 
 ```{bash}
+
 #| eval: false
 #| echo: true
 
 uv run hello.py
+
 ```
 
 A project environment is specific to that project. We will use the package `numpy` to simulate data. We need to add this package to our environment with `uv add`.
 
 ```{bash}
+
 #| eval: false
 #| echo: true
 
 uv add numpy
+
 ```
 
 We can then modify `hello.py` to use `numpy` to simulate from the Normal distribution.
 
 ```{python}
+
 #| eval: false
 #| echo: true
 #| warning: false
@@ -106,6 +113,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 ```
 
 After we have modified and saved `hello.py` we can run it with `uv run` in exactly the same way as before.
@@ -117,11 +125,13 @@ At this point we should close VS Code. We want to re-open it to make sure that o
 We first used this dataset in @sec-fire-hose, but as a reminder, for each day, for each shelter, there is a number of people that used the shelter. So the dataset that we want to simulate is something like @fig-python_torontohomeless-data and we are wanting to create a table of average daily number of occupied beds each month, along the lines of @fig-python_torontohomeless-table.
 
 :::{#fig-python_torontohomeless layout-ncol="2"}
+
 ![Quick sketch of a dataset](figures/B-raw_data.jpeg){#fig-python_torontohomeless-data width="50%"}
 
 ![Quick sketch of a table of the average number of beds occupied each month](figures/B-by_month.jpeg){#fig-python_torontohomeless-table width="50%"}
 
 Sketches of a dataset and table related shelter usage in Toronto
+
 :::
 
 ### Simulate
@@ -129,15 +139,18 @@ Sketches of a dataset and table related shelter usage in Toronto
 We would like to more thoroughly simulate the dataset that we are interested in. We will use `polars` to provide a dataframe to store our simulated results, so we should add this to our environment with `uv add`.
 
 ```{bash}
+
 #| eval: false
 #| echo: true
 
 uv add polars
+
 ```
 
 Create a new Python file called `00-simulate_data.py`.
 
 ```{python}
+
 #| eval: false
 #| echo: true
 #| warning: false
@@ -154,14 +167,12 @@ Create a new Python file called `00-simulate_data.py`.
 # - Add `numpy`: uv add numpy
 # - Add `datetime`: uv add datetime
 
-
 #### Workspace setup ####
 import polars as pl
 import numpy as np
 from datetime import date
 
 rng = np.random.default_rng(seed=853)
-
 
 #### Simulate data ####
 # Simulate 10 shelters and some set capacity
@@ -190,21 +201,24 @@ usage = np.minimum(poisson_draw, data["Capacity"])
 data = data.with_columns([pl.Series("Usage", usage)])
 
 data.write_parquet("simulated_data.parquet")
-```
 
+```
 
 We would like to write tests based on this simulated data that we will then apply to our real data. We use `pydantic` to do this and so we should add this to our environment with `uv add`.
 
 ```{bash}
+
 #| eval: false
 #| echo: true
 
 uv add pydantic
+
 ```
 
 Create a new Python file called `00-test_simulated_data.py`. The first step is to define a subclass ``ShelterData` of `BaseModel` which comes from `pydantic`.
 
 ```{python}
+
 #| eval: false
 #| echo: true
 #| warning: false
@@ -227,6 +241,7 @@ class ShelterData(BaseModel):
         if capacity is not None and usage > capacity:
             raise ValueError(f"Usage ({usage}) exceeds capacity ({capacity}).")
         return usage
+
 ```
 
 We are interested in testing that dates are valid, shelters have the correct type, and that capacity and usage are both non-negative integers. One additional wrinkle is that usage should not exceed capacity. To write a test for that we use a `field_validator`.
@@ -234,6 +249,7 @@ We are interested in testing that dates are valid, shelters have the correct typ
 We can then import our simulated dataset and test it.
 
 ```{python}
+
 #| eval: false
 #| echo: true
 #| warning: false
@@ -269,11 +285,13 @@ if errors:
     print("\nErrors:")
     for i, error in errors:
         print(f"Row {i}: {error}")
+
 ```
 
 To see what would have happened if there were an error we can consider a smaller dataset that contains two errors: one poorly formatted date and one situation where usage is above capacity.
 
 ```{python}
+
 #| eval: false
 #| echo: true
 #| warning: false
@@ -336,6 +354,7 @@ if errors:
 We get the following message:
 
 ```
+
 Errors:
 Row 1: 1 validation error for ShelterData
 Dates
@@ -345,15 +364,15 @@ Row 3: 1 validation error for ShelterData
 Usage
   Value error, Usage (55) cannot exceed Capacity (50). [type=value_error, input_value=55, input_type=int]
     For further information visit https://errors.pydantic.dev/2.9/v/value_error
-```
 
+```
 
 ### Acquire
 
 Using the same source as before: https://open.toronto.ca/dataset/daily-shelter-overnight-service-occupancy-capacity/
 
-
 ```{python}
+
 #| eval: false
 #| echo: true
 #| warning: false
@@ -369,12 +388,13 @@ df = pl.read_csv(url)
 
 # Save the raw data
 df.write_parquet("shelter_usage.parquet")
-```
 
+```
 
 We are likely only interested in a few columns and only rows where there are data.
 
 ```{python}
+
 #| eval: false
 #| echo: true
 #| warning: false
@@ -403,11 +423,13 @@ renamed_df = filtered_df.rename({"OCCUPANCY_DATE": "date",
 print(renamed_df.head())
 
 renamed_df.write_parquet("cleaned_shelter_usage.parquet")
+
 ```
 
 We may then want to apply the tests to the real dataset
 
 ```{python}
+
 #| eval: false
 #| echo: true
 #| warning: false
@@ -460,6 +482,7 @@ if errors:
     print("\nErrors:")
     for i, error in errors:
         print(f"Row {i}: {error}")
+
 ```
 
 ### Explore
@@ -467,6 +490,7 @@ if errors:
 Manipulate the data
 
 ```{python}
+
 #| eval: false
 #| echo: true
 #| warning: false
@@ -491,12 +515,13 @@ aggregated_df = (
 
 # Display the aggregated DataFrame
 print(aggregated_df)
-```
 
+```
 
 Make a graph
 
 ```{python}
+
 #| eval: false
 #| echo: true
 #| warning: false
@@ -559,8 +584,8 @@ plt.tight_layout()
 
 # Display the plot
 plt.show()
-```
 
+```
 
 ### Share
 
@@ -580,7 +605,6 @@ matplotlib
 
 seaborn
 
-
 ## Exploring polars
 
 ### Importing data
@@ -591,15 +615,11 @@ seaborn
 
 ### Factor variables
 
-
-
 ## Exercises
 
 ### Practice {.unnumbered}
 
-
 ### Quiz {.unnumbered}
-
 
 ### Task {.unnumbered}
 

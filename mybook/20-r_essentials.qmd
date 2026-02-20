@@ -35,7 +35,6 @@ engine: knitr
   - `lubridate` [@GrolemundWickham2011]
 - `janitor` [@janitor]
 
-
 ## Introduction
 
 In this chapter we focus on foundational skills needed to use the statistical programming language `R` [@citeR] to tell stories with data. Some of it may not make sense at first, but these are skills and approaches that we will often use. You should initially go through this chapter quickly, noting aspects that you do not understand. Then come back to this chapter from time to time as you continue through the rest of the book. That way you will see how the various bits fit into context.
@@ -52,7 +51,6 @@ Central to our use of the statistical programming language `R` is data, and most
 >
 > @kieranskitchen
 
-
 ## R, RStudio, and Posit Cloud
 
 `R` and RStudio are complementary, but they are not the same thing. @vistransrep explain their relationship by analogy, where `R` is like an engine and RStudio is like a car---we can use engines in a lot of different situations, and they are not limited to being used in cars, but the combination is especially useful.
@@ -66,9 +64,11 @@ Many people build on this stable base, to extend the capabilities of `R` to bett
 If you want to use a package, then you first need to install it on your computer, and then you need to load it when you want to use it. Dr Di Cook, Professor of Business Analytics at Monash University, describes this as analogous to a lightbulb. If you want light in your house, first you need to fit a lightbulb, and then you need to turn the switch on. Installing a package, say, `install.packages("tidyverse")`, is akin to fitting a lightbulb into a socket---you only need to do this once for each lightbulb. But then each time you want light you need to turn on the switch to the lightbulb, which in the `R` packages case, means drawing on your library, say, `library(tidyverse)`. 
 
 :::{.callout-note}
+
 ## Shoulders of giants
 
 Dr Di Cook is Distinguished Professor of Statistics at Monash University. After earning a PhD in statistics from Rutgers University in 1993 where she focused on statistical graphics, she was appointed as an assistant professor at Iowa State University, being promoted to full professor in 2005, and in 2015 she moved to Monash. One area of her research is data visualization, especially interactive and dynamic graphics. @buja1996interactive which proposes a taxonomy of interactive data visualization and associated software XGobi, which is the focus of @ggobibook. @Cook1995 develops and explores the use of a dynamic graphical tool for exploratory data analysis and @Buja2009 develops a framework for evaluating visual statistical methods, where plots and human cognition stand in for test statistics and statistical tests, respectively. She is a Fellow of the American Statistical Association. 
+
 :::
 
 To install a package on your computer (again, we will need to do this only once per computer) we use `install.packages()`.
@@ -78,6 +78,7 @@ To install a package on your computer (again, we will need to do this only once 
 #| echo: true
 
 install.packages("tidyverse")
+
 ```
 
 And then when we want to use the package, we use `library()`.
@@ -87,6 +88,7 @@ And then when we want to use the package, we use `library()`.
 #| echo: true
 
 library(tidyverse)
+
 ```
 
 Having downloaded it, we can open `R` and use it directly. It is primarily designed to be interacted with through the command line. While this is functional, it can be useful to have a richer environment than the command line provides. In particular, it can be useful to install an Integrated Development Environment (IDE), which is an application that brings together various bits and pieces that will be used often. One common IDE for `R` is RStudio, although others such as Visual Studio are also used.
@@ -101,7 +103,6 @@ When we open RStudio it will look like @fig-first.
 
 ![Opening RStudio for the first time](figures/01.png){#fig-first width=90% fig-align="center"}
 
-
 The left pane is a console in which you can type and execute `R` code line by line. Try it with 2+2 by clicking next to the prompt ">", typing "2+2", and then pressing "return/enter".
 
 ```{r}
@@ -109,6 +110,7 @@ The left pane is a console in which you can type and execute `R` code line by li
 #| echo: true
 
 2 + 2
+
 ```
 
 The pane on the top right has information about the environment. For instance, when we create variables a list of their names and some properties will appear there. Next to the prompt type the following code, replacing Rohan with your name, and again press enter.
@@ -118,6 +120,7 @@ The pane on the top right has information about the environment. For instance, w
 #| echo: true
 
 my_name <- "Rohan"
+
 ```
 
 As mentioned in @sec-fire-hose the `<-`, or "assignment operator", allocates `"Rohan"` to an object called "my_name". You should notice a new value in the environment pane with the variable name and its value. 
@@ -131,6 +134,7 @@ Run the following code, without worrying too much about the details for now. You
 #| echo: true
 
 saveRDS(object = my_name, file = "my_first_file.rds")
+
 ```
 
 ### Posit Cloud
@@ -138,7 +142,6 @@ saveRDS(object = my_name, file = "my_first_file.rds")
 While you can and should download RStudio to your own computer, initially we recommend using [Posit Cloud](https://posit.cloud). This is an online version of RStudio that is provided by Posit. We will use this so that you can focus on getting comfortable with `R` and RStudio in an environment that is consistent. This way you do not have to worry about what computer you have or installation permissions, amongst other things.
 
 The free version of Posit Cloud is free, as in no financial cost. The trade-off is that it is not powerful, and it is sometimes slow, but for the purposes of getting started it is enough.
-
 
 ## Getting started
 
@@ -155,6 +158,7 @@ While working line-by-line in the console is fine, it is easier to write out a w
 # Install the packages that we need
 install.packages("tidyverse")
 install.packages("AustralianPoliticians")
+
 ```
 
 ```{r}
@@ -172,6 +176,7 @@ get_auspol("all") |> # Imports data from GitHub
   as_tibble() |>
   filter(wasPrimeMinister == 1) |>
   count(gender)
+
 ```
 
 We can see that, as at the end of 2021, one female has been prime minister (Julia Gillard), while the other 29 prime ministers were male.
@@ -186,6 +191,7 @@ The idea of the pipe is that we take a dataset, and then do something to it. We 
 
 get_auspol("all") |> # Imports data from GitHub
   head()
+
 ```
 
 We can save this `R` Script as "my_first_r_script.R" ("File" $\rightarrow$ "Save As"). At this point, our workspace should look something like @fig-third.
@@ -199,7 +205,6 @@ A few final notes on Posit Cloud:
 1. In the Australian politician's example, we got our data from the website GitHub using an `R` package, but we can get data into a workspace from a local computer in a variety of ways. One way is to use the "upload" button in the "Files" panel. Another is to use `readr` [@citereadr], which is part of the `tidyverse` [@tidyverse].
 2. Posit Cloud allows some degree of collaboration. For instance, you can give someone else access to a workspace that you create and even both be in the same workspace at the one time. This could be useful for collaboration.
 3. There are a variety of weaknesses of Posit Cloud, in particular the RAM limits. Additionally, like any web application, things break from time to time or go down.
-
 
 ## The `dplyr` verbs
 
@@ -218,7 +223,9 @@ We will also cover `.by`, and `count()` here as they are closely related.
 As we have already installed the `tidyverse`, we just need to load it.
 
 ```{r, warning: false, message: false, eval: true, echo: true}
+
 library(tidyverse)
+
 ```
 
 And we will begin by again using some data about Australian politicians from the `AustralianPoliticians` package [@citeaustralianpoliticians].
@@ -233,6 +240,7 @@ australian_politicians <-
   get_auspol("all")
 
 head(australian_politicians)
+
 ```
 
 ### `select()`
@@ -245,6 +253,7 @@ We use `select()` to pick particular columns of a dataset. For instance, we migh
 
 australian_politicians |>
   select(firstName)
+
 ```
 
 In R, there are many ways to do things. Sometimes these are different ways to do the same thing, and other times they are different ways to do *almost* the same thing. For instance, another way to pick a particular column of a dataset is to use the "extract" operator `$`. This is from base, as opposed to `select()` which is from the `tidyverse`.
@@ -255,6 +264,7 @@ In R, there are many ways to do things. Sometimes these are different ways to do
 
 australian_politicians$firstName |>
   head()
+
 ```
 
 The two appear similar---both pick the "firstName" column---but they differ in the class of what they return, with `select()` returning a tibble and `$` returning a vector. For the sake of completeness, if we combine `select()` with `pull()` then we get the same class of output, a vector, as if we had used the extract operator.
@@ -267,6 +277,7 @@ australian_politicians |>
   select(firstName) |>
   pull() |>
   head()
+
 ```
 
 We can also use `select()` to remove columns, by negating the column name.
@@ -277,6 +288,7 @@ We can also use `select()` to remove columns, by negating the column name.
 
 australian_politicians |>
   select(-firstName)
+
 ```
 
 Finally, we can `select()` based on conditions. For instance, we can `select()` all of the columns that start with, say, "birth".
@@ -287,6 +299,7 @@ Finally, we can `select()` based on conditions. For instance, we can `select()` 
 
 australian_politicians |>
   select(starts_with("birth"))
+
 ```
 
 There are a variety of similar "selection helpers" including `starts_with()`, `ends_with()`, and `contains()`. More information about these is available in the help page for `select()` which can be accessed by running `?select()`.
@@ -313,6 +326,7 @@ australian_politicians <-
   )
 
 australian_politicians
+
 ```
 
 One thing that sometimes confuses people who are new to R, is that the output is not "saved", unless you assign it to an object. For instance, here the first lines are `australian_politicians <- australian_politicians |>` and then `select()` is used, compared with `australian_politicians |>`. This ensures that the changes brought about by `select()` are applied to the object, and so it is that modified version that would be used at any point later in the code.
@@ -327,6 +341,7 @@ We use `filter()` to pick particular rows of a dataset. For instance, we might b
 
 australian_politicians |>
   filter(wasPrimeMinister == 1)
+
 ```
 
 We could also give `filter()` two conditions. For instance, we could look at politicians that become prime minister and were named Joseph, using the "and" operator `&`.
@@ -337,6 +352,7 @@ We could also give `filter()` two conditions. For instance, we could look at pol
 
 australian_politicians |>
   filter(wasPrimeMinister == 1 & firstName == "Joseph")
+
 ```
 
 We get the same result if we use a comma instead of an ampersand.
@@ -347,6 +363,7 @@ We get the same result if we use a comma instead of an ampersand.
 
 australian_politicians |>
   filter(wasPrimeMinister == 1, firstName == "Joseph")
+
 ```
 
 Similarly, we could look at politicians who were named, say, Myles or Ruth using the "or" operator `|`.
@@ -357,6 +374,7 @@ Similarly, we could look at politicians who were named, say, Myles or Ruth using
 
 australian_politicians |>
   filter(firstName == "Myles" | firstName == "Ruth")
+
 ```
 
 We could also pipe the result. For instance we could pipe from `filter()` to `select()`.
@@ -368,6 +386,7 @@ We could also pipe the result. For instance we could pipe from `filter()` to `se
 australian_politicians |>
   filter(firstName == "Ruth" | firstName == "Myles") |>
   select(firstName, surname)
+
 ```
 
 If we happen to know the particular row number that is of interest then we could `filter()` to only that particular row. For instance, say the row 853 was of interest.
@@ -378,6 +397,7 @@ If we happen to know the particular row number that is of interest then we could
 
 australian_politicians |>
   filter(row_number() == 853)
+
 ```
 
 There is also a dedicated function to do this, which is `slice()`.
@@ -388,6 +408,7 @@ There is also a dedicated function to do this, which is `slice()`.
 
 australian_politicians |>
   slice(853)
+
 ```
 
 While this may seem somewhat esoteric, it is especially useful if we would like to remove a particular row using negation, or duplicate specific rows. For instance, we could remove the first row.
@@ -398,6 +419,7 @@ While this may seem somewhat esoteric, it is especially useful if we would like 
 
 australian_politicians |>
   slice(-1)
+
 ```
 
 We could also only, say, only keep the first three rows.
@@ -408,6 +430,7 @@ We could also only, say, only keep the first three rows.
 
 australian_politicians |>
   slice(1:3)
+
 ```
 
 Finally, we could duplicate the first two rows and this takes advantage of `n()` which provides the current group size.
@@ -418,10 +441,8 @@ Finally, we could duplicate the first two rows and this takes advantage of `n()`
 
 australian_politicians |>
   slice(1:2, 1:n())
+
 ```
-
-
-
 
 ### `arrange()`
 
@@ -433,6 +454,7 @@ We use `arrange()` to change the order of the dataset based on the values of par
 
 australian_politicians |>
   arrange(birthYear)
+
 ```
 
 We could modify `arrange()` with `desc()` to change from ascending to descending order.
@@ -443,6 +465,7 @@ We could modify `arrange()` with `desc()` to change from ascending to descending
 
 australian_politicians |>
   arrange(desc(birthYear))
+
 ```
 
 This could also be achieved with the minus sign.
@@ -453,6 +476,7 @@ This could also be achieved with the minus sign.
 
 australian_politicians |>
   arrange(-birthYear)
+
 ```
 
 And we could arrange based on more than one column. For instance, if two politicians have the same first name, then we could also arrange based on their birthday.
@@ -463,6 +487,7 @@ And we could arrange based on more than one column. For instance, if two politic
 
 australian_politicians |>
   arrange(firstName, birthYear)
+
 ```
 
 We could achieve the same result by piping between two instances of `arrange()`.
@@ -474,6 +499,7 @@ We could achieve the same result by piping between two instances of `arrange()`.
 australian_politicians |>
   arrange(birthYear) |>
   arrange(firstName)
+
 ```
 
 When we use `arrange()` we should be clear about precedence. For instance, changing to birthday and then first name would give a different arrangement.
@@ -484,6 +510,7 @@ When we use `arrange()` we should be clear about precedence. For instance, chang
 
 australian_politicians |>
   arrange(birthYear, firstName)
+
 ```
 
 A nice way to arrange by a variety of columns is to use `across()`. It enables us to use the "selection helpers" such as `starts_with()` that were mentioned in association with `select()`.
@@ -497,8 +524,8 @@ australian_politicians |>
 
 australian_politicians |>
   arrange(across(starts_with("birth")))
-```
 
+```
 
 ### `mutate()`
 
@@ -514,6 +541,7 @@ australian_politicians <-
 
 australian_politicians |>
   select(member, senator, was_both)
+
 ```
 
 We could use `mutate()` with math, such as addition and subtraction. For instance, we could calculate the age that the politicians are (or would have been) in 2022.
@@ -532,6 +560,7 @@ australian_politicians <-
 
 australian_politicians |>
   select(uniqueID, age)
+
 ```
 
 There are a variety of functions that are especially useful when constructing new columns. These include `log()` which will compute the natural logarithm, `lead()` which will bring values up by one row, `lag()` which will push values down by one row, and `cumsum()` which creates a cumulative sum of the column.
@@ -556,6 +585,7 @@ australian_politicians |>
   select(uniqueID, age) |>
   drop_na(age) |>
   mutate(cumulative_age = cumsum(age))
+
 ```
 
 As we have in earlier examples, we can also use `mutate()` in combination with `across()`. This includes the potential use of the selection helpers. For instance, we could count the number of characters in both the first and last names at the same time.
@@ -567,12 +597,13 @@ As we have in earlier examples, we can also use `mutate()` in combination with `
 australian_politicians |>
   mutate(across(c(firstName, surname), str_count)) |>
   select(uniqueID, firstName, surname)
-```
 
+```
 
 Finally, we use `case_when()` when we need to make a new column on the basis of more than two conditional statements (in contrast to `if_else()` from our first `mutate()` example). For instance, we may have some years and want to group them into decades.
 
 ```{r}
+
 library(lubridate)
 
 australian_politicians |>
@@ -592,10 +623,10 @@ australian_politicians |>
       )
   ) |>
   select(uniqueID, year_of_birth, decade_of_birth)
+
 ```
 
 We could accomplish this with a series of nested `if_else()` statements, but `case_when()` is more clear. The cases are evaluated in order and as soon as there is a match `case_when()` does not continue to the remainder of the cases. It can be useful to have a catch-all at the end that will signal if there is a potential issue that we might like to know about if the code were to ever get there.
-
 
 ### `summarise()`
 
@@ -611,6 +642,7 @@ australian_politicians |>
     oldest = max(age, na.rm = TRUE),
     average = mean(age, na.rm = TRUE)
   )
+
 ```
 
 As an aside, `summarise()` and `summarize()` are equivalent and we can use either. In this book we use `summarise()`.
@@ -625,6 +657,7 @@ australian_politicians |>
     oldest = max(age, na.rm = TRUE),
     average = mean(age, na.rm = TRUE)
   )
+
 ```
 
 By default, `summarise()` will provide one row of output for a whole dataset. For instance, in the earlier example we found the youngest, oldest, and average across all politicians. However, we can create more groups in our dataset using `.by` within the function. We can use many functions on the basis of groups, but the `summarise()` function is particularly powerful in conjunction with `.by`. For instance, we could group by gender, and then get age-based summary statistics.
@@ -640,6 +673,7 @@ australian_politicians |>
     average = mean(age, na.rm = TRUE),
     .by = gender
   )
+
 ```
 
 Similarly, we could look at youngest, oldest, and mean age at death by gender.
@@ -657,6 +691,7 @@ australian_politicians |>
     max_days = max(days_lived),
     .by = gender
   )
+
 ```
 
 And so we learn that female members of parliament on average lived slightly longer than male members of parliament.
@@ -678,6 +713,7 @@ australian_politicians |>
     max_days = max(days_lived),
     .by = c(gender, member)
   )
+
 ```
 
 We can use `count()` to create counts by groups. For instance, the number of politicians by gender.
@@ -688,6 +724,7 @@ We can use `count()` to create counts by groups. For instance, the number of pol
 
 australian_politicians |>
   count(gender)
+
 ```
 
 In addition to the `count()`, we could calculate a proportion.
@@ -699,6 +736,7 @@ In addition to the `count()`, we could calculate a proportion.
 australian_politicians |>
   count(gender) |>
   mutate(proportion = n / (sum(n)))
+
 ```
 
 Using `count()` is essentially the same as using `.by` within `summarise()` with `n()`, and we get the same result in that way.
@@ -710,6 +748,7 @@ Using `count()` is essentially the same as using `.by` within `summarise()` with
 australian_politicians |>
   summarise(n = n(),
             .by = gender)
+
 ```
 
 And there is a comparably helpful function that acts similarly to`mutate()`, which is `add_count()`. The difference is that the number will be added in a new column.
@@ -721,10 +760,8 @@ And there is a comparably helpful function that acts similarly to`mutate()`, whi
 australian_politicians |>
   add_count(gender) |>
   select(uniqueID, gender, n)
+
 ```
-
-
-
 
 ## Base R
 
@@ -752,6 +789,7 @@ class(a_number)
 
 a_letter <- "a"
 class(a_letter)
+
 ```
 
 The classes that we cover here are "numeric", "character", "factor", "date", and "data.frame".
@@ -772,22 +810,26 @@ class(a_number)
 a_number <- as.factor(a_number)
 a_number
 class(a_number)
-``` 
+
+```
 
 Compared with "numeric" and "character" classes, the "factor" class might be less familiar. A "factor" is used for categorical data that can only take certain values  [@advancedr]. For instance, typical usage of a "factor" variable would be a binary, such as "day" or "night". It is also often used for age-groups, such as "18-29", "30-44", "45-60", "60+" (as opposed to age, which would often be a "numeric"); and sometimes for level of education: "less than high school", "high school", "college", "undergraduate degree", "postgraduate degree". We can find the allowed levels for a "factor" using `levels()`.
 
 ```{r}
+
 age_groups <- factor(
   c("18-29", "30-44", "45-60", "60+")
 )
 age_groups
 class(age_groups)
 levels(age_groups)
+
 ```
 
 Dates are an especially tricky class and quickly become complicated. Nonetheless, at a foundational level, we can use `as.Date()` to convert a character that looks like a "date" into an actual "date". This enables us to, say, perform addition and subtraction, when we would not be able to do that with a "character".
 
 ```{r}
+
 looks_like_a_date_but_is_not <- "2022-01-01"
 looks_like_a_date_but_is_not
 class(looks_like_a_date_but_is_not)
@@ -795,6 +837,7 @@ is_a_date <- as.Date(looks_like_a_date_but_is_not)
 is_a_date
 class(is_a_date)
 is_a_date + 3
+
 ```
 
 The final class that we discuss here is "data.frame". This looks like a spreadsheet and is commonly used to store the data that we will analyze. Formally, "a data frame is a list of equal-length vectors" [@advancedr]. It will have column and row names which we can see using `colnames()` and `rownames()`, although often the names of the rows are just numbers.
@@ -808,6 +851,7 @@ To illustrate this, we use the "ResumeNames" dataset from `AER` [@citeaer]. This
 #| message: false
 
 install.packages("AER")
+
 ```
 
 ```{r}
@@ -818,25 +862,31 @@ install.packages("AER")
 
 library(AER)
 data("ResumeNames", package = "AER")
+
 ```
 
 ```{r}
+
 ResumeNames |>
   head()
 class(ResumeNames)
 colnames(ResumeNames)
+
 ```
 
 We can examine the class of the vectors, i.e. the columns, that make-up a data frame by specifying the column name.
 
 ```{r}
+
 class(ResumeNames$name)
 class(ResumeNames$jobs)
+
 ```
 
 Sometimes it is helpful to be able to change the classes of many columns at once. We can do this by using `mutate()` and `across()`.
 
 ```{r}
+
 class(ResumeNames$name)
 class(ResumeNames$gender)
 class(ResumeNames$ethnicity)
@@ -848,12 +898,12 @@ ResumeNames <- ResumeNames |>
 class(ResumeNames$name)
 class(ResumeNames$gender)
 class(ResumeNames$ethnicity)
+
 ```
 
 There are many ways for code to not run but having an issue with the class is always among the first things to check. Common issues are variables that we think should be "character" or "numeric" actually being "factor". And variables that we think should be "numeric" actually being "character".
 
 Finally, it is worth pointing out that the class of a vector is whatever the class of the content. In Python and other languages, a similar data structure to a vector is a "list". A "list" is a class of its own, and the objects in a "list" have their own classes (for instance, `["a", 1]` is an object of class "list" with entries of class "string" and "int"). This may be counter-intuitive to see that a vector is not its own class if you are coming to `R` from another language.
-
 
 ### Simulating data
 
@@ -881,6 +931,7 @@ simulated_data <-
   )
 
 simulated_data
+
 ```
 
 We could then add draws from the uniform, Poisson, and binomial distributions, using `cbind()` to bring the columns of the original dataset and the new one together. 
@@ -901,6 +952,7 @@ simulated_data <-
   )
 
 simulated_data
+
 ```
 
 Finally, we will add a favorite color to each observation with `sample()`.
@@ -919,14 +971,10 @@ simulated_data <-
   cbind(simulated_data)
 
 simulated_data
+
 ```
 
 We set the option "replace" to "TRUE" because we are only choosing between two items, but each time we choose we want the possibility that either are chosen. Depending on the simulation we may need to think about whether "replace" should be "TRUE" or "FALSE". Another useful optional argument in `sample()` is to adjust the probability with which each item is drawn. The default is that all options are equally likely, but we could specify particular probabilities if we wanted to with "prob". As always with functions, we can find more in the help file, for instance `?sample`.
-
-
-
-
-
 
 ### `function()`, `for()`, and `apply()`
 
@@ -936,21 +984,25 @@ There are a lot of functions in `R` that other people have written, and we can u
 We define a function using `function()`, and then assign a name. We will likely need to include some inputs and outputs for the function. Inputs are specified between round brackets. The specific task that the function is to accomplish goes between braces.
 
 ```{r}
+
 print_names <- function(some_names) {
   print(some_names)
 }
 
 print_names(c("rohan", "monica"))
+
 ```
 
 We can specify defaults for the inputs in case the person using the function does not supply them.
 
 ```{r}
+
 print_names <- function(some_names = c("edward", "hugo")) {
   print(some_names)
 }
 
 print_names()
+
 ```
 
 One common scenario is that we want to apply a function multiple times. Like many programming languages, we can use a `for()` loop for this. The look of a `for()` loop in `R` is similar to `function()`, in that we define what we are iterating over in the round brackets, and the function to apply in braces.
@@ -971,13 +1023,11 @@ One common scenario is that we want to apply a function multiple times. Like man
 Because `R` is a programming language that is focused on statistics, we are often interested in arrays or matrices. We use `apply()` to apply a function to rows ("MARGIN = 1") or columns ("MARGIN = 2").
 
 ```{r}
+
 simulated_data
 apply(X = simulated_data, MARGIN = 2, FUN = unique)
+
 ```
-
-
-
-
 
 ## Making graphs with `ggplot2`
 
@@ -1001,6 +1051,7 @@ oecd_gdp <-
   read_csv("https://stats.oecd.org/sdmx-json/data/DP_LIVE/.QGDP.../OECD?contentType=csv&detail=code&separator=comma&csv-lang=en")
 
 write_csv(oecd_gdp, "inputs/data/oecd_gdp.csv")
+
 ```
 
 ```{r}
@@ -1016,11 +1067,13 @@ oecd_gdp <-
   )
 
 head(oecd_gdp)
+
 ```
 
 We are interested, firstly, in making a bar chart of GDP change in the third quarter of 2021 for ten countries: Australia, Canada, Chile, Indonesia, Germany, Great Britain, New Zealand, South Africa, Spain, and the US.
 
 ```{r}
+
 oecd_gdp_2021_q3 <-
   oecd_gdp |>
   filter(
@@ -1052,6 +1105,7 @@ oecd_gdp_2021_q3 <-
       "Southern Hemisphere"
     ),
   )
+
 ```
 
 We start with `ggplot()` and specify a mapping/aesthetic, which in this case means specifying the x-axis and the y-axis. The first argument in `ggplot()` is the data we want to visualize, so we can use the pipe operator at this stage as usual.
@@ -1062,6 +1116,7 @@ We start with `ggplot()` and specify a mapping/aesthetic, which in this case mea
 
 oecd_gdp_2021_q3 |>
   ggplot(mapping = aes(x = LOCATION, y = Value))
+
 ```
 
 Now we need to specify the type of graph that we are interested in. In this case we want a bar chart and we do this by adding `geom_bar()` using `+`.
@@ -1073,6 +1128,7 @@ Now we need to specify the type of graph that we are interested in. In this case
 oecd_gdp_2021_q3 |>
   ggplot(mapping = aes(x = LOCATION, y = Value)) +
   geom_bar(stat = "identity")
+
 ```
 
 We can color the bars by whether the country is European by adding another aesthetic, "fill".
@@ -1084,6 +1140,7 @@ We can color the bars by whether the country is European by adding another aesth
 oecd_gdp_2021_q3 |>
   ggplot(mapping = aes(x = LOCATION, y = Value, fill = european)) +
   geom_bar(stat = "identity")
+
 ```
 
 Finally, we could make it look nicer by: adding labels, `labs()`; changing the color, `scale_fill_brewer()`; and the background, `theme_classic()`. 
@@ -1103,8 +1160,8 @@ oecd_gdp_2021_q3 |>
   ) +
   theme_classic() +
   scale_fill_brewer(palette = "Set1")
-```
 
+```
 
 Facets enable us to that we create subplots that focus on specific aspects of our data. They are invaluable because they allow us to add another variable to a graph without having to make a 3D graph. We use `facet_wrap()` to add facets and specify the variable that we would like to facet by. In this case, we facet by hemisphere.
 
@@ -1127,8 +1184,8 @@ oecd_gdp_2021_q3 |>
     ~hemisphere,
     scales = "free_x"
   )
-```
 
+```
 
 ## Exploring the `tidyverse`
 
@@ -1170,6 +1227,7 @@ tibble(
     col.names = c("Person", "Variable", "Value"),
     digits = 1
   )
+
 ```
 
 ```{r}
@@ -1186,9 +1244,8 @@ tibble(
     col.names = c("Person", "Age", "Hair"),
     digits = 1
   )
+
 ```
-
-
 
 ### Importing data and `tibble()`
 
@@ -1222,10 +1279,8 @@ people_as_tibble <-
   )
 people_as_tibble
 class(people_as_tibble)
+
 ```
-
-
-
 
 ### Dataset manipulation with joins and pivots
 
@@ -1234,6 +1289,7 @@ There are two dataset manipulations that are often needed: joins and pivots.
 We often have a situation where we have two, or more, datasets and we are interested in combining them. We can join datasets together in a variety of ways. A common way is to use `left_join()` from `dplyr` [@citedplyr]. This is most useful where there is one main dataset that we are using and there is another dataset with some useful variables that we want to add to that. The critical aspect is that we have a column or columns that we can use to link the two datasets. Here we will create two tibbles and then join them on the basis of names.
 
 ```{r}
+
 main_dataset <-
   tibble(
     names = c("rohan", "monica", "edward", "hugo"),
@@ -1253,6 +1309,7 @@ main_dataset <-
   left_join(supplementary_dataset, by = "names")
 
 main_dataset
+
 ```
 
 There are a variety of other options to join datasets, including `inner_join()`, `right_join()`, and `full_join()`.
@@ -1260,7 +1317,9 @@ There are a variety of other options to join datasets, including `inner_join()`,
 Another common dataset manipulation task is pivoting them. Datasets tend to be either long or wide. Long data means that each variable is on a row, and so possibly there is repetition, whereas with wide data each variable is a column and so there is typically little repetition [@Wickham2009]. For instance, "anscombe" is wide, and "anscombe_long" is long. 
 
 ```{r}
+
 anscombe
+
 ```
 
 ```{r}
@@ -1272,20 +1331,21 @@ anscombe_long <-
     names_to = c(".value", "set"),
     names_pattern = "(.)(.)"
   )
-```
 
+```
 
 ```{r}
+
 anscombe_long
+
 ```
-
-
 
 Generally, in the `tidyverse`, and certainly for `ggplot2`, we need long data. To go from one to the other we use `pivot_longer()` and `pivot_wider()` from `tidyr` [@citetidyr].
 
 We will create some wide data on whether "mark" or "lauren" won a running race in each of three years.
 
 ```{r}
+
 pivot_example_data <-
   tibble(
     year = c(2019, 2020, 2021),
@@ -1294,11 +1354,13 @@ pivot_example_data <-
   )
 
 pivot_example_data
+
 ```
 
 This dataset is in wide format at the moment. To get it into long format, we need a column that specifies the person, and another that specifies the result. We use `pivot_longer()` to achieve this.
 
 ```{r}
+
 data_pivoted_longer <-
   pivot_example_data |>
   pivot_longer(
@@ -1308,11 +1370,13 @@ data_pivoted_longer <-
   )
 
 head(data_pivoted_longer)
+
 ```
 
 Occasionally, we need to go from long data to wide data. We use `pivot_wider()` to do this.
 
 ```{r}
+
 data_pivoted_wider <-
   data_pivoted_longer |>
   pivot_wider(
@@ -1321,9 +1385,8 @@ data_pivoted_wider <-
   )
 
 head(data_pivoted_wider)
+
 ```
-
-
 
 ### String manipulation and `stringr`
 
@@ -1350,21 +1413,25 @@ dataset_of_strings |>
     make_howlett = str_replace(names, "alexander", "howlett"),
     remove_rohan = str_remove(names, "rohan")
   )
+
 ```
 
 There are a variety of other functions that are often especially useful in data cleaning. For instance, we can use `str_length()` to find out how long a string is, and `str_c()` to bring strings together.
 
 ```{r}
+
 dataset_of_strings |>
   mutate(
     length_is = str_length(string = names),
     name_and_length = str_c(names, length_is, sep = " - ")
   )
+
 ```
 
 Finally, `separate()` from `tidyr`, although not part of `stringr`, is indispensable for string manipulation. It turns one character column into many.
 
 ```{r}
+
 dataset_of_strings |>
   separate(
     col = names,
@@ -1372,8 +1439,8 @@ dataset_of_strings |>
     sep = " ",
     remove = FALSE
   )
-```
 
+```
 
 ### Factor variables and `forcats`
 
@@ -1419,6 +1486,7 @@ days_data <-
       "Sunday"
     )
   )
+
 ```
 
 And we can compare the results by graphing first with the original character vector on the x-axis, and then another graph with the factor vector on the x-axis.
@@ -1434,13 +1502,8 @@ days_data |>
 days_data |>
   ggplot(aes(x = days_as_factor, y = some_value)) +
   geom_point()
+
 ```
-
-
-
-
-
-
 
 ## Exercises
 
@@ -1558,5 +1621,4 @@ days_data |>
 Reflect on the quote from Amia Srinivasan, Chichele Professor of Social and Political Theory, All Souls College, Oxford, and @datafeminism2020, especially Chapter 6. 
 
 Please create a GitHub repository with a meaningful name, and appropriate structure, and use a reproducible Quarto file to create a PDF of at least two pages (not including references) discussing those quotes in relation to a dataset that you are familiar with. Submit a link to the PDF file e.g. https://github.com/RohanAlexander/starter_folder/blob/main/outputs/paper/paper.pdf and the PDF itself.
-
 

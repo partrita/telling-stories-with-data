@@ -40,6 +40,7 @@ library(remotes)
 library(ssh)
 library(tidymodels)
 library(tidyverse)
+
 ```
 
 ## Introduction
@@ -54,8 +55,6 @@ Having done the work to develop a dataset and explore it with a model that we ar
 The general idea here is that we need to know, and allow others to come to trust, the whole workflow. That is what our approach to this point brings. After this, then we may like to use our model more broadly. Say we have been able to scrape some data from a website, bring some order to that chaos, make some charts, appropriately model it, and write this all up. In most academic settings that is more than enough. But in many industry settings we would like to use the model to do something. For instance, setting up a website that allows a model to be used to generate an insurance quote given several inputs.
 
 In this chapter, we begin by moving our compute from our local computer to the cloud. We then describe the use of R packages and Shiny for sharing models. That works well, but in some settings other users may like to interact with our model in ways that we are not focused on. One way to allow this is to make our results available to other computers, and for that we will want to make an API. Hence, we introduce `plumber` [@plumber], which is a way of creating APIs.
-
-
 
 ## Amazon Web Services
 
@@ -88,6 +87,7 @@ Amazon Web Services is a cloud service from Amazon. To get started we need to cr
 ![Establishing a key pair](figures/aws_five.png){#fig-awsfive}
 
 Overview of getting Amazon AWS set up
+
 :::
 
 After we have created an account, we need to select a region where the computer that we will access is located. After this, we want to "Launch a virtual machine" with EC2 (@fig-awstwo).
@@ -104,20 +104,11 @@ We do not need to install, say, the `tidyverse`, instead we can just call the li
 
 Perhaps as important as being able to start a AWS instance is being able to stop it (so that we do not get billed). The free tier is useful, but we do need to turn it off. To stop an instance, in the AWS instances page, select it, then "Actions -> Instance State -> Terminate".
 
-
-
-
-
-
 <!-- ## R packages -->
 
 <!-- To this point we have largely been using R Packages to do things for us. However, another way is to have them loaded -->
 
-
-
 <!-- ## Shiny -->
-
-
 
 ## Plumber and model APIs
 
@@ -133,12 +124,12 @@ print_toronto <- function() {
   result <- "Hello Toronto"
   return(result)
 }
+
 ```
 
 After that is saved, in the top right of the editor you should get a button to "Run API". Click that, and your API should load. It will be a "Swagger" application, which provides a GUI around our API. Expand the GET method, and then click "Try it out" and "Execute". In the response body, you should get "Hello Toronto".
 
 To more closely reflect the fact that this is an API designed for computers, you can copy/paste the "Request URL" into a browser and it should return "Hello Toronto".
-
 
 #### Local model
 
@@ -170,6 +161,7 @@ baby_sleep |>
     y = "Baby's overnight sleep length (minutes)"
   ) +
   theme_classic()
+
 ```
 
 Let us now use `tidymodels` to quickly make a model.
@@ -194,6 +186,7 @@ model <-
   )
 
 write_rds(x = model, file = "baby_sleep.rds")
+
 ```
 
 At this point, we have a model. One difference from what you might be used to is that we have saved the model as an ".rds" file. We are going to read that in.
@@ -207,6 +200,7 @@ library(plumber)
 
 serve_model <- plumb("plumber.R")
 serve_model$run(port = 8000)
+
 ```
 
 Then in "plumber.R" add the following content:
@@ -245,10 +239,10 @@ predict_sleep <- function(afternoon_nap_length = 0) {
 
   return(result)
 }
+
 ```
 
 Again, after we save the "plumber.R" file we should have an option to "Run API". Click that and you can try out the API locally in the same way as before. In this case, click "Try It Out" and then input an afternoon nap length in minutes. The response body will contain the prediction based on the data and model we set up.
-
 
 #### Cloud model
 
@@ -262,6 +256,7 @@ Now we need to connect the local computer with the DigitalOcean account.
 #| eval: false
 
 account()
+
 ```
 
 Now we need to authenticate the connection, and this is done using a SSH public key.
@@ -270,6 +265,7 @@ Now we need to authenticate the connection, and this is done using a SSH public 
 #| eval: false
 
 key_create()
+
 ```
 
 What you want is to have a ".pub" file on our computer. Then copy the public key aspect in that file, and add it to the SSH keys section in the account security settings. When we have the key on our local computer, then we can check this using `ssh`.
@@ -278,6 +274,7 @@ What you want is to have a ".pub" file on our computer. Then copy the public key
 #| eval: false
 
 ssh_key_info()
+
 ```
 
 Again, this will all take a while to validate. DigitalOcean calls every computer that we start a "droplet". If we start three computers, then we will have started three droplets. We can check the droplets that are running.
@@ -286,6 +283,7 @@ Again, this will all take a while to validate. DigitalOcean calls every computer
 #| eval: false
 
 droplets()
+
 ```
 
 If everything is set up properly, then this will print the information about all droplets that you have associated with the account (which at this point, is probably none). We must first create a droplet.
@@ -294,6 +292,7 @@ If everything is set up properly, then this will print the information about all
 #| eval: false
 
 id <- do_provision(example = FALSE)
+
 ```
 
 Then we get asked for the SSH passphrase and then it will set up a bunch of things. After this we are going to need to install a whole bunch of things onto our droplet.
@@ -335,6 +334,7 @@ install_r_package(
 install_r_package(id, c("xml2"))
 install_r_package(id, c("tidyverse"))
 install_r_package(id, c("tidymodels"))
+
 ```
 
 And then when that is finally set up (it will take 30 minutes or so) we can deploy our API.
@@ -350,8 +350,8 @@ do_deploy_api(
   docs = TRUE,
   overwrite = TRUE
 )
-```
 
+```
 
 ## Exercises
 
@@ -364,7 +364,6 @@ do_deploy_api(
 5. *(Communicate)*
 
 ### Questions {.unnumbered}
-
 
 ### Tutorial {.unnumbered}
 

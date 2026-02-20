@@ -53,6 +53,7 @@ library(rstanarm)
 library(tidybayes)
 library(tidyverse)
 library(tinytable)
+
 ```
 
 ## Introduction
@@ -82,12 +83,14 @@ The workflow that we need for MRP is straight forward, but the details and decis
 One famous MRP example is @wang2015forecasting. They used data from the Xbox gaming platform to forecast the 2012 US Presidential Election.\index{elections!US 2012 Presidential Election}\index{United States!US 2012 Presidential Election} @wang2015forecasting were able to implement an opt-in poll through the Xbox gaming platform during the 45 days leading up to the 2012 US presidential election, which was between Barack Obama and Mitt Romney. Each day there were three to five questions, including voter intention: "If the election were held today, who would you vote for?". Respondents were allowed to answer at most once per day. And first-time respondents were asked to provide information about themselves, including their sex, race, age, education, state, party ID, political ideology, and who they voted for in the 2008 presidential election.
 
 :::{.callout-note}
+
 ## Shoulders of giants
 
 Dr Andrew Gelman\index{Gelman, Andrew} is Higgins Professor of Statistics and Political Science at Columbia University.\index{statistics}\index{political science} After earning a PhD in Statistics from Harvard University in 1990, he was appointed as an assistant professor at the University of California, Berkeley,\index{Berkeley} and then moved to Columbia in 1996, where he was promoted to full professor in 2000.
 His research focuses on statistics, social sciences, and their intersection. For instance, @wang2015forecasting showed that biased surveys can still have value. He was the principal investigator for Stan,\index{Stan} a probabilistic programming language, that is widely used for Bayesian modeling.\index{Bayesian!modeling}
 And he has written many books, with *Data Analysis Using Regression and Multilevel/Hierarchical Models* [@gelmanandhill] and *Bayesian Data Analysis* [@bda] having been especially influential on a generation of researchers.
 He was appointed a Fellow of the American Statistical Association in 1998 and awarded the COPSS Presidents' Award in 2003.\index{COPSS Presidents' Award}
+
 :::
 
 In total, 750,148 interviews were conducted, with 345,858 unique respondents, over 30,000 of whom completed five or more polls. As may be expected, young men dominate the Xbox\index{Xbox paper} population: 18-to-29-year-olds comprise 65 per cent of the Xbox dataset, compared to 19 per cent in the exit poll; and men make up 93 per cent of the Xbox sample but only 47 per cent of the electorate.
@@ -101,7 +104,6 @@ They make state-specific estimates by post-stratifying to the features of each s
 In general, MRP is a good way to accomplish specific aims, but it is not without trade-offs.\index{multilevel regression with post-stratification!trade-offs} If we have a good quality survey, then it may be a way to speak to disaggregated aspects of it. Or if we are concerned about uncertainty then it is a good way to think about that. If we have a biased survey, then it is a great place to start, but it is not a panacea. There is plenty of scope for exciting work from a variety of approaches. For instance, from a more statistical perspective, there is a lot of work to do in terms of thinking through how survey design and modeling approaches interact and the extent to which we are underestimating uncertainty. It is also interesting to think through the implications of small samples and uncertainty in the post-stratification dataset. There is an awful lot to do in terms of thinking through what the appropriate model is to use, and how do we even evaluate what "appropriate" means here, for instance, based on @si2020use. More generally, we have little idea of the conditions under which we will have the stable preferences and relationships that are required for MRP to be accurate. A great deal of work is needed to understand how this relates to uncertainty in survey design, for instance, based on @lauderdale2020model or @ghitza2020voter.
 
 In this chapter, we begin with simulating a situation in which we pretend that we know the features of the population. We then consider the US 2020 presidential election.
-
 
 ## Simulated example: coffee or tea?
 
@@ -126,6 +128,7 @@ sim_population <-
   )
 
 sim_population
+
 ```
 
 We can see that the counts, by group, are fairly similar (@tbl-teapreferencecounts).
@@ -142,6 +145,7 @@ sim_population |>
   style_tt(j = 1:4, align = "lllr") |>
   format_tt(digits = 0, num_mark_big = ",", num_fmt = "decimal") |>
   setNames( c("Age", "Nationality", "Prefers tea", "Number"))
+
 ```
 
 On average, 50 per cent of the population prefers tea, but this preference depends on the population sub-groups.
@@ -151,13 +155,14 @@ older respondents and English respondents.
 We are interested in looking at what proportion of our biased sample prefers tea to coffee, and expect, by construction, that it will lean toward tea.
 
 ```{r}
+
 set.seed(853)
 
 tea_sample <-
   sim_population |>
   slice_sample(n = 1000, weight_by = probability)
-```
 
+```
 
 ```{r}
 #| message: false
@@ -171,11 +176,10 @@ tea_sample |>
   style_tt(j = 1:4, align = "lllr") |>
   format_tt(digits = 0, num_mark_big = ",", num_fmt = "decimal") |>
   setNames(c("Age", "Nationality", "Prefers tea", "Number"))
+
 ```
 
 It is clear that our sample has a different average tea preference than the overall population (@tbl-teapreferencesamplecounts).
-
-
 
 ### Model the sample
 
@@ -215,6 +219,7 @@ saveRDS(
   tea_preference_model,
   file = "tea_preference_model.rds"
 )
+
 ```
 
 ```{r}
@@ -228,6 +233,7 @@ saveRDS(
   tea_preference_model,
   file = "outputs/model/tea_preference_model.rds"
 )
+
 ```
 
 ```{r}
@@ -238,6 +244,7 @@ saveRDS(
 
 tea_preference_model <-
   readRDS(file = "tea_preference_model.rds")
+
 ```
 
 ```{r}
@@ -248,9 +255,8 @@ tea_preference_model <-
 
 tea_preference_model <-
   readRDS(file = "outputs/model/tea_preference_model.rds")
+
 ```
-
-
 
 ```{r}
 #| tbl-cap: "Model trained on biased sample that oversamples a preference for tea"
@@ -262,6 +268,7 @@ modelsummary(
     "Tea preferences" = tea_preference_model
   )
 )
+
 ```
 
 @fig-teamodelresultsplots shows the distribution of draws for each of the different groups.
@@ -280,8 +287,8 @@ tea_preference_model |>
   ggplot(aes(y = group, x = condition_mean)) +
   stat_halfeye() +
   theme_minimal()
-```
 
+```
 
 ### Post-stratification dataset
 
@@ -290,6 +297,7 @@ Now we will use a post-stratification dataset to get some estimates of the numbe
 In this simulated example, we could use the population as our post-stratification dataset. The issue is that at one million observations it is unwieldy, so we take a 10,000 person sample from it. We also remove the tea preferences variable because that is what we are pretending we do not know.
 
 ```{r}
+
 set.seed(853)
 
 tea_poststrat_dataset <-
@@ -298,11 +306,13 @@ tea_poststrat_dataset <-
   select(-prefers_tea)
 
 tea_poststrat_dataset
+
 ```
 
 This is an idealized example where we assume individual-level data in our post-stratification dataset. In that world we can apply our model to each individual.
 
 ```{r}
+
 predicted_tea_preference <-
   tea_preference_model |>
   add_epred_draws(newdata = tea_poststrat_dataset,
@@ -317,6 +327,7 @@ predicted_tea_preference <-
 
 predicted_tea_preference |>
   count(age, nationality, average_preference)
+
 ```
 
 @tbl-mrpteammodelcompare compares the MRP estimates, with the raw estimates from the biased sample. In this case, because we know the truth, we can also compare them to the known truth, but that is not something we can do normally.
@@ -338,12 +349,10 @@ comparison |>
   tt() |>
   style_tt(j = 1:2, align = "lr") |>
   format_tt(digits = 2, num_mark_big = ",", num_fmt = "decimal")
+
 ```
 
 In this case, the MRP approach has done a good job of taking a biased sample and resulting in an estimate of tea preferences that did reflect the truth.
-
-
-
 
 <!-- ## Australian voting -->
 
@@ -541,7 +550,6 @@ In this case, the MRP approach has done a good job of taking a biased sample and
 <!--   ) -->
 <!-- ``` -->
 
-
 <!-- We are just going to do some rough forecasts. For each gender and age-group we want the relevant coefficient from the example data and from there we can construct the estimates. -->
 
 <!-- ```{r} -->
@@ -558,9 +566,6 @@ In this case, the MRP approach has done a good job of taking a biased sample and
 <!-- ``` -->
 
 <!-- We now have post-stratified estimates for each state. Our model has a fair few weaknesses. For instance, small cell counts are going to be problematic. And our approach ignores uncertainty, but now that we have something working we can complicate it. -->
-
-
-
 
 <!-- ### Improving the model -->
 
@@ -633,7 +638,6 @@ In this case, the MRP approach has done a good job of taking a biased sample and
 <!--   summarise(mean = mean(support_alp_num), -->
 <!--             .by = state) -->
 
-
 <!-- post_stratified_estimates |> -->
 <!--   ggplot(aes(y = mean, x = forcats::fct_inorder(state))) + -->
 <!--   geom_point(aes(color = "MRP estimate"), shape = 16, size = 2.5) + -->
@@ -680,7 +684,6 @@ In this case, the MRP approach has done a good job of taking a biased sample and
 <!--   coord_flip() -->
 <!-- ``` -->
 
-
 <!-- ```{r} -->
 <!-- #| label: fig-resultsforaustraliaf -->
 <!-- #| fig-cap: "Comparing MRP estimates with raw estimates" -->
@@ -691,8 +694,6 @@ In this case, the MRP approach has done a good job of taking a biased sample and
 <!--     y = "Average support" -->
 <!--   ) -->
 <!-- ``` -->
-
-
 
 ## Forecasting the 2020 United States election
 
@@ -708,8 +709,8 @@ We will use the Democracy Fund Voter Study Group Nationscape survey dataset. One
 
 nationscape_data <-
   read_csv(file = "nationscape_data.csv")
-```
 
+```
 
 ```{r}
 #| eval: true
@@ -717,13 +718,17 @@ nationscape_data <-
 
 nationscape_data <-
   read_parquet(file = "outputs/data/15-nationscape_data.parquet")
+
 ```
 
 ```{r}
+
 nationscape_data
+
 ```
 
 ```{r}
+
 # Format state names to match IPUMS
 states_names_and_abbrevs <-
   tibble(stateicp = state.name, state = state.abb)
@@ -748,6 +753,7 @@ nationscape_data <-
   nationscape_data |>
   mutate(across(c(gender, stateicp, education_level, age_group),
                 as_factor))
+
 ```
 
 Finally, we save the prepared dataset as a parquet file.
@@ -760,6 +766,7 @@ Finally, we save the prepared dataset as a parquet file.
 
 write_parquet(x = nationscape_data,
               sink = "outputs/data/15-nationscape_data_cleaned.parquet")
+
 ```
 
 ```{r}
@@ -768,8 +775,8 @@ write_parquet(x = nationscape_data,
 
 write_parquet(x = nationscape_data,
               sink = "nationscape_data_cleaned.parquet")
-```
 
+```
 
 ### Post-stratification data
 
@@ -783,31 +790,37 @@ We will use the 2019 American Community Survey (ACS) dataset that we gathered in
 
 poststrat_data <-
   read_parquet(file = "outputs/data/cleaned_ipums.parquet")
+
 ```
 
 ```{r}
+
 poststrat_data
+
 ```
 
 This dataset is on an individual level. We will create counts of each sub-cell, and then proportions by state.
 
 ```{r}
+
 poststrat_data_cells <-
   poststrat_data |>
   count(stateicp, gender, age_group, education_level)
+
 ```
 
 And finally we add proportions for each of these cells.
 
 ```{r}
+
 poststrat_data_cells <-
   poststrat_data_cells |>
   mutate(prop = n / sum(n),
          .by = stateicp)
 
 poststrat_data_cells
-```
 
+```
 
 ### Model the sample
 
@@ -838,6 +851,7 @@ After reading in the data that we cleaned earlier, following @kennedygabry2020 w
 
 nationscape_data <-
   read_parquet(file = "outputs/data/15-nationscape_data_cleaned.parquet")
+
 ```
 
 ```{r}
@@ -846,8 +860,8 @@ nationscape_data <-
 
 nationscape_data <-
   read_parquet(file = "nationscape_data_cleaned.parquet")
-```
 
+```
 
 ```{r}
 #| echo: true
@@ -864,6 +878,7 @@ us_election_model <-
     adapt_delta = 0.99,
     seed = 853
   )
+
 ```
 
 ```{r}
@@ -876,6 +891,7 @@ saveRDS(
   us_election_model,
   file = "outputs/model/us_election_model_mrp.rds"
 )
+
 ```
 
 ```{r}
@@ -886,6 +902,7 @@ saveRDS(
 
 us_election_model <-
   readRDS(file = "outputs/model/us_election_model_mrp.rds")
+
 ```
 
 ```{r}
@@ -896,6 +913,7 @@ saveRDS(
   us_election_model,
   file = "us_election_model_mrp.rds"
 )
+
 ```
 
 This model will take about 15 minutes to run, so you should be careful to save it afterwards with `saveRDS()`. And you can load it with `readRDS()`.
@@ -906,6 +924,7 @@ This model will take about 15 minutes to run, so you should be careful to save i
 
 us_election_model <-
   readRDS(file = "us_election_model_mrp.rds")
+
 ```
 
 We might be interested to look at the coefficient estimates (@tbl-modelsummaryusamrp).
@@ -917,6 +936,7 @@ We might be interested to look at the coefficient estimates (@tbl-modelsummaryus
 modelsummary(
   us_election_model
 )
+
 ```
 
 @fig-politicsmodelresultsplots shows the distribution of draws for age groups, and education. We plot some selected states separately for reasons of space (@fig-politicsmodelresultsplotsstates).
@@ -939,6 +959,7 @@ us_election_model |>
   ggplot(aes(y = group, x = condition_mean)) +
   stat_halfeye() +
   theme_minimal()
+
 ```
 
 ```{r}
@@ -961,6 +982,7 @@ us_election_model |>
   ggplot(aes(y = group, x = condition_mean)) +
   stat_halfeye() +
   theme_minimal()
+
 ```
 
 ### Post-stratify
@@ -986,6 +1008,7 @@ biden_support_by_state <-
   )
 
 head(biden_support_by_state)
+
 ```
 
 And we can have a look at our estimates graphically (@fig-estimatyusamrp).
@@ -1020,10 +1043,10 @@ biden_support_by_state |>
   scale_color_brewer(palette = "Set1") +
   coord_flip() +
   theme(legend.position = "bottom")
+
 ```
 
 The Nationscape dataset is a high-quality survey. But it was weighted to major census region---the West, the Midwest, the Northeast, and the South---rather than state, which could be one reason we see a difference between the MRP estimates and the raw data.
-
 
 ## Exercises
 
@@ -1060,7 +1083,6 @@ The Nationscape dataset is a high-quality survey. But it was weighted to major c
 
 - *Paper review:* Please read and review @wang2015forecasting.
 
-
 ### Task {.unnumbered}
 
 In a similar manner to @ghitza2020voter pretend you have access to a US voter file record from a private company. You train a model on the 2020 US Cooperative Election Study, and post-stratify it, on an individual basis, based on that voter file.
@@ -1073,9 +1095,13 @@ d. Detail the tests that you would put in place in terms of the dataset, the mod
 ### Paper {.unnumbered}
 
 :::{.content-visible when-format="pdf"}
+
 At about this point the *Spofforth* Paper in the ["Papers" Online Appendix](https://tellingstorieswithdata.com/23-assessment.html) would be appropriate.
+
 :::
 
 :::{.content-visible unless-format="pdf"}
+
 At about this point the *Spofforth* Paper from [Online Appendix -@sec-papers] would be appropriate.
+
 :::

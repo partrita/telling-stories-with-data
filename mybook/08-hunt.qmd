@@ -5,7 +5,9 @@ engine: knitr
 # Experiments and surveys {#sec-hunt-data}
 
 :::{.callout-note}
+
 Chapman and Hall/CRC published this book in July 2023. You can purchase that [here](https://www.routledge.com/Telling-Stories-with-Data-With-Applications-in-R/Alexander/p/book/9781032134772). This online version has some updates to what was printed.
+
 :::
 
 **Prerequisites**
@@ -49,6 +51,7 @@ library(haven)
 library(labelled)
 library(tidyverse)
 library(tinytable)
+
 ```
 
 ## Introduction
@@ -87,8 +90,8 @@ treat_control <-
     )
 
 treat_control
-```
 
+```
 
 ```{r}
 #| eval: true
@@ -100,6 +103,7 @@ treat_control |>
     treat_result = sum(binary_effect) / length(binary_effect),
     .by = group
   )
+
 ```
 
 In this case, we draw either 0 or 1, 100 times, for each the treatment and control group, and then the estimate of the average effect of being treated is 0.22.
@@ -129,6 +133,7 @@ We hope to be able to establish treatment and control groups\index{treatment!con
 To get started, we simulate a population,\index{population} and then randomly sample from it.\index{simulation!cats or dogs} We will set it up so that half the population likes blue, and the other half likes white. And further, if someone likes blue then they almost surely prefer dogs, but if they like white then they almost surely prefer cats. Simulation is a critical part of the workflow advocated in this book. This is because we know what the outcomes should be from the analysis of simulated data. Whereas if we go straight to analyzing real data, then we do not know if unexpected outcomes are due to our own analysis errors, or actual results. Another good reason it is useful to take this approach of simulation is that when you are working in teams the analysis can get started before the data collection and cleaning is completed. The simulation will also help the collection and cleaning team think about tests they should run on their data.
 
 ```{r}
+
 set.seed(853)
 
 num_people <- 5000
@@ -143,11 +148,13 @@ population <- tibble(
 
 population |>
   count(favorite_color, prefers_dogs)
+
 ```
 
 Building on the terminology and concepts introduced in @sec-farm-data, we now construct a sampling frame\index{sampling!frame} that contains about 80 per cent of the target population.\index{target population}
 
 ```{r}
+
 set.seed(853)
 
 frame <-
@@ -157,11 +164,13 @@ frame <-
 
 frame |>
   count(favorite_color, prefers_dogs)
+
 ```
 
 For now, we will set aside dog or cat preferences and focus on creating treatment and control groups\index{treatment!control groups} with favorite color only.
 
 ```{r}
+
 set.seed(853)
 
 sample <-
@@ -171,6 +180,7 @@ sample <-
     group =
       sample(x = c("Treatment", "Control"), size = nrow(frame), replace = TRUE
   ))
+
 ```
 
 When we look at the mean for the two groups, we can see that the proportions that prefer blue or white are very similar to what we specified (@tbl-dogsdtocats).
@@ -187,6 +197,7 @@ sample |>
   style_tt(j = 1:4, align = "llrr") |>
   format_tt(digits = 2, num_mark_big = ",", num_fmt = "decimal") |>
   setNames(c("Group", "Prefers", "Number", "Proportion"))
+
 ```
 
 We randomized\index{randomization} with favorite color only. But we should also find that we took dog or cat preferences along at the same time and will have a "representative" share of people who prefer dogs to cats. We can look at our dataset (@tbl-dogstocats).
@@ -212,6 +223,7 @@ sample |>
       "Number",
       "Proportion"
     ))
+
 ```
 
 It is exciting to have a representative\index{representative sample} share on "unobservables". (In this case, we do "observe" them---to illustrate the point---but we did not select on them). We get this because the variables were correlated. But it will break down in several ways that we will discuss. It also assumes large enough groups. For instance, if we considered specific dog breeds, instead of dogs as an entity, we may not find ourselves in this situation. To check that the two groups are the same, we look to see if we can identify a difference between the two groups based on observables, theory, experience, and expert opinion. In this case we looked at the mean, but we could look at other aspects as well.
@@ -224,8 +236,8 @@ If the treatment and control groups\index{treatment!control groups} are the same
 
 If the group to which we applied our randomization were representative of the broader population, and the experimental set-up was like outside conditions, then we further could have external validity.\index{validity!external} That would mean that the difference that we find does not just apply in our own experiment, but also in the broader population. External validity means that we can use our experiment to make claims about what would happen outside the experiment. It is randomization\index{randomization} that has allowed that to happen. In practice we would not just rely on one experiment but would instead consider that a contribution to a broader evidence-collection effort [@Duflo2020 p.1955].
 
-
 :::{.callout-note}
+
 ## Shoulders of giants
 
 Dr Esther Duflo\index{Duflo, Esther} is Abdul Latif Jameel Professor of Poverty Alleviation and Development Economics at MIT.
@@ -233,6 +245,7 @@ After earning a PhD in Economics from MIT in 1999, she remained at MIT as an ass
 One area of her research is economic development where she uses randomized controlled trials to understand how to address poverty.\index{poverty}
 One of her most important books is *Poor Economics* [@pooreconomics]. One of her most important papers is @banerjee2015miracle which uses randomization to examine the effect of microfinance.
 She was awarded the Sveriges Riksbank Prize in Economic Sciences in Memory of Alfred Nobel in 2019.
+
 :::
 
 But this means we need randomization twice.\index{randomization} Firstly, into the group that was subject to the experiment, and then secondly, between treatment and control. How do we think about this randomization, and to what extent does it matter?
@@ -255,6 +268,7 @@ That is, the difference between the treated group, $t = 1$, and the control grou
 To illustrate this concept, we simulate some data that shows an average difference of one between the treatment and control groups.\index{simulation!average treatment effect}\index{distribution!Normal}
 
 ```{r}
+
 set.seed(853)
 
 ate_example <-
@@ -264,6 +278,7 @@ ate_example <-
     treated == "No" ~ rnorm(n(), mean = 5, sd = 1),
     treated == "Yes" ~ rnorm(n(), mean = 6, sd = 1),
   ))
+
 ```
 
 We can see the difference, which we simulated to be one, between the two groups in @fig-exampleatefig. And we can compute the average between the groups and then the difference to see also that we roughly get back the result that we put in (@tbl-exampleatetable).
@@ -281,8 +296,8 @@ ate_example |>
        fill = "Person was treated") +
   scale_fill_brewer(palette = "Set1") +
   theme(legend.position = "bottom")
-```
 
+```
 
 ```{r}
 #| label: tbl-exampleatetable
@@ -298,6 +313,7 @@ ate_example |>
       "Was treated?",
       "Average effect"
     ))
+
 ```
 
 Unfortunately, there is often a difference between simulated data and reality.\index{experiment!challenges} For instance, an experiment cannot run for too long otherwise people may be treated many times or become inured to the treatment; but it cannot be too short otherwise we cannot measure longer-term outcomes. We cannot have a "representative" sample across every facet of a population, but if not, then the treatment and control may be different. Practical difficulties may make it difficult to follow up with certain groups and so we end up with a biased collection. Some questions to explore when working with real experimental data include:\index{experiment!threats to validity}
@@ -347,9 +363,11 @@ The effect of the Tuskegee Syphilis Study\index{Tuskegee Syphilis Study} was fel
 @hellertuskegee provides further background on the Tuskegee Syphilis Study.
 
 :::{.callout-note}
+
 ## Shoulders of giants
 
 Dr Marcella Alsan\index{Alsan, Marcella} is a Professor of Public Policy at Harvard University. She has an MD from Loyola University and earned a PhD in Economics from Harvard University in 2012.\index{economics} She was appointed as an assistant professor at Stanford, being promoted to full professor in 2019 when she returned to Harvard. One area of her research is health inequality, and one particularly important paper is @tuskegeeandthehealthofblackmen, which we discussed above. She was awarded a MacArthur Foundation Fellowship in 2021.\index{MacArthur Foundation Fellowship}
+
 :::
 
 #### Extracorporeal membrane oxygenation (ECMO)
@@ -413,11 +431,15 @@ As an example of survey data, we will consider the Democracy Fund Voter Study Gr
 To get the dataset, go to the Democracy Fund Voter Study Group [website](https://www.voterstudygroup.org), then look for "Nationscape" and request access to the data. This could take a day or two. After getting access, focus on the ".dta" files. Nationscape conducted many surveys in the lead-up to the 2020 United States election, so there are many files. The filename is the reference date, where "ns20200625" refers to 25 June 2020. That is the file that we use here, but many of them are similar. We download and save it as "ns20200625.dta".
 
 :::{.content-visible when-format="pdf"}
+
 As introduced in the ["R essentials" Online Appendix](https://tellingstorieswithdata.com/20-r_essentials.html), we can import ".dta" files after installing `haven` and `labelled`. The code that we use to import and prepare the survey dataset is based on that of @greatstudentwork.
+
 :::
 
 :::{.content-visible unless-format="pdf"}
+
 As introduced in [Online Appendix -@sec-r-essentials], we can import ".dta" files after installing `haven` and `labelled`. The code that we use to import and prepare the survey dataset is based on that of @greatstudentwork.
+
 :::
 
 ```{r}
@@ -426,6 +448,7 @@ As introduced in [Online Appendix -@sec-r-essentials], we can import ".dta" file
 
 raw_nationscape_data <-
   read_dta("ns20200625.dta")
+
 ```
 
 ```{r}
@@ -436,6 +459,7 @@ raw_nationscape_data <-
 
 raw_nationscape_data <-
   read_dta("dont_push/ns20200625.dta")
+
 ```
 
 ```{r}
@@ -450,8 +474,8 @@ raw_nationscape_data <-
 nationscape_data <-
   raw_nationscape_data |>
   select(vote_2020, gender, education, state, age)
-```
 
+```
 
 ```{r}
 #| eval: false
@@ -463,6 +487,7 @@ arrow::write_parquet(
   x = nationscape_data,
   sink = "outputs/data/nationscape_data_not_yet_nice.parquet"
 )
+
 ```
 
 ```{r}
@@ -473,10 +498,13 @@ nationscape_data <-
   arrow::read_parquet(
     file = "outputs/data/nationscape_data_not_yet_nice.parquet"
 )
+
 ```
 
 ```{r}
+
 nationscape_data
+
 ```
 
 At this point we want to clean up a few issues. For instance, for simplicity, remove anyone not voting for Trump or Biden.
@@ -490,6 +518,7 @@ nationscape_data <-
   filter(vote_2020 %in% c("Joe Biden", "Donald Trump")) |>
   mutate(vote_biden = if_else(vote_2020 == "Joe Biden", 1, 0)) |>
   select(-vote_2020)
+
 ```
 
 We then want to create some variables of interest.
@@ -535,6 +564,7 @@ nationscape_data <-
     )
   ) |>
   select(-education,-age)
+
 ```
 
 We will draw on this dataset in @sec-multilevel-regression-with-post-stratification, so we will save it.
@@ -545,8 +575,8 @@ We will draw on this dataset in @sec-multilevel-regression-with-post-stratificat
 
 write_csv(x = nationscape_data,
           file = "nationscape_data.csv")
-```
 
+```
 
 ```{r}
 #| eval: false
@@ -556,6 +586,7 @@ write_csv(x = nationscape_data,
 
 arrow::write_parquet(x = nationscape_data,
               sink = "outputs/data/15-nationscape_data.parquet")
+
 ```
 
 ```{r}
@@ -564,6 +595,7 @@ arrow::write_parquet(x = nationscape_data,
 
 nationscape_data <-
   arrow::read_parquet(file = "outputs/data/15-nationscape_data.parquet")
+
 ```
 
 We can also have a look at some of the variables (@fig-nationscapesurveydataquickgraph).
@@ -587,6 +619,7 @@ nationscape_data |>
   guides(x = guide_axis(angle = 90)) +
   theme(legend.position = "bottom") +
   scale_fill_brewer(palette = "Set1")
+
 ```
 
 ## RCT examples
@@ -596,6 +629,7 @@ nationscape_data |>
 In the United States, unlike many developed countries, basic health insurance is not necessarily available to all residents, even those on low incomes. The Oregon Health Insurance Experiment\index{Oregon Health Insurance Experiment} involved low-income adults in Oregon, a state in the northwest of the United States, from 2008 to 2010 [@finkelstein2012oregon].\index{health insurance!Oregon Health Insurance Experiment}
 
 :::{.callout-note}
+
 ## Shoulders of giants
 
 Dr Amy Finkelstein\index{Finkelstein, Amy} is John & Jennie S. Macdonald Professor of Economics at MIT.
@@ -603,6 +637,7 @@ After earning a PhD in Economics from MIT in 2001, she was a Junior Fellow at th
 One area of her research is health economics where she uses randomized controlled trials to understand insurance.\index{health insurance}
 She was one of the lead researchers on @finkelstein2012oregon which examined the Oregon Health Insurance Experiment.
 She was awarded the John Bates Clark Medal\index{John Bates Clark Medal} in 2012 and a MacArthur Foundation Fellowship in 2018.\index{MacArthur Foundation Fellowship}
+
 :::
 
 Oregon\index{United States!Oregon} funded 10,000 places in the state-run Medicaid\index{Medicaid} program, which provides health insurance for people with low incomes. A lottery was used to allocate these places, and this was judged fair because it was expected, correctly as it turned out, that demand for places would exceed the supply. In the end, 89,824 individuals signed up.
@@ -665,13 +700,10 @@ wallet_data |>
   coord_flip() +
   theme_classic() +
   theme(legend.position = "bottom")
+
 ```
 
 In addition to the experiments, @cohn2019civic conducted surveys that allowed them to understand some reasons for their findings. During the survey, participants were given one of the scenarios and then asked to answer questions. The use of surveys also allowed them to be specific about the respondents. The survey involved 2,525 respondents (829 in the UK, 809 in Poland, and 887 in the US) [@cohn2019civicaddendum, p. 36].  Participants were chosen using attention checks and demographic quotas based on age, gender, and residence, and they received US$4.00 for their participation [@cohn2019civicaddendum, p. 36]. The survey did not find that larger rewards were expected for turning in a wallet with more money. But it did find that failure to turn in a wallet with more money caused the respondent to feel more like they had stolen money.
-
-
-
-
 
 ## A/B testing
 
@@ -710,9 +742,11 @@ To illustrate this, pretend that we work at a food delivery app, and we are conc
 This trade-off could become known during the hypothetical driver experiment if we were to look at customer complaints. It is possible that on a small team the A/B test analyst would be exposed to those tickets, but on a larger team they may not be. Ensuring that A/B tests are not resulting in false optimization is especially important. This is not something that we typically have to worry about in normal experiments. As another example of this @duolingo describes testing a feature of Duolingo, a language-learning application, which served an ad for Duolingo Plus when a regular Duolingo user was offline. The feature was found to be positive for Duolingo's revenue, but negative for customer learning habits. Presumably enough customer negativity would eventually have resulted in the feature having a negative effect on revenue. Related to this, we want to think carefully about the nature of the result that we expect. For instance, in the shades of blues example, we are unlikely to find substantial surprises, and so it might be sufficient to try a small range of blues. But what if we considered a wider variety of colors?
 
 :::{.callout-note}
+
 ## Shoulders of giants
 
 Dr Susan Athey\index{Athey, Susan} is the Economics of Technology Professor at Stanford University.\index{economics} After earning a PhD in Economics from Stanford in 1995, she joined MIT as an assistant professor, returning to Stanford in 2001, where she was promoted to full professor in 2004. One area of her research is applied economics, and one particularly important paper is @Abadie2017, which considers when standard errors need to be clustered. Another is @Athey2017, which considers how to analyze randomized experiments. In addition to her academic appointments, she has worked at Microsoft and other technology firms and been extensively involved in running experiments in this context. She was awarded the John Bates Clark Medal in 2007.\index{John Bates Clark Medal}
+
 :::
 
 ### Upworthy
@@ -728,8 +762,8 @@ We can look at what the dataset looks like and get a sense for it by looking at 
 #| eval: false
 
 upworthy <- read_csv("https://osf.io/vy8mj/download")
-```
 
+```
 
 ```{r}
 #| eval: false
@@ -740,6 +774,7 @@ upworthy <- read_csv("https://osf.io/vy8mj/download")
 # INTERNAL
 
 arrow::write_parquet(x = upworthy, sink = "inputs/data/upworthy.parquet")
+
 ```
 
 ```{r}
@@ -751,10 +786,11 @@ arrow::write_parquet(x = upworthy, sink = "inputs/data/upworthy.parquet")
 # INTERNAL
 
 upworthy <- arrow::read_parquet(file = "inputs/data/upworthy.parquet")
+
 ```
 
-
 :::{.content-visible when-format="pdf"}
+
 ```{r}
 #| message: false
 #| warning: false
@@ -763,10 +799,12 @@ upworthy <- arrow::read_parquet(file = "inputs/data/upworthy.parquet")
 
 upworthy |>
   names()
+
 ```
 :::
 
 :::{.content-visible unless-format="pdf"}
+
 ```{r}
 #| message: false
 #| warning: false
@@ -776,6 +814,7 @@ upworthy |>
 
 upworthy |>
   head()
+
 ```
 :::
 
@@ -792,25 +831,30 @@ There are many variables. We will focus on:
 Within each batch of tests, we are interested in the effect of the varied headlines on impressions and clicks.
 
 ```{r}
+
 upworthy_restricted <-
   upworthy |>
   select(
     created_at, clickability_test_id, headline, impressions, clicks
     )
+
 ```
 
 :::{.content-visible unless-format="pdf"}
+
 ```{r}
 #| message: false
 #| warning: false
 
 head(upworthy_restricted)
+
 ```
 :::
 
 We will focus on the text contained in headlines, and look at whether headlines that asked a question got more clicks than those that did not.\index{text!analysis of headlines} We want to remove the effect of different images and so will focus on those tests that have the same image. To identify whether a headline asks a question, we search for a question mark. Although there are more complicated constructions that we could use, this is enough to get started.
 
 ```{r}
+
 upworthy_restricted <-
   upworthy_restricted |>
   mutate(
@@ -820,6 +864,7 @@ upworthy_restricted <-
 
 upworthy_restricted |>
   count(asks_question)
+
 ```
 
 For every test, and for every picture, we want to know whether asking a question affected the number of clicks.\index{text!analysis of headlines}
@@ -841,6 +886,7 @@ question_or_not |>
   drop_na(ave_clicks_FALSE, ave_clicks_TRUE) |>
   mutate(difference_in_clicks = ave_clicks_TRUE - ave_clicks_FALSE) |>
   summarise(average_differce = mean(difference_in_clicks))
+
 ```
 
 We could also consider a cross-tab (@tbl-datasummaryupworthy).
@@ -856,6 +902,7 @@ question_or_not |>
   style_tt(j = 1:2, align = "lr") |>
   format_tt(digits = 0, num_fmt = "decimal") |>
   setNames(c("Asks a question?", "Mean clicks"))
+
 ```
 
 We find that in general, having a question in the headline may slightly decrease the number of clicks on a headline, although if there is an effect it does not appear to be very large (@fig-upworthy).\index{text!analysis of headlines}
@@ -881,6 +928,7 @@ question_or_not |>
   theme_classic() +
   scale_fill_brewer(palette = "Set1") +
   theme(legend.position = "bottom")
+
 ```
 
 ## Exercises
@@ -948,6 +996,7 @@ question_or_not |>
 11. Please write some code for the following dataset that would randomly assign people into one of two groups.
 
 ```{r}
+
 netflix_data <-
   tibble(
     person = c("Ian", "Ian", "Roger", "Roger",
@@ -959,6 +1008,7 @@ netflix_data <-
     ),
     hours = c(6.8, 8.0, 0.8, 9.2, 3.2, 4.0, 0.2, 10.2)
   )
+
 ```
 
 12. From @gertler2016impact, a valid comparison group must have all of the following characteristics EXCEPT (pick one)?
@@ -1098,7 +1148,6 @@ netflix_data <-
 - Build another website, but this time add Google Analytics. Deploy it using Netlify. Change some aspect of the website, add a different tracker, and push it to a new branch. Then use Netlify to conduct an A/B test.
 - *Paper review:* With reference to @Hammond2022, please discuss experimental design, informed consent and equipoise. Please write at least two pages.
 
-
 ### Task {.unnumbered}
 
 Please consider the [Special Virtual Issue on Nonresponse Rates and Nonresponse Adjustments](https://academic.oup.com/jssam/pages/special-virtual-issue-on-nonresponse-rates-and-nonresponse-adjustments) of the *Journal of Survey Statistics and Methodology*. Focus on one aspect of the editorial, and with reference to relevant literature, please discuss it in at least two pages. Use Quarto, and include an appropriate title, author, date, link to a GitHub repo, and citations. Submit a PDF.
@@ -1106,9 +1155,13 @@ Please consider the [Special Virtual Issue on Nonresponse Rates and Nonresponse 
 ### Paper {.unnumbered}
 
 :::{.content-visible when-format="pdf"}
+
 At about this point the *Howrah* Paper in the ["Papers" Online Appendix](https://tellingstorieswithdata.com/23-assessment.html) would be appropriate.
+
 :::
 
 :::{.content-visible unless-format="pdf"}
+
 At about this point the *Howrah* Paper from [Online Appendix -@sec-papers] would be appropriate.
+
 :::

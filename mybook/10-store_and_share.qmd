@@ -50,8 +50,8 @@ library(openssl)
 library(tictoc)
 library(tidyverse)
 library(tinytable)
-```
 
+```
 
 ## Introduction
 
@@ -93,11 +93,15 @@ Data provenance is especially important. This refers to documenting "where a pie
 The easiest place for us to get started with storing a dataset is GitHub because that is already built into our workflow.\index{GitHub!data storage} For instance, if we push a dataset to a public repository, then our dataset becomes available. One benefit of this is that if we have set up our workspace appropriately, then we likely store our original, unedited data and the tidy data, as well as the scripts that are needed to transform one to the other. We are most of the way to the "bronze" standard of @heil2021reproducibility without changing anything.
 
 :::{.content-visible when-format="pdf"}
+
 As an example of how we have stored some data, we can access "raw_data.csv" from the ["starter_folder"](https://github.com/RohanAlexander/starter_folder). We navigate to the file in GitHub ("inputs" $\rightarrow$ "data" $\rightarrow$ "raw_data.csv"), and then click "Raw" (@fig-githubraw).
+
 :::
 
 :::{.content-visible unless-format="pdf"}
+
 As an example of how we have stored some data, we can access "raw_data.csv" from the ["starter_folder"](https://github.com/RohanAlexander/starter_folder). We navigate to the file in GitHub ("inputs" $\rightarrow$ "data" $\rightarrow$ "raw_data.csv"), and then click "Raw" (@fig-githubraw).
+
 :::
 
 ![Getting the necessary link to be able to read a CSV from a GitHub repository](figures/github_raw_data.png){#fig-githubraw width=95% fig-align="center"}
@@ -124,6 +128,7 @@ starter_data <-
            )
 
 starter_data
+
 ```
 
 While we can store and retrieve a dataset easily in this way, it lacks explanation, a formal dictionary, and aspects such as a license that would bring it closer to aligning with the FAIR principles. Another practical concern is that the maximum file size on GitHub is 100MB, although Git Large File Storage (LFS) can be used if needed. And a final concern, for some, is that GitHub is owned by Microsoft, a for-profit US technology firm.\index{GitHub}\index{Microsoft}
@@ -158,6 +163,7 @@ color_data <-
         replace = TRUE
       )
   )
+
 ```
 
 To this point we have largely been using CSV files for our datasets. To include our data in this R package, we save our dataset in a different format, ".rda", using `save()`.
@@ -167,6 +173,7 @@ To this point we have largely been using CSV files for our datasets. To include 
 #| include: true
 
 save(color_data, file = "data/color_data.rda")
+
 ```
 
 Then we create a R file "data.R" in the "R" folder. This file will only contain documentation using `roxygen2` comments. These start with `#'`, and we follow the documentation for `troopdata` closely.
@@ -200,6 +207,7 @@ Then we create a R file "data.R" in the "R" folder. This file will only contain 
 #' @source \url{tellingstorieswithdata.com/10-store_and_share.html}
 #'
 "color_data"
+
 ```
 
 Finally, add a README that provides a summary of all of this for someone coming to the project for the first time. Examples of packages with excellent READMEs include [`ggplot2`](https://github.com/tidyverse/ggplot2#readme), [`pointblank`](https://github.com/rich-iannone/pointblank#readme), [`modelsummary`](https://github.com/vincentarelbundock/modelsummary#readme), and [`janitor`](https://github.com/sfirke/janitor#readme).
@@ -215,6 +223,7 @@ install_github("RohanAlexander/favcolordata")
 library(favcolordata)
 
 color_data
+
 ```
 
 This has addressed many of the issues that we faced earlier. For instance, we have included a README and a data dictionary, of sorts, in terms of the descriptions that we added. But if we were to try to put this package onto CRAN, then we might face some issues. For instance, the maximum size of a package is 5MB and we would quickly come up against that. We have also largely forced users to use R. While there are benefits of that, we may like to be more language agnostic [@tierney2020realistic], especially if we are concerned about the FAIR principles.
@@ -229,7 +238,6 @@ Another option is to use a dataverse,\index{dataverse!Harvard Dataverse} such as
 
 In general, these options are free and provide a DOI that can be useful for citation purposes. The use of data deposits such as these is a way to offload responsibility for the continued hosting of the dataset (which in this case is a good thing) and prevent the dataset from being lost. It also establishes a single point of truth, which should act to reduce errors [@byrd2020responsible]. Finally, it makes access to the dataset independent of the original researchers, and results in persistent metadata. That all being said, the viability of these options rests on their underlying institutions. For instance, Zenodo\index{Zenodo} is operated by CERN and many dataverses are operated by universities. These institutions are subject to, as we all are, social and political forces.
 
-
 ## Data documentation
 
 Dataset documentation\index{data!documentation} has long consisted of a data dictionary.\index{data!dictionary} This may be as straight-forward a list of the variables, a few sentences of description, and ideally a source. [The data dictionary of the ACS](https://www2.census.gov/programs-surveys/acs/tech_docs/pums/data_dict/PUMS_Data_Dictionary_2016-2020.pdf), which was introduced in @sec-farm-data, is particularly comprehensive. And OSF provides [instructions](https://help.osf.io/article/217-how-to-make-a-data-dictionary) for how to make a data dictionary. Given the workflow advocated in this book, it might be worthwhile to actually begin putting together a data dictionary as part of the simulation step i.e. before even collecting the data. While it would need to be updated, it would be another opportunity to think deeply about the data situation.
@@ -237,11 +245,12 @@ Dataset documentation\index{data!documentation} has long consisted of a data dic
 Datasheets\index{data!datasheets} [@gebru2021datasheets] are an increasingly common addition to documentation. If we think of a data dictionary as a list of ingredients for a dataset, then we could think of a datasheet as basically a nutrition label for datasets. The process of creating them enables us to think more carefully about what we will feed our model. More importantly, they enable others to better understand what we fed our model. One important task is going back and putting together datasheets for datasets that are widely used. For instance, researchers went back and wrote a datasheet for "BookCorpus", which is one of the most popular datasets in computer science,\index{computer science} and they found that around 30 per cent of the data were duplicated [@bandy2021addressing].
 
 :::{.callout-note}
+
 ## Shoulders of giants
 
 Timnit Gebru\index{Gebru, Timnit} is the founder of the Distributed Artificial Intelligence Research Institute (DAIR). After earning a PhD in Computer Science from Stanford University, Gebru joined Microsoft and then Google.\index{computer science} In addition to @bandy2021addressing, which introduced datasheets, one notable paper is @Bender2021, which discussed the dangers of language models being too large. She has made many other substantial contributions to fairness and accountability, especially @buolamwini2018gender, which demonstrated racial bias in facial analysis algorithms.
-:::
 
+:::
 
 Instead of telling us how unhealthy various foods are, a datasheet tells us things like:
 
@@ -294,6 +303,7 @@ some_private_information <-
   )
 
 some_private_information
+
 ```
 
 One option for the names would be to use a function that just took the first letter of each name. And one option for the ages would be to convert them to Roman numerals.
@@ -307,6 +317,7 @@ some_private_information |>
     names = substring(names, 1, 1),
     ages = as.roman(ages)
   )
+
 ```
 
 While the approach for the first variable, names, is good because the names cannot be backed out, the issue is that as the dataset grows there are likely to be lots of "collisions"---situations where different inputs, say "Rohan" and "Robert", both get the same output, in this case "R". It is the opposite situation for the approach for the second variable, ages. In this case, there will never be any collisions---"36" will be the only input that ever maps to "XXXVI". However, it is easy to back out the actual data, for anyone who knows roman numerals.\index{data!privacy}
@@ -359,6 +370,7 @@ While the approach for the first variable, names, is good because the names cann
 Rather than write our own hash functions, we can use cryptographic hash functions such as `md5()` from `openssl`.
 
 :::{.content-visible when-format="pdf"}
+
 ```{r}
 #| message: false
 #| warning: false
@@ -370,6 +382,7 @@ some_private_information |>
     md5_names = md5(names),
     md5_ages = md5(ages |> as.character())
   )
+
 ```
 
 ```{r}
@@ -392,6 +405,7 @@ some_private_information |>
 :::
 
 :::{.content-visible unless-format="pdf"}
+
 ```{r}
 #| message: false
 #| warning: false
@@ -401,6 +415,7 @@ some_private_information |>
     md5_names = md5(names),
     md5_ages = md5(ages |> as.character())
   )
+
 ```
 :::
 
@@ -417,8 +432,8 @@ some_private_information |>
   mutate(
     md5_of_salt = md5(names)
   )
-```
 
+```
 
 ### Simulation
 
@@ -433,9 +448,11 @@ For more nuanced situations, @koenecke2020synthetic recommend using the syntheti
 Differential privacy\index{privacy!differential privacy} is a mathematical definition of privacy [@Dwork2013, p. 6]. It is not just one algorithm, it is a definition that many algorithms satisfy. Further, there are many definitions of privacy, of which differential privacy is just one. The main issue it solves is that there are many datasets available. This means there is always the possibility that some combination of them could be used to identify respondents even if PII were removed from each of these individual datasets. For instance, experience with the Netflix prize found that augmenting the available dataset with data from IMBD resulted in better predictions, which points to why this would so commonly happen. Rather than needing to anticipate how various datasets could be combined to re-identify individuals and adjust variables to remove this possibility, a dataset that is created using a differentially private approach provides assurances that privacy will be maintained.
 
 :::{.callout-note}
+
 ## Shoulders of giants
 
 Cynthia Dwork\index{Dwork, Cynthia} is the Gordon McKay Professor of Computer Science at Harvard University.\index{computer science} After earning a PhD in Computer Science from Cornell University, she was a Post-Doctoral Research Fellow at MIT and then worked at IBM, Compaq, and Microsoft Research where she is a Distinguished Scientist. She joined Harvard in 2017. One of her major contributions is differential privacy [@dwork2006calibrating], which has become widely used.
+
 :::
 
 To motivate the definition, consider a dataset of responses and PII that only has one person in it.\index{privacy!differential privacy} The release of that dataset, as is, would perfectly identify them. At the other end of the scale, consider a dataset that does not contain a particular person. The release of that dataset could, in general, never be linked to them because they are not in it.^[An interesting counterpoint is the recent use, by law enforcement, of DNA databases to find suspects. The suspect themselves might not be in the database, but the nature of DNA means that some related individuals can nonetheless still be identified.] Differential privacy, then, is about the inclusion or exclusion of particular individuals in a dataset. An algorithm is differentially private if the inclusion or exclusion of any particular person in a dataset has at most some given factor of an effect on the probability of some output [@Oberski2020Differential].
@@ -451,12 +468,14 @@ A dataset is differentially private to different levels of privacy, based on how
 Consider a situation in which a professor wants to release the average mark for a particular assignment. The professor wants to ensure that despite that information, no student can work out the grade that another student got. For instance, consider a small class with the following marks.
 
 ```{r}
+
 set.seed(853)
 
 grades <-
   tibble(ps_1 = sample(x = (1:100), size = 10, replace = TRUE))
 
 mean(grades$ps_1)
+
 ```
 
 The professor could announce the exact mean, for instance, "The mean for the first problem set was 50.5". Theoretically, all-but-one student could let the others know their mark. It would then be possible for that group to determine the mark of the student who did not agree to make their mark public.
@@ -464,7 +483,9 @@ The professor could announce the exact mean, for instance, "The mean for the fir
 A non-statistical approach would be for the professor to add the word "roughly". For instance, the professor could say "The mean for the first problem set was roughly 50.5". The students could attempt the same strategy, but they would never know with certainty. The professor could implement a more statistical approach to this by adding noise to the mean.
 
 ```{r}
+
 mean(grades$ps_1) + runif(n = 1, min = -2, max = 2)
+
 ```
 
 The professor could then announce this modified mean. This would make the students' plan more difficult. One thing to notice about that approach is that it would not work with persistent questioning. For instance, eventually the students would be able to back out the distribution of the noise that the professor added. One implication is that the professor would need to limit the number of queries they answered about the mean of the problem set.
@@ -486,8 +507,8 @@ mech <- sensitivitySampler(mech, oracle = distr, n = 5, gamma = 0.1)
 r <- releaseResponse(mech,
                      privacyParams = DPParamsEps(epsilon = 1),
                      X = grades$ps_1)
-```
 
+```
 
 ```{r}
 #| label: tbl-diffprivaexample
@@ -504,20 +525,23 @@ tibble(actual = mean(grades$ps_1),
             num_mark_big = ",",
             num_fmt = "decimal") |>
   setNames(c("Actual mean", "Announceable mean"))
+
 ```
 
 The implementation of differential privacy is a costs and benefits issue [@hotz2022balancing; @kennetal22]. Stronger privacy protection fundamentally must mean less information [@clairemckaybowen, p. 39], and this differently affects various aspects of society. For instance, @Suriyakumar2021 found that, in the context of health care, differentially private learning can result in models that are disproportionately affected by large demographic groups. A variant of differential privacy has recently been implemented by the US census.\index{privacy!differential privacy} It may have a significant effect on redistricting [@kenny2021impact] and result in some publicly available data that are unusable in the social sciences [@ruggles2019differential].
 
-
-
 ## Data efficiency
 
 :::{.content-visible when-format="pdf"}
+
 For the most part, done is better than perfect, and unnecessary optimization is a waste of resources.\index{efficiency!data} However, at a certain point, we need to adapt new ways of dealing with data, especially as our datasets start to get larger. Here we discuss iterating through multiple files, and then turn to the use of Apache Arrow and parquet. Another natural step would be the use of SQL, which is covered in the ["SQL" Online Appendix](https://tellingstorieswithdata.com/26-sql.html).
+
 :::
 
 :::{.content-visible unless-format="pdf"}
+
 For the most part, done is better than perfect, and unnecessary optimization is a waste of resources.\index{efficiency!data} However, at a certain point, we need to adapt new ways of dealing with data, especially as our datasets start to get larger. Here we discuss iterating through multiple files, and then turn to the use of Apache Arrow and parquet. Another natural step would be the use of SQL, which is covered in [Online Appendix -@sec-sql].
+
 :::
 
 ### Iteration
@@ -552,6 +576,7 @@ simulate_and_save_data <- function(month) {
 }
 
 walk(month.name |> tolower(), simulate_and_save_data)
+
 ```
 
 ```{r}
@@ -578,6 +603,7 @@ simulate_and_save_data <- function(month) {
 }
 
 walk(month.name |> tolower(), simulate_and_save_data)
+
 ```
 
 Having created our dataset with each month saved to a different CSV, we can now read it in. There are a variety of ways to do this. The first step is that we need to get a list of all the CSV files in the directory. We use the "glob" argument here to specify that we are interested only in the ".csv" files, and that could change to whatever files it is that we are interested in.
@@ -590,8 +616,8 @@ files_of_interest <-
   dir_ls(path = "user_data/", glob = "*.csv")
 
 files_of_interest
-```
 
+```
 
 ```{r}
 #| eval: true
@@ -601,6 +627,7 @@ files_of_interest <- dir_ls(path = "inputs/data/user_data/", glob = "*.csv") |>
   str_remove("inputs/data/user_data/")
 
 files_of_interest
+
 ```
 
 We can pass this list to `read_csv()` and it will read them in and combine them.
@@ -620,6 +647,7 @@ year_of_data <-
   )
 
 year_of_data
+
 ```
 
 ```{r}
@@ -640,6 +668,7 @@ year_of_data <-
   )
 
 year_of_data
+
 ```
 
 It prints out the first ten days of April, because alphabetically April is the first month of the year and so that was the first CSV that was read.
@@ -653,6 +682,7 @@ This works well when we have CSV files, but we might not always have CSV files a
 year_of_data_using_purrr <-
   files_of_interest |>
   map_dfr(read_csv, .id = "file")
+
 ```
 
 ```{r}
@@ -669,6 +699,7 @@ year_of_data_using_purrr <-
   mutate(file = str_remove(file, "inputs/data/user_data/"))
 
 year_of_data_using_purrr
+
 ```
 
 ### Apache Arrow
@@ -676,9 +707,11 @@ year_of_data_using_purrr
 CSVs are commonly used without much thought in data science.\index{data science!CSV alternatives}\index{data science!parquet}\index{efficiency!parquet} And while CSVs are good because they have little overhead and can be manually inspected, this also means they are quite minimal. This can lead to issues, for instance class is not preserved, and file sizes can become large leading to storage and performance issues. There are various alternatives, including Apache Arrow, which stores data in columns rather than rows like CSV. We focus on the ".parquet" format from Apache Arrow.\index{Apache Arrow!parquet} Like a CSV, parquet is an open standard.\index{parquet} The R package, `arrow`, enables us to use this format. The use of parquet has the advantage of requiring little change from us while delivering significant benefits.
 
 :::{.callout-note}
+
 ## Shoulders of giants
 
 Wes McKinney\index{McKinney, Wes} holds an undergraduate degree in theoretical mathematics from MIT. Starting in 2008, while working at AQR Capital Management, he developed the Python package, pandas, which has become a cornerstone of data science. He later wrote *Python for Data Analysis* [@pythonfordataanalysis]. In 2016, with Hadley Wickham,\index{Wickham, Hadley} he designed Feather, which was released in 2016. He now works as CTO of Voltron Data, which focuses on the Apache Arrow project.
+
 :::
 
 In particular, we focus on the benefit of using parquet for data storage, such as when we want to save a copy of an analysis dataset that we cleaned and prepared.\index{parquet!data storage} Among other aspects, parquet brings two specific benefits, compared with CSV:\index{parquet!benefits}
@@ -710,6 +743,7 @@ write_parquet(x = a_million_random_digits,
 
 file_size("a_million_random_digits.csv")
 file_size("a_million_random_digits.parquet")
+
 ```
 
 ```{r}
@@ -718,6 +752,7 @@ file_size("a_million_random_digits.parquet")
 
 file.remove("a_million_random_digits.csv")
 file.remove("a_million_random_digits.parquet")
+
 ```
 
 We can write a parquet file with `write_parquet()` and we can read a parquet with `read_parquet()`. We get significant reductions in file size when we compare the size of the same datasets saved in each format, especially as they get larger (@tbl-filesize). The speed benefits of using parquet are most notable for larger datasets. It turns them from being impractical to being usable.\index{parquet!benefits}
@@ -811,6 +846,7 @@ file_size_comparison <-
   list_rbind()
 
 write_csv(file_size_comparison, file = "inputs/data/file_size_comparison.csv")
+
 ```
 
 ```{r}
@@ -850,11 +886,8 @@ read_csv("inputs/data/file_size_comparison.csv", show_col_types = FALSE) |>
       "Parquet read time (sec)"
     )
   )
+
 ```
-
-
-
-
 
 <!-- , and so we will consider the ProPublica US Open Payments Data, from the Centers for Medicare & Medicaid Services, which is 6.66GB and available [here](https://www.propublica.org/datastore/dataset/cms-open-payments-data-2016). It is available as a CSV file, and so we will compare reading in the data and creating a summary of the average total amount of payment on the basis of state using `read_csv()`, with the same task using `read_csv_arrow()`. We find a considerable speed up when using `read_csv_arrow()` (@tbl-needforspeedpropublica). -->
 
@@ -916,7 +949,6 @@ read_csv("inputs/data/file_size_comparison.csv", show_col_types = FALSE) |>
 <!--     format = "csv" -->
 <!--     ) -->
 
-
 <!-- open_payments_data_arrow <- -->
 <!--   read_csv_arrow( -->
 <!--     "~/Downloads/OP_DTL_GNRL_PGYR2016_P01172018.csv", -->
@@ -965,7 +997,6 @@ read_csv("inputs/data/file_size_comparison.csv", show_col_types = FALSE) |>
 <!-- ```{r} -->
 <!-- #| echo: true -->
 <!-- #| eval: false -->
-
 
 <!-- library(arrow) -->
 <!-- library(tidyverse) -->
@@ -1040,7 +1071,6 @@ read_csv("inputs/data/file_size_comparison.csv", show_col_types = FALSE) |>
 <!-- toc(log = TRUE, quiet = TRUE) -->
 <!-- ``` -->
 
-
 <!-- ```{r} -->
 <!-- #| label: tbl-needforspeedpropublica -->
 <!-- #| echo: false -->
@@ -1099,9 +1129,9 @@ We will use parquet more in the remainder of this book.
 
 ### Class activities {.unnumbered}
 
-
 - Use the [starter folder](https://github.com/RohanAlexander/starter_folder) and create a new repo. Add a link to the GitHub repo in the class's shared Google Doc.
 - Add the following code to a simulation R script, then lint it. What do you think about the recommendations?
+
 ```{r}
 #| echo: true
 #| eval: false
@@ -1111,12 +1141,15 @@ tibble(
   age_days=runif(n=10,min=0,max=36500),
   age_years=age_days%/%365
 )
+
 ```
 
 - Simulate a dataset with ten million observations and at least five variables, one of which must be a date. Save it in both CSV and parquet formats. What is the file size difference?
 - Discuss datasheets in the context of the dataset that you simulated.
 - Pretend you were joining two datasets with `left_join()`. When joining datasets it is easy to accidentally duplicate or remove rows. Please add some tests that might put your mind at ease.
+
 ```{r}
+
 set.seed(853)
 
 # CONSIDER A CHANGE HERE
@@ -1152,13 +1185,19 @@ joined_data <-
   left_join(education_labels, by = join_by(education_value))
 
 # CONSIDER A CHANGE HERE
+
 ```
+
 - Modify the following code to show why using "T" instead of "TRUE" should generally not be done (hint: assign "T" to "FALSE")?
+
 ```{r}
+
 set.seed(853)
 # MAKE CHANGE HERE
 sample(x = 1:5, size = 5, replace = T)
+
 ```
+
 - Working with the instructor, pick a chapter from @lewiscrystal and create a five-slide summary of the key take-aways from the chapter. Present to the class.
 - Working with the instructor, make a pull request that fixes some small aspect of a work-in-progress book.^[Closely supervise the students, and especially check the pull requests before they are made to ensure they are reasonable; we don't want to annoy people. A good option might a fix to a couple of typos or similar.] Options include:^[These will need to change each year.] @lewiscrystal or @r4ds.
 - Pretend that you are in a small class, and have some results from an assessment (@tbl-classmarks). Use the code, but change the seed to generate your own dataset.
@@ -1166,6 +1205,7 @@ sample(x = 1:5, size = 5, replace = T)
     - Continuing with the results that you generated, please write code that simulates the dataset. You will need to decide which features are important and which are not. Note two interesting aspects of this and then share with the class.
     - Continuing with the results that you generated, please: 1) work out the class mean, 2) remove the mark of one student, 3) provide the mean and the off-by-one dataset to another group. Can they work out the mark of the student who opted not to share?
     - Finally, please do the same exercise, but create a differentially private mean. What are they able to figure out now?
+
 ```{r}
 #| label: tbl-classmarks
 #| tbl-cap: "Simulated students and their mark (out of 100) in a particular class paper"
@@ -1189,6 +1229,7 @@ class_marks |>
   tt() |>
   style_tt(j = 1:2, align = "lr") |>
   setNames(c("Student", "Mark"))
+
 ```
 
 ### Task {.unnumbered}
@@ -1200,9 +1241,13 @@ Use Quarto, and include an appropriate title, author, date, link to a GitHub rep
 ### Paper {.unnumbered}
 
 :::{.content-visible when-format="pdf"}
+
 At about this point the *Dysart* Paper in the ["Papers" Online Appendix](https://tellingstorieswithdata.com/23-assessment.html) would be appropriate.
+
 :::
 
 :::{.content-visible unless-format="pdf"}
+
 At about this point the *Dysart* Paper from [Online Appendix -@sec-papers] would be appropriate.
+
 :::

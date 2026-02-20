@@ -51,6 +51,7 @@ Download "AustralianPoliticians.db" [here](https://github.com/RohanAlexander/tel
 There are three key SQL commands that we now cover: `SELECT`, `FROM`, and `WHERE`. `SELECT` allows us to specify particular columns of the data, and we can consider `SELECT` in a similar way to `select()`. In the same way that we need to specify a dataset with `select()` and did that using a pipe operator, we specify a dataset with `FROM`. For instance, we could open "Execute SQL", and then type the following, and click "Execute".
 
 ```{sql}
+
 #| include: true
 #| eval: false
 
@@ -58,11 +59,13 @@ SELECT
     surname   
 FROM
     politicians;
+
 ```
 
 The result is that we obtain the column of surnames. We could select multiple columns by separating them with commas, or all of them by using an asterisk, although this is not best practice because if the dataset were to change without us knowing then our result would differ.
 
 ```{sql}
+
 #| include: true
 #| eval: false
 
@@ -71,9 +74,11 @@ SELECT
     surname   
 FROM
     politicians;
+
 ```
 
 ```{sql}
+
 #| include: true
 #| eval: false
 
@@ -81,11 +86,13 @@ SELECT
     *
 FROM
     politicians;
+
 ```
 
 And, finally, if there were repeated rows, then we could just look at the unique ones using `DISTINCT`, in a similar way to `distinct()`.
 
 ```{sql}
+
 #| include: true
 #| eval: false
 
@@ -93,11 +100,13 @@ SELECT
     DISTINCT surname   
 FROM
     politicians;
+
 ```
 
 So far we have used `SELECT` along with `FROM`. The third command that is commonly used is `WHERE`, and this will allow us to focus on particular rows, in a similar way to `filter()`.
 
 ```{sql}
+
 #| include: true
 #| eval: false
 
@@ -109,11 +118,13 @@ FROM
     politicians     
 WHERE
     firstName = "Myles";
+
 ```
 
 All the usual logical operators are fine with `WHERE`, such as "=", "!=", ">", "<", ">=", and "<=". We could combine conditions using `AND` and `OR`.
 
 ```{sql}
+
 #| include: true
 #| eval: false
 
@@ -126,11 +137,13 @@ FROM
 WHERE
     firstName = "Myles" 
     OR firstName = "Ruth";
+
 ```
 
 If we have a query that gave a lot of results, then we could limit the number of them with `LIMIT`. 
 
 ```{sql}
+
 #| include: true
 #| eval: false
 
@@ -142,11 +155,13 @@ FROM
     politicians          
 WHERE
     firstName = "Robert"       LIMIT 5;
+
 ```
 
 And we could specify the order of the results with `ORDER`.
 
 ```{sql}
+
 #| include: true
 #| eval: false
 
@@ -160,11 +175,13 @@ WHERE
     firstName = "Robert" 
 ORDER BY
     surname DESC;
+
 ```
 
 See the rows that are pretty close to a criteria:
 
 ```{sql}
+
 #| include: true
 #| eval: false
 
@@ -176,6 +193,7 @@ FROM
     politicians      
 WHERE
     firstName LIKE "Ma__";
+
 ```
 
 The "_" above is a wildcard that matches to any character. This provides results that include "Mary" and "Mark". `LIKE` is not case-sensitive: "Ma\_\_" and "ma\_\_" both return the same results.
@@ -183,6 +201,7 @@ The "_" above is a wildcard that matches to any character. This provides results
 Focusing on missing data is possible using "NULL" or "NOT NULL". 
 
 ```{sql}
+
 #| include: true
 #| eval: false
 
@@ -195,11 +214,13 @@ FROM
     politicians      
 WHERE
     comment     IS NULL;
+
 ```
 
 An ordering is applied to number, date, and text fields that means we can use `BETWEEN` on all those, not just numeric. For instance, we could look for all surnames that start with a letter between X and Z (not including Z).
 
 ```{sql}
+
 #| include: true
 #| eval: false
 
@@ -211,11 +232,13 @@ FROM
     politicians      
 WHERE
     surname     BETWEEN "X" AND "Z";
+
 ```
 
 Using `WHERE` with a numeric variable means that `BETWEEN` is inclusive, compared with the example with letters which is not.
 
 ```{sql}
+
 #| include: true
 #| eval: false
 
@@ -228,11 +251,13 @@ FROM
     politicians      
 WHERE
     birthYear     BETWEEN 1980 AND 1990;
+
 ```
 
 In addition to providing us with dataset observations that match what we asked for, we can modify the dataset. For instance, we could edit a value using `UPDATE` and `SET`.
 
 ```{sql}
+
 #| include: true
 #| eval: false
 
@@ -242,11 +267,13 @@ SET
     displayName = "John Gilbert Alexander"
 WHERE
     uniqueID = "Alexander1951";
+
 ```
 
 We can integrate if-else logic with `CASE` and `ELSE`. For instance, we add a column called "wasTreasurer", which is "Yes" in the case of "Josh Frydenberg", and "No" in the case of "Kevin Rudd", and "Unsure" for all other cases.
 
 ```{sql}
+
 #| include: true
 #| eval: false
 
@@ -262,11 +289,13 @@ SELECT
     END AS "wasTreasurer"        
 FROM
     politicians;
+
 ```
 
 We can create summary statistics using commands such as `COUNT`, `SUM`, `MAX`, `MIN`, `AVG`, and `ROUND` in the place of `summarize()`. `COUNT` counts the number of rows that are not empty for some column by passing the column name, and this is similarly how `MIN`, etc, work.
 
 ```{sql}
+
 #| include: true
 #| eval: false
 
@@ -274,9 +303,11 @@ SELECT
     COUNT(uniqueID)   
 FROM
     politicians;
+
 ```
 
 ```{sql}
+
 #| include: true
 #| eval: false
 
@@ -284,11 +315,13 @@ SELECT
     MIN(birthYear)   
 FROM
     politicians;
+
 ```
 
 We can get results based on different groups in our dataset using `GROUP BY`, in a similar manner to `group_by` in R.
 
 ```{sql}
+
 #| include: true
 #| eval: false
 
@@ -298,11 +331,13 @@ FROM
     politicians     
 GROUP BY
     gender;
+
 ```
 
 And finally, we can combine two tables using `LEFT JOIN`. We need to be careful to specify the matching columns using dot notation. 
 
 ```{sql}
+
 #| include: true
 #| eval: false
 
@@ -316,10 +351,10 @@ FROM
 LEFT JOIN
     party     
         ON politicians.uniqueID = party.uniqueID;
+
 ```
 
 As SQL is not our focus we have only provided a brief overview of some essential commands. From a career perspective you should develop a comfort with SQL. It is so integrated into data science that it would be "difficult to get too far without it" [@robinsonnolis2020, p. 8] and that "almost any" data science interview will include questions about SQL [@robinsonnolis2020, p. 110].
-
 
 ## Exercises
 

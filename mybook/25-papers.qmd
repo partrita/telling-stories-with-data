@@ -14,12 +14,12 @@ library(tidyverse)
 library(tinytable)
 
 rubric <- read_csv(here::here("inputs/rubric.csv"))
+
 ```
 
 One way to build understanding of material is by using it. The purpose of these papers is to give you a chance to implement what you have learnt in a real-world setting. Completing the papers is also important from the perspective of building a portfolio for job applications.
 
 Expectations change from year to year so please treat the "previous examples" as examples rather than templates.
-
 
 ## *Donaldson* Paper {#sec-paper-one} 
 
@@ -81,7 +81,6 @@ Expectations change from year to year so please treat the "previous examples" as
 - The paper in the starter folder has a data sheets appendix, so do I need to put together a data sheet? No. The starter folder is designed to be applicable to all of the papers; just delete the aspects that you do not need. 
 - What does "graph the actual data" mean? If you have, say 5,000 observations in the dataset and three variables, then for every variable there should be a graph that has 5,000 points in the case of dots, or adds up to 5,000 in the case of bar charts and histograms.
 
-
 ### Rubric
 
 ```{r}
@@ -93,6 +92,7 @@ Expectations change from year to year so please treat the "previous examples" as
 rubric |>
   filter(!Component %in% c("Data cited", "Class paper", "Estimand", "Replication", "Model", "Results", "Discussion", "Enhancements", "Idealized methodology", "Idealized survey", "Pollster review", "Datasheet", "Parquet", "Surveys, sampling, and observational data")) |>
   tt()
+
 ```
 
 ### Previous examples
@@ -128,12 +128,6 @@ rubric |>
 [Morgaine Westin](inputs/pdfs/paper_one-2021-Morgaine_Westin.pdf), and 
 [Rachael Lam](inputs/pdfs/paper_one-2021-Rachael_Lam.pdf).
 
-
-
-
-
-
-
 ## *Mawson* Paper {#sec-paper-two}
 
 ### Task
@@ -158,13 +152,11 @@ rubric |>
 - Submit a link to the GitHub repo. Please do not update the repo after the deadline.
 - There should be no evidence that this is a class assignment.
 
-
 ### Checks
 
 - The paper should not just copy/paste the code from the original paper, but have instead used that as a foundation to work from.
 - Your paper should have a link to the associated GitHub repository and the DOI of the Social Science Reproduction Platform replication that you conducted. 
 - Make sure you have referenced everything, including R. Strong submissions will draw on related literature in the discussion (and other sections) and would be sure to also reference those. The style of references does not matter, provided it is consistent.
-
 
 ### FAQ
 
@@ -189,6 +181,7 @@ rubric |>
 rubric |>
   filter(!Component %in% c("Model", "Enhancements", "Idealized methodology", "Idealized survey", "Pollster review", "Datasheet", "Parquet", "Surveys, sampling, and observational data")) |>
   tt()
+
 ```
 
 ### Previous examples
@@ -201,15 +194,6 @@ rubric |>
 [Yuanyi (Leo) Liu and Qi Er (Emma) Teng](inputs/pdfs/2024-paper2-YuanyiLiu_QiErTeng.pdf).
 - 2023: [Jayden Jung, Finn Korol, and Sofia_Sellitto](inputs/pdfs/paper-2-2023-Jayden_Jung_Finn_Korol_Sofia_Sellitto.pdf).
 - 2022: [Alyssa Schleifer, Hudson Yuen, Tamsen Yau](inputs/pdfs/paper_two-2022-Alyssa_Schleifer_Hudson_Yuen_Tamsen_Yau.pdf); [Olaedo Okpareke, Arsh Lakhanpal, Swarnadeep Chattopadhyay](inputs/pdfs/paper_two-2022-Olaedo_Okpareke_Arsh_Lakhanpal_Swarnadeep_Chattopadhyay.pdf); and [Kimlin Chin](inputs/pdfs/paper_two-2022-Kimlin_Chin.pdf).
-
-
-
-
-
-
-
-
-
 
 ## *Howrah* Paper {#sec-paper-three}
 
@@ -228,7 +212,6 @@ rubric |>
 - Submit a link to the GitHub repo. Please do not update the repo after the deadline.
 - The paper should be well-written, draw on relevant literature, and explain all technical concepts. Pitch it at a university-educated, but non-specialist, audience. Use survey, sampling, and statistical terminology, but be sure to explain it. The paper should flow, and be easy to follow and understand.
 - There should be no evidence that this is a class paper.
-
 
 ### Checks
 
@@ -251,6 +234,7 @@ rubric |>
 rubric |>
   filter(!Component %in% c("Replication", "Enhancements", "Model", "Idealized methodology", "Datasheet", "Parquet", "Surveys, sampling, and observational data")) |>
   tt()
+
 ```
 
 ### Previous examples
@@ -263,10 +247,6 @@ rubric |>
 [Luckyna Laurent, Samita Prabhasavat, and Zoie So](inputs/pdfs/paper3-2022-LuckynaLaurent_SamitaPrabhasavat_ZoieSo.pdf); 
 [Pascal Lee Slew, and Yunkyung_Park](inputs/pdfs/paper3-2022-Pascal_Lee_Slew_Yunkyung_Park.pdf); and
 [Ray Wen, Isfandyar Virani, and Rayhan Walia](inputs/pdfs/paper3-2022-Ray_Wen_Isfandyar_Virani_Rayhan_Walia.pdf).
-
-
-
-
 
  
 ## *Dysart* Paper {#sec-paper-four}
@@ -289,7 +269,6 @@ into a usable dataset, then write a short paper telling a story with the data.
 - Submit a link to the GitHub repo. Please do not update the repo after the deadline.
 - There should be no evidence that this is a class paper.
 
-
 ### Checks
 
 - Use GitHub in a well-developed way by making at least a few commits and using descriptive commit messages.
@@ -304,7 +283,6 @@ into a usable dataset, then write a short paper telling a story with the data.
 <!-- - The Canadian GSS is available to University of Toronto students via the library. In order to use it you need to clean and prepare it. Code to do this for one year is being distributed alongside this problem set and was discussed in lectures.  -->
 <!-- - You are welcome to simply use this code and this year, but the topic of that year will constrain your focus. Naturally, you are welcome to adapt the code to other years. If you use the code exactly as is then you must cite it. If you adapt the code then you don't have to cite it, as it has a MIT license, but it would be appropriate to at least mention and acknowledge it, depending on how close your adaption is. -->
 
-
 ### Rubric
 
 ```{r}
@@ -316,8 +294,8 @@ into a usable dataset, then write a short paper telling a story with the data.
 rubric |>
   filter(!Component %in% c("Replication", "Enhancements", "Model", "Idealized methodology", "Idealized survey", "Pollster review", "Surveys, sampling, and observational data")) |>
   tt()
-```
 
+```
 
 ### Previous examples
 
@@ -325,14 +303,6 @@ rubric |>
 [Charles Lu, Mahak Jain, and Yujun Jiao](inputs/pdfs/paper-4-2022-CharlesLu_MahakJain_YujunJiao.pdf); 
 [Jacob Yoke Hong Si](inputs/pdfs/paper-4-2022-jacob_yoke_hong_si.pdf); and 
 [Pascal Lee Slew and Yunkyung Park](inputs/pdfs/paper-4-2022-PascalLeeSlew_YunkyungPark.pdf).
-
-
-
-
-
-
-
-
 
 ## *Spadina* Paper {#sec-spadina}
 
@@ -344,7 +314,6 @@ rubric |>
 - You should use this [starter folder](https://github.com/RohanAlexander/starter_folder).
 - Submit a link to the GitHub repo. Please do not update the repo after the deadline.
 - There should be no evidence that this is a class paper.
-
 
 ### Checks
 
@@ -369,8 +338,8 @@ rubric |>
 rubric |>
   filter(!Component %in% c("Replication", "Enhancements", "Idealized methodology", "Idealized survey", "Pollster review", "Surveys, sampling, and observational data")) |>
   tt()
-```
 
+```
 
 ### Previous examples
 
@@ -384,11 +353,7 @@ rubric |>
 
 <!-- - Paper about causal inference. -->
 
-
 <!-- - You must include a DAG (probably in the model section). -->
-
-
-
 
 ## *St George* Paper {#sec-st-george-paper}
 
@@ -408,7 +373,6 @@ rubric |>
 - Submit a link to the GitHub repo. Please do not update the repo after the deadline.
 - There should be no evidence that this is a class paper.
 
-
 ### Checks
 
 - Check that you have both appendices required.
@@ -417,7 +381,6 @@ rubric |>
 
 - Do I need to use all the predictors in the dataset? No, you should be deliberate and thoughtful about the predictors that you use.
 - What about the electoral college? US presidential elections are won based on the electoral college. It is fine to just focus the popular vote. But exceptional submissions would consider the popular vote, possibly by state, and then construct an electoral college estimate, being careful to propagate uncertainty.
-
 
 ### Rubric
 
@@ -430,8 +393,8 @@ rubric |>
 rubric |>
   filter(!Component %in% c("Replication", "Enhancements", "Datasheet", "Surveys, sampling, and observational data")) |>
   tt()
-```
 
+```
 
 ### Previous examples
 
@@ -440,10 +403,6 @@ rubric |>
 [Sophia Brothers, Deyi Kong, and Rayan Awad Alim](https://github.com/eeeee-cmd/US_Election/blob/main/paper/paper.pdf); 
 [Colin Sihan Yang, Lexun Yu, and Siddharth Gowda](https://github.com/yulexun/2024uselectionprediction/blob/main/paper/paper.pdf); and 
 [Yuanyi (Leo) Liu, Dezhen Chen, and Ziyuan Shen](https://github.com/leoyliu/Forecasting-the-2024-US-Presidential-Election/blob/main/paper/paper.pdf).
-
-
-
-
 
 ## *Spofforth* Paper {#sec-paper-five}
 
@@ -461,12 +420,9 @@ rubric |>
 - Submit a link to the GitHub repo. Please do not update the repo after the deadline.
 - There should be no evidence that this is a class paper.
 
-
-
 ### FAQ
 
 - How much should I write? Most students submit something in the 10-to-15-page range, but it is up to you. Be precise and thorough.
-
 
 ### Rubric
 
@@ -479,6 +435,7 @@ rubric |>
 rubric |>
   filter(!Component %in% c("Replication", "Enhancements", "Idealized methodology", "Idealized survey", "Pollster review", "Datasheet", "Surveys, sampling, and observational data")) |>
   tt()
+
 ```
 
 ### Previous examples
@@ -487,8 +444,6 @@ rubric |>
 [Jeongwoo Kim, Jiwon Choi](inputs/pdfs/kim_choi.pdf); 
 [Talia Fabregas, Fatimah Yunusa, Aamishi Sundeep Avarsekar](inputs/pdfs/fabregas_yunusa_avarsekar.pdf).
 - 2020: [Alen Mitrovski, Xiaoyan Yang, Matthew Wankiewicz](inputs/pdfs/paper_five_2020-Mitrovski_Yang_Wankiewicz.pdf) (this paper received an "Honorable Mention" in the ASA December 2020 Undergraduate Statistics Research Project competition.)
-
-
 
 ## Final paper {#sec-final-paper}
 
@@ -529,6 +484,7 @@ rubric |>
 rubric |>
   filter(!Component %in% c("Replication", "Idealized methodology", "Idealized survey", "Pollster review", "Datasheet")) |>
   tt()
+
 ```
 
 ### Previous examples

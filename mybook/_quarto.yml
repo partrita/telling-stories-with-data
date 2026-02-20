@@ -2,10 +2,10 @@ project:
   type: book
 
 book:
-  title: "데이터로 이야기하기" # Korean Title
-  subtitle: "R과 Python을 활용한 애플리케이션과 함께" # Korean Subtitle
-  author: "Rohan Alexander" # Author remains the same
-  date: "2023년 7월 27일" # Date in Korean format - I'll use the original date for now, can be updated
+  title: "데이터로 이야기하기"
+  subtitle: "R과 Python을 활용한 애플리케이션과 함께"
+  author: "Rohan Alexander"
+  date: "2023-07-07"
   search: true
   cover-image: /figures/tellingstorieswithdatapainting.png # Adjusted path
   repo-actions: [edit]
@@ -15,31 +15,31 @@ book:
   chapters:
     - index.qmd # Korean version of index
     - 00-errata_ko.qmd # Korean version
-    - part: "기초" # Korean "Foundations"
+    - part: "데이터의 기초"
       chapters:
         - 01-introduction_ko.qmd
         - 02-drinking_from_a_fire_hose_ko.qmd
         - 03-workflow_ko.qmd
-    - part: "소통"  # Korean "Communication"
+    - part: "데이터로 소통"
       chapters:
         - 04-writing_research_ko.qmd
         - 05-graphs_tables_maps_ko.qmd
-    - part: "획득"
+    - part: "데이터 얻기"
       chapters:
         - 06-farm_ko.qmd
         - 07-gather_ko.qmd
         - 08-hunt_ko.qmd
-    - part: "준비"
+    - part: "데이터 준비"
       chapters:
         - 09-clean_and_prepare_ko.qmd
         - 10-store_and_share_ko.qmd
         - 11-eda_ko.qmd
-    - part: "모델링"
+    - part: "데이터 모델링"
       chapters:
         - 12-ijalm_ko.qmd
         - 13-ijaglm_ko.qmd
         - 13-prediction_ko.qmd
-    - part: "적용"
+    - part: "실제 데이터에 적용"
       chapters:
         - 14-causality_from_obs_ko.qmd
         - 15-mrp_ko.qmd
@@ -67,30 +67,3 @@ format:
       - cosmo
       - custom.scss
     callout-appearance: simple
-  # pdf:
-  #   documentclass: krantz
-  #   include-in-header: latex/preamble.tex
-  #   include-before-body: latex/before_body.tex
-  #   include-after-body: latex/after_body.tex
-  #   keep-tex: true
-  #   callout-appearance: simple
-  #   papersize: a4
-  #   geometry: # 여백 설정
-  #     - top=3cm
-  #     - bottom=3cm
-  #     - left=2.5cm
-  #     - right=2.5cm
-  #   prefer-html: true # HTML 위젯 스크린샷 필요 시
-  typst:
-    toc: true
-    section-numbering: 1.1.a
-    # columns: 2
-
-# Add language setting for Korean
-lang: ko
-
-# mainfont: "Noto Serif CJK KR"
-# sansfont: "Noto Sans CJK KR"
-mainfont: "Noto Serif KR"
-sansfont: "Noto Sans KR"
-monofont: "Noto Sans KR"

@@ -54,6 +54,7 @@ library(rstanarm)
 library(scales)
 library(tidyverse)
 library(tinytable)
+
 ```
 
 ## Introduction
@@ -104,6 +105,7 @@ department_two <-
 both_departments <- rbind(department_one, department_two)
 
 both_departments
+
 ```
 
 ```{r}
@@ -127,6 +129,7 @@ both_departments |>
   theme_minimal() +
   scale_color_brewer(palette = "Set1") +
   theme(legend.position = "bottom")
+
 ```
 
 Simpson's paradox is often illustrated using real-world data from University of California, Berkeley,\index{Berkeley} on graduate admissions [@bickel1975sex]. This paper was mentioned in @sec-on-writing as having one of the greatest sub-titles ever published. @Hernn2011 create DAGs that further illuminate the relationship and the cause of the paradox.
@@ -158,6 +161,7 @@ penguins |>
   theme_minimal() +
   scale_color_brewer(palette = "Set1") +
   theme(legend.position = "bottom")
+
 ```
 
 ### Berkson's paradox
@@ -188,8 +192,8 @@ general_public <- tibble(
 )
 
 professionals_and_public <- bind_rows(professionals, general_public)
-```
 
+```
 
 ```{r}
 #| eval: true
@@ -212,8 +216,8 @@ professionals_and_public |>
   theme_minimal() +
   scale_color_brewer(palette = "Set1") +
   theme(legend.position = "bottom")
-```
 
+```
 
 ## Difference-in-differences
 
@@ -265,6 +269,7 @@ simulated_diff_in_diff <-
   )
 
 simulated_diff_in_diff
+
 ```
 
 ```{r}
@@ -283,6 +288,7 @@ simulated_diff_in_diff |>
   labs(x = "Time period", y = "Serve speed", color = "Person got a new racket") +
   scale_color_brewer(palette = "Set1") +
   theme(legend.position = "bottom")
+
 ```
 
 We can obtain our estimate manually, by looking at the average difference of the differences. When we do that, we find that we estimate the effect of the new tennis racket to be 5.06, which is similar to what we simulated.
@@ -305,6 +311,7 @@ ave_diff <-
 
 # Difference between the average differences of each group
 ave_diff$average_difference[2] - ave_diff$average_difference[1]
+
 ```
 
 And we can use linear regression to get the same result. The model we are interested in is:
@@ -334,8 +341,8 @@ saveRDS(
   diff_in_diff_example_regression,
   file = "diff_in_diff_example_regression.rds"
 )
-```
 
+```
 
 ```{r}
 #| echo: false
@@ -348,6 +355,7 @@ saveRDS(
   diff_in_diff_example_regression,
   file = "outputs/model/diff_in_diff_example_regression.rds"
 )
+
 ```
 
 ```{r}
@@ -358,6 +366,7 @@ saveRDS(
 
 diff_in_diff_example_regression <-
   readRDS(file = "diff_in_diff_example_regression.rds")
+
 ```
 
 ```{r}
@@ -368,8 +377,8 @@ diff_in_diff_example_regression <-
 
 diff_in_diff_example_regression <-
   readRDS(file = "outputs/model/diff_in_diff_example_regression.rds")
-```
 
+```
 
 ```{r}
 #| tbl-cap: "Illustration of simulated data that shows a difference before and after getting a new tennis racket"
@@ -380,8 +389,8 @@ diff_in_diff_example_regression <-
 modelsummary(
   diff_in_diff_example_regression
 )
-```
 
+```
 
 ### Assumptions
 
@@ -396,15 +405,6 @@ There are four main threats to validity when we use difference-in-differences, a
 3. Long-term effects compared with reliability. As we discussed in @sec-hunt-data, there is a trade-off between the length of the analysis that we run. As we run the analysis for longer there is more opportunity for other factors to affect the results. There is also increased chance for someone who was not treated to be treated. But, on the other hand, it can be difficult to convincingly argue that short-term results will continue in the long term.
 4. Functional form dependence. This is less of an issue when the outcomes are similar, but if they are different then functional form may be responsible for some aspects of the results.
 
-
-
-
-
-
-
-
-
-
 ### French newspaper prices between 1960 and 1974
 
 In this case study we introduce @angelucci2019newspapers. They are interested in understanding the effect of the introduction of television on French newspapers. We will replicate one of the main findings.\index{France!newspaper prices}\index{difference-in-differences!French newspapers}
@@ -418,13 +418,14 @@ We can get free access to the [data](https://www.openicpsr.org/openicpsr/project
 #| include: true
 
 newspapers <- read_dta("Angelucci_Cage_AEJMicro_dataset.dta")
-```
 
+```
 
 ```{r}
 #| echo: false
 
 newspapers <- read_dta("inputs/data/116438-V1/data/dta/Angelucci_Cage_AEJMicro_dataset.dta")
+
 ```
 
 There are 1,196 observations in the dataset and 52 variables. @angelucci2019newspapers are interested in the 1960-1974 time period which has around 100 newspapers. There are 14 national newspapers at the beginning of the period and 12 at the end. The key period is 1967, when the French government announced it would allow advertising on television. @angelucci2019newspapers argue that national newspapers were affected by this change, but local newspapers were not. The national newspapers are the treatment group and the local newspapers are the control group.
@@ -445,6 +446,7 @@ newspapers <-
          year = as.integer(year))
 
 newspapers
+
 ```
 
 We are interested in what happened from 1967 onward, especially in terms of advertising revenue, and whether that was different for national, compared with local newspapers (@fig-frenchnewspapersrevenue). We use `scales` to adjust the y-axis.
@@ -470,8 +472,8 @@ newspapers |>
   facet_wrap(vars(type), nrow = 2) +
   theme_minimal() +
   geom_vline(xintercept = 1966.5, linetype = "dashed")
-```
 
+```
 
 The model that we are interested in estimating is:
 
@@ -533,8 +535,8 @@ saveRDS(
   subscription_price,
   file = "subscription_price.rds"
 )
-```
 
+```
 
 ```{r}
 #| echo: false
@@ -557,6 +559,7 @@ saveRDS(
   subscription_price,
   file = "outputs/model/subscription_price.rds"
 )
+
 ```
 
 ```{r}
@@ -573,8 +576,8 @@ ad_revenue_div_circulation <-
 
 subscription_price <-
   readRDS(file = "subscription_price.rds")
-```
 
+```
 
 ```{r}
 #| echo: false
@@ -590,6 +593,7 @@ ad_revenue_div_circulation <-
 
 subscription_price <-
   readRDS(file = "outputs/model/subscription_price.rds")
+
 ```
 
 Looking at the advertising-side variables, such as revenue and prices, in @tbl-frenchnewspapersadvertising we find consistently negative coefficients.
@@ -611,6 +615,7 @@ modelsummary(
   fmt = 2,
   coef_map = selected_variables
 )
+
 ```
 
 We can replicate the main results of @angelucci2019newspapers and find that in many cases there appears to be a difference from 1967 onward. @angelucci2019newspapers [pp. 353-358] also include an excellent example of the discussion of interpretation, external validity, and robustness that is required for difference-in-differences models.
@@ -651,6 +656,7 @@ purchase_data <-
   )
 
 purchase_data
+
 ```
 
 Then we need to add some probability of being treated with free shipping. We will say that it depends on our predictors and that younger, higher-income, male individuals make this treatment more likely. We only know that because we simulated the situation. We would not know it if we were using actual data.
@@ -676,6 +682,7 @@ purchase_data <-
     softmax_prob = exp(sum_num) / exp(max(sum_num) + 0.5),
     free_shipping = rbinom(n = sample_size, size = 1, prob = softmax_prob)) |>
   select(-(age_num:softmax_prob))
+
 ```
 
 Finally, we need to have some measure of a person's average spend. We will assume that this increases with income. We want those with free shipping to be slightly higher than those without.\index{distribution!Normal}
@@ -695,6 +702,7 @@ purchase_data <-
   mutate(across(c(gender, free_shipping), as.factor))
 
 purchase_data
+
 ```
 
 Naively we can see that there is a difference in the average spend between those with free shipping and those without (@tbl-heyheybigspender). But the fundamental concern is what would have the spend have been of those with free shipping if they have not had free shipping. @tbl-heyheybigspender shows an average comparison but not everyone had the same chance of getting free shipping. So we question the validity of that use of an average comparison.  Instead we use propensity score matching to "link" each observation that actually got free shipping with their most similar observation, based on the observable variables, that did not get free shipping.
@@ -709,8 +717,8 @@ purchase_data |>
   tt() |>
   style_tt(j = 1:2, align = "lr") |>
   setNames(c("Received free shipping?", "Average spend"))
-```
 
+```
 
 We use `matchit()` from `MatchIt` to implement logistic regression and create matched groups. We then use `match.data()` to get the data of matches containing both all 254 people who were actually treated with free shipping and the untreated person who is considered as similar to them, based on propensity score, as possible. The result is a dataset of 508 observations.
 
@@ -731,6 +739,7 @@ matched_groups
 matched_dataset <- match.data(matched_groups)
 
 matched_dataset
+
 ```
 
 Finally, we can estimate the effect of being treated on average spend using linear regression (@tbl-treatedexample). We are particularly interested in the coefficient associated with the treatment variable, in this case free shipping.
@@ -747,6 +756,7 @@ propensity_score_regression <- lm(
 )
 
 modelsummary(propensity_score_regression)
+
 ```
 
 In @tbl-treatedexample, which was based on only the matched sample, we find that the effect is what we simulated. That is, there is a difference of ten between the average spend of those who received free shipping and those that did not. That is in contrast to @tbl-heyheybigspender which was based on the entire sample.
@@ -793,6 +803,7 @@ rdd_example_data <-
   )
 
 rdd_example_data
+
 ```
 
 ```{r}
@@ -826,6 +837,7 @@ rdd_example_data |>
     x = "Mark",
     y = "Income ($)"
   )
+
 ```
 
 We can use a binary variable with linear regression to estimate the effect of getting a mark over 80 on income. We expect the coefficient to be around two, which is what we simulated, and what we find (@tbl-rddexample).
@@ -855,6 +867,7 @@ saveRDS(
   rdd_example,
   file = "rdd_example.rds"
 )
+
 ```
 
 ```{r}
@@ -868,6 +881,7 @@ saveRDS(
   rdd_example,
   file = "outputs/model/rdd_example.rds"
 )
+
 ```
 
 ```{r}
@@ -878,6 +892,7 @@ saveRDS(
 
 rdd_example <-
   readRDS(file = "rdd_example.rds")
+
 ```
 
 ```{r}
@@ -888,6 +903,7 @@ rdd_example <-
 
 rdd_example <-
   readRDS(file = "outputs/model/rdd_example.rds")
+
 ```
 
 ```{r}
@@ -900,6 +916,7 @@ modelsummary(
   models = rdd_example,
   fmt = 2
 )
+
 ```
 
 There are various caveats to this estimate that we will discuss, but the essentials of RDD are here. Given an appropriate set-up, and model, RDD can compare favorably to randomized trials [@bloombellreiman2020].
@@ -907,6 +924,7 @@ There are various caveats to this estimate that we will discuss, but the essenti
 We could also implement RDD using `rdrobust`. The advantage of this approach is that many common extensions are easily available.
 
 ```{r}
+
 rdrobust(
   y = rdd_example_data$income,
   x = rdd_example_data$mark,
@@ -915,8 +933,8 @@ rdrobust(
   all = TRUE
 ) |>
   summary()
-```
 
+```
 
 ### Assumptions
 
@@ -1000,12 +1018,12 @@ both |>
   geom_smooth(formula = y ~ poly(x, 3), method = "lm") +
   theme_minimal() +
   theme(legend.position = "bottom")
+
 ```
 
 The result is that our estimate of the difference in outcome is dependent on the choice of model. We see this issue occur often in RDD [@gelmanonrdd] and it is especially recommended that higher order polynomials not be used, and instead the choice of models be either linear, quadratic, or some other smooth function [@gelmanimbensrdd].
 
 RDD is a popular approach, but meta-analysis suggests that standard errors are often inappropriately small and this could result in spurious results [@stommessaysno]. If you use RDD it is critical that you discuss the possibility of much wider standard errors than are reported by software packages, and what effect this would have on your conclusions.
-
 
 ### Alcohol and crime in California
 
@@ -1021,6 +1039,7 @@ carpenter_dobkin <-
   read_dta(
     "P01 Age Profile of Arrest Rates 1979-2006.dta"
   )
+
 ```
 
 ```{r}
@@ -1031,8 +1050,8 @@ carpenter_dobkin <-
   read_dta(
     "inputs/data/P01 Age Profile of Arrest Rates 1979-2006.dta"
   )
-```
 
+```
 
 ```{r}
 #| label: fig-californiaarrests
@@ -1062,9 +1081,11 @@ carpenter_dobkin_prepared |>
   geom_point(alpha = 0.05) +
   facet_wrap(facets = vars(arrested_for), scales = "free_y") +
   theme_minimal()
+
 ```
 
 ```{r}
+
 carpenter_dobkin_aggravated_assault_only <-
   carpenter_dobkin_prepared |>
   filter(
@@ -1072,6 +1093,7 @@ carpenter_dobkin_aggravated_assault_only <-
     abs(age - 21) < 2
   ) |>
   mutate(is_21_or_more = if_else(age < 21, 0, 1))
+
 ```
 
 ```{r}
@@ -1095,8 +1117,8 @@ saveRDS(
   rdd_example,
   file = "rdd_example.rds"
 )
-```
 
+```
 
 ```{r}
 #| echo: false
@@ -1109,6 +1131,7 @@ saveRDS(
   rdd_carpenter_dobkin,
   file = "outputs/model/rdd_carpenter_dobkin.rds"
 )
+
 ```
 
 ```{r}
@@ -1119,6 +1142,7 @@ saveRDS(
 
 rdd_carpenter_dobkin <-
   readRDS(file = "rdd_carpenter_dobkin.rds")
+
 ```
 
 ```{r}
@@ -1129,6 +1153,7 @@ rdd_carpenter_dobkin <-
 
 rdd_carpenter_dobkin <-
   readRDS(file = "outputs/model/rdd_carpenter_dobkin.rds")
+
 ```
 
 ```{r}
@@ -1141,11 +1166,13 @@ modelsummary(
   models = rdd_carpenter_dobkin,
   fmt = 2
 )
+
 ```
 
 And the results are similar if we use `rdrobust`.
 
 ```{r}
+
 rdrobust(
   y = carpenter_dobkin_aggravated_assault_only$number,
   x = carpenter_dobkin_aggravated_assault_only$age,
@@ -1154,27 +1181,10 @@ rdrobust(
   all = TRUE
 ) |>
   summary()
+
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## Instrumental variables
-
 
 Instrumental variables (IV)\index{instrumental variables} is an approach that can be handy when we have some type of treatment and control going on, but we have a lot of correlation with other variables and we possibly do not have a variable that actually measures what we are interested in. Adjusting for observables will not be enough to create a good estimate. Instead we find some variable---the eponymous instrumental variable---that is:\index{instrumental variables!definition}
 
@@ -1198,7 +1208,6 @@ Following the language of @gelmanandhill [p. 216], when we use instrumental vari
 
 As an aside, the history of instrumental variables is intriguing, and @stock2003retrospectives, via @Cunningham2021, provide a brief overview.\index{instrumental variables!history} The method was first published in @wright1928tariff. This is a book about the effect of tariffs on animal and vegetable oil. Why might instrumental variables be important in a book about tariffs on animal and vegetable oil? The fundamental problem is that the effect of tariffs depends on both supply and demand. But we only know prices and quantities, so we do not know what is driving the effect. We can use instrumental variables to pin down causality. The intriguing aspect is that the instrumental variables discussion is only in "Appendix B" of that book. It would seem odd to relegate a major statistical break through to an appendix. Further, Philip G. Wright, the book's author, had a son Sewall Wright, who had considerable expertise in statistics and the specific method used in "Appendix B". Hence the mystery of "Appendix B": did Philip or Sewall write it? @Cunningham2021, @stock2003retrospectives, and @angristkrueger all go into more detail, but on balance feel that it is likely that Philip authored the work.
 
-
 ### Simulated example: health status, smoking, and tax rates
 
 Let us generate some data.\index{simulation!instrumental variables}\index{instrumental variables!simulation} We will explore a simulation related to the canonical example of health status, smoking, and tax rates. We are looking to explain how healthy someone is based on the amount they smoke, via the tax rate on smoking. We are going to generate different tax rates by provinces. The tax rate on cigarettes is now similar across the Canadian provinces but that this is fairly recent. Let us assume Alberta had a low tax, and Nova Scotia had a high tax.
@@ -1218,6 +1227,7 @@ iv_example_data <- tibble(
   smoker =
     sample(x = c(0:1), size = num_observations, replace = TRUE)
   )
+
 ```
 
 Now we need to relate the number of cigarettes that someone smoked to their health. We will model health status as a draw from the Normal distribution, with either a high or low mean depending on whether the person smokes.\index{distribution!Normal}
@@ -1233,6 +1243,7 @@ iv_example_data <-
     rnorm(n = n(), mean = 1, sd = 1),
     rnorm(n = n(), mean = 0, sd = 1)
   ))
+
 ```
 
 Now we need a relationship between cigarettes and the province (because in this illustration, the provinces have different tax rates).
@@ -1264,11 +1275,13 @@ iv_example_data <- iv_example_data |>
     )
 
 iv_example_data
+
 ```
 
 Now we can look at our data.
 
 ```{r}
+
 iv_example_data |>
   mutate(smoker = as_factor(smoker)) |>
   ggplot(aes(x = health, fill = smoker)) +
@@ -1281,11 +1294,13 @@ iv_example_data |>
   ) +
   scale_fill_brewer(palette = "Set1") +
   facet_wrap(vars(province))
+
 ```
 
 Finally, we can use the tax rate as an instrumental variable to estimate the effect of smoking on health.
 
 ```{r}
+
 health_on_tax <- lm(health ~ tax, data = iv_example_data)
 smoker_on_tax <- lm(smoker ~ tax, data = iv_example_data)
 
@@ -1297,6 +1312,7 @@ tibble(
     coef(health_on_tax)["tax"] / coef(smoker_on_tax)["tax"]
   )
 )
+
 ```
 
 By understanding the effect of tax rates on both smoking and health, we find that if you smoke then your health is likely to be worse than if you do not smoke.
@@ -1311,14 +1327,17 @@ We can use `iv_robust()` from `estimatr` to estimate IV (@tbl-ivexamplesmoker). 
 
 iv_robust(health ~ smoker | tax, data = iv_example_data) |>
   modelsummary()
+
 ```
 
 ### Assumptions
 
 :::{.content-visible when-format="pdf"}
+
 The set-up of instrumental variables is described in @fig-dot-taxrebateasiv-pdf, which shows education as a confounder between income and happiness.\index{confounder} A tax rebate likely only affects income, not education, and could be used as an instrumental variable.
 
 ```{dot}
+
 //| label: fig-dot-taxrebateasiv-pdf
 //| fig-cap: "Education as a confounder for the relationship between income and happiness with tax rebate as an instrumental variable"
 //| echo: true
@@ -1337,13 +1356,16 @@ digraph D {
   c->b
   d->a
 }
+
 ```
 :::
 
 :::{.content-visible unless-format="pdf"}
+
 The set-up of instrumental variables is described in @fig-dot-taxrebateasiv-quarto, which shows education as a confounder between income and happiness.\index{confounder} A tax rebate likely only affects income, not education, and could be used as an instrumental variable.
 
 ```{dot}
+
 //| label: fig-dot-taxrebateasiv-quarto
 //| fig-cap: "Education as a confounder for the relationship between income and happiness with tax rebate as an instrumental variable"
 //| echo: true
@@ -1362,6 +1384,7 @@ digraph D {
   c->b
   d->a
 }
+
 ```
 :::
 
@@ -1379,9 +1402,6 @@ Instrumental variables is a useful approach because one can obtain causal estima
 For a long time, the canonical instrumental variable was rainfall, or more generally, the weather. However, the issue is that if the instrumental variable is correlated with other, potentially unobserved, variables, then they could be correlated with the variable of interest. This is a similar criticism to that above of propensity score matching. @mellontakingourtoys found a large number of variables have been linked to weather in instrumental variable papers. It would seem that the likelihood of incorrectly estimated effects in some of them is quite high.
 
 When considering an instrumental variable approach, you should spend considerable amounts of time on both of these assumptions. @mellontakingourtoys shows that we are especially concerned that this particular tax rebate only affects income and no other variable, which could itself be linked with our variables of interest. Approaches based on instrumental variables provide extensive freedom for the researcher, and @brodeurcookheyes find they are more associated with p-hacking and selection reporting compared with RCTs and RDD. As with multiple-imputation, and propensity score matching, we recommend caution when using IV, and that it is never naively turned to. Indeed, @betzcookhollenbach2018 go further and say that spatial instruments are rarely valid.
-
-
-
 
 ## Exercises
 
@@ -1425,11 +1445,9 @@ When considering an instrumental variable approach, you should spend considerabl
 
 ### Class activities {.unnumbered}
 
-
 - "Look Daddy, I'm shaving". A three-year-old stands next to his father. The father shaves, and then has no beard. The three-year-old "shaves", and then also has no beard. Use a DAG to illustrate the situation and what might be missing.
 - Consider the following situation: "There are two surgeons at a hospital. One is considered great, and so triage, on average, tends to send hard cases to them, hence many of their patients die. The other surgeon is considered good, and so triage, on average, tends to send moderate cases to them, hence an average number of their patients die." Simulate the situation, including only patient name, surgeon name, and patient outcome. Run a regression. What conclusion do you draw? Then draw a DAG that specifies the data that were missed in that regression. Add those variables to the simulation and re-run the regression. How does your conclusion differ?
 - Pick either Simpson's paradox or Berkson's paradox and then please think of an example and discuss an analytical approach to adjusting for it.
-
 
 ### Task {.unnumbered}
 

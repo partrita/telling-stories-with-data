@@ -4,8 +4,6 @@ engine: knitr
 
 # Class activities {#sec-activities}
 
-
-
 ```{r}
 #| message: false
 library(babynames)
@@ -14,50 +12,34 @@ library(palmerpenguins)
 library(readxl)
 library(rstanarm)
 library(tidyverse)
+
 ```
 
 ## Telling stories with data
 
-
-
 ## Drinking from a fire hose
-
-
 
 ## Reproducible workflows
 
-
-
 ## Writing research
-
 
 ## Static communication
 
-
-
 ## Farm data
 
-
 ## Gather data
-
 
 ## Hunt data
 
 ## Clean and prepare
 
-
 ## Store and share
-
-
 
 ## Exploratory data analysis
 
-
 ## Linear models
 
-
 ## Generalized linear models
-
 
 ## Causality from observational data
 
@@ -65,8 +47,5 @@ library(tidyverse)
 
 ## Text as data
 
-
-
 ## Concluding remarks
-
 

@@ -117,8 +117,6 @@ We often hear the phrase "let the data speak". Hopefully it is clear this never 
 > 
 > Extract from "The Idea of Order at Key West", [@wallacestevens]
 
-
-
 ## Exercises
 
 ### Questions {.unnumbered}

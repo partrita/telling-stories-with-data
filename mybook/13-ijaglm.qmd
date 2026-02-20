@@ -5,9 +5,11 @@ engine: knitr
 # Generalized linear models {#sec-its-just-a-generalized-linear-model}
 
 :::{.callout-note}
+
 Chapman and Hall/CRC published this book in July 2023. You can purchase that [here](https://www.routledge.com/Telling-Stories-with-Data-With-Applications-in-R/Alexander/p/book/9781032134772).
 
 This online version has some updates to what was printed. An online version that matches the print version is available [here](https://rohanalexander.github.io/telling_stories-published/).
+
 :::
 
 **Prerequisites**
@@ -58,6 +60,7 @@ library(rstanarm)
 library(tidybayes)
 library(tidyverse)
 library(tinytable)
+
 ```
 
 ## Introduction
@@ -84,6 +87,7 @@ bernoulli_example <-
   tibble(draws = rbinom(n = 20, size = 1, prob = 0.1))
 
 bernoulli_example |> pull(draws)
+
 ```
 
 One reason to use logistic regression\index{logistic regression} is that we will be modeling a probability, hence it will be bounded between 0 and 1. With linear regression we may end up with values outside this. The foundation of logistic regression is the logit function\index{logit function}:
@@ -110,6 +114,7 @@ tibble(values = seq(from = 0, to = 1, by = 0.001),
   geom_hline(yintercept = 0, linetype = "dashed") +
   labs(x = "Values of x",
        y = "logit(x)")
+
 ```
 
 ### Simulated example: day or night
@@ -131,6 +136,7 @@ week_or_weekday <-
   select(-noise)
 
 week_or_weekday
+
 ```
 
 ```{r}
@@ -139,6 +145,7 @@ week_or_weekday
 
 arrow::write_parquet(x = week_or_weekday,
                      sink = "outputs/data/week_or_weekday.parquet")
+
 ```
 
 We can use `glm()` from base R to do a quick estimation.\index{logistic regression!Base R} In this case we will try to work out whether it is a weekday or weekend, based on the number of cars we can see. We are interested in estimating @eq-logisticexample:
@@ -149,8 +156,8 @@ $$ {#eq-logisticexample}
 
 where $y_i$ is whether it is a weekday and $x_i$ is the number of cars on the road.
 
-
 ```{r}
+
 week_or_weekday_model <-
   glm(
     is_weekday ~ num_cars,
@@ -159,6 +166,7 @@ week_or_weekday_model <-
   )
 
 summary(week_or_weekday_model)
+
 ```
 
 The estimated coefficient on the number of cars is 0.19. The interpretation of coefficients in logistic regression\index{logistic regression!interpretation} is more complicated than linear regression as they relate to changes in the log-odds of the binary outcome. For instance, the estimate of 0.19 is the average change in the log-odds of it being a weekday with observing one extra car on the road. The coefficient is positive which means an increase. As it is non-linear, if we want to specify a particular change, then this will be different for different baseline levels of the observation. That is, an increase of 0.19 log-odds has a larger impact when the baseline log-odds are 0, compared to 2.
@@ -166,11 +174,13 @@ The estimated coefficient on the number of cars is 0.19. The interpretation of c
 We can translate our estimate into the probability of it being a weekday, for a given number of cars. We can add the implied probability that it is a weekday for each observation using `predictions()` from `marginaleffects`.
 
 ```{r}
+
 week_or_weekday_predictions <-
   predictions(week_or_weekday_model) |>
   as_tibble()
 
 week_or_weekday_predictions
+
 ```
 
 And we can then graph the probability that our model implies, for each observation, of it being a weekday (@fig-dayornightprobs). This is a nice opportunity to consider a few different ways of illustrating the fit. While it is common to use a scatterplot (@fig-dayornightprobs-1), this is also an opportunity to use an ECDF (@fig-dayornightprobs-2).
@@ -212,6 +222,7 @@ week_or_weekday_predictions |>
   theme_classic() +
   scale_color_brewer(palette = "Set1") +
   theme(legend.position = "bottom")
+
 ```
 
 The marginal effect\index{marginal effects} at each observation is of interest because it provides a sense of how this probability is changing. It enables us to say that at the median (which in this case is if we were to see 50 cars) the probability of it being a weekday increases by almost five per cent if we were to see another car (@tbl-marginaleffectcar).
@@ -226,6 +237,7 @@ slopes(week_or_weekday_model, newdata = "median") |>
   style_tt(j = 1:3, align = "lrr") |>
   format_tt(digits = 3, num_mark_big = ",", num_fmt = "decimal") |>
   setNames(c("Term", "Estimate", "Standard error"))
+
 ```
 
 To more thoroughly examine the situation we might want to build a Bayesian model using `rstanarm`.\index{Bayesian!logistic regression}\index{logistic regression!Bayesian} As in @sec-its-just-a-linear-model we will specify priors for our model, but these will just be the default priors that `rstanarm` uses:
@@ -260,6 +272,7 @@ saveRDS(
   week_or_weekday_rstanarm,
   file = "week_or_weekday_rstanarm.rds"
 )
+
 ```
 
 ```{r}
@@ -273,6 +286,7 @@ saveRDS(
   week_or_weekday_rstanarm,
   file = "outputs/model/week_or_weekday_rstanarm.rds"
 )
+
 ```
 
 ```{r}
@@ -283,6 +297,7 @@ saveRDS(
 
 week_or_weekday_rstanarm <-
   readRDS(file = "outputs/model/week_or_weekday_rstanarm.rds")
+
 ```
 
 The results of our Bayesian model are similar to the quick model we built using base (@tbl-modelsummarylogistic).
@@ -298,10 +313,10 @@ modelsummary(
     "Day or night" = week_or_weekday_rstanarm
   )
 )
+
 ```
 
 @tbl-modelsummarylogistic makes it clear that each of the approaches is similar in this case. They agree on the direction of the effect of seeing an extra car on the probability of it being a weekday. Even the magnitude of the effect is estimated to be similar.
-
 
 ### Political support in the United States
 
@@ -320,11 +335,13 @@ While the focus here is the exploration of data using models, we still need to d
 ![Quick sketch of what we expect from the analysis before finalizing either the data or the analysis](figures/IMG_2055.png){#fig-uspoliticalsupportmodel}
 
 Sketches of the expected dataset and analysis focus and clarify our thinking even if they will be updated later
+
 :::
 
 We will simulate a dataset where the chance that a person supports Biden depends on their gender and education.\index{simulation}
 
 ```{r}
+
 set.seed(853)
 
 num_obs <- 1000
@@ -346,6 +363,7 @@ us_political_preferences <- tibble(
     gender = if_else(gender == 0, "Male", "Female")
   ) |>
   select(-support_prob, supports_biden, gender, education)
+
 ```
 
 For the actual data we can use the 2020 Cooperative Election Study\index{Cooperative Election Study} (CES) [@cooperativeelectionstudyus]. This is a long-standing annual survey of US political opinion. In 2020, there were 61,000 respondents who completed the post-election survey. The sampling methodology, detailed in @guidetothe2020ces [p. 13], relies on matching and is an accepted approach that balances sampling concerns and cost.
@@ -366,6 +384,7 @@ ces2020 <-
   select(votereg, CC20_410, gender, educ)
 
 write_csv(ces2020, "ces2020.csv")
+
 ```
 
 ```{r}
@@ -375,6 +394,7 @@ write_csv(ces2020, "ces2020.csv")
 # INTERNAL
 
 write_csv(ces2020, "inputs/data/ces2020.csv")
+
 ```
 
 ```{r}
@@ -394,6 +414,7 @@ ces2020 <-
   )
 
 ces2020
+
 ```
 
 ```{r}
@@ -415,11 +436,13 @@ ces2020 <-
   )
 
 ces2020
+
 ```
 
 When we look at the actual data, there are concerns that we did not anticipate in our sketches. We use the codebook to investigate this more thoroughly. We only want respondents who are registered to vote, and we are only interested in those that voted for either Biden or Trump. We see that when the variable "CC20_410" is 1, then this means the respondent supported Biden, and when it is 2 that means Trump. We can filter to only those respondents and then add more informative labels. Genders of "female" and "male" is what is available from the CES, and when the variable "gender" is 1, then this means "male", and when it is 2 this means "females". Finally, the codebook tells us that "educ" is a variable from 1 to 6, in increasing levels of education.
 
 ```{r}
+
 ces2020 <-
   ces2020 |>
   filter(votereg == 1,
@@ -449,6 +472,7 @@ ces2020 <-
     )
   ) |>
   select(voted_for, gender, education)
+
 ```
 
 ```{r}
@@ -457,6 +481,7 @@ ces2020 <-
 
 arrow::write_parquet(x = ces2020,
                      sink = "outputs/data/ces2020.parquet")
+
 ```
 
 In the end we are left with 43,554 respondents (@fig-cesissogooditslikecheating).
@@ -482,6 +507,7 @@ ces2020 |>
   coord_flip() +
   scale_fill_brewer(palette = "Set1") +
   theme(legend.position = "bottom")
+
 ```
 
 The model that we are interested in is:
@@ -525,6 +551,7 @@ saveRDS(
   political_preferences,
   file = "political_preferences.rds"
 )
+
 ```
 
 ```{r}
@@ -537,6 +564,7 @@ saveRDS(
   political_preferences,
   file = "outputs/model/political_preferences.rds"
 )
+
 ```
 
 ```{r}
@@ -547,6 +575,7 @@ saveRDS(
 
 political_preferences <-
   readRDS(file = "political_preferences.rds")
+
 ```
 
 ```{r}
@@ -557,6 +586,7 @@ political_preferences <-
 
 political_preferences <-
   readRDS(file = "outputs/model/political_preferences.rds")
+
 ```
 
 The results of our model are interesting. They suggest males were less likely to vote for Biden, and that there is a considerable effect of education (@tbl-modelsummarylogisticpolitical).
@@ -573,6 +603,7 @@ modelsummary(
   ),
   statistic = "mad"
   )
+
 ```
 
 It can be useful to plot the credibility intervals of these predictors (@fig-modelplotlogisticpolitical). In particular this might be something that is especially useful in an appendix.
@@ -583,6 +614,7 @@ It can be useful to plot the credibility intervals of these predictors (@fig-mod
 
 modelplot(political_preferences, conf_level = 0.9) +
   labs(x = "90 per cent credibility interval")
+
 ```
 
 ## Poisson regression
@@ -595,7 +627,9 @@ $$P_{\lambda}(k) = e^{-\lambda}\lambda^k/k!\mbox{, for }k=0,1,2,\dots$$
 We can simulate $n=20$ draws from the Poisson distribution\index{distribution!Poisson} with `rpois()`, where $\lambda$ is equal to three.\index{simulation}
 
 ```{r}
+
 rpois(n = 20, lambda = 3)
+
 ```
 
 We can also look at what happens to the distribution as we change the value of $\lambda$ (@fig-poissondistributiontakingshape).\index{distribution!Poisson}
@@ -629,6 +663,7 @@ ggplot(poisson_takes_shape, aes(x = draw)) +
   facet_wrap(vars(lambda), scales = "free_y") +
   theme_minimal() +
   labs(x = "Integer", y = "Density")
+
 ```
 
 ### Simulated example: number of As by department
@@ -636,6 +671,7 @@ ggplot(poisson_takes_shape, aes(x = draw)) +
 To illustrate the situation, we could simulate data about the number of As that are awarded in each university course.\index{simulation} In this simulated example, we consider three departments, each of which has many courses. Each course will award a different number of As.\index{distribution!Poisson}
 
 ```{r}
+
 set.seed(853)
 
 class_size <- 26
@@ -656,6 +692,7 @@ count_of_A <-
       rpois(n = class_size, lambda = 20)
     )
   )
+
 ```
 
 ```{r}
@@ -664,6 +701,7 @@ count_of_A <-
 
 arrow::write_parquet(x = count_of_A,
                      sink = "outputs/data/count_of_A.parquet")
+
 ```
 
 ```{r}
@@ -685,6 +723,7 @@ count_of_A |>
   theme_classic() +
   scale_fill_brewer(palette = "Set1") +
   theme(legend.position = "bottom")
+
 ```
 
 Our simulated dataset has the number of As awarded by courses, which are structured within departments (@fig-simgradesdepartments). In @sec-multilevel-regression-with-post-stratification, we will take advantage of this departmental structure, but for now we just ignore it and focus on differences between departments.
@@ -702,6 +741,7 @@ where $y_i$ is the number of A grades awarded, and we are interested in how this
 We can use `glm()` from base R to get a quick sense of the data. This function is quite general, and we specify Poisson regression by setting the "family" parameter. The estimates are contained in the first column of @tbl-modelsummarypoisson.
 
 ```{r}
+
 grades_base <-
   glm(
     number_of_As ~ department,
@@ -710,6 +750,7 @@ grades_base <-
   )
 
 summary(grades_base)
+
 ```
 
 As with logistic regression, the interpretation of the coefficients from Poisson regression\index{regression!Poisson} can be difficult. The interpretation of the coefficient on "department2" is that it is the log of the expected difference between departments. We expect $e^{0.883} \approx 2.4$ and $e^{1.703} \approx 5.5$ as many A grades in departments 2 and 3, respectively, compared with department 1 (@tbl-modelsummarypoisson).
@@ -746,6 +787,7 @@ saveRDS(
   grades_rstanarm,
   file = "grades_rstanarm.rds"
 )
+
 ```
 
 ```{r}
@@ -759,6 +801,7 @@ saveRDS(
   grades_rstanarm,
   file = "outputs/model/grades_rstanarm.rds"
 )
+
 ```
 
 ```{r}
@@ -769,6 +812,7 @@ saveRDS(
 
 grades_rstanarm <-
   readRDS(file = "outputs/model/grades_rstanarm.rds")
+
 ```
 
 The results are in @tbl-modelsummarypoisson.
@@ -782,6 +826,7 @@ modelsummary(
     "Number of As" = grades_rstanarm
   )
 )
+
 ```
 
 As with logistic regression, we can use `slopes()` from `marginaleffects` to help with interpreting these results.\index{marginal effects} It may be useful to consider how we expect the number of A grades to change as we go from one department to another. @tbl-marginaleffectspoisson suggests that in our dataset, classes in Department 2 tend to have around five additional A grades, compared with Department 1, and that classes in Department 3 tend to have around 17 more A grades, compared with Department 1.
@@ -797,8 +842,8 @@ slopes(grades_rstanarm) |>
   style_tt(j = 1:4, align = "lrrr") |>
   format_tt(digits = 2, num_mark_big = ",", num_fmt = "decimal") |>
   setNames(c("Compare department", "Estimate", "2.5%", "97.5%"))
-```
 
+```
 
 ### Letters used in *Jane Eyre*
 
@@ -813,6 +858,7 @@ Following the workflow advocated in this book, we first sketch our dataset and m
 ![Expected relationship between count of e/Es and number of words in the line](figures/IMG_2075.png){#fig-lettersmodel}
 
 Sketches of the expected dataset and analysis force us to consider what we are interested in
+
 :::
 
 We simulate a dataset of how the number of e/Es could be distributed following the Poisson distribution (@fig-simenum).\index{simulation}\index{distribution!Poisson}\index{distribution!uniform}
@@ -842,6 +888,7 @@ count_of_e_simulation |>
   ) +
   theme_classic() +
   scale_fill_brewer(palette = "Set1")
+
 ```
 
 We can now gather and prepare our data. We download the text of the book from Project Gutenberg using `gutenberg_download()` from `gutenbergr`.\index{text!gathering}\index{Project Gutenberg}
@@ -861,6 +908,7 @@ jane_eyre <-
 jane_eyre
 
 write_csv(jane_eyre, "jane_eyre.csv")
+
 ```
 
 We will download it and then use our local copy to avoid overly imposing on the Project Gutenberg\index{Project Gutenberg} servers.
@@ -872,6 +920,7 @@ We will download it and then use our local copy to avoid overly imposing on the 
 # INTERNAL
 
 write_csv(jane_eyre, "inputs/jane_eyre.csv")
+
 ```
 
 ```{r}
@@ -887,6 +936,7 @@ jane_eyre <- read_csv(
 )
 
 jane_eyre
+
 ```
 
 ```{r}
@@ -904,11 +954,13 @@ jane_eyre <- read_csv(
 )
 
 jane_eyre
+
 ```
 
 We are interested in only those lines that have content, so we remove those empty lines that are just there for spacing.\index{text!cleaning} Then we can create counts of the number of e/Es in that line, for the first ten lines of each chapter. For instance, we can look at the first few lines and see that there are five e/Es in the first line and eight in the second.
 
 ```{r}
+
 jane_eyre_reduced <-
   jane_eyre |>
   filter(!is.na(text)) |> # Remove empty lines
@@ -930,13 +982,15 @@ jane_eyre_reduced <-
          word_count = str_count(text, "\\w+")
          # From: https://stackoverflow.com/a/38058033
          )
+
 ```
 
-
 ```{r}
+
 jane_eyre_reduced |>
   select(chapter, word_count, count_e, text) |>
   head()
+
 ```
 
 We can verify that the mean and variance of the number of e/Es is roughly similar by plotting all of the data (@fig-janeecounts). The mean, in pink, is 6.7, and the variance, in blue, is 6.2. While they are not entirely the same, they are similar. We include the diagonal in @fig-janeecounts-2 to help with thinking about the data. If the data were on the $y=x$ line, then on average there would be one e/E per word. Given the mass of points below that line expect that on average there is less than one per word.
@@ -978,6 +1032,7 @@ jane_eyre_reduced |>
     x = "Number of words in the line",
     y = "Number of e/Es in the line"
   )
+
 ```
 
 We could consider the following model:
@@ -1012,6 +1067,7 @@ saveRDS(
   jane_e_counts,
   file = "jane_e_counts.rds"
 )
+
 ```
 
 ```{r}
@@ -1024,6 +1080,7 @@ saveRDS(
   jane_e_counts,
   file = "outputs/model/jane_e_counts.rds"
 )
+
 ```
 
 ```{r}
@@ -1034,6 +1091,7 @@ saveRDS(
 
 jane_e_counts <-
   readRDS(file = "outputs/model/jane_e_counts.rds")
+
 ```
 
 <!-- (@tbl-modelsummaryjanee). -->
@@ -1060,6 +1118,7 @@ plot_predictions(jane_e_counts, condition = "word_count") +
   labs(x = "Number of words",
        y = "Average number of e/Es in the first 10 lines") +
   theme_classic()
+
 ```
 
 ## Negative binomial regression
@@ -1121,11 +1180,13 @@ As always we first sketch our dataset and model. A quick sketch of what the data
 ![Quick sketch of what we expect from the analysis of cause of death in Alberta before finalizing either the data or the analysis](figures/IMG_2061.png){#fig-albertamodelsketch}
 
 Sketches of the expected dataset and analysis for cause of death in Alberta
+
 :::
 
 We will simulate a dataset of cause of death distributed following the negative binomial distribution.\index{simulation}\index{distribution!binomial}
 
 ```{r}
+
 alberta_death_simulation <-
   tibble(
     cause = rep(x = c("Heart", "Stroke", "Diabetes"), times = 10),
@@ -1134,11 +1195,13 @@ alberta_death_simulation <-
   )
 
 alberta_death_simulation
+
 ```
 
 We can look at the distribution of these deaths, by year and cause (@fig-albertacod). We have truncated the full cause of death because some are quite long. As some causes are not always in the top 30 each year, not all causes have the same number of occurrences.
 
 :::{.content-visible when-format="pdf"}
+
 ```{r}
 #| eval: false
 #| echo: true
@@ -1159,10 +1222,12 @@ alberta_cod <-
   clean_names() |>
   add_count(cause) |>
   mutate(cause = str_trunc(cause, 30))
+
 ```
 :::
 
 :::{.content-visible unless-format="pdf"}
+
 ```{r}
 #| eval: false
 #| echo: true
@@ -1181,9 +1246,9 @@ alberta_cod <-
   clean_names() |>
   add_count(cause) |>
   mutate(cause = str_trunc(cause, 30))
+
 ```
 :::
-
 
 ```{r}
 #| eval: true
@@ -1204,6 +1269,7 @@ alberta_cod <-
   clean_names() |>
   add_count(cause) |>
   mutate(cause = str_trunc(cause, 30))
+
 ```
 
 If we were to look at the top-ten causes in 2021, we would notice a variety of interesting aspects (@tbl-albertahuh). For instance, we would expect that the most common causes would be present in all 21 years of our data. But we notice that the most common cause, "Other ill-defined and unknown causes of mortality", is only in three years. "COVID-19, virus identified", is only in two other years, as there were no known COVID deaths in Canada before 2020.
@@ -1223,11 +1289,13 @@ alberta_cod |>
   style_tt(j = 1:5, align = "lrrrr") |>
   format_tt(digits = 0, num_mark_big = ",", num_fmt = "decimal") |>
   setNames(c("Year", "Cause", "Ranking", "Deaths", "Years"))
+
 ```
 
 For simplicity we restrict ourselves to the five most common causes of death in 2021 of those that have been present every year.
 
 ```{r}
+
 alberta_cod_top_five <-
   alberta_cod |>
   filter(
@@ -1240,8 +1308,8 @@ alberta_cod_top_five <-
 alberta_cod <-
   alberta_cod |>
   filter(cause %in% alberta_cod_top_five)
-```
 
+```
 
 ```{r}
 #| fig-cap: "Annual number of deaths for the top-five causes in 2021, since 2001, for Alberta, Canada"
@@ -1258,6 +1326,7 @@ alberta_cod |>
   labs(x = "Year", y = "Annual number of deaths in Alberta") +
   facet_wrap(vars(cause), dir = "v", ncol = 1) +
   theme(legend.position = "none")
+
 ```
 
 One thing that we notice is that the mean, 1,273, is different to the variance, 182,378 (@tbl-ohboyalberta).
@@ -1273,6 +1342,7 @@ datasummary(
   fmt = 0,
   data = alberta_cod
 )
+
 ```
 
 We can implement negative binomial regression\index{regression!negative binomial} when using `stan_glm()` by specifying the negative binomial distribution in "family". In this case, we run both Poisson and negative binomial.
@@ -1298,8 +1368,8 @@ cause_of_death_alberta_neg_binomial <-
     family = neg_binomial_2(link = "log"),
     seed = 853
   )
-```
 
+```
 
 ```{r}
 #| echo: false
@@ -1316,6 +1386,7 @@ saveRDS(
   cause_of_death_alberta_neg_binomial,
   file = "outputs/model/cause_of_death_alberta_neg_binomial.rds"
 )
+
 ```
 
 ```{r}
@@ -1327,6 +1398,7 @@ cause_of_death_alberta_poisson <-
 
 cause_of_death_alberta_neg_binomial <-
   readRDS(file = "outputs/model/cause_of_death_alberta_neg_binomial.rds")
+
 ```
 
 We can compare our different models (@tbl-modelsummarypoissonvsnegbinomial).
@@ -1354,6 +1426,7 @@ modelsummary(
   ),
   coef_map = coef_short_names
 )
+
 ```
 
 The estimates are similar. We could use posterior predictive checks\index{Bayesian!posterior predictive check}, introduced in @sec-inferencewithbayesianmethods, to show that the negative binomial approach is a better choice for this circumstance (@fig-ppcheckpoissonvsbinomial).
@@ -1373,16 +1446,21 @@ pp_check(cause_of_death_alberta_poisson) +
 
 pp_check(cause_of_death_alberta_neg_binomial) +
   theme(legend.position = "bottom")
+
 ```
 
 Finally, we can compare between the models using the resampling method leave-one-out\index{leave-one-out} (LOO) cross-validation (CV).\index{cross-validation} This is a variant of cross-validation, where the size of each fold is one. That is to say, if there was a dataset with 100 observations, this LOO is equivalent to 100-fold cross validation. We can implement this in `rstanarm` with `loo()` for each model, and then compare between them with `loo_compare()` where the higher the better.^[By way of background, LOO-CV is not done by `loo()`, because it would be too computationally intensive. Instead an approximation is done which provides the expected log point wise predictive density (ELPD). The `rstanarm` vignettes provide more detail.]
 
 :::{.content-visible when-format="pdf"}
+
 We provide more information on cross-validation in the ["Prediction" Online Appendix](https://tellingstorieswithdata.com/27-prediction.html).
+
 :::
 
 :::{.content-visible unless-format="pdf"}
+
 We provide more information on cross-validation in [Online Appendix -@sec-predictingpythons].
+
 :::
 
 ```{r}
@@ -1393,6 +1471,7 @@ poisson <- loo(cause_of_death_alberta_poisson, cores = 2)
 neg_binomial <- loo(cause_of_death_alberta_neg_binomial, cores = 2)
 
 loo_compare(poisson, neg_binomial)
+
 ```
 
 In this case we find that the negative binomial model is a better fit than the Poisson, because ELPD is larger.
@@ -1402,12 +1481,14 @@ In this case we find that the negative binomial model is a better fit than the P
 Multilevel modeling goes by a variety of names including "hierarchical", and "random effects".\index{multilevel modeling!definition}\index{hierarchical modeling|see {multilevel modeling}}\index{random effects|see {multilevel modeling}} While there are sometimes small differences in meaning between disciplines, in general they refer to the same or at least similar ideas. The fundamental insight of multilevel modeling is that a lot of the time our observations are not completely independent of each other, and can instead be grouped. Accounting for that grouping when we model, can provide us with some useful information. For instance, there is a difference in the earnings of professional athletes depending on whether they compete in men's or women's events. If we were interested in trying to forecast the earnings of a particular athlete, based on their competition results, then knowing which type of competition the individual competed in would enable the model to make a better forecast.
 
 :::{.callout-note}
+
 ## Shoulders of giants
 
 Dr Fiona Steele\index{Steele, Fiona} is a Professor of Statistics at the London School of Economics (LSE).
 After earning a PhD in Statistics from University of Southampton in 1996, she was appointed as a Lecturer at the LSE, before moving to the University of London, and the University of Bristol where she was appointed a full professor in 2008. She returned to the LSE in 2013.
 One area of her research is multilevel modeling and applications in demography, education, family psychology, and health. For instance, @Steele2007 looks at multilevel models for longitudinal data, and @Steele2007again uses a multilevel model to look at the relationship between school resources and pupil attainment.
 She was awarded the Royal Statistical Society Guy Medal\index{Guy Medal!Bronze} in Bronze in 2008.
+
 :::
 
 We distinguish between three settings:\index{multilevel modeling!pooling}
@@ -1457,6 +1538,7 @@ political_support <-
   )
 
 political_support
+
 ```
 
 ```{r}
@@ -1479,6 +1561,7 @@ saveRDS(
   voter_preferences,
   file = "voter_preferences.rds"
 )
+
 ```
 
 ```{r}
@@ -1492,6 +1575,7 @@ saveRDS(
   voter_preferences,
   file = "outputs/model/voter_preferences.rds"
 )
+
 ```
 
 ```{r}
@@ -1502,10 +1586,13 @@ saveRDS(
 
 voter_preferences <-
   readRDS(file = "outputs/model/voter_preferences.rds")
+
 ```
 
 ```{r}
+
 voter_preferences
+
 ```
 
 It is worth trying to look for opportunities to use a multilevel model when you come to a new modeling situation, especially one where inference is the primary concern. There is often some grouping that can be taken advantage of to provide the model with more information.
@@ -1544,6 +1631,7 @@ books <-
   )
 
 write_csv(books, "books-austen_bronte_dickens_shakespeare.csv")
+
 ```
 
 ```{r}
@@ -1553,6 +1641,7 @@ write_csv(books, "books-austen_bronte_dickens_shakespeare.csv")
 # INTERNAL
 
 write_csv(books, "dont_push/books-austen_bronte_dickens_shakespeare.csv")
+
 ```
 
 ```{r}
@@ -1570,6 +1659,7 @@ books <- read_csv(
     author = col_character()
   )
 )
+
 ```
 
 ```{r}
@@ -1585,8 +1675,8 @@ books <- read_csv(
     author = col_character()
   )
 )
-```
 
+```
 
 ```{r}
 #| eval: false
@@ -1598,6 +1688,7 @@ lines_by_author_work <-
             .by = c(author, title))
 
 lines_by_author_work
+
 ```
 
 ```{r}
@@ -1607,6 +1698,7 @@ lines_by_author_work
 # INTERNAL
 
 write_csv(lines_by_author_work, "outputs/lines_by_author_work.csv")
+
 ```
 
 ```{r}
@@ -1623,8 +1715,8 @@ lines_by_author_work <- read_csv(
 )
 
 lines_by_author_work
-```
 
+```
 
 ```{r}
 #| echo: true
@@ -1659,8 +1751,8 @@ saveRDS(
   author_lines_rstanarm_multilevel,
   file = "author_lines_rstanarm_multilevel.rds"
 )
-```
 
+```
 
 ```{r}
 #| echo: false
@@ -1678,6 +1770,7 @@ saveRDS(
   author_lines_rstanarm_multilevel,
   file = "outputs/model/author_lines_rstanarm_multilevel.rds"
 )
+
 ```
 
 ```{r}
@@ -1691,8 +1784,8 @@ author_lines_rstanarm <-
 
 author_lines_rstanarm_multilevel <-
   readRDS(file = "outputs/model/author_lines_rstanarm_multilevel.rds")
-```
 
+```
 
 ```{r}
 #| label: tbl-modelsummaryaustenshakes
@@ -1706,6 +1799,7 @@ modelsummary(
     "Multilevel neg binomial" = author_lines_rstanarm_multilevel
   )
 )
+
 ```
 
 @tbl-modelsummaryaustenshakes is a little empty for the multilevel model, and we often use graphs to avoid overwhelming the reader with numbers (we will see examples of this in @sec-multilevel-regression-with-post-stratification). For instance, @fig-multilevelexampleleveldistribution shows the distribution of draws for each of the four authors using `spread_draws()` from `tidybayes`.
@@ -1724,6 +1818,7 @@ author_lines_rstanarm_multilevel |>
   ggplot(aes(y = group, x = condition_mean)) +
   stat_halfeye() +
   theme_minimal()
+
 ```
 
 In this case, we see that we typically expect Brontë to write the longest books of the three book authors. Shakespeare, as expected, typically wrote works with the fewest lines.
@@ -1784,6 +1879,7 @@ In the results section you should include a table of the estimates, built using 
     - We are interested in explaining support for either a Democrat or Republican, based on education, age-group, and gender, and state. Please sketch and simulate the situation.
     - Please obtain the data underpinning @cohn2016, available [here](https://github.com/TheUpshot/2016-upshot-siena-polls/). Save the unedited data, and construct an analysis dataset (there is some code below to get you started). Add graphs of each of the variables, individually, into the data section, as well as graphs of how they relate.
     - Please build one model explaining "vt_pres_2", as a function of "gender", "educ", and "age"; and another which additionally considers "state". Write up the two models in a model section, and add the results into the results section (again, there is some code below to get you started).
+
 ```{r}
 #| echo: true
 #| eval: false
@@ -1813,6 +1909,7 @@ cleaned_vote_data <-
   ) |>
   filter(vote %in% c("0", "1")) |>
   mutate(vote = as.integer(vote))
+
 ```
 
 ```{r}
@@ -1829,6 +1926,7 @@ vote_model <-
     prior_aux = exponential(rate = 1),
     seed = 853
   )
+
 ```
 
 ### Task {.unnumbered}
@@ -1839,15 +1937,17 @@ Obtain some recent relevant data, estimate the model, and discuss your choice be
 
 Use Quarto, and include an appropriate title, author, date, link to a GitHub repo, sections, and citations, and be sure to thoroughly specify the model.
 
-
 ### Paper {.unnumbered}
 
 :::{.content-visible when-format="pdf"}
+
 At about this point the *Spadina* Paper in the ["Papers" Online Appendix](https://tellingstorieswithdata.com/23-assessment.html) would be appropriate.
+
 :::
 
 :::{.content-visible unless-format="pdf"}
-At about this point the *Spadina* Paper from [Online Appendix -@sec-papers] would be appropriate.
-:::
 
+At about this point the *Spadina* Paper from [Online Appendix -@sec-papers] would be appropriate.
+
+:::
 
