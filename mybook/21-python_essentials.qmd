@@ -54,7 +54,6 @@ Open VS Code and open a new Terminal: "Terminal" -> "New Terminal". Then use Uni
 Once you are happy with where you are going to create this new folder, we can use `uv init` in the Terminal to do this, pressing "return/enter" afterwards (`cd` then moves to the new folder "shelter_usage").
 
 ```{bash}
-
 #| eval: false
 #| echo: true
 
@@ -66,7 +65,6 @@ cd shelter_usage
 By default, there will be a script in the example folder. We want to use `uv run` to run that script, which will then create an project environment for us.
 
 ```{bash}
-
 #| eval: false
 #| echo: true
 
@@ -77,7 +75,6 @@ uv run hello.py
 A project environment is specific to that project. We will use the package `numpy` to simulate data. We need to add this package to our environment with `uv add`.
 
 ```{bash}
-
 #| eval: false
 #| echo: true
 
@@ -88,7 +85,6 @@ uv add numpy
 We can then modify `hello.py` to use `numpy` to simulate from the Normal distribution.
 
 ```{python}
-
 #| eval: false
 #| echo: true
 #| warning: false
@@ -139,7 +135,6 @@ Sketches of a dataset and table related shelter usage in Toronto
 We would like to more thoroughly simulate the dataset that we are interested in. We will use `polars` to provide a dataframe to store our simulated results, so we should add this to our environment with `uv add`.
 
 ```{bash}
-
 #| eval: false
 #| echo: true
 
@@ -150,7 +145,6 @@ uv add polars
 Create a new Python file called `00-simulate_data.py`.
 
 ```{python}
-
 #| eval: false
 #| echo: true
 #| warning: false
@@ -207,7 +201,6 @@ data.write_parquet("simulated_data.parquet")
 We would like to write tests based on this simulated data that we will then apply to our real data. We use `pydantic` to do this and so we should add this to our environment with `uv add`.
 
 ```{bash}
-
 #| eval: false
 #| echo: true
 
@@ -218,7 +211,6 @@ uv add pydantic
 Create a new Python file called `00-test_simulated_data.py`. The first step is to define a subclass ``ShelterData` of `BaseModel` which comes from `pydantic`.
 
 ```{python}
-
 #| eval: false
 #| echo: true
 #| warning: false
@@ -249,7 +241,6 @@ We are interested in testing that dates are valid, shelters have the correct typ
 We can then import our simulated dataset and test it.
 
 ```{python}
-
 #| eval: false
 #| echo: true
 #| warning: false
@@ -291,7 +282,6 @@ if errors:
 To see what would have happened if there were an error we can consider a smaller dataset that contains two errors: one poorly formatted date and one situation where usage is above capacity.
 
 ```{python}
-
 #| eval: false
 #| echo: true
 #| warning: false
@@ -372,7 +362,6 @@ Usage
 Using the same source as before: https://open.toronto.ca/dataset/daily-shelter-overnight-service-occupancy-capacity/
 
 ```{python}
-
 #| eval: false
 #| echo: true
 #| warning: false
@@ -394,7 +383,6 @@ df.write_parquet("shelter_usage.parquet")
 We are likely only interested in a few columns and only rows where there are data.
 
 ```{python}
-
 #| eval: false
 #| echo: true
 #| warning: false
@@ -429,7 +417,6 @@ renamed_df.write_parquet("cleaned_shelter_usage.parquet")
 We may then want to apply the tests to the real dataset
 
 ```{python}
-
 #| eval: false
 #| echo: true
 #| warning: false
@@ -490,7 +477,6 @@ if errors:
 Manipulate the data
 
 ```{python}
-
 #| eval: false
 #| echo: true
 #| warning: false
@@ -521,7 +507,6 @@ print(aggregated_df)
 Make a graph
 
 ```{python}
-
 #| eval: false
 #| echo: true
 #| warning: false

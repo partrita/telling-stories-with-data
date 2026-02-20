@@ -595,7 +595,6 @@ GitHub, GitLab, and various other companies offer easier-to-use services that bu
 We first need to check whether Git\index{Git!set up} is installed. Open RStudio, go to the Terminal, type the following, and then enter/return.
 
 ```{bash}
-
 #| eval: false
 #| echo: true
 
@@ -622,7 +621,6 @@ After Git is installed we need to tell it a username and email. We need to do th
 Again, within the Terminal, type the following, replacing the details with yours, and then press "enter/return" after each line.
 
 ```{bash}
-
 #| eval: false
 #| echo: true
 
@@ -726,7 +724,6 @@ When using Git and GitHub we check-in versions from time to time. But what happe
 Git will identify the lines that are in conflict by displaying them both in the file and adding identifying markers `<<<<<<< HEAD` to the start, `=======` to distinguish the conflicting changes and `>>>>>>> new_branch` to show the end and which branch is creating the conflict.
 
 ```{bash}
-
 #| eval: false
 #| echo: true
 

@@ -36,7 +36,7 @@ engine: knitr
 #| warning: false
 
 library(arrow)
-library(nflverse)
+# library(nflverse)
 library(poissonreg)
 library(tidymodels)
 library(tidyverse)

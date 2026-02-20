@@ -448,7 +448,7 @@ We now have three ways to combine multiple graphs: sub-figures, facets, and `pat
 
 We now turn to the colors\index{graphs!color} used in the graph. There are a variety of different ways to change the colors. The many palettes available from `RColorBrewer` [@RColorBrewer] can be specified using `scale_fill_brewer()`. In the case of `viridis` [@viridis] we can specify the palettes using `scale_fill_viridis_d()`. Additionally, `viridis` is particularly focused on color-blind palettes (@fig-usecolor). Neither `RColorBrewer` nor `viridis` need to be explicitly installed or loaded because `ggplot2`, which is part of the `tidyverse`, takes care of that for us.
 
-:::callout-note
+:::{.callout-note}
 
 ## Shoulders of giants
 

@@ -626,7 +626,7 @@ library(tidyverse)
 
 To add a bit more detail to the earlier example, packages contain code that other people have written. There are a few common ones that you will see regularly in this book, especially the `tidyverse`. To use a package, we must first install it and then we need to load it. A package only needs to be installed once per computer but must be loaded every time. This means the packages that we installed earlier do not need to be reinstalled here.
 
-:::callout-note
+:::{.callout-note}
 
 ## Shoulders of giants
 
@@ -634,7 +634,7 @@ Dr Robert Gentleman\index{Gentleman, Robert} is a co-creator of R. After earning
 
 :::
 
-:::callout-note
+:::{.callout-note}
 
 ## Shoulders of giants
 

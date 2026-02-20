@@ -51,7 +51,6 @@ Download "AustralianPoliticians.db" [here](https://github.com/RohanAlexander/tel
 There are three key SQL commands that we now cover: `SELECT`, `FROM`, and `WHERE`. `SELECT` allows us to specify particular columns of the data, and we can consider `SELECT` in a similar way to `select()`. In the same way that we need to specify a dataset with `select()` and did that using a pipe operator, we specify a dataset with `FROM`. For instance, we could open "Execute SQL", and then type the following, and click "Execute".
 
 ```{sql}
-
 #| include: true
 #| eval: false
 
@@ -65,7 +64,6 @@ FROM
 The result is that we obtain the column of surnames. We could select multiple columns by separating them with commas, or all of them by using an asterisk, although this is not best practice because if the dataset were to change without us knowing then our result would differ.
 
 ```{sql}
-
 #| include: true
 #| eval: false
 
@@ -78,7 +76,6 @@ FROM
 ```
 
 ```{sql}
-
 #| include: true
 #| eval: false
 
@@ -92,7 +89,6 @@ FROM
 And, finally, if there were repeated rows, then we could just look at the unique ones using `DISTINCT`, in a similar way to `distinct()`.
 
 ```{sql}
-
 #| include: true
 #| eval: false
 
@@ -106,7 +102,6 @@ FROM
 So far we have used `SELECT` along with `FROM`. The third command that is commonly used is `WHERE`, and this will allow us to focus on particular rows, in a similar way to `filter()`.
 
 ```{sql}
-
 #| include: true
 #| eval: false
 
@@ -124,7 +119,6 @@ WHERE
 All the usual logical operators are fine with `WHERE`, such as "=", "!=", ">", "<", ">=", and "<=". We could combine conditions using `AND` and `OR`.
 
 ```{sql}
-
 #| include: true
 #| eval: false
 
@@ -143,7 +137,6 @@ WHERE
 If we have a query that gave a lot of results, then we could limit the number of them with `LIMIT`. 
 
 ```{sql}
-
 #| include: true
 #| eval: false
 
@@ -161,7 +154,6 @@ WHERE
 And we could specify the order of the results with `ORDER`.
 
 ```{sql}
-
 #| include: true
 #| eval: false
 
@@ -181,7 +173,6 @@ ORDER BY
 See the rows that are pretty close to a criteria:
 
 ```{sql}
-
 #| include: true
 #| eval: false
 
@@ -201,7 +192,6 @@ The "_" above is a wildcard that matches to any character. This provides results
 Focusing on missing data is possible using "NULL" or "NOT NULL". 
 
 ```{sql}
-
 #| include: true
 #| eval: false
 
@@ -220,7 +210,6 @@ WHERE
 An ordering is applied to number, date, and text fields that means we can use `BETWEEN` on all those, not just numeric. For instance, we could look for all surnames that start with a letter between X and Z (not including Z).
 
 ```{sql}
-
 #| include: true
 #| eval: false
 
@@ -238,7 +227,6 @@ WHERE
 Using `WHERE` with a numeric variable means that `BETWEEN` is inclusive, compared with the example with letters which is not.
 
 ```{sql}
-
 #| include: true
 #| eval: false
 
@@ -257,7 +245,6 @@ WHERE
 In addition to providing us with dataset observations that match what we asked for, we can modify the dataset. For instance, we could edit a value using `UPDATE` and `SET`.
 
 ```{sql}
-
 #| include: true
 #| eval: false
 
@@ -273,7 +260,6 @@ WHERE
 We can integrate if-else logic with `CASE` and `ELSE`. For instance, we add a column called "wasTreasurer", which is "Yes" in the case of "Josh Frydenberg", and "No" in the case of "Kevin Rudd", and "Unsure" for all other cases.
 
 ```{sql}
-
 #| include: true
 #| eval: false
 
@@ -295,7 +281,6 @@ FROM
 We can create summary statistics using commands such as `COUNT`, `SUM`, `MAX`, `MIN`, `AVG`, and `ROUND` in the place of `summarize()`. `COUNT` counts the number of rows that are not empty for some column by passing the column name, and this is similarly how `MIN`, etc, work.
 
 ```{sql}
-
 #| include: true
 #| eval: false
 
@@ -307,7 +292,6 @@ FROM
 ```
 
 ```{sql}
-
 #| include: true
 #| eval: false
 
@@ -321,7 +305,6 @@ FROM
 We can get results based on different groups in our dataset using `GROUP BY`, in a similar manner to `group_by` in R.
 
 ```{sql}
-
 #| include: true
 #| eval: false
 
@@ -337,7 +320,6 @@ GROUP BY
 And finally, we can combine two tables using `LEFT JOIN`. We need to be careful to specify the matching columns using dot notation. 
 
 ```{sql}
-
 #| include: true
 #| eval: false
 

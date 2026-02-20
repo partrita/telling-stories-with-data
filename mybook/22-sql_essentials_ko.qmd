@@ -51,7 +51,6 @@ SQL을 시작하려면 무료 오픈 소스인 [DB Browser for SQLite](https://s
 이제 다룰 세 가지 주요 SQL 명령은 `SELECT`, `FROM`, `WHERE`입니다. `SELECT`를 사용하면 데이터의 특정 열을 지정할 수 있으며, `SELECT`를 `select()`와 유사하게 고려할 수 있습니다. `select()`로 데이터셋을 지정해야 하고 파이프 연산자를 사용하여 그렇게 했던 것과 마찬가지로, `FROM`으로 데이터셋을 지정합니다. 예를 들어, "SQL 실행"을 열고 다음을 입력한 다음 "실행"을 클릭할 수 있습니다.
 
 ```{sql}
-
 #| include: true
 #| eval: false
 
@@ -65,7 +64,6 @@ FROM
 결과는 성(surname) 열을 얻는 것입니다. 쉼표로 구분하여 여러 열을 선택하거나, 별표를 사용하여 모든 열을 선택할 수 있지만, 데이터셋이 우리가 모르는 사이에 변경될 경우 결과가 달라질 수 있으므로 이는 모범 사례가 아닙니다.
 
 ```{sql}
-
 #| include: true
 #| eval: false
 
@@ -78,7 +76,6 @@ FROM
 ```
 
 ```{sql}
-
 #| include: true
 #| eval: false
 
@@ -92,7 +89,6 @@ FROM
 마지막으로, 반복되는 행이 있다면 `DISTINCT`를 사용하여 고유한 행만 볼 수 있습니다. 이는 `distinct()`와 유사합니다.
 
 ```{sql}
-
 #| include: true
 #| eval: false
 
@@ -106,7 +102,6 @@ FROM
 지금까지 `SELECT`와 `FROM`을 사용했습니다. 일반적으로 사용되는 세 번째 명령은 `WHERE`이며, 이는 `filter()`와 유사하게 특정 행에 초점을 맞출 수 있도록 합니다.
 
 ```{sql}
-
 #| include: true
 #| eval: false
 
@@ -124,7 +119,6 @@ WHERE
 "=", "!=", ">", "<", ">=", "<="와 같은 모든 일반적인 논리 연산자는 `WHERE`와 함께 사용할 수 있습니다. `AND`와 `OR`를 사용하여 조건을 결합할 수 있습니다.
 
 ```{sql}
-
 #| include: true
 #| eval: false
 
@@ -143,7 +137,6 @@ WHERE
 많은 결과를 반환하는 쿼리가 있다면 `LIMIT`를 사용하여 결과 수를 제한할 수 있습니다.
 
 ```{sql}
-
 #| include: true
 #| eval: false
 
@@ -161,7 +154,6 @@ WHERE
 그리고 `ORDER`를 사용하여 결과의 순서를 지정할 수 있습니다.
 
 ```{sql}
-
 #| include: true
 #| eval: false
 
@@ -181,7 +173,6 @@ ORDER BY
 기준에 매우 가까운 행을 확인하십시오:
 
 ```{sql}
-
 #| include: true
 #| eval: false
 
@@ -201,7 +192,6 @@ WHERE
 "NULL" 또는 "NOT NULL"을 사용하여 누락된 데이터에 초점을 맞출 수 있습니다.
 
 ```{sql}
-
 #| include: true
 #| eval: false
 
@@ -220,7 +210,6 @@ WHERE
 숫자, 날짜, 텍스트 필드에 순서가 적용되어 `BETWEEN`을 모든 필드에 사용할 수 있습니다. 숫자뿐만 아니라. 예를 들어, X와 Z 사이의 문자로 시작하는 모든 성을 찾을 수 있습니다 (Z는 포함하지 않음).
 
 ```{sql}
-
 #| include: true
 #| eval: false
 
@@ -238,7 +227,6 @@ WHERE
 숫자 변수와 함께 `WHERE`를 사용하면 `BETWEEN`이 포함적입니다. 문자와 함께 사용한 예시와는 다릅니다.
 
 ```{sql}
-
 #| include: true
 #| eval: false
 
@@ -257,7 +245,6 @@ WHERE
 요청한 데이터셋 관측치를 제공하는 것 외에도 데이터셋을 수정할 수 있습니다. 예를 들어, `UPDATE`와 `SET`을 사용하여 값을 편집할 수 있습니다.
 
 ```{sql}
-
 #| include: true
 #| eval: false
 
@@ -273,7 +260,6 @@ WHERE
 `CASE`와 `ELSE`를 사용하여 if-else 논리를 통합할 수 있습니다. 예를 들어, "Josh Frydenberg"의 경우 "Yes", "Kevin Rudd"의 경우 "No", 다른 모든 경우 "Unsure"인 "wasTreasurer"라는 열을 추가할 수 있습니다.
 
 ```{sql}
-
 #| include: true
 #| eval: false
 
@@ -295,7 +281,6 @@ FROM
 `summarize()` 대신 `COUNT`, `SUM`, `MAX`, `MIN`, `AVG`, `ROUND`와 같은 명령을 사용하여 요약 통계를 생성할 수 있습니다. `COUNT`는 열 이름을 전달하여 해당 열에 대해 비어 있지 않은 행의 수를 계산하며, `MIN` 등도 유사하게 작동합니다.
 
 ```{sql}
-
 #| include: true
 #| eval: false
 
@@ -307,7 +292,6 @@ FROM
 ```
 
 ```{sql}
-
 #| include: true
 #| eval: false
 
@@ -321,7 +305,6 @@ FROM
 R의 `group_by`와 유사하게 `GROUP BY`를 사용하여 데이터셋의 다른 그룹을 기반으로 결과를 얻을 수 있습니다.
 
 ```{sql}
-
 #| include: true
 #| eval: false
 
@@ -337,7 +320,6 @@ GROUP BY
 마지막으로 `LEFT JOIN`을 사용하여 두 테이블을 결합할 수 있습니다. 점 표기법을 사용하여 일치하는 열을 지정하는 데 주의해야 합니다.
 
 ```{sql}
-
 #| include: true
 #| eval: false
 

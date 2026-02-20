@@ -277,8 +277,8 @@ modelsummary(
 #| eval: false
 #| message: false
 #| warning: false
-#| label: tbl-teamodelresultsplots
-#| fig-cap: "각 그룹에 대한 표본 분포 검토"
+#| label: fig-teamodelresultsplots
+#| fig-cap: "연령 및 국적별 차 선호도에 대한 다단계 모델의 표본 분포 검토"
 
 tea_preference_model |>
   spread_draws(`(Intercept)`, b[, group]) |>
@@ -946,8 +946,8 @@ modelsummary(
 #| eval: false
 #| message: false
 #| warning: false
-#| label: tbl-politicsmodelresultsplots
-#| fig-cap: "각 그룹에 대한 표본 분포 검토"
+#| label: fig-politicsmodelresultsplots
+#| fig-cap: "연령 및 교육별 표본 분포 검토"
 
 us_election_model |>
   spread_draws(`(Intercept)`, b[, group]) |>
@@ -967,7 +967,7 @@ us_election_model |>
 #| eval: false
 #| message: false
 #| warning: false
-#| label: tbl-politicsmodelresultsplotsstates
+#| label: fig-politicsmodelresultsplotsstates
 #| fig-cap: "선택된 주에 대한 표본 분포 검토"
 
 us_election_model |>
@@ -1017,8 +1017,8 @@ head(biden_support_by_state)
 ```{r}
 #| eval: false
 #| echo: false
-#| label: tbl-estimatyusamrp
-#| fig-cap: "MRP 추정치와 Nationscape 원시 데이터 비교"
+#| label: fig-estimatyusamrp
+#| fig-cap: "각 주에 대한 MRP 사후 추정치와 Nationscape 원시 데이터 비교"
 #| message: false
 #| fig-height: 8
 
