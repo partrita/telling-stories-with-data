@@ -6,8 +6,8 @@ platforms = ["linux-64"]
 version = "0.1.0"
 
 [tasks]
-install-r-packages = "R -e 'install.packages(c(\"opendatatoronto\", \"datasauRus\", \"troopdata\", \"rdrobust\", \"analogsea\", \"AustralianPoliticians\", \"dataverse\", \"nflverse\"), repos=\"https://cloud.r-project.org/\")'"
-install-r-github-packages = "R -e 'devtools::install_github(c(\"ttimbers/canlang\", \"sharlagelfand/astrologer\"))'"
+install-r-packages = "R -e 'install.packages(c(\"opendatatoronto\", \"datasauRus\", \"troopdata\", \"rdrobust\", \"analogsea\", \"AustralianPoliticians\", \"dataverse\", \"nflverse\", \"canlang\"), repos=\"https://cloud.r-project.org/\")'"
+install-r-github-packages = "R -e 'devtools::install_github(\"sharlagelfand/astrologer\")'"
 
 [dependencies]
 quarto = ">=1.7.32,<2"
