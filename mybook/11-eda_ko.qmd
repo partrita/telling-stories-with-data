@@ -6,13 +6,13 @@ engine: knitr
 
 **선수 지식**
 
-- *데이터 분석의 미래*, [@tukey1962future]
+- *데이터 분석의 미래* 읽기(원제: *The Future of Data Analysis*), [@tukey1962future]
   - 20세기 통계학자 존 투키는 통계학에 많은 기여를 했습니다. 이 논문에서 "일반적인 고려 사항" 1부에 집중하세요. 이는 데이터를 통해 무언가를 배워야 하는 방식에 대해 시대를 앞서갔습니다.
-- *데이터 정리의 모범 사례*, [@bestpracticesindatacleaning]
+- *데이터 정리의 모범 사례* 읽기(원제: *Best Practices in Data Cleaning*), [@bestpracticesindatacleaning]
   - 이 문제에 대한 장 길이의 처리를 제공하는 6장 "결측 또는 불완전 데이터 처리"에 집중하세요.
-- *데이터 과학을 위한 R*, [@r4ds]
+- *데이터 과학을 위한 R* 읽기(원제: *R for Data Science*), [@r4ds]
   - 자체 포함된 EDA 작업 예시를 제공하는 11장 "탐색적 데이터 분석"에 집중하세요.
-- *전체 게임*, [@hadleycodes]
+- *전체 게임* 시청(원제: *The Whole Game*), [@hadleycodes]
   - 자체 포함된 EDA 작업 예시를 제공하는 비디오입니다. 좋은 점 중 하나는 전문가가 실수를 하고 그것을 고치는 것을 볼 수 있다는 것입니다.
 
 **핵심 개념 및 기술**

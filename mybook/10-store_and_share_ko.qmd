@@ -6,15 +6,15 @@ engine: knitr
 
 **선수 지식**
 
-- *연구 데이터 관리를 통한 오픈 사이언스 촉진*, [@Borghi2022Promoting]
+- *연구 데이터 관리를 통한 오픈 사이언스 촉진* 읽기(원제: *Promoting Open Science Through Research Data Management*), [@Borghi2022Promoting]
   - 데이터 관리 현황과 더 재현 가능한 연구를 수행하기 위한 몇 가지 전략을 설명합니다.
-- *대규모 교육 연구의 데이터 관리*, [@lewiscrystal]
+- *대규모 교육 연구의 데이터 관리* 읽기(원제: *Data Management in Large-Scale Education Research*), [@lewiscrystal]
   - 데이터 관리 문제, 워크플로 및 용어에 대한 개요를 제공하는 2장 "연구 데이터 관리"에 집중하세요.
-- *투명하고 재현 가능한 사회 과학 연구*, [@christensen2019transparent]
+- *투명하고 재현 가능한 사회 과학 연구* 읽기(원제: *Transparent and Reproducible Social Science Research*), [@christensen2019transparent]
   - 데이터를 공유하는 방법을 명시하는 10장 "데이터 공유"에 집중하세요.
-- *데이터셋을 위한 데이터시트*, [@gebru2021datasheets]
+- *데이터셋을 위한 데이터시트* 읽기(원제: *Datasheets for Datasets*), [@gebru2021datasheets]
   - 데이터시트의 개념을 소개합니다.
-- *데이터 및 그 (불)내용: 기계 학습 연구에서 데이터셋 개발 및 사용에 대한 조사*, [@Paullada2021]
+- *데이터 및 그 (불)내용: 기계 학습 연구에서 데이터셋 개발 및 사용에 대한 조사* 읽기(원제: *Data and Its (Dis)Contents: A Survey of Dataset Development and Use in Machine Learning Research*), [@Paullada2021]
   - 기계 학습에서 데이터의 현황을 자세히 설명합니다.
 
 **핵심 개념 및 기술**

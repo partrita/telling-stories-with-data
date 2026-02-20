@@ -12,19 +12,19 @@ Chapman and Hall/CRC에서 2023년 7월에 이 책을 출판했습니다. [여�
 
 **선수 지식**
 
-- *실제 영향 평가*, [@gertler2016impact]
+- *실제 영향 평가* 읽기(원제: *Impact Evaluation in Practice*), [@gertler2016impact]
   - 인과 추론 및 무작위화에 대한 광범위한 논의를 제공하는 3장과 4장에 집중하세요.
-- *설문 응답 심리학*, [@tourangeau2000]
+- *설문 응답 심리학* 읽기(원제: *The Psychology of Survey Response*), [@tourangeau2000]
   - 설문 질문의 문구에 대해 논의하는 2장 "응답자의 설문 질문 이해"에 집중하세요.
-- *설문 조사 실행 방법*, [@Stantcheva2023]
+- *설문 조사 실행 방법* 읽기(원제: *How to run a survey*), [@Stantcheva2023]
   - 이 논문은 설문 조사를 구성할 때의 실제적인 문제에 대한 개요를 제공합니다.
-- *Q&A: Pew Research Center가 인도에서 거의 30,000명을 설문 조사한 방법*, [@pewletterman]
+- *Q&A: Pew Research Center가 인도에서 거의 30,000명을 설문 조사한 방법* 읽기(원제: *Q&A: How Pew Research Center surveyed nearly 30,000 people in India*), [@pewletterman]
   - 종교적 신념에 대한 대규모 설문 조사 중에 발생한 많은 실제적인 문제를 논의합니다.
-- *통계 및 인과 추론*, [@holland1986statistics]
+- *통계 및 인과 추론* 읽기(원제: *Statistics and Causal Inference*), [@holland1986statistics]
   - 통계 모델, 특히 루빈의 모델을 사용하여 원인의 효과를 이해하는 방법을 논의하는 1-3부에 집중하세요.
-- *빅 테크는 당신을 테스트하고 있습니다*, [@fry2020big]
+- *빅 테크는 당신을 테스트하고 있습니다* 읽기(원제: *Big Tech is Testing You*), [@fry2020big]
   - 이 기사는 기술 기업에서 A/B 테스트 사용에 대해 논의합니다.
-- *산업에서의 인과 추론 과제: LinkedIn 경험에서 얻은 관점*, [@yaxu]
+- *산업에서의 인과 추론 과제: LinkedIn 경험에서 얻은 관점* 시청(원제: *Challenges of Causal Inference in Industry: Perspectives from Experiences at LinkedIn*), [@yaxu]
   - A/B 테스트에 대한 개요를 제공하는 이 비디오의 전반부에 집중하세요.
 
 **핵심 개념 및 기술**

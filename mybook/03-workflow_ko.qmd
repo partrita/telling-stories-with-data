@@ -12,19 +12,19 @@ Chapman and Hall/CRC는 이 책을 2023년 7월에 출판했습니다. [여기](
 
 **선행 조건**
 
-- *What has happened down here is the winds have changed* 읽기, [@Gelman2016]
+- *여기서 일어난 일은 바람이 바뀌었다는 것입니다* 읽기(원제: *What has happened down here is the winds have changed*), [@Gelman2016]
   - 복제 위기(replication crisis)와 사회 과학이 이에 대응하여 어떻게 변화했는지에 대한 개요를 제공하는 블로그 게시물입니다.
-- *Good enough practices in scientific computing* 읽기, [@wilsongoodenough]
+- *과학적 컴퓨팅에서의 충분히 좋은 관행* 읽기(원제: *Good enough practices in scientific computing*), [@wilsongoodenough]
   - 컴퓨터 사용 방식에 초점을 맞춰 데이터 과학을 수행하는 방법에 대한 명확하고 쉽게 채택할 수 있는 권장 사항을 제공하는 논문입니다.
-- *How to improve your relationship with your future self* 읽기, [@bowers2016improve]
+- *미래의 자신과의 관계를 개선하는 방법* 읽기(원제: *How to improve your relationship with your future self*), [@bowers2016improve]
   - 분석에 초점을 맞춰 데이터 과학을 수행하는 방법에 대한 명확하고 쉽게 채택할 수 있는 권장 사항을 제공하는 논문입니다.
-- *Overcoming barriers to sharing code* 시청, [@monicatalks]
+- *코드 공유 장벽 극복하기* 시청(원제: *Overcoming barriers to sharing code*), [@monicatalks]
   - 이 비디오는 코드 공유에 익숙해지는 것에 대한 개인적인 성찰입니다.
-- *Make a reprex$... Please* 시청, [@sharlatalks]
+- *reprex를 만들어주세요... 제발* 시청(원제: *Make a reprex... Please*), [@sharlatalks]
   - 이 비디오는 도움을 요청할 때 재현 가능한 예제를 만드는 것이 왜 그렇게 중요한지 자세히 설명합니다.
-- *The tidyverse style guide* 읽기, [@tidyversestyleguide]
+- *tidyverse 스타일 가이드* 읽기(원제: *The tidyverse style guide*), [@tidyversestyleguide]
   - R에서 코딩할 때 권장되는 모범 사례를 문서화한 웹사이트입니다.
-- *Code smells and feels* 시청, [@codesmells]
+- *코드 냄새와 느낌* 시청(원제: *Code smells and feels*), [@codesmells]
   - 코딩할 때 피해야 할 사항을 자세히 설명하는 비디오입니다.
 
 **주요 개념 및 기술**
@@ -121,13 +121,13 @@ Quarto\index{Quarto}는 코드와 자연어를 "문학적 프로그래밍"이라
 
 :::{.content-visible when-format="pdf"}
 
-앞으로 Quarto를 사용하는 것이 합리적이지만, R Markdown\index{R!R Markdown}용으로 작성된 많은 자료가 있습니다. 이러한 이유로 [온라인 부록 "R Markdown"](https://tellingstorieswithdata.com/22-rmarkdown.html)에서 R Markdown 동등물을 제공합니다.
+앞으로 Quarto를 사용하는 것이 합리적이지만, R Markdown\index{R!R Markdown}용으로 작성된 많은 자료가 있습니다. 이러한 이유로 [온라인 부록 "R Markdown"](https://tellingstorieswithdata.com/22-rmarkdown.html)에서 대응하는 R Markdown 내용을 제공합니다.
 
 :::
 
 :::{.content-visible unless-format="pdf"}
 
-앞으로 Quarto를 사용하는 것이 합리적이지만, R Markdown\index{R!R Markdown}용으로 작성된 많은 자료가 있습니다. 이러한 이유로 [온라인 부록 -@sec-rmarkdown]에서 R Markdown 동등물을 제공합니다.
+앞으로 Quarto를 사용하는 것이 합리적이지만, R Markdown\index{R!R Markdown}용으로 작성된 많은 자료가 있습니다. 이러한 이유로 [온라인 부록 -@sec-rmarkdown]에서 대응하는 R Markdown 내용을 제공합니다.
 
 :::
 
@@ -557,7 +557,7 @@ $$ {#eq-gdpidentity}
 
 ## R 프로젝트 및 파일 구조
 
-프로젝트\index{R!R 프로젝트}는 소프트웨어 개발에서 널리 사용되며, 특정 프로젝트와 관련된 모든 파일(데이터, 분석, 보고서 등)을 함께 유지하고 서로 관련시키기 위해 존재합니다. (소프트웨어 개발 의미의 "프로젝트"는 프로젝트 관리 의미의 "프로젝트"와 다릅니다.) R 프로젝트는 RStudio에서 만들 수 있습니다. "파일" $\rightarrow$ "새 프로젝트"를 클릭한 다음 "빈 프로젝트"를 선택하고 R 프로젝트 이름을 지정하고 저장할 위치를 결정합니다. 예를 들어, 모성 사망률에 초점을 맞춘 R 프로젝트는 "maternalmortality"라고 불릴 수 있습니다. R 프로젝트를 사용하면 "[다른 컴퓨터나 사용자 간에 그리고 시간이 지남에 따라 신뢰할 수 있고 정중한 동작]을 가능하게 합니다" [@whattheyforgot]. 이는 폴더의 컨텍스트를 더 넓은 존재에서 제거하기 때문입니다. 파일은 컴퓨터의 기반이 아니라 R 프로젝트의 기반과 관련하여 존재합니다.
+프로젝트\index{R!R 프로젝트}는 소프트웨어 개발에서 널리 사용되며, 특정 프로젝트와 관련된 모든 파일(데이터, 분석, 보고서 등)을 함께 유지하고 서로 관련시키기 위해 존재합니다. (소프트웨어 개발 의미의 "프로젝트"는 프로젝트 관리 의미의 "프로젝트"와 다릅니다.) R 프로젝트는 RStudio에서 만들 수 있습니다. "파일" $\rightarrow$ "새 프로젝트"를 클릭한 다음 "빈 프로젝트"를 선택하고 R 프로젝트 이름을 지정하고 저장할 위치를 결정합니다. 예를 들어, 모성 사망률에 초점을 맞춘 R 프로젝트는 "maternalmortality"라고 불릴 수 있습니다. R 프로젝트를 사용하면 "[다른 컴퓨터나 사용자 간에 그리고 시간이 지남에 따라 신뢰할 수 있고 (사용자 환경을 존중하는) 예의 바른 동작]을 가능하게 합니다" [@whattheyforgot]. 이는 폴더의 컨텍스트를 더 넓은 존재에서 제거하기 때문입니다. 파일은 컴퓨터의 기반이 아니라 R 프로젝트의 기반과 관련하여 존재합니다.
 
 프로젝트가 생성되면 해당 폴더에 ".RProj" 확장자를 가진 새 파일이 나타납니다. R 프로젝트, Quarto 문서 및 적절한 파일 구조를 가진 폴더의 예는 [여기](https://github.com/RohanAlexander/starter_folder)에서 확인할 수 있습니다. "코드" $\rightarrow$ "ZIP 다운로드"를 통해 다운로드할 수 있습니다.
 
