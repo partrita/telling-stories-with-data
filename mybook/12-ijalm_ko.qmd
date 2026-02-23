@@ -201,6 +201,7 @@ normal_takes_shapes |>
 
 $$
 Y = \beta_0 + \beta_1 X + \epsilon.
+$$ {#eq-xandy}
 이 수식에는 두 개의 매개변수, 흔히 계수(coefficients)라 불리는 절편 $\beta_0$와 기울기 $\beta_1$이 포함됩니다. @eq-xandy 가 의미하는 바는 다음과 같습니다. $X$가 0일 때 $Y$의 기대값은 $\beta_0$이며, $X$가 1단위 증가할 때마다 $Y$의 기대값은 $\beta_1$단위만큼 변하게 됩니다. 우리는 관측된 데이터를 이 관계식에 대입하여 미지의 $\beta_0$와 $\beta_1$ 값을 추정합니다. 수식 끝에 붙은 $\epsilon$(입실론)은 기저의 선형 관계만으로는 완벽히 설명할 수 없는 '노이즈(noise)', 즉 개별 데이터가 선형 관계에서 벗어나는 편차(deviation)를 나타냅니다. 고전적인 선형 회귀에서는 이 노이즈 항이 정규 분포를 따른다고 가정하며, 이는 종속 변수인 $Y$가 평균이 $\beta$에 의해 결정되는 정규 분포를 따른다는 결론으로 이어집니다.
 
 추상적인 수식을 구체적인 현실의 문제로 연결하기 위해, @sec-clean-and-prepare 에서 다루었던 5km 달리기 시간과 마라톤 완주 시간 사이의 관계를 다시 살펴보겠습니다(@fig-fivekmvsmarathon-1).\index{simulation!running times} 
