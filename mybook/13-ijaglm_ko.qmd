@@ -639,7 +639,7 @@ rpois(n = 20, lambda = 3)
 #| echo: false
 #| message: false
 #| warning: false
-#| fig-cap: "포아송 분포의 다양한 얼굴: 우뚝 솟은 평균($\lambda$) 값 하나에 의해 분포 전체의 모양과 변동성(분산)이 결정됩니다."
+#| fig-cap: '포아송 분포의 다양한 얼굴: 우뚝 솟은 평균($\lambda$) 값 하나에 의해 분포 전체의 모양과 변동성(분산)이 결정됩니다.'
 #| label: fig-poissondistributiontakingshape
 
 set.seed(853)
