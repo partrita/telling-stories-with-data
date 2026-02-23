@@ -424,6 +424,14 @@ newspapers <- read_dta("Angelucci_Cage_AEJMicro_dataset.dta")
 
 ```
 
+```{r}
+#| echo: false
+
+# INTERNAL
+newspapers <- read_dta("inputs/data/116438-V1/data/dta/Angelucci_Cage_AEJMicro_dataset.dta")
+
+```
+
 분석 대상인 데이터셋(1960~1974년)에는 총 1,196개의 관측치와 52개의 변수가 포함되어 있습니다. 분석 기간 시작 시점에 14개였던 전국 신문은 기간 종료 시점에 12개로 줄어들었습니다. 핵심 분기점은 앞서 언급했듯 정부가 TV 광고 허용을 발표한 1967년입니다. 전국 신문은 TV 광고주들을 두고 직접 경쟁하는 관계였기에 '처리군(Treatment group)'이 되었고, TV 광고의 영향력에서 비교적 자유로웠던 지역 신문은 '대조군(Control group)'으로서 기능합니다.
 
 우리는 이 방대한 연구의 핵심 지표인 '광고 수익'과 '판매량' 변화에 초점을 맞추어 DiD 분석을 재구성해 보겠습니다.
@@ -702,6 +710,19 @@ purchase_data
 우리는 시뮬레이션을 통해 무료 배송 혜택이 특정 조건(젊고 구매력이 높은 고객층)에 편향되어 있음을 알고 있습니다. 따라서 단순 평균 비교는 모델링의 타당성을 잃습니다. 대신 우리는 성향 점수 매칭을 통해, 무료 배송을 받은 한 고객과 가장 닮은(성별, 나이, 소득이 유사한) 비수혜 고객을 1:1로 '연결'하여 비교 집단을 재구성합니다. 그 결과 최종 분석에는 엄선된 508개의 관측치만 남게 됩니다.
 
 ```{r}
+#| label: tbl-heyheybigspender
+#| tbl-cap: "무료 배송 여부에 따른 평균 구매 금액 차이"
+
+purchase_data |>
+  summarise(average_spend = round(mean(spend), 2), .by = free_shipping) |>
+  mutate(free_shipping = if_else(free_shipping == 0, "아니오", "예")) |>
+  tt() |>
+  style_tt(j = 1:2, align = "lr") |>
+  setNames(c("무료 배송 수혜 여부", "평균 구매 금액"))
+
+```
+
+```{r}
 #| message: false
 #| warning: false
 
@@ -848,7 +869,41 @@ saveRDS(
 
 ```
 
-(중략: 모델 로드 및 출력 과정)
+```{r}
+#| echo: false
+#| eval: false
+#| message: false
+#| warning: false
+
+# INTERNAL
+saveRDS(
+  rdd_example,
+  file = "outputs/model/rdd_example.rds"
+)
+
+```
+
+```{r}
+#| echo: true
+#| eval: false
+#| warning: false
+#| message: false
+
+rdd_example <-
+  readRDS(file = "rdd_example.rds")
+
+```
+
+```{r}
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+
+rdd_example <-
+  readRDS(file = "outputs/model/rdd_example.rds")
+
+```
 
 ```{r}
 #| label: tbl-rddexample
