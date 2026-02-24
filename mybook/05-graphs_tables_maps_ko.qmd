@@ -1501,7 +1501,7 @@ head(bases)
 ```{r}
 #| message: false
 #| warning: false
-#| eval: true
+#| eval: false
 # 사용: https://data.humdata.org/dataset/bounding-boxes-for-countries
 bbox_germany <- c(left = 5.867, bottom = 45.967, right = 15.033, top = 55.133)
 
@@ -1516,7 +1516,7 @@ bbox_australia <- c(left = 112.467, bottom = -45, right = 155, top = -9.133)
 ```{r}
 #| message: false
 #| warning: false
-#| eval: true
+#| eval: false
 
 german_stamen_map <- get_stadiamap(bbox_germany, zoom = 6, maptype = "stamen_toner_lite")
 
@@ -1535,7 +1535,7 @@ aus_stamen_map <- get_stadiamap(bbox_australia, zoom = 5, maptype = "stamen_tone
 #| warning: false
 #| fig-subcap: ["독일", "일본", "호주"]
 #| layout-ncol: 2
-#| eval: true
+#| eval: false
 ggmap(german_stamen_map) +
   geom_point(data = bases, aes(x = lon, y = lat)) +
   labs(x = "경도",
@@ -1588,6 +1588,7 @@ place_names
 ```
 
 ```{r}
+#| eval: false
 #| message: false
 #| warning: false
 
@@ -1605,6 +1606,7 @@ place_names
 이제 이 도시들을 플로팅하고 레이블을 지정할 수 있습니다 (@fig-mynicemap).
 
 ```{r}
+#| eval: false
 #| fig-cap: "위치를 얻기 위해 지오코딩 후 아크라, 시드니, 토론토, 과야킬 지도"
 #| label: fig-mynicemap
 #| message: false
