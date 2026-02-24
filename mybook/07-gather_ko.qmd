@@ -278,6 +278,7 @@ politics_datasets <-
 #| warning: false
 #| eval: true
 #| echo: true
+```
 
 복잡한 JSON 데이터는 `View()` 함수로 계층 구조를 확장해 가며 살펴보는 것이 좋습니다. RStudio의 `View()`창에서 요소 위에 마우스를 올리고 녹색 화살표 아이콘을 누르면, 해당 요소까지 도달하는 R 코드를 자동으로 생성해 줍니다 (@fig-jsonfirst).
 
