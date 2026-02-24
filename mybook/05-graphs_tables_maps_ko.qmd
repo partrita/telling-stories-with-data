@@ -751,7 +751,7 @@ world_bank_data |>
 
 **필립스 곡선(Phillips Curve)**\index{필립스 곡선}은 실업률과 인플레이션 사이의 역상관 관계를 보여주는 유명한 경제학 그래프입니다. 윌리엄 필립스(A. W. Phillips)가 1861년부터 1957년 사이의 영국 데이터를 통해 이 관계를 처음 제시했습니다 [@phillips1958relation]. 우리는 `ggplot2`를 이용해 이 관계를 두 가지 방식으로 탐색해 볼 수 있습니다.
 
-1) **두 시계열 비교:** 연도별 실업률과 인플레이션 선을 한 그래프에 겹쳐 그립니다 (@fig-notphillips-1). 이를 위해선 `pivot_longer()` 함수를 이용해 데이터를 '정돈된(Tidy)' 형식으로 먼저 변환해야 합니다 (자세한 방법은 [온라인 부록 -@sec-r-essentials]을 참고하십시오).
+1) **두 시계열 비교:** 연도별 실업률과 인플레이션 선을 한 그래프에 겹쳐 그립니다 (@fig-notphillips-1). 이를 위해선 `pivot_longer()` 함수를 이용해 데이터를 '정돈된(Tidy)' 형식으로 먼저 변환해야 합니다 (자세한 방법은 [온라인 부록 @sec-r-essentials] 을 참고하십시오).
 2) **경로 그래프(Path Plot):** `geom_path()`를 사용해 두 변수 사이의 관계를 시계열 순서대로 선으로 연결합니다 (@fig-notphillips-2). 미국의 1960~2020년 데이터를 보면, 이론적인 필립스 곡선만큼 명확한 역상관 관계가 나타나지는 않는 것을 확인할 수 있습니다.
 
 ```{r}
@@ -949,7 +949,7 @@ world_bank_data |>
 
 ### 상자 그림
 
-**상자 그림(Boxplot)**\index{그래프!상자 그림}은 데이터의 분포를 다섯 가지 핵심 수치로 요약해 보여줍니다. 1) 중앙값, 2) 제1사분위수(25번째 백분위수), 3) 제3사분위수(75번째 백분위수)가 상자의 골격을 형성합니다. 나머지 두 요소는 기준에 따라 다르지만, 일반적으로 상자 양끝(제1, 제3사분위수)에서 사분위수 범위(IQR, 제3사분위수와 제1사분위수의 차이)의 1.5배 이내에 있는 관측치 중 최댓값과 최솟값을 선(Whiskers)으로 연결합니다. `ggplot2`의 `geom_boxplot()` 함수가 바로 이 방식을 따릅니다. 이러한 요약 방식은 @chartingstatistics [p. 166]에서 처음 제안되었고, @tukeyeda 에 의해 대중화되었습니다.
+**상자 그림(Boxplot)**\index{그래프!상자 그림}은 데이터의 분포를 다섯 가지 핵심 수치로 요약해 보여줍니다. 1) 중앙값, 2) 제1사분위수(25번째 백분위수), 3) 제3사분위수(75번째 백분위수)가 상자의 골격을 형성합니다. 나머지 두 요소는 기준에 따라 다르지만, 일반적으로 상자 양끝(제1, 제3사분위수)에서 사분위수 범위(IQR, 제3사분위수와 제1사분위수의 차이)의 1.5배 이내에 있는 관측치 중 최댓값과 최솟값을 선(Whiskers)으로 연결합니다. `ggplot2`의 `geom_boxplot()` 함수가 바로 이 방식을 따릅니다. 이러한 요약 방식은 [@chartingstatistics, p. 166] 에서 처음 제안되었고, [@tukeyeda] 에 의해 대중화되었습니다.
 
 우리가 그래프를 그리는 중요한 이유 중 하나는 데이터에 내재된 복잡성을 숨기거나 단순화하지 않고, 그 자체를 온전히 이해하기 위해서입니다 [@armstrongembracecomplexity]. 상자 그림은 @Bethlehem2022 처럼 여러 변수의 요약 통계량을 한눈에 비교할 때 매우 편리합니다. 하지만 상자 그림에만 의존하는 것은 위험할 수 있습니다. 상자 그림은 분포의 세부적인 형태를 보여주기보다 오히려 '숨기는' 경향이 있기 때문입니다. 서로 완전히 다른 형태의 분포가 동일한 상자 그림으로 나타날 수 있다는 사실을 이해하기 위해, 시뮬레이션된 베타 분포 데이터를 살펴보겠습니다.\index{시뮬레이션!베타 분포}
 
@@ -1027,7 +1027,7 @@ world_bank_data |>
 
 `shiny` [@citeshiny] 패키지를 사용하면 R을 이용해 사용자와 상호작용하는 웹 애플리케이션을 만들 수 있습니다. 처음에는 조금 까다롭게 느껴질 수 있지만, 데이터 탐색의 차원을 넓혀주는 매우 강력한 도구입니다. 대화형 그래프가 왜 효과적인지에 대한 좋은 사례로 @theeconomistforecasts 가 만든 2022년 프랑스 대선 예측 모델을 들 수 있습니다. 사용자가 시점이나 조건을 바꿔가며 결과를 직접 탐색해볼 수 있게 함으로써 훨씬 깊은 통찰을 제공합니다.
 
-`babynames` [@citebabynames]의 "babynames" 데이터 세트를 기반으로 대화형 그래프를 만들 것입니다. 먼저 정적 버전을 만들 것입니다 (@fig-babynames).
+`babynames` [@citebabynames] 의 "babynames" 데이터 세트를 기반으로 대화형 그래프를 만들 것입니다. 먼저 정적 버전을 만들 것입니다 (@fig-babynames).
 
 ```{r}
 #| fig-cap: "인기 있는 아기 이름"
@@ -1501,7 +1501,7 @@ head(bases)
 ```{r}
 #| message: false
 #| warning: false
-#| eval: false
+#| eval: true
 # 사용: https://data.humdata.org/dataset/bounding-boxes-for-countries
 bbox_germany <- c(left = 5.867, bottom = 45.967, right = 15.033, top = 55.133)
 
@@ -1535,7 +1535,7 @@ aus_stamen_map <- get_stadiamap(bbox_australia, zoom = 5, maptype = "stamen_tone
 #| warning: false
 #| fig-subcap: ["독일", "일본", "호주"]
 #| layout-ncol: 2
-#| eval: false
+#| eval: true
 ggmap(german_stamen_map) +
   geom_point(data = bases, aes(x = lon, y = lat)) +
   labs(x = "경도",
@@ -1723,7 +1723,7 @@ leaflet() |>
 
 #### 맵덱
 
-`mapdeck` [@citemapdeck]은 WebGL 기술을 기반으로 작동합니다. 이는 그래픽 처리를 상당 부분 웹 브라우저의 성능에 맡긴다는 의미이며, 덕분에 `leaflet`이 다루기 버거워하는 대용량 데이터셋도 매끄럽게 시각화할 수 있습니다.
+`mapdeck` [@citemapdeck] 은 WebGL 기술을 기반으로 작동합니다. 이는 그래픽 처리를 상당 부분 웹 브라우저의 성능에 맡긴다는 의미이며, 덕분에 `leaflet`이 다루기 버거워하는 대용량 데이터셋도 매끄럽게 시각화할 수 있습니다.
 
 지금까지 배경 지도 타일로 스타멘 맵(Stamen Maps)을 주로 사용했다면, `mapdeck`은 [맵박스(Mapbox)](https://www.mapbox.com/) 서비스를 이용합니다. 이를 위해선 맵박스 계정을 만들고 고유 토큰(Access Token)을 발급받아야 합니다. 계정 생성은 무료이며 토큰은 한 번만 설정해두면 계속 쓸 수 있습니다. 발급받은 토큰은 `edit_r_environ()` 함수를 실행해 열리는 환경 설정 파일(.Renviron)에 다음과 같은 형식으로 저장하십시오 (자세한 과정은 @sec-gather-data 를 참고하십시오).
 
