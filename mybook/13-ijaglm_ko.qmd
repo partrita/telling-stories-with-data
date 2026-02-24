@@ -603,14 +603,14 @@ modelsummary(
 
 ```
 
-각 예측 변수의 영향력 범위(신뢰 구간)를 그래프로 시각화하면 전달력이 높아집니다(@fig-modelplotlogisticpolitical). 이 차트는 본문이나 부록에 첨부하기 좋은 자료입니다.
+각 예측 변수의 영향력 범위(신용 구간)를 그래프로 시각화하면 전달력이 높아집니다(@fig-modelplotlogisticpolitical). 이 차트는 본문이나 부록에 첨부하기 좋은 자료입니다.
 
 ```{r}
 #| label: fig-modelplotlogisticpolitical
-#| fig-cap: "각 측면(예측 변수)들이 바이든 지지 확률에 미치는 영향력의 90% 신뢰(크레더블) 구간 도식화"
+#| fig-cap: "각 측면(예측 변수)들이 바이든 지지 확률에 미치는 영향력의 90% 신용 구간 도식화"
 
 modelplot(political_preferences, conf_level = 0.9) +
-  labs(x = "90% 신뢰 구간")
+  labs(x = "90% 신용 구간")
 
 ```
 
@@ -839,7 +839,7 @@ slopes(grades_rstanarm) |>
   tt() |>
   style_tt(j = 1:4, align = "lrrr") |>
   format_tt(digits = 2, num_mark_big = ",", num_fmt = "decimal") |>
-  setNames(c("학과 간의 짜릿한 비교", "추정증가분(개)", "2.5% 신뢰하한", "97.5% 신뢰상한"))
+  setNames(c("학과 간의 짜릿한 비교", "추정증가분(개)", "2.5% 신용하한", "97.5% 신용상한"))
 
 ```
 
@@ -1522,8 +1522,7 @@ y_i|\pi_i & \sim \mbox{Bern}(\pi_i) \\
 \end{aligned}
 $$
 
-복잡해 보이는 수식을 하나씩 해체해 보면, $\pi_i = \mbox{Pr}(y_i=1)$는 그 사람($i$)이 궁극적으로 목표 정당을 지지할 진짜 숨겨진 확률입니다. 통계 모형 안에는 딱 두 가지 성별 그룹만 세팅되어 있습니다. 이는 나중에 @sec-multilevel-regression-with-post-stratification 챕터에서 우리가 다뤄야 할 실제 설문조사 데이터(CES)의 한계상 '남/여' 두 성별 코드만 제공되기 때문입니다. 모델 끝자락의 $S$는 미국 전역인 총 50개 주를 뜻합니다.
-$\pi_i = \mbox{Pr}(y_i=1)$는 바이든을 지지할 확률입니다. 설문조사 데이터(CES)의 제약으로 성별은 남/여 두 가지로만 고려합니다(@sec-multilevel-regression-with-post-stratification 참조). $S$는 미국 50개 주를 의미합니다.
+복잡해 보이는 수식을 하나씩 해체해 보면, $\pi_i = \mbox{Pr}(y_i=1)$는 그 사람($i$)이 궁극적으로 바이든(Biden)을 지지할 진짜 숨겨진 확률입니다. 통계 모형 안에는 딱 두 가지 성별 그룹만 세팅되어 있습니다. 이는 나중에 @sec-multilevel-regression-with-post-stratification 챕터에서 우리가 다뤄야 할 실제 설문조사 데이터(CES)의 한계상 '남/여' 두 성별 코드만 제공되므로 이를 반영한 것입니다. 모델 끝자락의 $S$는 미국 전역인 총 50개 주를 뜻합니다.
 
 `rstanarm`의 `stan_glmer()` 함수를 사용해 이 모델을 구현할 수 있습니다. `(1 | state)` 항은 주(state)별 무작위 절편(random intercept)을 허용한다는 의미입니다. 즉, 주마다 바이든 지지 확률의 기준점이 달라질 수 있음을 모델에 반영합니다.\index{distribution!Normal}
 
