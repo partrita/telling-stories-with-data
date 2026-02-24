@@ -1516,7 +1516,7 @@ bbox_australia <- c(left = 112.467, bottom = -45, right = 155, top = -9.133)
 ```{r}
 #| message: false
 #| warning: false
-#| eval: false
+#| eval: true
 
 german_stamen_map <- get_stadiamap(bbox_germany, zoom = 6, maptype = "stamen_toner_lite")
 
