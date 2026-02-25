@@ -1121,6 +1121,25 @@ simulated_run_times_ext |>
 
 ```
 
+```{r}
+set.seed(853)
+
+num_observations <- 200
+expected_relationship <- 8.4
+fast_time <- 15
+good_time <- 30
+
+sim_run_data <-
+  tibble(
+    five_km_time =
+      runif(n = num_observations, min = fast_time, max = good_time),
+    noise = rnorm(n = num_observations, mean = 0, sd = 20),
+    marathon_time = five_km_time * expected_relationship + noise
+  ) |>
+  mutate(
+    five_km_time = round(x = five_km_time, digits = 1),
+    marathon_time = round(x = marathon_time, digits = 1)
+  ) |>
   select(-noise)
 
 sim_run_data
@@ -1289,6 +1308,15 @@ download.file(
 
 ```
 
+```{r}
+#| eval: true
+#| include: false
+
+# INTERNAL
+tanzania_dhs <- pdf_text("inputs/pdfs/1996_Tanzania_DHS.pdf")
+
+```
+
 이 경우 우리는 PDF의 33페이지에 있는 표 2.1에 관심이 있습니다(@fig-tanzanian-dhs).
 
 ![1996년 탄자니아 DHS의 관심 페이지](figures/tanzanian_dhs.png){#fig-tanzanian-dhs width=95% fig-align="center"}
@@ -1296,7 +1324,7 @@ download.file(
 `stringi`의 `stri_split_lines()`를 사용하여 해당 특정 페이지에 초점을 맞춥니다.
 
 ```{r}
-#| eval: false
+#| eval: true
 # Bob Rudis에서: https://stackoverflow.com/a/47793617
 tanzania_dhs_page_33 <- stri_split_lines(tanzania_dhs[[33]])[[1]]
 
@@ -1305,7 +1333,7 @@ tanzania_dhs_page_33 <- stri_split_lines(tanzania_dhs[[33]])[[1]]
 먼저 모든 작성된 내용을 제거하고 표에 초점을 맞추고 싶습니다. 그런 다음 익숙한 `tidyverse` 접근 방식을 사용할 수 있도록 티블로 변환하고 싶습니다.
 
 ```{r}
-#| eval: false
+#| eval: true
 #| warning: false
 #| message: false
 
@@ -1415,6 +1443,15 @@ tanzania_dhs_final |>
 우선 PDF의 특정 페이지(나이로비 데이터가 포함된 410쪽)를 텍스트로 읽어 들여 기초적인 정제 작업을 수행합니다.
 
 ```{r}
+#| eval: true
+#| include: false
+
+# INTERNAL
+kenya_census <- pdf_text("inputs/pdfs/2019_Kenya_census.pdf")
+
+```
+
+```{r}
 #| warning: false
 #| message: false
 
@@ -1440,15 +1477,7 @@ demography_data <-
 
 ```
 
-```{r}
-#| eval: true
-#| include: false
 
-# INTERNAL
-
-kenya_census <- pdf_text("inputs/pdfs/2019_Kenya_census.pdf")
-
-```
 
 이 예시에서는 나이로비에 대한 PDF 페이지에 초점을 맞출 것입니다(@fig-examplekenyancensuspage).
 
@@ -1527,22 +1556,18 @@ demography_data_long |>
 
 demography_data_tidy <-
   demography_data_long |>
-  pivot_longer(
-    cols = c(male, female),
-    names_to = "gender",
-    values_to = "count"
-  ) |> 
-  select(age, gender, count, age_type)
-
-head(demography_data_tidy)
-
-```
-
-이제 이 데이터를 활용해 나이로비의 인구 피라미드를 그리거나 통계 모델을 만드는 등 본격적인 분석을 시작할 수 있습니다.
+  rename_with(~paste0(., "_total"), male:total) |>
+  pivot_longer(cols = contains("_total"),
+               names_to = "type",
+               values_to = "number") |>
+  separate(
+    col = type,
     into = c("gender", "part_of_area"),
     sep = "_"
   ) |>
   select(age, age_type, gender, number)
+
+head(demography_data_tidy)
 
 ```
 
@@ -1638,7 +1663,7 @@ library(naniar)
 demography_data_tidy |>
   group_by(gender) |>
   summarise(
-    total_population = sum(count, na.rm = TRUE)
+    total_population = sum(number, na.rm = TRUE)
   )
 
 ```
@@ -1664,7 +1689,7 @@ library(pointblank)
 agent <-
   create_agent(tbl = demography_data_tidy) |>
   col_is_character(columns = vars(gender)) |>
-  col_vals_not_null(columns = vars(count)) |>
+  col_vals_not_null(columns = vars(number)) |>
   interrogate()
 
 # 결과 확인
