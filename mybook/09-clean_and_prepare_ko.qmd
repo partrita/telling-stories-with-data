@@ -1313,7 +1313,7 @@ download.file(
 #| include: false
 
 # INTERNAL
-tanzania_dhs <- pdf_text("inputs/pdfs/1996_Tanzania_DHS.pdf")
+tanzania_dhs <- pdf_text(here::here("inputs/pdfs/1996_Tanzania_DHS.pdf"))
 
 ```
 
@@ -1447,7 +1447,7 @@ tanzania_dhs_final |>
 #| include: false
 
 # INTERNAL
-kenya_census <- pdf_text("inputs/pdfs/2019_Kenya_census.pdf")
+kenya_census <- pdf_text(here::here("inputs/pdfs/2019_Kenya_census.pdf"))
 
 ```
 
