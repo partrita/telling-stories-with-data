@@ -1,8 +1,5 @@
 ---
 engine: knitr
-format:
-  pdf:
-    prefer-html: true
 ---
 
 # 그래프, 표, 지도 {#sec-static-communication}
