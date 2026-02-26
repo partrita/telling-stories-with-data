@@ -1349,15 +1349,18 @@ download.file(
 ```
 
 ```{r}
-#| eval: false
+#| eval: true
 #| include: false
 
 # INTERNAL
-download.file(
-  url = "https://dhsprogram.com/pubs/pdf/FR83/FR83.pdf",
-  destfile = "inputs/pdfs/1996_Tanzania_DHS.pdf",
-  mode = "wb"
-)
+if (!file.exists(here::here("inputs/pdfs/1996_Tanzania_DHS.pdf"))) {
+  dir.create(here::here("inputs/pdfs"), recursive = TRUE, showWarnings = FALSE)
+  download.file(
+    url = "https://dhsprogram.com/pubs/pdf/FR83/FR83.pdf",
+    destfile = here::here("inputs/pdfs/1996_Tanzania_DHS.pdf"),
+    mode = "wb"
+  )
+}
 
 ```
 
@@ -1379,7 +1382,7 @@ tanzania_dhs <-
 #| include: false
 
 # INTERNAL
-tanzania_dhs <- pdf_text("inputs/pdfs/1996_Tanzania_DHS.pdf")
+tanzania_dhs <- pdf_text(here::here("inputs/pdfs/1996_Tanzania_DHS.pdf"))
 
 ```
 
@@ -1529,8 +1532,15 @@ kenya_census <-
 #| include: false
 
 # INTERNAL
-
-kenya_census <- pdf_text("inputs/pdfs/2019_Kenya_census.pdf")
+if (!file.exists(here::here("inputs/pdfs/2019_Kenya_census.pdf"))) {
+  dir.create(here::here("inputs/pdfs"), recursive = TRUE, showWarnings = FALSE)
+  download.file(
+    url = "https://www.tellingstorieswithdata.com/inputs/pdfs/2019_Kenya_census.pdf",
+    destfile = here::here("inputs/pdfs/2019_Kenya_census.pdf"),
+    mode = "wb"
+  )
+}
+kenya_census <- pdf_text(here::here("inputs/pdfs/2019_Kenya_census.pdf"))
 
 ```
 
