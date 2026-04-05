@@ -33,10 +33,18 @@ jobs:
           cache: true
           cache-write: ${{ github.event_name == 'push' && github.ref_name == 'main' }}
 
+      - name: Cache R packages
+        uses: actions/cache@v4
+        with:
+          path: .pixi/envs/default/lib/R/library
+          key: ${{ runner.os }}-r-packages-${{ hashFiles('pixi.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-r-packages-
 
       - name: Install dependencies
         env:
           GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+          NCPUS: 2
         run: |
           pixi install
           pixi run install-r-packages
