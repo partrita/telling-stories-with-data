@@ -1532,19 +1532,19 @@ aus_stamen_map <- ggplot()
 #| layout-ncol: 2
 #| eval: true
 #| echo: true
-ggmap(german_stamen_map) +
+german_stamen_map +
   # geom_point(data = bases, aes(x = lon, y = lat)) +
   labs(x = "경도",
        y = "위도") +
   theme_minimal()
 
-ggmap(japan_stamen_map) +
+japan_stamen_map +
   # geom_point(data = bases, aes(x = lon, y = lat)) +
   labs(x = "경도",
        y = "위도") +
   theme_minimal()
 
-ggmap(aus_stamen_map) +
+aus_stamen_map +
   # geom_point(data = bases, aes(x = lon, y = lat)) +
   labs(x = "경도",
        y = "위도") +
