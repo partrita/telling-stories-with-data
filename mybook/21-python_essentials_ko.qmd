@@ -96,12 +96,7 @@ uv add numpy
 
 그런 다음 `hello.py`를 수정하여 `numpy`를 사용하여 정규 분포에서 시뮬레이션할 수 있습니다.
 
-```{python}
-#| eval: false
-#| echo: true
-#| warning: false
-#| message: false
-
+```python
 import numpy as np
 
 def main():
@@ -121,7 +116,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 ```
 
 이제 `hello.py` 파일을 저장한 뒤, 터미널에서 `uv run hello.py` 명령어로 실행해 봅니다. VS Code를 종료했다가 다시 시작하더라도, 해당 프로젝트 폴더를 열고 동일한 명령어를 실행하면 언제든 일관된 분석 환경에서 코드를 실행할 수 있습니다. 파이썬에서 프로젝트는 이처럼 독립된 폴더와 그 안의 가상 환경을 통해 관리되는 것이 기본입니다.
@@ -154,12 +148,7 @@ uv add polars
 
 `00-simulate_data.py`라는 새 Python 파일을 만듭니다.
 
-```{python}
-#| eval: false
-#| echo: true
-#| warning: false
-#| message: false
-
+```python
 #### 서문 ####
 # 목적: 일일 쉼터 사용량 데이터셋 시뮬레이션
 # 저자: Rohan Alexander
@@ -205,7 +194,6 @@ usage = np.minimum(poisson_draw, data["Capacity"])
 data = data.with_columns([pl.Series("사용량", usage)])
 
 data.write_parquet("simulated_data.parquet")
-
 ```
 
 이 시뮬레이션된 데이터를 기반으로 실제 데이터에 적용할 테스트를 작성하고 싶습니다. 이를 위해 `pydantic`을 사용할 것이므로, `uv add`를 사용하여 환경에 추가해야 합니다.
@@ -220,12 +208,7 @@ uv add pydantic
 
 `00-test_simulated_data.py`라는 새 Python 파일을 만듭니다. 첫 번째 단계는 `pydantic`에서 제공하는 `BaseModel`의 하위 클래스인 `ShelterData`를 정의하는 것입니다.
 
-```{python}
-#| eval: false
-#| echo: true
-#| warning: false
-#| message: false
-
+```python
 from pydantic import BaseModel, Field, ValidationError, field_validator
 from datetime import date
 
@@ -243,19 +226,13 @@ class ShelterData(BaseModel):
         if capacity is not None and usage > capacity:
             raise ValueError(f"사용량 ({usage})이 용량 ({capacity})을 초과합니다.")
         return usage
-
 ```
 
 날짜가 유효한지, 쉼터가 올바른 유형인지, 용량과 사용량이 모두 음수가 아닌 정수인지 테스트하는 데 관심이 있습니다. 추가적인 문제는 사용량이 용량을 초과해서는 안 된다는 것입니다. 이를 위한 테스트를 작성하기 위해 `field_validator`를 사용합니다.
 
 그런 다음 시뮬레이션된 데이터셋을 가져와 테스트할 수 있습니다.
 
-```{python}
-#| eval: false
-#| echo: true
-#| warning: false
-#| message: false
-
+```python
 import polars as pl
 
 df = pl.read_parquet("simulated_data.parquet")
@@ -286,17 +263,11 @@ if errors:
     print("\n오류:")
     for i, error in errors:
         print(f"행 {i}: {error}")
-
 ```
 
 오류가 있었다면 어떻게 되었을지 확인하기 위해 두 가지 오류가 포함된 더 작은 데이터셋을 고려할 수 있습니다. 즉, 잘못 형식화된 날짜 하나와 사용량이 용량을 초과하는 상황 하나입니다.
 
-```{python}
-#| eval: false
-#| echo: true
-#| warning: false
-#| message: false
-
+```python
 import polars as pl
 from pydantic import BaseModel, Field, ValidationError, field_validator
 from datetime import date
@@ -348,7 +319,6 @@ if errors:
     print("\n오류:")
     for i, error in errors:
         print(f"행 {i}: {error}")
-
 ```
 
 다음 메시지가 나타납니다.
@@ -371,12 +341,7 @@ Usage
 
 이전과 동일한 출처 사용: https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/21c83b32-d5a8-4106-a54f-010dbe49f6f2/resource/ffd20867-6e3c-4074-8427-d63810edf231/download/Daily%20shelter%20overnight%20occupancy.csv
 
-```{python}
-#| eval: false
-#| echo: true
-#| warning: false
-#| message: false
-
+```python
 import polars as pl
 
 # CSV 파일 URL
@@ -387,17 +352,11 @@ df = pl.read_csv(url)
 
 # 원시 데이터 저장
 df.write_parquet("shelter_usage.parquet")
-
 ```
 
 몇 개의 열과 데이터가 있는 행에만 관심이 있을 것입니다.
 
-```{python}
-#| eval: false
-#| echo: true
-#| warning: false
-#| message: false
-
+```python
 import polars as pl
 
 df = pl.read_parquet("shelter_usage.parquet")
@@ -421,17 +380,11 @@ renamed_df = filtered_df.rename({"OCCUPANCY_DATE": "date",
 print(renamed_df.head())
 
 renamed_df.write_parquet("cleaned_shelter_usage.parquet")
-
 ```
 
 그런 다음 실제 데이터셋에 테스트를 적용하고 싶을 수 있습니다.
 
-```{python}
-#| eval: false
-#| echo: true
-#| warning: false
-#| message: false
-
+```python
 import polars as pl
 from pydantic import BaseModel, Field, ValidationError, field_validator
 from datetime import date
@@ -479,19 +432,13 @@ if errors:
     print("\n오류:")
     for i, error in errors:
         print(f"행 {i}: {error}")
-
 ```
 
 ### 탐색
 
 데이터 조작
 
-```{python}
-#| eval: false
-#| echo: true
-#| warning: false
-#| message: false
-
+```python
 import polars as pl
 
 df = pl.read_parquet("cleaned_shelter_usage.parquet")
@@ -511,17 +458,11 @@ aggregated_df = (
 
 # 집계된 DataFrame 표시
 print(aggregated_df)
-
 ```
 
 그래프 만들기
 
-```{python}
-#| eval: false
-#| echo: true
-#| warning: false
-#| message: false
-
+```python
 import polars as pl
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -579,14 +520,13 @@ plt.tight_layout()
 
 # 플롯 표시
 plt.show()
-
 ```
 
 ### 공유
 
 한 가지 좋은 점은 Quarto 문서에서 Python을 사용할 수 있다는 것입니다. 이를 위해 [여기](https://marketplace.visualstudio.com/items?itemName=quarto.quarto)에서 Quarto 확장을 설치하여 VS Code에 추가해야 합니다. 터미널에서 `quarto preview`를 실행하여 문서를 렌더링할 수 있습니다.
 
-VS Code는 Microsoft에서 만들었으며, Microsoft는 GitHub도 소유하고 있습니다. 따라서 계정으로 이동하여 로그인하여 GitHub 계정을 VS Code에 추가할 수 있습니다.
+VS Code은 Microsoft에서 만들었으며, Microsoft는 GitHub도 소유하고 있습니다. 따라서 계정으로 이동하여 로그인하여 GitHub 계정을 VS Code에 추가할 수 있습니다.
 
 ## Python
 
@@ -596,10 +536,7 @@ VS Code는 Microsoft에서 만들었으며, Microsoft는 GitHub도 소유하고 
 
 `for` 루프는 리스트나 튜플 같은 반복 가능한(Iterable) 객체의 요소를 하나씩 꺼내어 동일한 작업을 반복할 때 사용합니다.
 
-```{python}
-#| eval: true
-#| echo: true
-
+```python
 names = ["로한", "모니카", "에드워드"]
 for name in names:
     print(f"안녕하세요, {name}님!")
@@ -609,10 +546,7 @@ for name in names:
 
 리스트 컴프리헨션(List Comprehension)은 기존 리스트를 바탕으로 새로운 리스트를 만들 때 사용하는 파이썬 특유의 간결한 문법입니다. `for` 루프보다 가독성이 높고 실행 속도도 빠른 경우가 많아 애용됩니다.
 
-```{python}
-#| eval: true
-#| echo: true
-
+```python
 # 각 숫자의 제곱을 구하는 예시
 numbers = [1, 2, 3, 4, 5]
 squares = [n**2 for n in numbers]
@@ -627,10 +561,7 @@ print(squares)
 
 `matplotlib`는 파이썬에서 그래프를 그릴 때 가장 기본이 되는 라이브러리입니다. 거의 모든 시각적 요소를 세밀하게 제어할 수 있는 저수준(Low-level) API를 제공합니다.
 
-```{python}
-#| eval: false
-#| echo: true
-
+```python
 import matplotlib.pyplot as plt
 
 plt.plot([1, 2, 3, 4], [1, 4, 9, 16])
@@ -642,10 +573,7 @@ plt.show()
 
 `seaborn`은 `matplotlib`를 기반으로 구축된 고수준(High-level) 인터페이스입니다. 복잡한 통계 그래프를 단 몇 줄의 코드로 아름답게 그릴 수 있으며, Pandas나 Polars 데이터프레임과 매우 잘 통합됩니다.
 
-```{python}
-#| eval: false
-#| echo: true
-
+```python
 import seaborn as sns
 
 # 내장 데이터셋 로드
@@ -661,10 +589,7 @@ sns.scatterplot(data=tips, x="total_bill", y="tip", hue="time")
 
 `Polars`는 다양한 형식의 데이터를 빠르게 읽어올 수 있습니다. 특히 `read_csv()`와 `read_parquet()` 함수는 업계 최고 수준의 속도를 자랑합니다.
 
-```{python}
-#| eval: false
-#| echo: true
-
+```python
 import polars as pl
 
 # CSV 읽기
@@ -678,10 +603,7 @@ df_parquet = pl.read_parquet("data.parquet")
 
 여러 데이터프레임을 합치거나 구조를 바꿀 때 `join()`, `pivot()`, `melt()` 등을 사용합니다. `dplyr`의 동사들과 개념적으로 매우 유사합니다.
 
-```{python}
-#| eval: false
-#| echo: true
-
+```python
 # 두 데이터프레임 결합
 combined_df = df1.join(df2, on="id", how="left")
 
@@ -693,10 +615,7 @@ long_df = df.melt(id_vars="date", value_vars=["temp", "humidity"])
 
 `Polars`는 `str` 네임스페이스를 통해 풍부한 문자열 처리 함수를 제공합니다. 정규표현식을 활용한 정교한 텍스트 정제가 가능합니다.
 
-```{python}
-#| eval: false
-#| echo: true
-
+```python
 # 대문자 변환 및 특정 단어 포함 여부 확인
 df = df.with_columns([
     pl.col("name").str.to_uppercase().alias("NAME_UPPER"),
@@ -708,10 +627,7 @@ df = df.with_columns([
 
 범주형 데이터는 `Categorical` 타입을 사용해 메모리 효율적으로 관리할 수 있습니다. 이는 R의 `factor`와 유사한 역할을 합니다.
 
-```{python}
-#| eval: false
-#| echo: true
-
+```python
 # 특정 열을 범주형으로 변환
 df = df.with_columns(
     pl.col("category").cast(pl.Categorical)
