@@ -8,6 +8,7 @@ version = "0.1.0"
 [tasks]
 install-r-packages = "R -e 'install.packages(c(\"opendatatoronto\", \"datasauRus\", \"troopdata\", \"rdrobust\", \"analogsea\", \"AustralianPoliticians\", \"dataverse\", \"nflverse\"), repos=\"https://cloud.r-project.org/\", Ncpus=Sys.getenv(\"NCPUS\", \"1\"))'"
 install-r-github-packages = "R -e 'options(Ncpus=Sys.getenv(\"NCPUS\", \"1\")); devtools::install_github(c(\"ttimbers/canlang\", \"sharlagelfand/astrologer\"))'"
+render = { cmd = "quarto render mybook --to html", env = { RETICULATE_USE_UV = "false", RETICULATE_MINICONDA_ENABLED = "false" } }
 
 [dependencies]
 quarto = ">=1.7.32,<2"

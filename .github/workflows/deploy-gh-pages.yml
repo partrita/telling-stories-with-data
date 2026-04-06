@@ -53,11 +53,7 @@ jobs:
 
       - name: Render Quarto book to HTML
         run: |
-          cd mybook
-          export RETICULATE_PYTHON=$(pixi run python -c "import sys; print(sys.executable)")
-          export RETICULATE_USE_UV=FALSE
-          export RETICULATE_MINICONDA_ENABLED=FALSE
-          pixi run quarto render --to html
+          pixi run render
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
