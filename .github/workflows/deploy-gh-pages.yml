@@ -31,6 +31,7 @@ jobs:
         with:
           pixi-version: v0.40.3
           cache: true
+          locked: false
           cache-write: ${{ github.event_name == 'push' && github.ref_name == 'main' }}
 
       - name: Cache R packages
