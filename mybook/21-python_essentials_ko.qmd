@@ -1,5 +1,7 @@
 ---
 engine: knitr
+execute:
+  eval: false
 ---
 
 # Python 필수 사항 {#sec-python-essentials}
