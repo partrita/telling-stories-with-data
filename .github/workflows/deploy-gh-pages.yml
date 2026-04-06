@@ -52,13 +52,9 @@ jobs:
           pixi run install-r-github-packages
 
       - name: Render Quarto book to HTML
-        env:
-          RETICULATE_USE_UV: "false"
-          RETICULATE_PYTHON: "python"
-          RETICULATE_AUTOCONFIGURE: "false"
         run: |
           cd mybook
-          pixi run quarto render --to html
+          RETICULATE_PYTHON=$(pixi run which python) RETICULATE_USE_UV=false pixi run quarto render --to html
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
