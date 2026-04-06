@@ -52,7 +52,9 @@ jobs:
 
       - name: Render Quarto book to HTML
         env:
-          RETICULATE_USE_UV: 0
+          RETICULATE_USE_UV: "false"
+          RETICULATE_PYTHON: "python"
+          RETICULATE_AUTOCONFIGURE: "false"
         run: |
           cd mybook
           pixi run quarto render --to html
