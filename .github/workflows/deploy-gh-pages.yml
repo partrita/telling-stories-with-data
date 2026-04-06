@@ -51,6 +51,8 @@ jobs:
           pixi run install-r-github-packages
 
       - name: Render Quarto book to HTML
+        env:
+          RETICULATE_USE_UV: 0
         run: |
           cd mybook
           pixi run quarto render --to html
